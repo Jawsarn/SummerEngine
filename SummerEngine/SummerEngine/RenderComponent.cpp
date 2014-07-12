@@ -3,6 +3,7 @@
 
 RenderComponent::RenderComponent()
 {
+	m_RenderingSystem = m_RenderingSystem->GetInstance();
 }
 
 

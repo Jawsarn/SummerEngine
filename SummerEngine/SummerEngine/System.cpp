@@ -32,3 +32,13 @@ void System::Destroy()
 {
 
 }
+
+void System::Register(Entity* p_Entity)
+{
+	m_Entities.push_back(p_Entity);
+}
+
+void System::Unregister(Entity* p_Entity)
+{
+	m_Entities.remove(p_Entity);
+}

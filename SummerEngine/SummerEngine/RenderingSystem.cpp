@@ -1,5 +1,15 @@
 #include "RenderingSystem.h"
 
+RenderingSystem* RenderingSystem::m_Singleton = nullptr;
+
+RenderingSystem* RenderingSystem::GetInstance()
+{
+	if (m_Singleton == nullptr)
+	{
+		m_Singleton = new RenderingSystem();
+	}
+	return m_Singleton;
+}
 
 RenderingSystem::RenderingSystem()
 {
