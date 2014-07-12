@@ -8,10 +8,11 @@ class Entity
 public:
 	Entity();
 	~Entity();
+	void AddComponent(Component &p_Component);
 
 private:
 	int m_EntityID;
-	std::list<Component> m_Components;
 	std::string m_Name; //not sure if needed
+	std::list<Component> m_Components;
 };
 

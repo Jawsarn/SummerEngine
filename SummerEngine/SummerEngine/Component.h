@@ -7,10 +7,10 @@ public:
 	Component();
 	~Component();
 
-	virtual void Awake() = 0;
-	virtual void Start() = 0;
-	virtual void Update() = 0;
-	virtual void Destroy() = 0;
+	virtual void Awake();
+	virtual void Start();
+	virtual void Update();
+	virtual void Destroy();
 
 
 private:
