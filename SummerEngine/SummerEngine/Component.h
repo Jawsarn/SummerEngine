@@ -15,7 +15,5 @@ public:
 
 private:
 	bool m_IsEnabled;
-	int m_EntityID;
-	std::string m_Name; //not sure if needed
 };
 
