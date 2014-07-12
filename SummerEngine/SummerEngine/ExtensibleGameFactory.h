@@ -16,6 +16,6 @@ public:
 	void Unregister(GameObjectType p_Type);
 
 private:
-	typedef std::map<GameObjectType, FactoryMaker> TypeMap;
+	typedef std::map<GameObjectType, FactoryMaker*> TypeMap;
 	TypeMap m_Makers;
 };
