@@ -3,12 +3,21 @@
 
 RenderComponent::RenderComponent()
 {
+	
+}
+
+RenderComponent::~RenderComponent()
+{
+	
+}
+
+void RenderComponent::Start()
+{
 	m_RenderingSystem = m_RenderingSystem->GetInstance();
 	m_RenderingSystem->Register(m_Entity);
 }
 
-
-RenderComponent::~RenderComponent()
+void RenderComponent::Sleep()
 {
 	m_RenderingSystem->Unregister(m_Entity);
 }

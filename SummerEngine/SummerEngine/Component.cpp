@@ -23,6 +23,11 @@ void Component::Start()
 
 }
 
+void Component::Sleep()
+{
+
+}
+
 void Component::Update()
 {
 

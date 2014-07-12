@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+class Entity;
+
 class Component
 {
 public:
@@ -9,6 +11,7 @@ public:
 
 	virtual void Awake();
 	virtual void Start();
+	virtual void Sleep();
 	virtual void Update();
 	virtual void Destroy();
 

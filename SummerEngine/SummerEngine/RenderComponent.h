@@ -8,6 +8,9 @@ public:
 	RenderComponent();
 	~RenderComponent();
 
+	virtual void Start();
+	virtual void Sleep();
+
 private:
 	RenderingSystem* m_RenderingSystem;
 };
