@@ -3,14 +3,14 @@
 
 Component::Component()
 {
-	m_IsEnabled = true;
-	this->Awake();
+	m_IsEnabled = true;		//always true, user can turn off if need
+	this->Awake();			//to make sure Awake is always called
 }
 
 
 Component::~Component()
 {
-	this->Destroy();
+	this->Destroy();		//not sure if needed but it's good thing to always make sure destroy is awlays called
 }
 
 void Component::Awake()
