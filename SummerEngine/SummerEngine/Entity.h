@@ -10,7 +10,7 @@ public:
 	~Entity();
 	void AddComponent(Component &p_Component);
 
-private:
+protected:
 	int m_EntityID;
 	std::string m_Name; //not sure if needed
 	std::list<Component> m_Components;

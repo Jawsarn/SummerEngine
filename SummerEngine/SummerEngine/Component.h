@@ -13,7 +13,7 @@ public:
 	virtual void Destroy();
 
 
-private:
+protected:
 	bool m_IsEnabled;
 };
 

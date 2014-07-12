@@ -14,7 +14,7 @@ public:
 	virtual void Destroy();
 
 	//will add more here
-private:
+protected:
 	bool m_IsEnabled;
 	std::list<Entity> m_Entities;
 };
