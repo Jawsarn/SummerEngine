@@ -7,6 +7,7 @@ class Component
 {
 public:
 	Component();
+	Component(std::string name);
 	~Component();
 
 	virtual void Awake();
@@ -15,9 +16,9 @@ public:
 	virtual void Update();
 	virtual void Destroy();
 
-
 protected:
 	bool m_IsEnabled;
 	Entity* m_Entity;
+	std::string name;
 };
 

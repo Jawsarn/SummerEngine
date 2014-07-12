@@ -2,7 +2,6 @@
 #include "Component.h"
 #include <list>
 
-
 class Entity
 {
 public:
