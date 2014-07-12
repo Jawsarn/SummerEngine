@@ -3,6 +3,7 @@
 
 Entity::Entity()
 {
+	m_Parent = nullptr;
 }
 
 

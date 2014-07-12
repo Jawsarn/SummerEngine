@@ -67,8 +67,12 @@
   <ItemGroup>
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="ExtensibleGameFactory.cpp" />
+    <ClCompile Include="FactoryMaker.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Math.cpp" />
     <ClCompile Include="model.cpp" />
+    <ClCompile Include="Registrar.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="System.cpp" />
@@ -77,7 +81,11 @@
   <ItemGroup>
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="ExtensibleGameFactory.h" />
+    <ClInclude Include="FactoryMaker.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="Registrar.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="System.h" />
