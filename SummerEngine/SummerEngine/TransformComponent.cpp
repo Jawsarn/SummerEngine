@@ -14,7 +14,19 @@ TransformComponent::~TransformComponent()
 {
 }
 
-void TransformComponent::SetTranslation(int testar)
+/*
+void TransformComponent::SetTranslation(XMFLOAT3 translation)
 {
-	test = testar;
+	this->translation = translation;
 }
+
+void TransformComponent::SetRotation(XMFLOAT3 rotation)
+{
+	this->rotation = rotation;
+}
+
+void TransformComponent::SetScale(XMFLOAT3 scale)
+{
+	this->scale = scale;
+}
+*/

@@ -7,13 +7,15 @@ public:
 	TransformComponent(std::string name);
 	~TransformComponent();
 	
-	void SetTranslation(int testar);
+	//void SetTranslation(XMFLOAT3 translation);
+	//void SetRotation(XMFLOAT3 rotation);
+	//void SetScale(XMFLOAT3 scale);
+
 private:
-	int test = 1;
-	
-	//XMFLOAT4X4 translation;
-	//XMFLOAT4X4 rotation;
-	//XMFLOAT4X4 scale;
+
+	//XMFLOAT3 translation;
+	//XMFLOAT3 rotation;
+	//XMFLOAT3 scale;
 	//XMFLOAT4X4 world;
 	//cb -buffer
 };
