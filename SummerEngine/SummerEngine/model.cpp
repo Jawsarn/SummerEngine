@@ -3,9 +3,10 @@
 
 model::model()
 {
-	TransformComponent transform =  TransformComponent("transform");
-	this->AddComponent(transform);
+	/*TransformComponent transform =  TransformComponent("transform");
+	this->AddComponent(transform);*/
 	
+	this->AddComponent(new TransformComponent("Transform"));
 }
 
 
