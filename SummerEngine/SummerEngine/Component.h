@@ -15,5 +15,6 @@ public:
 
 protected:
 	bool m_IsEnabled;
+	Entity* m_Entity;
 };
 
