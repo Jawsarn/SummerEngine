@@ -17,6 +17,7 @@ XMFLOAT3 Math::Add2XMFLOAT3(XMFLOAT3* a, XMFLOAT3* b)
 
 	XMFLOAT3 result;
 	XMStoreFloat3(&result, t_a + t_b);
+	return result;
 }
 
 XMFLOAT4X4 Math::MultiPly2XMFLOAT4X4(XMFLOAT4X4* a, XMFLOAT4X4* b)
