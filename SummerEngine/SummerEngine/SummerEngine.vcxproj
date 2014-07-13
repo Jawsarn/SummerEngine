@@ -73,6 +73,7 @@
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
@@ -85,6 +86,7 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="RenderComponent.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="TransformComponent.h" />

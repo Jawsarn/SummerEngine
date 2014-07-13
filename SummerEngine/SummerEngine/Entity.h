@@ -7,13 +7,13 @@ class Entity
 public:
 	Entity();
 	Entity(const Entity &p_Copy);
-	Entity(const Entity &p_Copy, Entity* parent);
+	Entity(const Entity &p_Copy, Entity* p_Parent);
 	~Entity();
 	void AddComponent(Component *p_Component);
-	void SetParent(Entity *p_parent);
+	void SetParent(Entity *p_Parent);
 
 	Entity* GetParent();
-	std::list<Entity> GetChildren();
+	std::vector<Entity*> GetChildren();
 
 protected:
 	int m_EntityID;

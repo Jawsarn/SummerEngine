@@ -27,7 +27,7 @@ Entity::Entity(const Entity &p_Copy)
 	}
 }
 
-Entity::Entity(const Entity &p_Copy, Entity* parent)
+Entity::Entity(const Entity &p_Copy, Entity* p_Parent)
 {
 	int t_NumOfComponents = p_Copy.m_Components.size();
 
@@ -38,7 +38,7 @@ Entity::Entity(const Entity &p_Copy, Entity* parent)
 
 	this->m_EntityID = p_Copy.m_EntityID; //not sure if ID should follow? maybe not..
 	this->m_Name = p_Copy.m_Name;
-	this->m_Parent = parent;
+	this->m_Parent = p_Parent;
 
 	int t_NumOfChildren = p_Copy.m_Children.size();
 
@@ -62,12 +62,12 @@ void Entity::AddComponent( Component *p_Component )
 	m_Components.push_back(p_Component);
 }
 
-void Entity::SetParent(Entity *p_parent)
+void Entity::SetParent(Entity *p_Parent)
 {
-	m_Parent = p_parent;
+	m_Parent = p_Parent;
 }
 
-std::list<Entity> Entity::GetChildren()
+std::vector<Entity*> Entity::GetChildren()
 {
 	return m_Children;
 }
