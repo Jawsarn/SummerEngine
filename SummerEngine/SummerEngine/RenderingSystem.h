@@ -1,5 +1,6 @@
 #pragma once
 #include "System.h"
+#include "Renderer.h"
 
 class RenderingSystem: public System
 {
@@ -16,5 +17,6 @@ private:
 	RenderingSystem();
 	~RenderingSystem();
 	static RenderingSystem* m_Singleton;
+	Renderer* m_Renderer;
 };
 

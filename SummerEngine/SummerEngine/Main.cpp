@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include "GameEngine.h"
 
 //global game variables
 HINSTANCE	handleInstance;
@@ -7,9 +8,10 @@ HWND	m_HandleWindow;
 //global game functions
 HRESULT InitializeWindow(_In_ HINSTANCE p_HInstance, _In_ int p_NCmdShow);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-void RunGame();
+void RunGameEngine();
 
-
+//game 
+GameEngine* m_GameEngine;
 
 int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstance, _In_ LPWSTR p_LpCmdLine, _In_ int p_NCmdShow)
 {
@@ -18,8 +20,7 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 
 	InitializeWindow(p_HInstance, p_NCmdShow);
 
-
-	RunGame();
+	RunGameEngine();
 
 
 	return 0;
@@ -98,29 +99,17 @@ HRESULT InitializeWindow(_In_ HINSTANCE p_HInstance, _In_ int p_NCmdShow)
 	return S_OK;
 }
 
-#include "Entity.h"
-#include "ExtensibleGameFactory.h"
-#include "RenderComponent.h"
-#include "Renderer.h"
-
-void RunGame()
+void RunGameEngine()
 {
-	// Testcode starts here
+	m_GameEngine = m_GameEngine->GetInstance();
 
-	//Entity* test = new Entity();
-	//test->AddComponent(new RenderComponent());
-	//ExtensibleGameFactory factory = ExtensibleGameFactory();
-	//factory.Register(new FactoryMaker(test), 10);
-	//Entity* newObject = factory.Create(10);
-
-
-	Renderer* rend = rend->GetInstance();
-	
-	bool t_InitIsOK = rend->Initialize(1920,1080,m_HandleWindow);
-	if (!t_InitIsOK)
+	bool SuccessfullStart = m_GameEngine->Start(1920, 1080, m_HandleWindow);
+	if (!SuccessfullStart)
 	{
+		//do something like error message
 		PostQuitMessage(0);
 	}
+	
 
 	MSG msg = { 0 };
 	while (WM_QUIT != msg.message)
@@ -133,8 +122,10 @@ void RunGame()
 		}
 		else  //no more windows messages, continue game
 		{
-			rend->RenderFrame();
+			m_GameEngine->Update();
 		}
 	}
-	//testcode ends here
+
+	m_GameEngine->Destroy();
 }
+

@@ -13,8 +13,8 @@ RenderingSystem* RenderingSystem::GetInstance()
 
 RenderingSystem::RenderingSystem()
 {
+	m_Renderer = m_Renderer->GetInstance();
 }
-
 
 RenderingSystem::~RenderingSystem()
 {
@@ -27,12 +27,12 @@ void RenderingSystem::Awake()
 
 void RenderingSystem::Start()
 {
-
+	
 }
 
 void RenderingSystem::Update()
 {
-
+	m_Renderer->RenderFrame();
 }
 
 void RenderingSystem::Destroy()
