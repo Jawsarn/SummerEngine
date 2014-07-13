@@ -18,6 +18,11 @@ private:
 
 	HRESULT InitializeDriverAndVersion(HWND p_HandleWindow);
 	HRESULT InitializeRenderTargetView();
+	void InitializeViewports();
+	HRESULT InitializeRasterizers();
+	HRESULT InitializeDeptpAndStates();
+	HRESULT InitializeBlendAndStates();
+	HRESULT Renderer::InitializeShaders();
 
 	//initialize and handles
 	ID3D11Device*			m_Device;
