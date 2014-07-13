@@ -1,20 +1,22 @@
 #pragma once
 #include "Component.h"
-#include <list>
+#include <vector>
 
 class Entity
 {
 public:
 	Entity();
+	Entity(const Entity &p_Copy);
+	Entity(const Entity &p_Copy, Entity* parent);
 	~Entity();
 	void AddComponent(Component *p_Component);
 
 protected:
 	int m_EntityID;
 	Entity* m_Parent;
-	std::list<Entity> m_Children;
+	std::vector<Entity*> m_Children;
 
 	std::string m_Name; //not sure if needed
-	std::list<Component*> m_Components;
+	std::vector<Component*> m_Components;
 };
 

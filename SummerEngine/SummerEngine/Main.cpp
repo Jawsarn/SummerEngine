@@ -98,10 +98,21 @@ HRESULT InitializeWindow(_In_ HINSTANCE p_HInstance, _In_ int p_NCmdShow)
 	return S_OK;
 }
 
-
+#include "Entity.h"
+#include "ExtensibleGameFactory.h"
+#include "RenderComponent.h"
 void RunGame()
 {
 	// Testcode starts here
+
+	Entity* test = new Entity();
+	test->AddComponent(new RenderComponent());
+
+	ExtensibleGameFactory factory = ExtensibleGameFactory();
+	factory.Register(new FactoryMaker(test), 10);
+
+	Entity* newObject = factory.Create(10);
+
 	MSG msg = { 0 };
 	while (WM_QUIT != msg.message)
 	{
