@@ -6,6 +6,8 @@ class MeshComponent:public Component
 public:
 	MeshComponent();
 	~MeshComponent();
+
 	Mesh *mesh;
+
 };
 
