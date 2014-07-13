@@ -1,13 +1,8 @@
 #pragma once
-#include "Component.h"
-#include "Mesh.h"
-class MeshComponent:public Component
+class MeshComponent
 {
 public:
 	MeshComponent();
 	~MeshComponent();
-
-	Mesh *mesh;
-
 };
 
