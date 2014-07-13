@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ComponentDesigner" dslVersion="1.0.0.0" Id="731eeae8-a905-467b-98da-8b790b52260f" name="UMLClassDiagram1" linkedPackageId="82e42c0a-28bc-4df7-bc46-3dc7256036d4" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="f45f7e44-a551-40c2-96f7-c63442688e9c">
+      <profileInstance Id="a63b31b1-9a4a-4d74-acdc-651125822a34" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="f1be8806-9124-45b0-b8d8-01e72c541fd0">
+      <profileInstance Id="841741dd-a449-404a-9f5b-f9226beca9ff" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="a9fbf8a5-704c-4c00-bed8-d41ea72cc931" name="Entity" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="1f8b668d-1acb-4837-8243-83d4fa6ddf1e" />
+        <targetEnds>
+          <association Id="d7c6ec8e-59df-4b5d-ba9c-82560384a118" isDerived="false" sourceEndRoleName="Entity" targetEndRoleName="Component" isLeaf="false" isAbstract="false">
+            <classMoniker Id="f2dc09f8-9833-4f90-aabc-39ff4ba50844" LastKnownName="Component" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="d95d0feb-e65e-4965-813b-d322d9a663c4" name="Entity" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="f3e9bc93-f9ae-4d0c-b7f5-06e821533876" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="38c9bc38-b463-4fd9-971f-8862ae7e528a" name="Component" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="61243f85-a855-4e68-9c07-2b5822fc9a1e" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="c8139ef9-d681-45d1-84fa-c6fea607332f" />
+          </association>
+        </targetEnds>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="f2dc09f8-9833-4f90-aabc-39ff4ba50844" name="Component" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="1c83a1ef-2a98-46b9-a30d-68621e958a90" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="cfa15568-8f42-475c-b90f-95c1c3573781" name="RenderComponent" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="9bec4168-bd00-4902-9c0d-d0f04e59d3b0" />
+        <generalsInternal>
+          <generalization Id="ca507aba-6398-403c-a2bc-a200ce23c937" isSubstitutable="false">
+            <classMoniker Id="f2dc09f8-9833-4f90-aabc-39ff4ba50844" LastKnownName="Component" />
+            <elementDefinition Id="7d5f4723-d7cf-4004-b7d1-7024379ce488" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+  </packagedElements>
+  <package Id="82e42c0a-28bc-4df7-bc46-3dc7256036d4" name="Diagrams">
+    <elementDefinition Id="ef78e4fa-737c-40bc-97e8-8598a26de76c" />
+  </package>
+</logicalClassDesignerModel>
