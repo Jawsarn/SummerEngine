@@ -23,7 +23,7 @@ private:
 	void SimulateWorld();
 	void CollisionStep();
 	void UpdateObjects();
-	void RenderWorld();;
+	void RenderWorld();
 	void MiscTasks();
 
 	static GameEngine* m_Singleton;

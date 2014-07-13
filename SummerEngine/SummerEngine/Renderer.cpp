@@ -18,6 +18,7 @@ Renderer::Renderer()
 	m_Width = new UINT();
 	*m_Height = 0;
 	*m_Width = 0;
+	m_IsRendering = false;
 }
 
 
@@ -475,13 +476,40 @@ HRESULT Renderer::InitializeSamplerState()
 	return hr;
 }
 
-void Renderer::RenderFrame()
+void Renderer::BeginRender()
 {
+	if (m_IsRendering)
+	{
+		MessageBox(nullptr, L"Rendering call Begin was called befor end was called.", L"ErrorMessage", MB_OK);
+		return;
+	}
+	
 	//clear the render target
 	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, Colors::Black);
 	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	
+	m_IsRendering = true;
+}
+
+void Renderer::RenderOpaque()
+{
+
+}
+
+void Renderer::RenderTransparent()
+{
+
+}
+
+void Renderer::EndRender()
+{
+	if (!m_IsRendering)
+	{
+		MessageBox(nullptr, L"Rendering call End was called befor begin was called.", L"ErrorMessage", MB_OK);
+		return;
+	}
 
 	m_SwapChain->Present(0, 0);
+	m_IsRendering = false;
 }

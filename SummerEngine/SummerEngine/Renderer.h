@@ -11,7 +11,10 @@ class Renderer
 public:
 	static Renderer* GetInstance();
 	bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow);
-	void RenderFrame();
+	void BeginRender();
+	void RenderOpaque();
+	void RenderTransparent();
+	void EndRender();
 
 
 private:
@@ -67,5 +70,6 @@ private:
 	UINT* m_Height;
 
 	static Renderer* m_Singleton;
+	BOOL m_IsRendering;
 };
 
