@@ -7,7 +7,6 @@ Component::Component()
 	this->Awake();			//to make sure Awake is always called
 }
 
-
 Component::~Component()
 {
 	this->Destroy();		//not sure if needed but it's good thing to always make sure destroy is awlays called

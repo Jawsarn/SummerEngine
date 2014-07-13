@@ -12,7 +12,7 @@ public:
 	~ExtensibleGameFactory();
 
 	Entity* Create(GameObjectType p_Type);
-	void Register(FactoryMaker p_Maker, GameObjectType p_Type);
+	void Register(FactoryMaker* p_Maker, GameObjectType p_Type);
 	void Unregister(GameObjectType p_Type);
 
 private:

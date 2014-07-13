@@ -21,12 +21,12 @@ Entity* ExtensibleGameFactory::Create(GameObjectType p_Type)
 	return t_Maker->Create();
 }
 
-void Register(FactoryMaker p_Maker, GameObjectType p_Type)
+void ExtensibleGameFactory::Register(FactoryMaker* p_Maker, GameObjectType p_Type)
 {
-
+	m_Makers[p_Type] = p_Maker;
 }
 
-void Unregister(GameObjectType p_Type)
+void ExtensibleGameFactory::Unregister(GameObjectType p_Type)
 {
-
+	m_Makers.erase(p_Type);
 }
