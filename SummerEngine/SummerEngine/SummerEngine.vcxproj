@@ -78,6 +78,8 @@
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
@@ -94,6 +96,8 @@
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderingSystem.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="TransformComponent.h" />
   </ItemGroup>

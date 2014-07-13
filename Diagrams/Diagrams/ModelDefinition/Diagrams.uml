@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ComponentDesigner" xmlns:dm9="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
   dslVersion="1.0.0.0"
   Id="ef78e4fa-737c-40bc-97e8-8598a26de76c"
   name="Diagrams" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
@@ -268,15 +268,34 @@
         <ownedAttributesInternal>
           <property
             Id="380f5fcf-ec5f-45c3-a734-3716b4aac82e"
-            name="Attribute1"
+            name="vector&lt;Entities*&gt;"
             isLeaf="false"
             isStatic="false"
             isReadOnly="false"
+            isUnique="false"
             isDerived="false"
             isDerivedUnion="false"
             aggregation="None"
             isComposite="false" />
         </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="8c83a690-fea4-43b4-afbb-e1824ef3537f"
+            name="Update"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="11c90493-398e-43ad-85d1-0f3e7abba0bf"
+            name="Start"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
       </class>
     </packageHasNamedElement>
     <packageHasNamedElement>
@@ -337,6 +356,16 @@
             </relationshipOwnedElementsInternal>
           </association>
         </targetEnds>
+        <ownedOperationsInternal>
+          <operation
+            Id="e7f8c81b-3283-4944-8ef3-5b36680cdccf"
+            name="Operation1"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
       </class>
     </packageHasNamedElement>
     <packageHasNamedElement>
@@ -345,7 +374,83 @@
         name="Renderer"
         isAbstract="false"
         isLeaf="false"
-        isActiveClass="false" />
+        isActiveClass="false">
+        <targetEnds>
+          <association
+            Id="dfccea84-1b88-4346-8b5e-deb0a7d548cb"
+            isDerived="false"
+            sourceEndRoleName="Renderer"
+            targetEndRoleName="Mesh"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="6c4d3637-4906-4559-b786-f2f8ca3819fb"
+              LastKnownName="Mesh"
+              LastKnownLocation="Diagrams.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="c2bc2500-3c54-4ad5-89ec-db96856a6250"
+                  name="Renderer"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="cf093a21-37e7-4f82-bf7a-3fb857ac5efc"
+                  name="Mesh"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <ownedOperationsInternal>
+          <operation
+            Id="f458f35a-342f-4292-99ca-734e0913b2fb"
+            name="BeginRender"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="63d01f5b-5a7b-47d4-8751-ddb8e4e5f64a"
+            name="EndRender"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="5699566c-f302-47a3-85bb-ad56896a0228"
+            name="RenderOpaque"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="272a6510-552a-455d-8c0b-edfb6bbf92fc"
+            name="RenderTransparent"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
     </packageHasNamedElement>
     <packageHasNamedElement>
       <class
@@ -402,6 +507,45 @@
               </associationHasOwnedEnds>
             </relationshipOwnedElementsInternal>
           </association>
+          <association
+            Id="dbf0d59b-75d8-40f6-8890-9334764ccddd"
+            isDerived="false"
+            sourceEndRoleName="ResourceManager"
+            targetEndRoleName="Texture"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="4042016f-e22f-42a1-8926-9f802b1c12a3"
+              LastKnownName="Texture"
+              LastKnownLocation="Diagrams.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="b578515e-c7a2-4eaf-9ef3-b4832242aba0"
+                  name="ResourceManager"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="ae2b6b69-bcc4-4051-84d9-008818270a30"
+                  name="Texture"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
         </targetEnds>
         <ownedAttributesInternal>
           <property
@@ -428,6 +572,14 @@
             isComposite="false" />
         </ownedAttributesInternal>
       </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="4042016f-e22f-42a1-8926-9f802b1c12a3"
+        name="Texture"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
     </packageHasNamedElement>
   </packagedElements>
   <primitiveType
