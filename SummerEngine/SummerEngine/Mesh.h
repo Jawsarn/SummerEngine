@@ -4,5 +4,6 @@ class Mesh
 public:
 	Mesh();
 	~Mesh();
+
 };
 
