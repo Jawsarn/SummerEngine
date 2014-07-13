@@ -8,6 +8,9 @@ public:
 	Entity();
 	~Entity();
 	void AddComponent(Component *p_Component);
+	void SetParent(Entity *p_parent);
+
+	std::list<Entity> GetChildren();
 
 protected:
 	int m_EntityID;
