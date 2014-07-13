@@ -348,7 +348,17 @@ HRESULT Renderer::InitializeBlendAndStates()
 	return hr;
 }
 
-HRESULT Renderer::InitializeShaders() //not yet fixed
+//not yet fixed
+HRESULT Renderer::InitializeShaders() 
+{
+	HRESULT hr = S_OK;
+
+
+	return hr;
+}
+
+//not yet fixed
+HRESULT Renderer::InitializeConstantBuffers()
 {
 	HRESULT hr = S_OK;
 

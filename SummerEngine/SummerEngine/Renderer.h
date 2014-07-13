@@ -22,7 +22,8 @@ private:
 	HRESULT InitializeRasterizers();
 	HRESULT InitializeDeptpAndStates();
 	HRESULT InitializeBlendAndStates();
-	HRESULT Renderer::InitializeShaders();
+	HRESULT InitializeShaders();
+	HRESULT InitializeConstantBuffers();
 
 	//initialize and handles
 	ID3D11Device*			m_Device;
