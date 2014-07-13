@@ -71,6 +71,8 @@
     <ClCompile Include="FactoryMaker.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -84,6 +86,8 @@
     <ClInclude Include="ExtensibleGameFactory.h" />
     <ClInclude Include="FactoryMaker.h" />
     <ClInclude Include="Math.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
