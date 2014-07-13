@@ -74,6 +74,41 @@
             </relationshipOwnedElementsInternal>
           </association>
         </targetEnds>
+        <ownedAttributesInternal>
+          <property
+            Id="ca394850-9366-4485-874d-b357be536207"
+            name="Entity* Parent"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="042668d0-d536-48f1-8bf8-111453f4f4a1"
+            name="vector&lt;Entity*&gt; children"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="3e9b5848-52ae-4fe9-b620-d5e1e3c002d3"
+            name="vector&lt;Component&gt; components"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
       </class>
     </packageHasNamedElement>
     <packageHasNamedElement>
@@ -101,6 +136,297 @@
               LastKnownLocation="Diagrams.uml" />
           </generalization>
         </generalsInternal>
+        <targetEnds>
+          <association
+            Id="0011f51d-ca4b-4bd9-aff7-b145ee3907af"
+            isDerived="false"
+            sourceEndRoleName="RenderComponent"
+            targetEndRoleName="Mesh"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="6c4d3637-4906-4559-b786-f2f8ca3819fb"
+              LastKnownName="Mesh"
+              LastKnownLocation="Diagrams.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="45a01a4e-6c28-4ed8-8cdf-b87bb49e71fd"
+                  name="RenderComponent"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="66cc4e8d-10ca-4c3c-8da1-7917c6e1bf4b"
+                  name="Mesh"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="83ba3a70-7a9e-4116-884f-3f0be1962aaa"
+        name="TransformComponent"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="53278f00-b369-4616-a3cb-3a9c674aa9a1"
+            isSubstitutable="false">
+            <classMoniker
+              Id="1c83a1ef-2a98-46b9-a30d-68621e958a90"
+              LastKnownName="Component"
+              LastKnownLocation="Diagrams.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="1a314fab-f912-4cd8-adc9-0c5e4ee42421"
+        name="CollisionComponent"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="f99ecc34-8e27-44bb-be80-56ccdf07b462"
+            isSubstitutable="false">
+            <classMoniker
+              Id="1c83a1ef-2a98-46b9-a30d-68621e958a90"
+              LastKnownName="Component"
+              LastKnownLocation="Diagrams.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="abfc8e0b-2dd0-46e6-b5d1-a0f0db473ab7"
+        name="System"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <targetEnds>
+          <association
+            Id="a5f3308b-db13-4ada-9ce4-77d903dc1c1a"
+            isDerived="false"
+            sourceEndRoleName="System"
+            targetEndRoleName="Entity"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="1f8b668d-1acb-4837-8243-83d4fa6ddf1e"
+              LastKnownName="Entity"
+              LastKnownLocation="Diagrams.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="a85437b5-1bbd-4537-b121-91ecf09732e9"
+                  name="System"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="4ad8acf6-f4eb-4e76-9f41-14a6e80414c4"
+                  name="Entity"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property
+            Id="380f5fcf-ec5f-45c3-a734-3716b4aac82e"
+            name="Attribute1"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="3e9a8436-8e23-49b8-89ad-0cf974ce4167"
+        name="RenderingSystem"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="75456a36-1b54-4374-b475-4cb33a7b66cc"
+            isSubstitutable="false">
+            <classMoniker
+              Id="abfc8e0b-2dd0-46e6-b5d1-a0f0db473ab7"
+              LastKnownName="System"
+              LastKnownLocation="Diagrams.uml" />
+          </generalization>
+        </generalsInternal>
+        <targetEnds>
+          <association
+            Id="ee4d7251-a30d-425b-9c81-bfe412c0a429"
+            isDerived="false"
+            sourceEndRoleName="RenderingSystem"
+            targetEndRoleName="Renderer"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="7c627352-38bf-465c-ba85-02cf81402685"
+              LastKnownName="Renderer"
+              LastKnownLocation="Diagrams.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="00e6dbf0-0522-4b16-8bc7-88d9f40201ec"
+                  name="RenderingSystem"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="3bb9e92f-b3a9-4302-bc5f-eeff1b3653c3"
+                  name="Renderer"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="7c627352-38bf-465c-ba85-02cf81402685"
+        name="Renderer"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="6c4d3637-4906-4559-b786-f2f8ca3819fb"
+        name="Mesh"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="6004fcfd-1cf9-4adb-b533-92e575490265"
+        name="ResourceManager"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <targetEnds>
+          <association
+            Id="3af2a978-bbdc-4056-911d-e458df2074ce"
+            isDerived="false"
+            sourceEndRoleName="ResourceManager"
+            targetEndRoleName="Mesh"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="6c4d3637-4906-4559-b786-f2f8ca3819fb"
+              LastKnownName="Mesh"
+              LastKnownLocation="Diagrams.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="6f145c06-0839-4bc4-b725-812ad6d3d1a2"
+                  name="ResourceManager"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="193f8c16-ff07-4a1b-a9ce-87f90baf2012"
+                  name="Mesh"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property
+            Id="6539dc8e-0304-4010-ad6f-ccb45b1a1a2e"
+            name="Textures"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="13553e82-93ad-4d25-9a38-2a5934f89078"
+            name="MeshBuffers"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
       </class>
     </packageHasNamedElement>
   </packagedElements>
