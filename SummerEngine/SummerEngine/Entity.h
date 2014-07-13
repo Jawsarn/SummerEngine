@@ -10,6 +10,7 @@ public:
 	void AddComponent(Component *p_Component);
 	void SetParent(Entity *p_parent);
 
+	Entity* GetParent();
 	std::list<Entity> GetChildren();
 
 protected:

@@ -25,3 +25,8 @@ std::list<Entity> Entity::GetChildren()
 {
 	return m_Children;
 }
+
+Entity* Entity::GetParent()
+{
+	return m_Parent;
+}
