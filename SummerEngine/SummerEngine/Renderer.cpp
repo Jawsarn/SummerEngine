@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include <DirectXColors.h>
 
 Renderer* Renderer::m_Singleton = nullptr;
 
@@ -56,6 +57,19 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 	hr = InitializeShaders();
 	if (FAILED(hr))
 		return false;
+
+	hr = InitializeConstantBuffers();
+	if (FAILED(hr))
+		return false;
+
+	hr = InitializeGBuffers();
+	if (FAILED(hr))
+		return false;
+
+	hr = InitializeSamplerState();
+	if (FAILED(hr))
+		return false;
+
 
 
 	return true;
@@ -364,4 +378,110 @@ HRESULT Renderer::InitializeConstantBuffers()
 
 
 	return hr;
+}
+
+
+HRESULT Renderer::InitializeGBuffers()
+{
+	HRESULT hr = S_OK;
+
+	D3D11_TEXTURE2D_DESC desc;
+	desc.Width = *m_Width;
+	desc.Height = *m_Height;
+	desc.MipLevels = 1;
+	desc.ArraySize = 1;
+	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; //changed from format DXGI_FORMAT_R16G16B16A16_UNORM
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	desc.CPUAccessFlags = 0;
+	desc.MiscFlags = 0;
+
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC t_SrvDesc;
+	t_SrvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	t_SrvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	t_SrvDesc.Texture2D.MostDetailedMip = 0;
+	t_SrvDesc.Texture2D.MipLevels = 1;
+
+
+	for (int i = 0; i < 3; i++)
+	{
+		ID3D11Texture2D* t_Texture = 0;
+		if (i == 2)
+		{
+			desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
+			desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			t_SrvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		}
+
+		hr = m_Device->CreateTexture2D(&desc, 0, &t_Texture);
+		if (FAILED(hr))
+			return hr;
+
+		hr = m_Device->CreateShaderResourceView(t_Texture, &t_SrvDesc, &m_GbufferShaderResource[i]);
+		if (FAILED(hr))
+			return hr;
+
+		hr = m_Device->CreateRenderTargetView(t_Texture, nullptr, &m_GbufferTargetViews[i]);
+		if (FAILED(hr))
+			return hr;
+
+
+		t_Texture->Release();
+
+	}
+
+
+	return hr;
+}
+
+HRESULT Renderer::InitializeSamplerState()
+{
+	HRESULT hr = S_OK;
+	D3D11_SAMPLER_DESC sampDesc;
+	ZeroMemory(&sampDesc, sizeof(sampDesc));
+	sampDesc.Filter = D3D11_FILTER_ANISOTROPIC; // D3D11_FILTER_ANISOTROPIC  D3D11_FILTER_MIN_MAG_MIP_LINEAR
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+
+	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+
+	sampDesc.MinLOD = 0;
+	sampDesc.MaxLOD = D3D11_FLOAT32_MAX; //D3D11_FLOAT32_MAX
+	sampDesc.MaxAnisotropy = 16; //why not max it out when we can?
+	hr = m_Device->CreateSamplerState(&sampDesc, &m_SamplerStateWrap);
+	if (FAILED(hr))
+		return hr;
+
+	m_DeviceContext->VSSetSamplers(0, 1, &m_SamplerStateWrap);
+	m_DeviceContext->HSSetSamplers(0, 1, &m_SamplerStateWrap);
+	m_DeviceContext->DSSetSamplers(0, 1, &m_SamplerStateWrap);
+	m_DeviceContext->GSSetSamplers(0, 1, &m_SamplerStateWrap);
+	m_DeviceContext->PSSetSamplers(0, 1, &m_SamplerStateWrap);
+
+	//for compute shader
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	hr = m_Device->CreateSamplerState(&sampDesc, &m_SamplerStateLinearClamp);
+
+	m_DeviceContext->CSSetSamplers(0, 1, &m_SamplerStateLinearClamp);
+
+
+	return hr;
+}
+
+void Renderer::RenderFrame()
+{
+	//clear the render target
+	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, Colors::Black);
+	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+	
+
+	m_SwapChain->Present(0, 0);
 }

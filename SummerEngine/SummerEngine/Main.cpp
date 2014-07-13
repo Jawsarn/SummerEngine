@@ -107,17 +107,20 @@ void RunGame()
 {
 	// Testcode starts here
 
-	Entity* test = new Entity();
-	test->AddComponent(new RenderComponent());
+	//Entity* test = new Entity();
+	//test->AddComponent(new RenderComponent());
+	//ExtensibleGameFactory factory = ExtensibleGameFactory();
+	//factory.Register(new FactoryMaker(test), 10);
+	//Entity* newObject = factory.Create(10);
 
-	ExtensibleGameFactory factory = ExtensibleGameFactory();
-	factory.Register(new FactoryMaker(test), 10);
-
-	Entity* newObject = factory.Create(10);
 
 	Renderer* rend = rend->GetInstance();
-
-	rend->Initialize(1000,1000,m_HandleWindow);
+	
+	bool t_InitIsOK = rend->Initialize(1920,1080,m_HandleWindow);
+	if (!t_InitIsOK)
+	{
+		PostQuitMessage(0);
+	}
 
 	MSG msg = { 0 };
 	while (WM_QUIT != msg.message)
@@ -130,7 +133,7 @@ void RunGame()
 		}
 		else  //no more windows messages, continue game
 		{
-
+			rend->RenderFrame();
 		}
 	}
 	//testcode ends here

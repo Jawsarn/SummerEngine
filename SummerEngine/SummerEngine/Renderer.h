@@ -11,6 +11,8 @@ class Renderer
 public:
 	static Renderer* GetInstance();
 	bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow);
+	void RenderFrame();
+
 
 private:
 	Renderer();
@@ -24,6 +26,10 @@ private:
 	HRESULT InitializeBlendAndStates();
 	HRESULT InitializeShaders();
 	HRESULT InitializeConstantBuffers();
+	HRESULT InitializeGBuffers();
+	HRESULT InitializeSamplerState();
+	
+
 
 	//initialize and handles
 	ID3D11Device*			m_Device;
@@ -48,7 +54,7 @@ private:
 	ID3D11DepthStencilState*	m_DepthStateNoWrite;
 	ID3D11DepthStencilState*	m_LessEqualDepthState;
 	ID3D11SamplerState*			m_SamplerStateWrap;
-	ID3D11SamplerState*			m_SamplerStateLinearWrap;
+	ID3D11SamplerState*			m_SamplerStateLinearClamp;
 
 	ID3D11UnorderedAccessView*	m_BackBufferUAV;
 
