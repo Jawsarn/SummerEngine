@@ -5,7 +5,7 @@ class TransformComponent:public Component
 {
 public:
 	TransformComponent();
-	TransformComponent(std::string p_name);
+	TransformComponent(std::string p_Name);
 	~TransformComponent();
 	
 	void SetTranslation(XMFLOAT3 p_translation);

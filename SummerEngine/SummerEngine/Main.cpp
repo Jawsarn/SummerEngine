@@ -98,7 +98,7 @@ HRESULT InitializeWindow(_In_ HINSTANCE p_HInstance, _In_ int p_NCmdShow)
 
 	return S_OK;
 }
-
+#include "TransformComponent.h"
 void RunGameEngine()
 {
 	m_GameEngine = m_GameEngine->GetInstance();
@@ -109,7 +109,6 @@ void RunGameEngine()
 		//do something like error message
 		PostQuitMessage(0);
 	}
-	
 
 	MSG msg = { 0 };
 	while (WM_QUIT != msg.message)

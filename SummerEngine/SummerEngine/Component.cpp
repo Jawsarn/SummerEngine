@@ -3,6 +3,14 @@
 
 Component::Component()
 {
+	m_Name = "Component";
+	m_IsEnabled = true;		//always true, user can turn off if need
+	this->Awake();			//to make sure Awake is always called
+}
+
+Component::Component(std::string p_Name)
+{
+	m_Name = p_Name;
 	m_IsEnabled = true;		//always true, user can turn off if need
 	this->Awake();			//to make sure Awake is always called
 }
@@ -10,6 +18,11 @@ Component::Component()
 Component::~Component()
 {
 	this->Destroy();		//not sure if needed but it's good thing to always make sure destroy is awlays called
+}
+
+bool Component::IsEnabled()
+{
+	return m_IsEnabled;
 }
 
 void Component::Awake()

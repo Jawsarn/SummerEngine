@@ -7,8 +7,10 @@ class Component
 {
 public:
 	Component();
-	Component(std::string name);
+	Component(std::string p_Name);
 	~Component();
+
+	virtual bool IsEnabled();
 
 	virtual void Awake();
 	virtual void Start();
@@ -19,6 +21,6 @@ public:
 protected:
 	bool m_IsEnabled;
 	Entity* m_Entity;
-	std::string name;
+	std::string m_Name;
 };
 

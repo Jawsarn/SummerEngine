@@ -11,6 +11,21 @@ RenderComponent::~RenderComponent()
 	
 }
 
+Mesh* RenderComponent::GetMesh()
+{
+	return m_Mesh;
+}
+
+bool RenderComponent::IsCastingShadows()
+{
+	return m_CastShadows;
+}
+
+bool RenderComponent::IsReceivingShadows()
+{
+	return m_ReceiveShadows;
+}
+
 void RenderComponent::Start()
 {
 	m_RenderingSystem = m_RenderingSystem->GetInstance();

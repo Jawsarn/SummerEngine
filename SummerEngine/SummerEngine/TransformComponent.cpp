@@ -5,9 +5,9 @@ TransformComponent::TransformComponent()
 {
 }
 
-TransformComponent::TransformComponent(std::string p_name)
+TransformComponent::TransformComponent(std::string p_Name) : Component(p_Name)
 {
-	name = p_name;
+	
 }
 
 TransformComponent::~TransformComponent()
