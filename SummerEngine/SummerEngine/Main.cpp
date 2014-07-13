@@ -101,6 +101,8 @@ HRESULT InitializeWindow(_In_ HINSTANCE p_HInstance, _In_ int p_NCmdShow)
 #include "Entity.h"
 #include "ExtensibleGameFactory.h"
 #include "RenderComponent.h"
+#include "Renderer.h"
+
 void RunGame()
 {
 	// Testcode starts here
@@ -112,6 +114,10 @@ void RunGame()
 	factory.Register(new FactoryMaker(test), 10);
 
 	Entity* newObject = factory.Create(10);
+
+	Renderer* rend = rend->GetInstance();
+
+	rend->Initialize(1000,1000,m_HandleWindow);
 
 	MSG msg = { 0 };
 	while (WM_QUIT != msg.message)
