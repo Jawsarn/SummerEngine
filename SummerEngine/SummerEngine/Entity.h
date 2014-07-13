@@ -10,6 +10,10 @@ public:
 	Entity(const Entity &p_Copy, Entity* parent);
 	~Entity();
 	void AddComponent(Component *p_Component);
+	void SetParent(Entity *p_parent);
+
+	Entity* GetParent();
+	std::list<Entity> GetChildren();
 
 protected:
 	int m_EntityID;

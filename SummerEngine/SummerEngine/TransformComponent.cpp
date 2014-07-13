@@ -14,7 +14,7 @@ TransformComponent::~TransformComponent()
 {
 }
 
-/*
+
 void TransformComponent::SetTranslation(XMFLOAT3 translation)
 {
 	this->translation = translation;
@@ -29,4 +29,3 @@ void TransformComponent::SetScale(XMFLOAT3 scale)
 {
 	this->scale = scale;
 }
-*/
