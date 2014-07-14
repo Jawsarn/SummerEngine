@@ -19,8 +19,8 @@ public:
 	virtual void Update();
 	virtual void Destroy();
 
-	virtual bool Read();
-	virtual bool Write();
+	virtual bool Read(Stream &p_Stream);
+	virtual bool Write(Stream &p_Stream);
 
 protected:
 	bool m_IsEnabled;

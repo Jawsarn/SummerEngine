@@ -17,6 +17,10 @@ public:
 	void AddTranslation(XMFLOAT3 p_translation);
 
 	void Update();
+
+	virtual bool Read(Stream &p_Stream);
+	virtual bool Write(Stream &p_Stream);
+
 private:
 
 	XMFLOAT3 rotation;

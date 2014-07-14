@@ -36,3 +36,12 @@ void RenderComponent::Sleep()
 {
 	m_RenderingSystem->Unregister(m_Entity);
 }
+
+bool RenderComponent::Read(Stream &p_Stream)
+{
+	return true;
+}
+bool RenderComponent::Write(Stream &p_Stream)
+{
+	return true;
+}

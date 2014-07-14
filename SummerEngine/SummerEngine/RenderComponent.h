@@ -16,6 +16,10 @@ public:
 	bool IsCastingShadows();
 	bool IsReceivingShadows();
 
+
+	virtual bool Read(Stream &p_Stream);
+	virtual bool Write(Stream &p_Stream);
+
 private:
 	RenderingSystem* m_RenderingSystem;
 

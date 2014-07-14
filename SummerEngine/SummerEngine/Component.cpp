@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Component.h"
 #include "Entity.h"
 
@@ -50,12 +52,12 @@ void Component::Destroy()
 
 }
 
-bool Component::Read()
+bool Component::Read(Stream &p_Stream)
 {
 	return true;
 }
 
-bool Component::Write()
+bool Component::Write(Stream &p_Stream)
 {
 	return true;
 }

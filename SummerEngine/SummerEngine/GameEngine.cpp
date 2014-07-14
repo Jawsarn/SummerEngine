@@ -29,7 +29,7 @@ GameEngine::GameEngine()
 GameEngine::~GameEngine()
 {
 }
-
+#include "RenderComponent.h"
 bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 {
 	Renderer* t_RendererStartup = t_RendererStartup->GetInstance();
@@ -37,6 +37,8 @@ bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 
 	m_RenderingSystem = m_RenderingSystem->GetInstance();
 	m_RenderingSystem->Start();
+
+
 
 	return true;
 }

@@ -48,10 +48,11 @@ Entity::Entity(const Entity &p_Copy, Entity* p_Parent)
 	}
 }
 
-void CopyConstruct()
+int Entity::GetID()
 {
-
+	return m_EntityID;
 }
+
 
 Entity::~Entity()
 {
@@ -67,6 +68,11 @@ void Entity::SetParent(Entity *p_Parent)
 	m_Parent = p_Parent;
 }
 
+void Entity::AddChild(Entity* p_Child)
+{
+	m_Children.push_back(p_Child);
+}
+
 std::vector<Entity*> Entity::GetChildren()
 {
 	return m_Children;
@@ -77,14 +83,17 @@ Entity* Entity::GetParent()
 	return m_Parent;
 }
 
-bool Entity::Read()
+bool Entity::Read(Stream &p_Stream)
 {
 	return true;
 }
 
-
-bool Entity::Write()
+bool Entity::Write(Stream &p_Stream)
 {
+	WriteString(p_Stream, m_Name);
+	WriteInt(p_Stream, m_EntityID);
+	WriteInt(p_Stream, m_Parent->GetID());
+
 	return true;
 }
 

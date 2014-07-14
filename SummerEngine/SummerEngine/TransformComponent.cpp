@@ -57,4 +57,11 @@ void TransformComponent::SetScale(XMFLOAT3 p_scale)
 	this->scale = scale;
 }
 
-
+bool TransformComponent::Read(Stream &p_Stream)
+{
+	return true;
+}
+bool TransformComponent::Write(Stream &p_Stream)
+{
+	return true;
+}
