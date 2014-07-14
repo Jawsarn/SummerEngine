@@ -100,7 +100,7 @@
       <Filter>Source Files\InOut</Filter>
     </ClCompile>
     <ClCompile Include="Stream.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\InOut</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

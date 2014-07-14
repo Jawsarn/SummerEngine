@@ -93,6 +93,36 @@ bool Entity::Write(Stream &p_Stream)
 	WriteString(p_Stream, m_Name);
 	WriteInt(p_Stream, m_EntityID);
 	WriteInt(p_Stream, m_Parent->GetID());
+	int t_NumOfChildren = m_Children.size();
+	WriteInt(p_Stream, t_NumOfChildren);
+
+	for (int i = 0; i < t_NumOfChildren; i++)
+	{
+		Entity* t_NewChild = new Entity();
+
+		bool t_Success = t_NewChild->Read(p_Stream);
+
+		if (!t_Success)
+		{
+			return t_Success;
+		}
+		m_Children.push_back(t_NewChild);
+	}
+
+	int t_NumOfComponents = m_Components.size();
+	WriteInt(p_Stream, t_NumOfComponents);
+
+	for (int i = 0; i < t_NumOfComponents; i++)
+	{
+		Component* t_NewComponent = new Component(); //place factory here
+		bool t_Success = t_NewComponent->Read(p_Stream);
+
+		if (!t_Success)
+		{
+			return t_Success;
+		}
+		m_Components.push_back(t_NewComponent);
+	}
 
 	return true;
 }
