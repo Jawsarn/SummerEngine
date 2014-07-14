@@ -1,8 +1,9 @@
 #pragma once
+#include "Serializable.h"
 #include "Component.h"
 #include <vector>
 
-class Entity
+class Entity:Serializable
 {
 public:
 	Entity();
@@ -14,6 +15,9 @@ public:
 
 	Entity* GetParent();
 	std::vector<Entity*> GetChildren();
+
+	virtual bool Read();
+	virtual bool Write();
 
 protected:
 	int m_EntityID;

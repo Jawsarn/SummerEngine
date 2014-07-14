@@ -90,9 +90,6 @@
     <ClCompile Include="StreamFile.cpp">
       <Filter>Source Files\InOut</Filter>
     </ClCompile>
-    <ClCompile Include="Stream.cpp">
-      <Filter>Source Files\InOut</Filter>
-    </ClCompile>
     <ClCompile Include="Serializable.cpp">
       <Filter>Source Files\InOut</Filter>
     </ClCompile>

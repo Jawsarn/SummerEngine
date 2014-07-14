@@ -76,3 +76,16 @@ Entity* Entity::GetParent()
 {
 	return m_Parent;
 }
+
+bool Entity::Read()
+{
+	return true;
+}
+
+
+bool Entity::Write()
+{
+	return true;
+}
+
+

@@ -4,21 +4,52 @@
 class Stream
 {
 public:
-	Stream();
-	~Stream();
+	virtual ~Stream() {};
 	virtual int Read() = 0;
 	virtual int Write() = 0;
 
 	virtual bool SetCurPos() = 0;
 	virtual int GetCurPos() = 0;
 
-protected:
-	int ReadInt();
-	float ReadFloat();
-	std::string ReadString();
-
-	bool WriteInt();
-	bool WriteFloat();
-	bool WriteString();
+	
 };
 
+int ReadInt()
+{
+	return 0;
+}
+
+float ReadFloat()
+{
+	return 0.0f;
+}
+
+bool ReadBool()
+{
+	return true;
+}
+
+std::string ReadString()
+{
+	return "";
+}
+
+bool WriteInt()
+{
+	return true;
+}
+
+bool WriteFloat()
+{
+	return true;
+}
+
+bool WriteBool()
+{
+	return true;
+}
+
+bool WriteString()
+{
+	return true;
+}

@@ -1,9 +1,10 @@
 #pragma once
 #include <string>
+#include "Serializable.h"
 
 class Entity;
 
-class Component
+class Component:Serializable
 {
 public:
 	Component();
@@ -17,6 +18,9 @@ public:
 	virtual void Sleep();
 	virtual void Update();
 	virtual void Destroy();
+
+	virtual bool Read();
+	virtual bool Write();
 
 protected:
 	bool m_IsEnabled;

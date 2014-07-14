@@ -49,3 +49,13 @@ void Component::Destroy()
 {
 
 }
+
+bool Component::Read()
+{
+	return true;
+}
+
+bool Component::Write()
+{
+	return true;
+}
