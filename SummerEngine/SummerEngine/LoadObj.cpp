@@ -166,6 +166,11 @@ std::vector<XMFLOAT2> LoadObj::GetTexCoords(int p_GroupIndex)
 	return m_TexCoord[p_GroupIndex];
 }
 
+ObjGroups* LoadObj::GetGroup(int p_index)
+{
+	return &m_groups[p_index];
+}
+
 int LoadObj::GetGroupCount()
 {
 	return m_groups.size();

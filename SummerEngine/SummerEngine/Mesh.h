@@ -8,11 +8,12 @@ public:
 	Mesh();
 	~Mesh();
 
-
-private:
-	LoadObj* mesh;
 	void Release();
 	HRESULT CreateMesh(ID3D11Device* p_device, char* p_fileName);
+
+private:
+	LoadObj* m_Mesh;
+	
 
 	struct MeshVertex
 	{

@@ -28,6 +28,7 @@ public:
 	std::vector<XMFLOAT3 >GetPositions(int p_GroupIndex);
 	std::vector<XMFLOAT3 >GetNormals(int p_GroupIndex);
 	std::vector<XMFLOAT2 >GetTexCoords(int p_GroupIndex);
+	ObjGroups* GetGroup(int index);
 	int GetGroupCount();
 
 private:
