@@ -9,10 +9,7 @@ struct ObjGroups
 {
 	struct Triangle
 	{
-		//int vertex[3][3];
-		XMFLOAT3 position;
-		XMFLOAT3 normal;
-		XMFLOAT2 texCoord;
+		int index[3][3];
 	};
 	std::string name;
 	std::string material;
@@ -26,21 +23,24 @@ public:
 	~LoadObj();
 
 	std::vector<ObjGroups> m_groups;
+
 	bool Load(char* p_fileName);
-	XMFLOAT3& GetPosition(int p_index);
-	XMFLOAT3& GetNormal(int p_index);
-	XMFLOAT3& GetTexCoord(int p_index);
+	std::vector<XMFLOAT3 >GetPositions(int p_GroupIndex);
+	std::vector<XMFLOAT3 >GetNormals(int p_GroupIndex);
+	std::vector<XMFLOAT2 >GetTexCoords(int p_GroupIndex);
+	int GetGroupCount();
 
 private:
 	int m_CurrentGroup;
-	std::vector<XMFLOAT3> m_Position;
-	std::vector<XMFLOAT3> m_Normal;
-	std::vector<XMFLOAT3> m_TexCoord;
+	std::vector<std::vector<XMFLOAT3>>  m_Position;
+	std::vector<std::vector<XMFLOAT3>>  m_Normal;
+	std::vector<std::vector<XMFLOAT2>>  m_TexCoord;
 
 	void LoadGroup(std::stringstream& f);
 	void LoadFace(std::stringstream& f);
 	void LoadPosition(std::stringstream& f);
 	void LoadNormal(std::stringstream& f);
 	void LoadTexCoord(std::stringstream& f);
+	void LoadMaterial(std::stringstream& g);
 };
 
