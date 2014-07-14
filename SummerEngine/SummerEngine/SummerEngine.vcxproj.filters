@@ -37,6 +37,12 @@
     <Filter Include="Header Files\Graphic">
       <UniqueIdentifier>{c97674a1-2bde-4daa-9996-cea3582d4af2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\InOut">
+      <UniqueIdentifier>{e664edfb-78b5-4ceb-868e-f723bd46afa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\InOut">
+      <UniqueIdentifier>{4aa28428-8f5d-48af-b681-51a464db938a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -49,9 +55,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LoadObj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
@@ -84,11 +87,23 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Graphic</Filter>
     </ClCompile>
+    <ClCompile Include="StreamFile.cpp">
+      <Filter>Source Files\InOut</Filter>
+    </ClCompile>
+    <ClCompile Include="Stream.cpp">
+      <Filter>Source Files\InOut</Filter>
+    </ClCompile>
+    <ClCompile Include="Serializable.cpp">
+      <Filter>Source Files\InOut</Filter>
+    </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\InOut</Filter>
     </ClCompile>
     <ClCompile Include="Resource.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\InOut</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadObj.cpp">
+      <Filter>Source Files\InOut</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,9 +114,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadObj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
@@ -134,11 +146,23 @@
     <ClInclude Include="Mesh.h">
       <Filter>Header Files\Graphic</Filter>
     </ClInclude>
+    <ClInclude Include="Serializable.h">
+      <Filter>Header Files\InOut</Filter>
+    </ClInclude>
     <ClInclude Include="ResourceManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\InOut</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\InOut</Filter>
+    </ClInclude>
+    <ClInclude Include="StreamFile.h">
+      <Filter>Header Files\InOut</Filter>
+    </ClInclude>
+    <ClInclude Include="Stream.h">
+      <Filter>Header Files\InOut</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadObj.h">
+      <Filter>Header Files\InOut</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

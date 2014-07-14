@@ -80,6 +80,9 @@
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Serializable.cpp" />
+    <ClCompile Include="Stream.cpp" />
+    <ClCompile Include="StreamFile.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
@@ -98,6 +101,9 @@
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Serializable.h" />
+    <ClInclude Include="Stream.h" />
+    <ClInclude Include="StreamFile.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="TransformComponent.h" />
   </ItemGroup>

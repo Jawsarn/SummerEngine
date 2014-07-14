@@ -7,8 +7,8 @@ public:
 	Resource();
 	~Resource();
 
-	virtual bool Load();
-	virtual void Save();
+	virtual bool Load() = 0;
+	virtual void Save() = 0;
 private:
 	std::string m_ResourceName;
 	
