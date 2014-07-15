@@ -48,10 +48,18 @@ HRESULT Mesh::CreateMesh(ID3D11Device* p_device, char* p_fileName)
 				//index from triangle
 				//data from pos, norm, texCoord
 
-				//t_V.position = m_Mesh->GetPositions(i)[triangle[j]];
-				//t_V.normal = m_Mesh->GetNormals(i)[0];
-				//t_V.texCoord = m_Mesh->GetTexCoords(i)[0];
-				int d = 0;
+				//Get Positions
+				//int t_position = triangle->index[j][0];//pos 3, pos 2, pos1
+				t_V.position = m_Mesh->GetPositions(i)[triangle->index[j][0]];
+
+				//Get Normals
+				t_V.normal = m_Mesh->GetNormals(i)[triangle->index[j][1]];
+
+				//Get Texture Coordinates
+				t_V.texCoord = m_Mesh->GetTexCoords(i)[triangle->index[j][2]];
+
+
+				int test = 0;
 
 
 				//Tangent code here....
