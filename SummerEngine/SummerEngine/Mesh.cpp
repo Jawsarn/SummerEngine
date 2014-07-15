@@ -106,8 +106,8 @@ HRESULT Mesh::CreateMesh(ID3D11Device* p_device, char* p_fileName)
 	return S_OK;
 }
 
-HRESULT Mesh::Render(ID3D11DeviceContext* p_DeviceContext)
-{
+//HRESULT Mesh::Render(ID3D11DeviceContext* p_DeviceContext)
+//{
 	/*FAST TEST IF IT WORKS!
 	UINT32 offset = 0;
 	UINT32 vertexSize = sizeof(MeshVertex);
@@ -130,7 +130,7 @@ HRESULT Mesh::Render(ID3D11DeviceContext* p_DeviceContext)
 		}
 	}
 	*/
-	return S_OK;
-}
+	//return S_OK;
+//}
 
 

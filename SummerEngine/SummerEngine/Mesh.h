@@ -10,7 +10,7 @@ public:
 
 	void Release();
 	HRESULT CreateMesh(ID3D11Device* p_device, char* p_fileName);
-	HRESULT Render(ID3D11DeviceContext* p_DeviceContext);//test
+	//HRESULT Render(ID3D11DeviceContext* p_DeviceContext);//test
 
 private:
 	LoadObj* m_Mesh;
