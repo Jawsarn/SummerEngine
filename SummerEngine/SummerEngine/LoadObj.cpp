@@ -129,10 +129,11 @@ void LoadObj::LoadMaterial(std::stringstream& g)
 
 void LoadObj::LoadPosition(std::stringstream& f)
 {
-	int test = m_CurrentGroup;
+	//int test = m_CurrentGroup;
 	XMFLOAT3 t_pos;
 	f >> t_pos.x >> t_pos.y >> t_pos.z;
 
+	t_pos.z *= -1.0f;//
 	m_Position[m_CurrentGroup].push_back(t_pos);
 }
 
@@ -141,6 +142,7 @@ void LoadObj::LoadNormal(std::stringstream& f)
 	XMFLOAT3 t_norm;
 	f >> t_norm.x >> t_norm.y >> t_norm.z;
 
+	t_norm.z *= -1.0f;//
 	m_Normal[m_CurrentGroup].push_back(t_norm);
 }
 
@@ -148,6 +150,8 @@ void LoadObj::LoadTexCoord(std::stringstream& f)
 {
 	XMFLOAT2 t_texCoord;
 	f >> t_texCoord.x >> t_texCoord.y;
+
+	t_texCoord.y = 1.0 - t_texCoord.y;
 	m_TexCoord[m_CurrentGroup].push_back(t_texCoord);
 }
 
