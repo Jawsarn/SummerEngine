@@ -15,7 +15,12 @@ Mesh::~Mesh()
 
 void Mesh::Release()
 {
-
+	/*
+	if (m_Mesh){ delete(m_Mesh); m_Mesh = nullptr; }
+	vertexBuffers.clear();
+	shader.Release();
+	gameObject.Release();
+	*/
 }
 
 
@@ -23,11 +28,20 @@ HRESULT Mesh::CreateMesh(ID3D11Device* p_device, char* p_fileName)
 {
 	m_Mesh->Load(p_fileName);
 
+	//gameObject = GameObject(p_device);
+
+	//test--------------------------------------
+	//Shader Class
+	//shader = Shader(p_device);
+	//shader.CreateShadersAndInputLayout3D("../Shaders/DrawMeshVS.hlsl", "VS_main", "../Shaders/DrawMeshPS.hlsl", "PS_main");
+	//------------------------------------------
+
 	//Amount of meshes (groups-objects) in file.
 	for (int i = 0; i < m_Mesh->GetGroupCount(); i++)
 	{
 		ObjGroups* curGroup = nullptr;
-		//buffer!
+		//ID3D11Buffer* buffer = nullptr;
+		//buffer test
 
 		curGroup = m_Mesh->GetGroup(i);
 		//	MeshVertex* vertices = myNew(MeshVertex[curGroup->triangles.size() * 3]);
@@ -37,6 +51,7 @@ HRESULT Mesh::CreateMesh(ID3D11Device* p_device, char* p_fileName)
 		MeshVertex t_V;
 		ObjGroups::Triangle* triangle = nullptr;
 
+		//Need to find a fast way to go through all the triangles.....NOTE
 		int count = 0;
 		for (int x = 0; x < curGroup->triangles.size(); x++)
 		{
@@ -66,10 +81,56 @@ HRESULT Mesh::CreateMesh(ID3D11Device* p_device, char* p_fileName)
 
 				//Tangent code here....
 				count += 1;
+
 			}
 		}
+		//vertex-buffer
+		/*FAST TEST
+		D3D11_BUFFER_DESC bufferDesc;
+		memset(&bufferDesc, 0, sizeof(bufferDesc));
+		bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		bufferDesc.CPUAccessFlags = 0;
+		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		bufferDesc.MiscFlags = 0;
+		bufferDesc.ByteWidth = sizeof(MeshVertex)* (UINT32)curGroup->triangles.size() * 3;
+
+		D3D11_SUBRESOURCE_DATA data;
+		data.pSysMem = &vertices[0];
+		p_device->CreateBuffer(&bufferDesc, &data, &buffer);
+		vertexBuffers.push_back(buffer);
+
+		vertices.clear();
+		*/
 	}
 
 	return S_OK;
 }
+
+HRESULT Mesh::Render(ID3D11DeviceContext* p_DeviceContext)
+{
+	/*FAST TEST IF IT WORKS!
+	UINT32 offset = 0;
+	UINT32 vertexSize = sizeof(MeshVertex);
+	UINT32  groupCount = m_Mesh->GetGroupCount();
+
+	if (vertexBuffers.size() > 0)
+	{
+		shader.Render(p_DeviceContext);
+
+		p_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		for (int i = 0; i < groupCount; i++)
+		{
+			p_DeviceContext->IASetVertexBuffers(0, 1, &vertexBuffers[i], &vertexSize, &offset);
+
+			gameObject.Render(p_DeviceContext, 0);
+
+			//draw three vertices from the bound vertex buffer
+			int amountOfTriangles = m_Mesh->GetGroup(i)->triangles.size();
+			p_DeviceContext->Draw(amountOfTriangles * 3, 0);
+		}
+	}
+	*/
+	return S_OK;
+}
+
 

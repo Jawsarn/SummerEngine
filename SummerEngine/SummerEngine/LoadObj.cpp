@@ -151,7 +151,7 @@ void LoadObj::LoadTexCoord(std::stringstream& f)
 	XMFLOAT2 t_texCoord;
 	f >> t_texCoord.x >> t_texCoord.y;
 
-	t_texCoord.y = 1.0 - t_texCoord.y;
+	t_texCoord.y = 1.0 - t_texCoord.y;//
 	m_TexCoord[m_CurrentGroup].push_back(t_texCoord);
 }
 
