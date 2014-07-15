@@ -30,8 +30,10 @@ HRESULT Mesh::CreateMesh(ID3D11Device* p_device, char* p_fileName)
 		//buffer!
 
 		curGroup = m_Mesh->GetGroup(i);
-		MeshVertex* vertices = nullptr;
-		vertices = new(MeshVertex[curGroup->triangles.size() * 3]);
+		//	MeshVertex* vertices = myNew(MeshVertex[curGroup->triangles.size() * 3]);
+
+		std::vector<MeshVertex> vertices(curGroup->triangles.size() * 3);
+
 		MeshVertex t_V;
 		ObjGroups::Triangle* triangle = nullptr;
 
@@ -52,22 +54,20 @@ HRESULT Mesh::CreateMesh(ID3D11Device* p_device, char* p_fileName)
 				//int t_position = triangle->index[j][0];//pos 3, pos 2, pos1
 				t_V.position = m_Mesh->GetPositions(i)[triangle->index[j][0]];
 
-				//Get Normals
-				t_V.normal = m_Mesh->GetNormals(i)[triangle->index[j][1]];
-
 				//Get Texture Coordinates
-				t_V.texCoord = m_Mesh->GetTexCoords(i)[triangle->index[j][2]];
+				t_V.texCoord = m_Mesh->GetTexCoords(i)[triangle->index[j][1]];
 
+				//Get Normals
+				t_V.normal = m_Mesh->GetNormals(i)[triangle->index[j][2]];
 
-				int test = 0;
+				int d = 0;
 
+				vertices[count] = t_V;
 
 				//Tangent code here....
 				count += 1;
-
 			}
 		}
-
 	}
 
 	return S_OK;
