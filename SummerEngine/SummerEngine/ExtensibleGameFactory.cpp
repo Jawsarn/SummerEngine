@@ -1,5 +1,6 @@
 #include "ExtensibleGameFactory.h"
-
+#include "RenderComponent.h"
+#include "TransformComponent.h"
 
 ExtensibleGameFactory::ExtensibleGameFactory()
 {
@@ -10,23 +11,43 @@ ExtensibleGameFactory::~ExtensibleGameFactory()
 {
 }
 
-Entity* ExtensibleGameFactory::Create(GameObjectType p_Type)
+Entity* ExtensibleGameFactory::CreateEntity(ObjectType p_Type)
 {
-	TypeMap::iterator it = m_Makers.find(p_Type);
-	if (it == m_Makers.end())
+	EntityMap::iterator it = m_EntityMakers.find(p_Type);
+	if (it == m_EntityMakers.end())
 	{
 		return nullptr;
 	}
-	FactoryMaker* t_Maker = (*it).second;
-	return t_Maker->Create();
+
+	return new Entity(*it->second);
 }
 
-void ExtensibleGameFactory::Register(FactoryMaker* p_Maker, GameObjectType p_Type)
+Component* ExtensibleGameFactory::CreateComponent(ComponentType p_Type)
 {
-	m_Makers[p_Type] = p_Maker;
+	switch (p_Type)
+	{
+	case NORMAL:
+		return new Component();
+		break;
+	case RENDERER:
+		return new RenderComponent();
+		break;
+	case TRANSFORM:
+		return new TransformComponent();
+		break;
+	default:
+		break;
+	}
+
+	return nullptr;
 }
 
-void ExtensibleGameFactory::Unregister(GameObjectType p_Type)
+void ExtensibleGameFactory::Register(Entity* p_Entity, ObjectType p_Type)
 {
-	m_Makers.erase(p_Type);
+	m_EntityMakers[p_Type] = p_Entity;
+}
+
+void ExtensibleGameFactory::Unregister(ObjectType p_Type)
+{
+	m_EntityMakers.erase(p_Type);
 }
