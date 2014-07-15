@@ -7,6 +7,7 @@ class RenderComponent:public Component
 {
 public:
 	RenderComponent();
+	RenderComponent(std::string p_Name);
 	~RenderComponent();
 
 	virtual void Start();

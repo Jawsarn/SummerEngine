@@ -1,5 +1,5 @@
 #include "Entity.h"
-
+#include "ExtensibleGameFactory.h"
 
 Entity::Entity()
 {
@@ -10,9 +10,11 @@ Entity::Entity(const Entity &p_Copy)
 {
 	int t_NumOfComponents = p_Copy.m_Components.size();
 
+	ExtensibleGameFactory* t_Factory = t_Factory->GetInstance();
+
 	for (int i = 0; i < t_NumOfComponents; i++)
 	{
-		this->m_Components.push_back(new Component(*p_Copy.m_Components[i]));
+		this->m_Components.push_back( t_Factory->CreateComponent( p_Copy.m_Components[i]->GetName()) );
 	}
 
 	this->m_EntityID = p_Copy.m_EntityID; //not sure if ID should follow? maybe not..
@@ -31,9 +33,11 @@ Entity::Entity(const Entity &p_Copy, Entity* p_Parent)
 {
 	int t_NumOfComponents = p_Copy.m_Components.size();
 
+	ExtensibleGameFactory* t_Factory = t_Factory->GetInstance();
+
 	for (int i = 0; i < t_NumOfComponents; i++)
 	{
-		this->m_Components.push_back(new Component(*p_Copy.m_Components[i]));
+		this->m_Components.push_back( t_Factory->CreateComponent(p_Copy.m_Components[i]->GetName()) );
 	}
 
 	this->m_EntityID = p_Copy.m_EntityID; //not sure if ID should follow? maybe not..

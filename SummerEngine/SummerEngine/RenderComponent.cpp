@@ -1,9 +1,14 @@
 #include "RenderComponent.h"
 
 
-RenderComponent::RenderComponent()
+RenderComponent::RenderComponent() : Component("RenderComponent")
 {
 	
+}
+
+RenderComponent::RenderComponent(std::string p_Name) :Component(p_Name)
+{
+
 }
 
 RenderComponent::~RenderComponent()

@@ -96,9 +96,6 @@
     <ClCompile Include="Stream.cpp">
       <Filter>Source Files\InOut</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ExtensibleGameFactory.cpp">
       <Filter>Source Files\Factorys</Filter>
     </ClCompile>
@@ -154,9 +151,6 @@
     </ClInclude>
     <ClInclude Include="LoadObj.h">
       <Filter>Header Files\InOut</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentFactory.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExtensibleGameFactory.h">
       <Filter>Header Files\Factorys</Filter>

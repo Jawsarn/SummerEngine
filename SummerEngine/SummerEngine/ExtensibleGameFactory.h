@@ -8,17 +8,12 @@
 class ExtensibleGameFactory
 {
 public:
-	enum ComponentType
-	{
-		NORMAL,
-		RENDERER,
-		TRANSFORM
-	};
+	typedef std::string ComponentType;
+
 	typedef std::string ObjectType;
 
-
-	ExtensibleGameFactory();
-	~ExtensibleGameFactory();
+	static ExtensibleGameFactory* GetInstance();
+	
 
 	Entity* CreateEntity(ObjectType p_Type);
 	Component* CreateComponent(ComponentType p_Type);
@@ -27,7 +22,13 @@ public:
 	void Unregister(ObjectType p_Type);
 
 private:
+	ExtensibleGameFactory();
+	~ExtensibleGameFactory();
+
+	static ExtensibleGameFactory* m_Singleton;
+
 	typedef std::map<ObjectType, Entity*> EntityMap;
+	
 	
 	EntityMap m_EntityMakers;
 	//ComponentMap m_ComponentMakers;

@@ -1,7 +1,7 @@
 #include "TransformComponent.h"
 
 
-TransformComponent::TransformComponent()
+TransformComponent::TransformComponent() :Component( "TransformComponent" )
 {
 }
 

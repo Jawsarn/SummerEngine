@@ -2,6 +2,17 @@
 #include "RenderComponent.h"
 #include "TransformComponent.h"
 
+ExtensibleGameFactory* ExtensibleGameFactory::m_Singleton = nullptr;
+
+ExtensibleGameFactory* ExtensibleGameFactory::GetInstance()
+{
+	if (m_Singleton == nullptr)
+	{
+		m_Singleton = new ExtensibleGameFactory();
+	}
+	return m_Singleton;
+}
+
 ExtensibleGameFactory::ExtensibleGameFactory()
 {
 }
@@ -22,24 +33,24 @@ Entity* ExtensibleGameFactory::CreateEntity(ObjectType p_Type)
 	return new Entity(*it->second);
 }
 
-Component* ExtensibleGameFactory::CreateComponent(ComponentType p_Type)
+Component* ExtensibleGameFactory::CreateComponent(ComponentType p_Type) //could change this but that'll take lot of time, and is not really needed for this small project
 {
-	switch (p_Type)
+	if (p_Type == "Component")
 	{
-	case NORMAL:
 		return new Component();
-		break;
-	case RENDERER:
-		return new RenderComponent();
-		break;
-	case TRANSFORM:
-		return new TransformComponent();
-		break;
-	default:
-		break;
 	}
-
-	return nullptr;
+	else if (p_Type == "RenderComponent")
+	{
+		return new RenderComponent();
+	}
+	else if (p_Type == "TransformComponent")
+	{
+		return new TransformComponent();
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
 void ExtensibleGameFactory::Register(Entity* p_Entity, ObjectType p_Type)

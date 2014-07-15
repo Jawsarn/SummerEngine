@@ -22,6 +22,8 @@ public:
 	virtual bool Read(Stream &p_Stream);
 	virtual bool Write(Stream &p_Stream);
 
+	std::string GetName() { return m_Name; }
+
 protected:
 	bool m_IsEnabled;
 	Entity* m_Entity;
