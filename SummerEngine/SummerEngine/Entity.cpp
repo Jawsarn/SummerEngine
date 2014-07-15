@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "ExtensibleGameFactory.h"
+#include <string>
 
 Entity::Entity()
 {
@@ -8,28 +9,16 @@ Entity::Entity()
 
 Entity::Entity(const Entity &p_Copy)
 {
-	int t_NumOfComponents = p_Copy.m_Components.size();
-
-	ExtensibleGameFactory* t_Factory = t_Factory->GetInstance();
-
-	for (int i = 0; i < t_NumOfComponents; i++)
-	{
-		this->m_Components.push_back( t_Factory->CreateComponent( p_Copy.m_Components[i]->GetName()) );
-	}
-
-	this->m_EntityID = p_Copy.m_EntityID; //not sure if ID should follow? maybe not..
-	this->m_Name = p_Copy.m_Name;
-	this->m_Parent = nullptr;
-
-	int t_NumOfChildren = p_Copy.m_Children.size();
-
-	for (int i = 0; i < t_NumOfChildren; i++)
-	{
-		this->m_Children.push_back(new Entity(*p_Copy.m_Children[i], this));
-	}
+	m_Parent = nullptr;
+	Initialize(p_Copy);
 }
 
 Entity::Entity(const Entity &p_Copy, Entity* p_Parent)
+{
+	m_Parent = p_Parent;
+	Initialize(p_Copy);
+}
+void Entity::Initialize(const Entity &p_Copy)
 {
 	int t_NumOfComponents = p_Copy.m_Components.size();
 
@@ -37,12 +26,11 @@ Entity::Entity(const Entity &p_Copy, Entity* p_Parent)
 
 	for (int i = 0; i < t_NumOfComponents; i++)
 	{
-		this->m_Components.push_back( t_Factory->CreateComponent(p_Copy.m_Components[i]->GetName()) );
+		this->m_Components.push_back(t_Factory->CreateComponent(p_Copy.m_Components[i]->GetName()));
 	}
 
 	this->m_EntityID = p_Copy.m_EntityID; //not sure if ID should follow? maybe not..
 	this->m_Name = p_Copy.m_Name;
-	this->m_Parent = p_Parent;
 
 	int t_NumOfChildren = p_Copy.m_Children.size();
 
@@ -56,7 +44,6 @@ int Entity::GetID()
 {
 	return m_EntityID;
 }
-
 
 Entity::~Entity()
 {
@@ -89,23 +76,17 @@ Entity* Entity::GetParent()
 
 bool Entity::Read(Stream &p_Stream)
 {
-	return true;
-}
-
-bool Entity::Write(Stream &p_Stream)
-{
-	WriteString(p_Stream, m_Name);
-	WriteInt(p_Stream, m_EntityID);
-	WriteInt(p_Stream, m_Parent->GetID());
-	int t_NumOfChildren = m_Children.size();
-	WriteInt(p_Stream, t_NumOfChildren);
+	m_Name = ReadString(p_Stream);
+	m_EntityID = ReadInt(p_Stream);
+	//fix parent id
+	int ParentID = ReadInt(p_Stream);
+	m_Parent = nullptr;
+	int t_NumOfChildren = ReadInt(p_Stream);
 
 	for (int i = 0; i < t_NumOfChildren; i++)
 	{
 		Entity* t_NewChild = new Entity();
-
 		bool t_Success = t_NewChild->Read(p_Stream);
-
 		if (!t_Success)
 		{
 			return t_Success;
@@ -113,22 +94,62 @@ bool Entity::Write(Stream &p_Stream)
 		m_Children.push_back(t_NewChild);
 	}
 
-	int t_NumOfComponents = m_Components.size();
-	WriteInt(p_Stream, t_NumOfComponents);
+	int t_NumOfComponents = ReadInt(p_Stream);
+
+	ExtensibleGameFactory* t_Factory = t_Factory->GetInstance();
 
 	for (int i = 0; i < t_NumOfComponents; i++)
 	{
-		Component* t_NewComponent = new Component(); //place factory here
+		std::string t_ComponentType = ReadString(p_Stream);
+		Component* t_NewComponent = t_Factory->CreateComponent(t_ComponentType);
 		bool t_Success = t_NewComponent->Read(p_Stream);
 
 		if (!t_Success)
 		{
 			return t_Success;
 		}
+
 		m_Components.push_back(t_NewComponent);
+	}
+	return true;
+}
+
+bool Entity::Write(Stream &p_Stream)
+{
+	WriteString(p_Stream, m_Name);
+	
+	WriteInt(p_Stream, m_EntityID);
+	WriteInt(p_Stream, m_Parent->GetID());
+	int t_NumOfChildren = m_Children.size();
+	WriteInt(p_Stream, t_NumOfChildren);
+
+	for (int i = 0; i < t_NumOfChildren; i++)
+	{
+		bool t_Success = m_Children[i]->Read(p_Stream);
+
+		if (!t_Success)
+		{
+			return t_Success;
+		}
+	}
+
+	int t_NumOfComponents = m_Components.size();
+	WriteInt(p_Stream, t_NumOfComponents);
+
+	for (int i = 0; i < t_NumOfComponents; i++)
+	{
+		bool t_Success = m_Components[i]->Read(p_Stream);
+
+		if (!t_Success)
+		{
+			return t_Success;
+		}
 	}
 
 	return true;
 }
 
+void Entity::Fixup()
+{
 
+}

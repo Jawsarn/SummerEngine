@@ -21,12 +21,14 @@ public:
 
 	virtual bool Read(Stream &p_Stream);
 	virtual bool Write(Stream &p_Stream);
+	virtual void Fixup();
 
 	std::string GetName() { return m_Name; }
 
 protected:
+	std::string m_Name;
 	bool m_IsEnabled;
 	Entity* m_Entity;
-	std::string m_Name;
+	
 };
 
