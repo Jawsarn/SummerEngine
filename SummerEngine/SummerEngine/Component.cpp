@@ -2,6 +2,7 @@
 
 #include "Component.h"
 #include "Entity.h"
+#include "AdressTranslator.h"
 
 Component::Component()
 {
@@ -54,10 +55,22 @@ void Component::Destroy()
 
 bool Component::Read(Stream &p_Stream)
 {
+	m_IsEnabled = ReadBool(p_Stream);
+	int EntityID = ReadInt(p_Stream);
+	m_Entity = nullptr;
+
 	return true;
 }
 
 bool Component::Write(Stream &p_Stream)
 {
+	WriteString(p_Stream,m_Name);
+	WriteBool(p_Stream, m_IsEnabled);
+	WriteInt(p_Stream, m_Entity->GetID());
 	return true;
+}
+
+void Component::Fixup()
+{
+
 }

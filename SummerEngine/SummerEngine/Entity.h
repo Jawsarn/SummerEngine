@@ -22,6 +22,10 @@ public:
 
 	virtual bool Read(Stream &p_Stream);
 	virtual bool Write(Stream &p_Stream);
+	virtual void Fixup();
+
+private:
+	void Initialize(const Entity &p_Copy);
 
 protected:
 	int m_EntityID;

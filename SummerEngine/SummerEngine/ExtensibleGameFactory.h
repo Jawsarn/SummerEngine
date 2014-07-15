@@ -1,21 +1,35 @@
 #pragma once
+
 #include "Entity.h"
-#include "FactoryMaker.h"
 #include <map>
 
-typedef int GameObjectType;
+
 
 class ExtensibleGameFactory
 {
 public:
+	typedef std::string ComponentType;
+
+	typedef std::string ObjectType;
+
+	static ExtensibleGameFactory* GetInstance();
+	
+
+	Entity* CreateEntity(ObjectType p_Type);
+	Component* CreateComponent(ComponentType p_Type);
+
+	void Register(Entity* p_Entity, ObjectType p_Type);
+	void Unregister(ObjectType p_Type);
+
+private:
 	ExtensibleGameFactory();
 	~ExtensibleGameFactory();
 
-	Entity* Create(GameObjectType p_Type);
-	void Register(FactoryMaker* p_Maker, GameObjectType p_Type);
-	void Unregister(GameObjectType p_Type);
+	static ExtensibleGameFactory* m_Singleton;
 
-private:
-	typedef std::map<GameObjectType, FactoryMaker*> TypeMap;
-	TypeMap m_Makers;
+	typedef std::map<ObjectType, Entity*> EntityMap;
+	
+	
+	EntityMap m_EntityMakers;
+	//ComponentMap m_ComponentMakers;
 };

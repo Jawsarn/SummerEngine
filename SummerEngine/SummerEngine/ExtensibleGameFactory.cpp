@@ -1,5 +1,17 @@
 #include "ExtensibleGameFactory.h"
+#include "RenderComponent.h"
+#include "TransformComponent.h"
 
+ExtensibleGameFactory* ExtensibleGameFactory::m_Singleton = nullptr;
+
+ExtensibleGameFactory* ExtensibleGameFactory::GetInstance()
+{
+	if (m_Singleton == nullptr)
+	{
+		m_Singleton = new ExtensibleGameFactory();
+	}
+	return m_Singleton;
+}
 
 ExtensibleGameFactory::ExtensibleGameFactory()
 {
@@ -10,23 +22,43 @@ ExtensibleGameFactory::~ExtensibleGameFactory()
 {
 }
 
-Entity* ExtensibleGameFactory::Create(GameObjectType p_Type)
+Entity* ExtensibleGameFactory::CreateEntity(ObjectType p_Type)
 {
-	TypeMap::iterator it = m_Makers.find(p_Type);
-	if (it == m_Makers.end())
+	EntityMap::iterator it = m_EntityMakers.find(p_Type);
+	if (it == m_EntityMakers.end())
 	{
 		return nullptr;
 	}
-	FactoryMaker* t_Maker = (*it).second;
-	return t_Maker->Create();
+
+	return new Entity(*it->second);
 }
 
-void ExtensibleGameFactory::Register(FactoryMaker* p_Maker, GameObjectType p_Type)
+Component* ExtensibleGameFactory::CreateComponent(ComponentType p_Type) //could change this but that'll take lot of time, and is not really needed for this small project
 {
-	m_Makers[p_Type] = p_Maker;
+	if (p_Type == "Component")
+	{
+		return new Component();
+	}
+	else if (p_Type == "RenderComponent")
+	{
+		return new RenderComponent();
+	}
+	else if (p_Type == "TransformComponent")
+	{
+		return new TransformComponent();
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
-void ExtensibleGameFactory::Unregister(GameObjectType p_Type)
+void ExtensibleGameFactory::Register(Entity* p_Entity, ObjectType p_Type)
 {
-	m_Makers.erase(p_Type);
+	m_EntityMakers[p_Type] = p_Entity;
+}
+
+void ExtensibleGameFactory::Unregister(ObjectType p_Type)
+{
+	m_EntityMakers.erase(p_Type);
 }
