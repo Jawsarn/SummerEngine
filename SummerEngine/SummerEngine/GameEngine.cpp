@@ -31,6 +31,8 @@ GameEngine::~GameEngine()
 }
 #include "RenderComponent.h"
 #include "ExtensibleGameFactory.h"
+#include "StreamFile.h"
+#include "Stream.h"
 
 
 bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
@@ -42,10 +44,33 @@ bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 	m_RenderingSystem->Start();
 
 
+	//test IO
+	StreamFile t_tes = StreamFile();
+	t_tes.OpenFileWrite("TheFileSavingIsWorking.working");
 	
+	WriteInt(t_tes, 1337);
+	WriteString(t_tes,"This seems to be working");
+	WriteInt(t_tes, 666);
+	WriteBool(t_tes, true);
+	WriteString(t_tes, "Yep working");
+
+	t_tes.Close();
+
+
+	t_tes.OpenFileRead("TheFileSavingIsWorking.working");
+	int a = ReadInt(t_tes);
+	std::string b = ReadString(t_tes);
+	int c = ReadInt(t_tes);
+	bool d = ReadBool(t_tes);
+	std::string e = ReadString(t_tes);
+	t_tes.Close();
+
+
 
 	return true;
 }
+
+
 
 void GameEngine::Destroy()
 {

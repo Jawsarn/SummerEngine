@@ -44,6 +44,7 @@ void StreamFile::Close()
 	if (m_File != nullptr) //if file already open close
 	{
 		fclose(m_File);
+		m_File = nullptr;
 	}
 	m_WriteMode = false;
 	m_ReadMode = false;

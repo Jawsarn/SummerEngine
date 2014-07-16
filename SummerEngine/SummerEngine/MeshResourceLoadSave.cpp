@@ -11,6 +11,10 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 	StreamFile t_File = StreamFile();
 	t_File.OpenFileWrite(p_File->GetName());
 	
+	Mesh* t_Mesh = (Mesh*)p_File;
+	
+	//Mesh::VertexGroups t_VertexGroups = t_Mesh->GetVertexData();
+
 	//t_File.Write(); custom data hela vägen, men du måste veta hur den ser ut när du laddar in den på ett bra sätt
 	//eller
 	//WriteFloat(); //loopa tills du läst in allt

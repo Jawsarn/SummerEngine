@@ -3,11 +3,11 @@
 #include <assert.h>
 
 
-class StreamFile:Stream
+class StreamFile: public Stream
 {
 public:
 	StreamFile();
-	~StreamFile();
+	virtual ~StreamFile();
 
 	bool OpenFileRead(std::string p_FileName);
 	bool OpenFileWrite(std::string p_FileName);
