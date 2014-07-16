@@ -24,7 +24,7 @@ void Mesh::Release()
 }
 
 
-HRESULT Mesh::CreateMesh(ID3D11Device* p_device, char* p_fileName)
+HRESULT Mesh::CreateMesh(ID3D11Device* p_device, char* p_fileName) //move this code to ResourceMaker ? 
 {
 	m_Mesh->Load(p_fileName);
 

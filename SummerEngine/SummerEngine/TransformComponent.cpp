@@ -2,7 +2,7 @@
 
 
 TransformComponent::TransformComponent() :Component( "TransformComponent" )
-{
+{ 
 }
 
 TransformComponent::TransformComponent(std::string p_Name) : Component(p_Name)

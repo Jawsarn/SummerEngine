@@ -2,6 +2,8 @@
 #include "LoadObj.h"
 #include "Math.h"
 
+
+
 class Mesh
 {
 public:

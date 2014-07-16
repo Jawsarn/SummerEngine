@@ -32,7 +32,7 @@ void RenderingSystem::Start()
 
 void RenderingSystem::Update()
 {
-	std::list<Entity*>* t_CulledEntities;
+	//std::list<Entity*>* t_CulledEntities;
 
 	m_Renderer->BeginRender();
 

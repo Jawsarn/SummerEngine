@@ -1,16 +1,22 @@
 #pragma once
+//#include "ResourceManager.h"
 #include <string>
+
+class ResourceManager;
 
 class Resource
 {
 public:
-	Resource();
-	~Resource();
+	virtual ~Resource() {};
+	typedef std::string ResourceType;
 
-	virtual bool Load() = 0;
-	virtual void Save() = 0;
-private:
-	std::string m_ResourceName;
+	virtual const std::string &GetName() const = 0;
+	virtual const ResourceType GetType() const = 0;
+
+
+	//virtual bool Load() = 0;
+	//virtual void Save() = 0;
+protected:
 	
-};
 
+};
