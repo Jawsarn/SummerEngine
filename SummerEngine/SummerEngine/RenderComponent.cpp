@@ -44,9 +44,22 @@ void RenderComponent::Sleep()
 
 bool RenderComponent::Read(Stream &p_Stream)
 {
+	Component::Read(p_Stream);
+	
+	std::string t_MeshName = ReadString(p_Stream); //load mesh here
+
+	m_CastShadows = ReadBool(p_Stream);
+	m_ReceiveShadows = ReadBool(p_Stream);
+
 	return true;
 }
 bool RenderComponent::Write(Stream &p_Stream)
 {
+	Component::Write(p_Stream);
+	
+	WriteString(p_Stream, "Meshname");
+	WriteBool(p_Stream, m_CastShadows);
+	WriteBool(p_Stream, m_ReceiveShadows);
+	
 	return true;
 }

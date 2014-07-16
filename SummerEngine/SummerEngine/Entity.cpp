@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "ExtensibleGameFactory.h"
+#include "AdressTranslator.h"
 #include <string>
 
 Entity::Entity()
@@ -77,10 +78,13 @@ Entity* Entity::GetParent()
 bool Entity::Read(Stream &p_Stream)
 {
 	m_Name = ReadString(p_Stream);
+
 	m_EntityID = ReadInt(p_Stream);
-	//fix parent id
-	int ParentID = ReadInt(p_Stream);
-	m_Parent = nullptr;
+	
+	void* t_OldAdress = (void *)ReadInt(p_Stream); //this will be the previous adress
+	AdressTranslator* t_AdrTranslator = t_AdrTranslator->GetInstance();
+	t_AdrTranslator->AddAdress(t_OldAdress, this);
+
 	int t_NumOfChildren = ReadInt(p_Stream);
 
 	for (int i = 0; i < t_NumOfChildren; i++)
@@ -92,6 +96,7 @@ bool Entity::Read(Stream &p_Stream)
 			return t_Success;
 		}
 		m_Children.push_back(t_NewChild);
+		t_NewChild->SetParent(this);
 	}
 
 	int t_NumOfComponents = ReadInt(p_Stream);
@@ -108,8 +113,8 @@ bool Entity::Read(Stream &p_Stream)
 		{
 			return t_Success;
 		}
-
 		m_Components.push_back(t_NewComponent);
+		t_NewComponent->SetEntity(this);
 	}
 	return true;
 }
@@ -119,7 +124,9 @@ bool Entity::Write(Stream &p_Stream)
 	WriteString(p_Stream, m_Name);
 	
 	WriteInt(p_Stream, m_EntityID);
-	WriteInt(p_Stream, m_Parent->GetID());
+
+	WriteInt(p_Stream, (int)this); //change this to your adress, and give parent by load
+
 	int t_NumOfChildren = m_Children.size();
 	WriteInt(p_Stream, t_NumOfChildren);
 
@@ -151,5 +158,16 @@ bool Entity::Write(Stream &p_Stream)
 
 void Entity::Fixup()
 {
+	//nothing needed here yet I think.. or maybe, go for a fixup through your components and children?
+	int t_NumOfChildren = m_Children.size();
+	for (int i = 0; i < t_NumOfChildren; i++)
+	{
+		m_Children[i]->Fixup();
+	}
 
+	int t_NumOfComponents = m_Components.size();
+	for (int i = 0; i < t_NumOfComponents; i++)
+	{
+		m_Components[i]->Fixup();
+	}
 }

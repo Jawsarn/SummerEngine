@@ -21,12 +21,13 @@ public:
 	virtual bool Read(Stream &p_Stream);
 	virtual bool Write(Stream &p_Stream);
 
+
 private:
 
-	XMFLOAT3 rotation;
-	XMFLOAT3 scale;
-	XMFLOAT3 translation;
-	XMFLOAT4X4 world;
+	XMFLOAT3 m_Rotation;
+	XMFLOAT3 m_Scale;
+	XMFLOAT3 m_Translation;
+	XMFLOAT4X4 m_World;
 	//cb -buffer
 };
 

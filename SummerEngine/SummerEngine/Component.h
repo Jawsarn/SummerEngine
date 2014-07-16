@@ -24,6 +24,7 @@ public:
 	virtual void Fixup();
 
 	std::string GetName() { return m_Name; }
+	void SetEntity(Entity* p_Entity);
 
 protected:
 	std::string m_Name;

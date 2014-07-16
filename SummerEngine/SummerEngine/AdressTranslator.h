@@ -8,6 +8,7 @@ public:
 
 	void AddAdress(void* p_OldAdress, void* p_NewAdress);
 	void* Translate(int p_OldAdress);
+	void Clear();
 
 private:
 	AdressTranslator();

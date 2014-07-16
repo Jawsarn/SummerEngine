@@ -28,6 +28,11 @@ bool Component::IsEnabled()
 	return m_IsEnabled;
 }
 
+void Component::SetEntity(Entity* p_Entity)
+{
+	m_Entity = p_Entity;
+}
+
 void Component::Awake()
 {
 
@@ -55,9 +60,12 @@ void Component::Destroy()
 
 bool Component::Read(Stream &p_Stream)
 {
+	void* t_OldAdress = (void*)ReadInt(p_Stream);
+	AdressTranslator* t_AdrTranslator = t_AdrTranslator->GetInstance();
+	t_AdrTranslator->AddAdress(t_OldAdress,this);
+
 	m_IsEnabled = ReadBool(p_Stream);
-	int EntityID = ReadInt(p_Stream);
-	m_Entity = nullptr;
+
 
 	return true;
 }
@@ -65,8 +73,9 @@ bool Component::Read(Stream &p_Stream)
 bool Component::Write(Stream &p_Stream)
 {
 	WriteString(p_Stream,m_Name);
+	WriteInt(p_Stream,(int)this);
 	WriteBool(p_Stream, m_IsEnabled);
-	WriteInt(p_Stream, m_Entity->GetID());
+
 	return true;
 }
 

@@ -41,8 +41,6 @@ bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 	m_RenderingSystem = m_RenderingSystem->GetInstance();
 	m_RenderingSystem->Start();
 
-	ExtensibleGameFactory* Test = Test->GetInstance();
-
 
 	
 

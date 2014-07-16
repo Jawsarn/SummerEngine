@@ -35,3 +35,8 @@ void* AdressTranslator::Translate(int p_OldAdress)
 	}
 	return (void*)t_It->second;
 }
+
+void AdressTranslator::Clear()
+{
+	m_AdressMap.clear();
+}
