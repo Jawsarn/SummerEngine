@@ -74,7 +74,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshResourceMaker.cpp" />
+    <ClCompile Include="MeshResourceLoadSave.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -95,13 +95,13 @@
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshResourceMaker.h" />
+    <ClInclude Include="MeshResourceLoadSave.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="ResourceMaker.h" />
+    <ClInclude Include="ResourceLoadSave.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Stream.h" />

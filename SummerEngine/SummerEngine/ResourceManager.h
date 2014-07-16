@@ -1,5 +1,5 @@
 #pragma once
-#include "ResourceMaker.h"
+#include "MeshResourceLoadSave.h"
 #include <string>
 #include <map>
 
@@ -8,7 +8,7 @@ class ResourceManager
 public:
 	~ResourceManager();
 
-	void Register(ResourceMaker* p_ResourceMaker);
+	void Register(ResourceLoadSave* p_ResourceLoadSave);
 	Resource* Create(std::string p_ResourceName);
 
 
@@ -16,7 +16,7 @@ public:
 private:
 	Resource* LoadResource(std::string p_ResourceName);
 
-	typedef std::map<std::string, ResourceMaker*> MakerMap;
+	typedef std::map<std::string, ResourceLoadSave*> MakerMap;
 	MakerMap m_Makers;
 
 	typedef std::map<std::string, Resource*> ResourceMap;

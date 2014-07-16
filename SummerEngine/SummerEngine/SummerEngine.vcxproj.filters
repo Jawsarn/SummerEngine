@@ -102,7 +102,7 @@
     <ClCompile Include="AdressTranslator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MeshResourceMaker.cpp">
+    <ClCompile Include="MeshResourceLoadSave.cpp">
       <Filter>Source Files\InOut</Filter>
     </ClCompile>
   </ItemGroup>
@@ -164,10 +164,10 @@
     <ClInclude Include="AdressTranslator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceMaker.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ResourceLoadSave.h">
+      <Filter>Header Files\InOut</Filter>
     </ClInclude>
-    <ClInclude Include="MeshResourceMaker.h">
+    <ClInclude Include="MeshResourceLoadSave.h">
       <Filter>Header Files\InOut</Filter>
     </ClInclude>
   </ItemGroup>

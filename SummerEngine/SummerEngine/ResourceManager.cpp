@@ -7,11 +7,11 @@ ResourceManager::~ResourceManager()
 {
 }
 
-void ResourceManager::Register(ResourceMaker* p_ResourceMaker)
+void ResourceManager::Register(ResourceLoadSave* p_ResourceLoadSave)
 {
-	assert(p_ResourceMaker != nullptr);
+	assert(p_ResourceLoadSave != nullptr);
 
-	m_Makers[std::string(p_ResourceMaker->GetExtension())] = p_ResourceMaker;
+	m_Makers[std::string(p_ResourceLoadSave->GetExtension())] = p_ResourceLoadSave;
 }
 
 Resource* ResourceManager::Create(const std::string p_ResourceName)
@@ -51,5 +51,5 @@ Resource* ResourceManager::LoadResource(std::string p_ResourceName)
 		return nullptr;
 	}
 
-	return t_It->second->Create(p_ResourceName);
+	return t_It->second->Load(p_ResourceName);
 }
