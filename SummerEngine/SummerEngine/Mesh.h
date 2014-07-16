@@ -28,6 +28,8 @@ public:
 	void LoadFromObj(std::string p_FileName);
 
 	VertexGroups* GetVertexData();
+	void SetVertexData(VertexGroups p_Groups);
+
 	void ClearLoadData();
 
 
