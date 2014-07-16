@@ -33,7 +33,7 @@ public:
 	void ClearLoadData();
 
 
-	//HRESULT Render(ID3D11DeviceContext* p_DeviceContext);//test
+	HRESULT Render(ID3D11DeviceContext* p_DeviceContext);
 
 	virtual const std::string &GetName() const;
 	virtual const ResourceType GetType() const;
@@ -43,6 +43,8 @@ private:
 	std::string m_FileName;
 	
 	VertexGroups m_Groups;
+
+	//std::vector<std::vector<MeshVertex>> m_Groups;
 	/*GameObject gameObject;
 	ID3D11Buffer* buffer;
 	std::vector<ID3D11Buffer*> vertexBuffers;

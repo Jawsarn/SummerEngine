@@ -23,69 +23,9 @@ void Mesh::Release()
 	*/
 }
 
-void Mesh::LoadFromObj(std::string p_FileName)
-{
-	m_Mesh->Load(p_FileName);
-	//gameObject = GameObject(p_device);
-
-	//test--------------------------------------
-	//Shader Class
-	//shader = Shader(p_device);
-	//shader.CreateShadersAndInputLayout3D("../Shaders/DrawMeshVS.hlsl", "VS_main", "../Shaders/DrawMeshPS.hlsl", "PS_main");
-	//------------------------------------------
-
-	//Amount of meshes (groups-objects) in file.
-	for (int i = 0; i < m_Mesh->GetGroupCount(); i++)
-	{
-		ObjGroups* curGroup = nullptr;
-		//ID3D11Buffer* buffer = nullptr;
-		//buffer test
-
-		curGroup = m_Mesh->GetGroup(i);
-		//	MeshVertex* vertices = myNew(MeshVertex[curGroup->triangles.size() * 3]);
-
-		std::vector<MeshVertex> vertices(curGroup->triangles.size() * 3);
-
-		MeshVertex t_V;
-		ObjGroups::Triangle* triangle = nullptr;
-
-		//Need to find a fast way to go through all the triangles.....NOTE
-		int count = 0;
-		for (int x = 0; x < curGroup->triangles.size(); x++)
-		{
-			//triangle has all the indexes for v/vn/vt
-			triangle = &curGroup->triangles[x];
-
-			//Creating the triangle
-			for (int j = 2; j >= 0; j--)
-			{
-				//iterate throug all triangles and extract the position from the vectors
-				//index from triangle
-				//data from pos, norm, texCoord
-
-				//Get Positions
-				//int t_position = triangle->index[j][0];//pos 3, pos 2, pos1
-				t_V.position = m_Mesh->GetPositions(i)[triangle->index[j][0]];
-
-				//Get Texture Coordinates
-				t_V.texCoord = m_Mesh->GetTexCoords(i)[triangle->index[j][1]];
-
-				//Get Normals
-				t_V.normal = m_Mesh->GetNormals(i)[triangle->index[j][2]];
-
-				vertices[count] = t_V;
-
-				//Tangent code here....
-				count += 1;
-			}
-		}
-		m_Groups.push_back(vertices);
-	}
-}
-
-/*
 HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device) //move this code to ResourceMaker ? 
 {
+	/*
 	int t_NumberOfGroups = m_Groups.size();
 	for (int i = 0; i < t_NumberOfGroups; i++)
 	{
@@ -106,12 +46,93 @@ HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device) //move this code to Reso
 		vertexBuffers.push_back(buffer);
 
 		//	vertices.clear();
-
 	}
-
+	*/
 	return S_OK;
 }
-*/
+
+
+void Mesh::LoadFromObj(std::string p_FileName)
+{
+	m_Mesh->Load(p_FileName);
+	//gameObject = GameObject(p_Device);
+
+	//test--------------------------------------
+	//Shader Class
+	//shader = Shader(p_Device);
+	//shader.CreateShadersAndInputLayout3D("../Shaders/DrawMeshVS.hlsl", "VS_main", "../Shaders/DrawMeshPS.hlsl", "PS_main");
+	//------------------------------------------
+
+	int t_ObjCount = m_Mesh->GetObjCount();
+	int t_GroupCount = m_Mesh->GetGroupCount();
+
+	std::vector<ObjGroups> t_CurGroup;
+	for (int i = 0; i < t_ObjCount; i++)
+	{
+		for (int x = 0; x < t_GroupCount; x++)
+		{
+			t_CurGroup = m_Mesh->GetAllGroupsFromAMesh(i);
+		}
+	}
+
+	int t_CurGroupCount = t_CurGroup.size();
+
+	//Amount of meshes (groups-objects) in file.
+	//for (int i = 0; i < m_Mesh->GetGroupCount(); i++)
+
+	for (int i = 0; i < t_CurGroupCount; i++)
+	{
+		//ID3D11Buffer* buffer = nullptr;
+		//buffer test
+
+		//curGroup = m_Mesh->GetGroup(i);
+		//	MeshVertex* vertices = myNew(MeshVertex[curGroup->triangles.size() * 3]);
+		std::vector<MeshVertex> t_Vertices;
+
+		MeshVertex t_V;
+		ObjGroups::Triangle* t_Triangle = nullptr;
+
+		//Need to find a fast way to go through all the triangles.....NOTE
+		int count = 0;
+		for (int x = 0; x < t_CurGroup[i].triangles.size(); x++)
+		{
+			//triangle has all the indexes for v/vn/vt
+			t_Triangle = &t_CurGroup[i].triangles[x];
+
+			//Creating the triangle
+			for (int j = 2; j >= 0; j--)
+			{
+				//iterate throug all triangles and extract the position from the vectors
+				//index from triangle
+				//data from pos, norm, texCoord
+
+				//Get Positions
+				//int t_position = triangle->index[j][0];//pos 3, pos 2, pos1
+				t_V.position = m_Mesh->GetPositions(0)[t_Triangle->index[j][0]];
+
+				//Get Texture Coordinates
+				t_V.texCoord = m_Mesh->GetTexCoords(0)[t_Triangle->index[j][1]];
+
+				//Get Normals
+				t_V.normal = m_Mesh->GetNormals(0)[t_Triangle->index[j][2]];
+
+				//delete(triangle);														DELETE!
+				//triangle = nullptr;
+
+				//t_Vertices[count] = t_V;
+				t_Vertices.push_back(t_V);
+
+				//Tangent code here....
+				count += 1;
+			}
+		}
+		m_Groups.push_back(t_Vertices);
+		t_Vertices.clear();
+		//clear
+	}
+
+	//CreateMeshBuffers(p_Device);
+}
 
 const std::string & Mesh::GetName() const
 {
@@ -123,31 +144,30 @@ const Mesh::ResourceType Mesh::GetType() const
 	return "Mesh";
 }
 
-//HRESULT Mesh::Render(ID3D11DeviceContext* p_DeviceContext)
-//{
-	/*FAST TEST IF IT WORKS!
+HRESULT Mesh::Render(ID3D11DeviceContext* p_DeviceContext)
+{
+	/*
 	UINT32 offset = 0;
 	UINT32 vertexSize = sizeof(MeshVertex);
-	UINT32  groupCount = m_Mesh->GetGroupCount();
 
 	if (vertexBuffers.size() > 0)
 	{
-		shader.Render(p_DeviceContext);
+		//shader.Render(p_DeviceContext);
 
 		p_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		for (int i = 0; i < groupCount; i++)
+		for (int i = 0; i < vertexBuffers.size(); i++)
 		{
 			p_DeviceContext->IASetVertexBuffers(0, 1, &vertexBuffers[i], &vertexSize, &offset);
 
-			gameObject.Render(p_DeviceContext, 0);
+			//gameObject.Render(p_DeviceContext, 0);
 
 			//draw three vertices from the bound vertex buffer
 			int amountOfTriangles = m_Mesh->GetGroup(i)->triangles.size();
-			p_DeviceContext->Draw(amountOfTriangles * 3, 0);
+			p_DeviceContext->Draw(36, 0);
 		}
 	}
 	*/
-	//return S_OK;
-//}
+	return S_OK;
+}
 
 
