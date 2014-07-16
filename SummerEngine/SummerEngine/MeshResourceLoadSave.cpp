@@ -4,7 +4,6 @@
 
 Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 {
-	
 	return nullptr; //add code to create a mesh from file here
 }
 void MeshResourceLoadSave::Save(Resource* p_File)

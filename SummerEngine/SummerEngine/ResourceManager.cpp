@@ -1,7 +1,19 @@
 #include "ResourceManager.h"
 #include <assert.h>
 
+ResourceManager* ResourceManager::m_Singelton = nullptr;
+ResourceManager* ResourceManager::GetInstance()
+{
+	if (m_Singelton == nullptr)
+	{
+		m_Singelton = new ResourceManager();
+	}
+	return m_Singelton;
+}
 
+ResourceManager::ResourceManager()
+{
+}
 
 ResourceManager::~ResourceManager()
 {

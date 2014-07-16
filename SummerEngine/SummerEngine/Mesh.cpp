@@ -24,10 +24,36 @@ void Mesh::Release()
 }
 
 
-HRESULT Mesh::CreateMesh(ID3D11Device* p_device, char* p_fileName) //move this code to ResourceMaker ? 
+HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device) //move this code to ResourceMaker ? 
 {
-	m_Mesh->Load(p_fileName);
+	int t_NumberOfGroups = m_Groups.size();
+	for (int i = 0; i < t_NumberOfGroups;i++)
+	{
+		//vertex-buffer
+		/*FAST TEST
+		D3D11_BUFFER_DESC bufferDesc;
+		memset(&bufferDesc, 0, sizeof(bufferDesc));
+		bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		bufferDesc.CPUAccessFlags = 0;
+		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		bufferDesc.MiscFlags = 0;
+		bufferDesc.ByteWidth = sizeof(MeshVertex)* (UINT32)curGroup->triangles.size() * 3;
 
+		D3D11_SUBRESOURCE_DATA data;
+		data.pSysMem = &vertices[0];
+		p_device->CreateBuffer(&bufferDesc, &data, &buffer);
+		vertexBuffers.push_back(buffer);
+
+		vertices.clear();
+		*/
+	}
+
+	return S_OK;
+}
+
+void Mesh::LoadFromObj(std::string p_FileName)
+{
+	m_Mesh->Load(p_FileName);
 	//gameObject = GameObject(p_device);
 
 	//test--------------------------------------
@@ -75,35 +101,24 @@ HRESULT Mesh::CreateMesh(ID3D11Device* p_device, char* p_fileName) //move this c
 				//Get Normals
 				t_V.normal = m_Mesh->GetNormals(i)[triangle->index[j][2]];
 
-				int d = 0;
-
 				vertices[count] = t_V;
 
 				//Tangent code here....
 				count += 1;
-
 			}
 		}
-		//vertex-buffer
-		/*FAST TEST
-		D3D11_BUFFER_DESC bufferDesc;
-		memset(&bufferDesc, 0, sizeof(bufferDesc));
-		bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bufferDesc.CPUAccessFlags = 0;
-		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		bufferDesc.MiscFlags = 0;
-		bufferDesc.ByteWidth = sizeof(MeshVertex)* (UINT32)curGroup->triangles.size() * 3;
-
-		D3D11_SUBRESOURCE_DATA data;
-		data.pSysMem = &vertices[0];
-		p_device->CreateBuffer(&bufferDesc, &data, &buffer);
-		vertexBuffers.push_back(buffer);
-
-		vertices.clear();
-		*/
+		m_Groups.push_back(vertices);
 	}
+}
 
-	return S_OK;
+const std::string & Mesh::GetName() const
+{
+	return m_FileName;
+}
+
+const Mesh::ResourceType Mesh::GetType() const
+{
+	return "Mesh";
 }
 
 //HRESULT Mesh::Render(ID3D11DeviceContext* p_DeviceContext)

@@ -6,12 +6,11 @@
 class ResourceManager
 {
 public:
-	~ResourceManager();
+	
 
 	void Register(ResourceLoadSave* p_ResourceLoadSave);
 	Resource* Create(std::string p_ResourceName);
-
-
+	static ResourceManager* GetInstance();
 
 private:
 	Resource* LoadResource(std::string p_ResourceName);
@@ -22,5 +21,8 @@ private:
 	typedef std::map<std::string, Resource*> ResourceMap;
 	ResourceMap m_Resources;
 
+	ResourceManager();
+	~ResourceManager();
+	static ResourceManager* m_Singelton;
 };
 

@@ -24,7 +24,7 @@ public:
 
 	std::vector<ObjGroups> m_groups;
 
-	bool Load(char* p_fileName);
+	bool Load(std::string p_fileName);
 	std::vector<XMFLOAT3 >GetPositions(int p_GroupIndex);
 	std::vector<XMFLOAT3 >GetNormals(int p_GroupIndex);
 	std::vector<XMFLOAT2 >GetTexCoords(int p_GroupIndex);

@@ -10,7 +10,7 @@ LoadObj::~LoadObj()
 
 }
 
-bool LoadObj::Load(char* p_fileName)
+bool LoadObj::Load(std::string p_fileName)
 {
 	m_CurrentGroup = 0;
 	m_Position.resize(1);
