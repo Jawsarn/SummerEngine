@@ -12,17 +12,20 @@ LoadObj::~LoadObj()
 
 bool LoadObj::Load(std::string p_fileName)
 {
-	m_CurrentGroup = 0;
-	m_Position.resize(1);
-	m_Normal.resize(1);
-	m_TexCoord.resize(1);
+	//m_Obj.resize(1);
+	m_CurrentObj = 0;//object with triangles and materials and pos,norm,texcoord
+	m_CurrentGroup = 0;//group of triangles
+
+	//m_Position.resize(1);
+	//m_Normal.resize(1);
+	//m_TexCoord.resize(1);
 
 	std::ifstream t_file;
 	t_file.open(p_fileName);
 
 	if (!t_file.is_open())
 	{
-		//MessageBox(nullptr, L"Mesh could not be loaded", L"Error", MB_ICONERROR | MB_OK);
+		MessageBox(nullptr, L"Mesh could not be loaded", L"Error", MB_ICONERROR | MB_OK);
 		return false;
 	}
 
@@ -67,6 +70,11 @@ bool LoadObj::Load(std::string p_fileName)
 
 		else if (type_str == "usemtl")
 		{
+			LoadMaterial(str_stream);
+		}
+
+		else if (type_str == "mtllib")
+		{
 
 		}
 	}
@@ -77,18 +85,25 @@ bool LoadObj::Load(std::string p_fileName)
 
 void LoadObj::LoadGroup(std::stringstream& f)
 {
-	if (m_groups.size() > 0)
+
+	if (m_Obj.size() > 0)
 	{
-		//next group
-		m_CurrentGroup += 1;
-		m_Position.resize(m_CurrentGroup + 1);
-		m_Normal.resize(m_CurrentGroup + 1);
-		m_TexCoord.resize(m_CurrentGroup + 1);
+		m_CurrentObj += 1;
 	}
 
-	ObjGroups t_group;
-	f >> t_group.name;
-	m_groups.push_back(t_group);
+	m_Obj.resize(m_Obj.size() + 1);
+	f >> m_Obj[m_CurrentObj].name;
+
+	//next group
+	//m_CurrentGroup += 1;
+
+	//m_Obj[m_CurrentObj].m_Position.resize(m_CurrentObj + 1);
+	//m_Obj[m_CurrentObj].m_Normal.resize(m_CurrentObj + 1);
+	//m_Obj[m_CurrentObj].m_TexCoord.resize(m_CurrentObj + 1);
+
+	//ObjGroups t_obj;
+	//f >> t_obj.name;
+	//m_groups.push_back(t_obj);
 }
 
 void LoadObj::LoadFace(std::stringstream& f)
@@ -122,9 +137,18 @@ void LoadObj::LoadFace(std::stringstream& f)
 	m_groups[m_CurrentGroup].triangles.push_back(t_triangle);
 }
 
-void LoadObj::LoadMaterial(std::stringstream& g)
+void LoadObj::LoadMaterial(std::stringstream& p_MaterialName)
 {
-	//Load material file /data
+	if (m_groups.size() > 0)
+	{
+		m_CurrentGroup += 1;
+	}
+
+	ObjGroups t_obj;
+	p_MaterialName >> t_obj.material;
+	m_groups.push_back(t_obj);
+	//sending id (so that object knows which groups that are in it)
+	m_Obj[m_CurrentObj].m_GroupId.push_back(m_CurrentGroup);
 }
 
 void LoadObj::LoadPosition(std::stringstream& f)
@@ -134,7 +158,7 @@ void LoadObj::LoadPosition(std::stringstream& f)
 	f >> t_pos.x >> t_pos.y >> t_pos.z;
 
 	t_pos.z *= -1.0f;//
-	m_Position[m_CurrentGroup].push_back(t_pos);
+	m_Obj[m_CurrentObj].m_Position.push_back(t_pos);
 }
 
 void LoadObj::LoadNormal(std::stringstream& f)
@@ -143,7 +167,7 @@ void LoadObj::LoadNormal(std::stringstream& f)
 	f >> t_norm.x >> t_norm.y >> t_norm.z;
 
 	t_norm.z *= -1.0f;//
-	m_Normal[m_CurrentGroup].push_back(t_norm);
+	m_Obj[m_CurrentObj].m_Normal.push_back(t_norm);
 }
 
 void LoadObj::LoadTexCoord(std::stringstream& f)
@@ -151,23 +175,23 @@ void LoadObj::LoadTexCoord(std::stringstream& f)
 	XMFLOAT2 t_texCoord;
 	f >> t_texCoord.x >> t_texCoord.y;
 
-	t_texCoord.y = 1.0 - t_texCoord.y;//
-	m_TexCoord[m_CurrentGroup].push_back(t_texCoord);
+	t_texCoord.y = 1.0 - t_texCoord.y;
+	m_Obj[m_CurrentObj].m_TexCoord.push_back(t_texCoord);
 }
 
-std::vector<XMFLOAT3> LoadObj::GetPositions(int p_GroupIndex)
+std::vector<XMFLOAT3> LoadObj::GetPositions(int p_ObjIndex)
 {
-	return m_Position[p_GroupIndex];
+	return m_Obj[p_ObjIndex].m_Position;
 }
 
-std::vector<XMFLOAT3> LoadObj::GetNormals(int p_GroupIndex)
+std::vector<XMFLOAT3> LoadObj::GetNormals(int p_ObjIndex)
 {
-	return m_Normal[p_GroupIndex];
+	return m_Obj[p_ObjIndex].m_Normal;
 }
 
-std::vector<XMFLOAT2> LoadObj::GetTexCoords(int p_GroupIndex)
+std::vector<XMFLOAT2> LoadObj::GetTexCoords(int p_ObjIndex)
 {
-	return m_TexCoord[p_GroupIndex];
+	return m_Obj[p_ObjIndex].m_TexCoord;
 }
 
 ObjGroups* LoadObj::GetGroup(int p_index)
@@ -175,7 +199,29 @@ ObjGroups* LoadObj::GetGroup(int p_index)
 	return &m_groups[p_index];
 }
 
+std::vector<ObjGroups> LoadObj::GetAllGroupsFromAMesh(int p_ObjIndex)
+{
+	std::vector<ObjGroups> t_Groups;
+	int t_ObjSize = m_Obj.size();
+	int t_GroupSize = m_Obj[p_ObjIndex].m_GroupId.size();
+
+	for (int i = 0; i < t_ObjSize; i++)
+	{
+		for (int x = 0; x < t_GroupSize; x++)
+		{
+			t_Groups.push_back(m_groups[m_Obj[p_ObjIndex].m_GroupId[x]]);
+		}
+	}
+
+	return t_Groups;
+}
+
 int LoadObj::GetGroupCount()
 {
 	return m_groups.size();
+}
+
+int LoadObj::GetObjCount()
+{
+	return m_Obj.size();
 }
