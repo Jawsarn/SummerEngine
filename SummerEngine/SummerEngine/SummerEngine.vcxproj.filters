@@ -99,10 +99,10 @@
     <ClCompile Include="ExtensibleGameFactory.cpp">
       <Filter>Source Files\Factorys</Filter>
     </ClCompile>
-    <ClCompile Include="AdressTranslator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MeshResourceLoadSave.cpp">
+      <Filter>Source Files\InOut</Filter>
+    </ClCompile>
+    <ClCompile Include="AdressTranslator.cpp">
       <Filter>Source Files\InOut</Filter>
     </ClCompile>
   </ItemGroup>
@@ -161,13 +161,13 @@
     <ClInclude Include="ExtensibleGameFactory.h">
       <Filter>Header Files\Factorys</Filter>
     </ClInclude>
-    <ClInclude Include="AdressTranslator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceLoadSave.h">
       <Filter>Header Files\InOut</Filter>
     </ClInclude>
     <ClInclude Include="MeshResourceLoadSave.h">
+      <Filter>Header Files\InOut</Filter>
+    </ClInclude>
+    <ClInclude Include="AdressTranslator.h">
       <Filter>Header Files\InOut</Filter>
     </ClInclude>
   </ItemGroup>

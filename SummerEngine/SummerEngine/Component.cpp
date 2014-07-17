@@ -28,6 +28,16 @@ bool Component::IsEnabled()
 	return m_IsEnabled;
 }
 
+void Component::Enable()
+{
+	m_IsEnabled = true;
+}
+
+void Component::Disable()
+{
+	m_IsEnabled = false;
+}
+
 void Component::SetEntity(Entity* p_Entity)
 {
 	m_Entity = p_Entity;

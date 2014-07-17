@@ -12,6 +12,8 @@ public:
 	~Component();
 
 	virtual bool IsEnabled();
+	virtual void Enable();
+	virtual void Disable();
 
 	virtual void Awake();
 	virtual void Start();

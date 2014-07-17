@@ -34,6 +34,21 @@ GameEngine::~GameEngine()
 #include "StreamFile.h"
 #include "Stream.h"
 
+struct TestVector
+{
+	float a;
+	float b;
+	TestVector()
+	{
+		a = 0;
+		b = 0;
+	}
+	TestVector(float p_a, float p_b)
+	{
+		a = p_a;
+		b = p_b;
+	}
+};
 
 bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 {
@@ -65,6 +80,29 @@ bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 	std::string e = ReadString(t_tes);
 	t_tes.Close();
 
+
+	std::vector<TestVector> t_Tests;
+	t_Tests.push_back(TestVector(10.0f, 30.1f));
+	t_Tests.push_back(TestVector(15.0f, 26.7f));
+	t_Tests.push_back(TestVector(33.3f, 83.5f));
+	t_Tests.push_back(TestVector(666.6f, 333.2f));
+
+	t_tes.OpenFileWrite("VectorReadWriteTest.working");
+	t_tes.Write(t_Tests.size()*sizeof(TestVector), &t_Tests[0]);
+
+	t_tes.Close();
+
+	//ok now try to read to a new vector
+	std::vector<TestVector> t_TestsIncome;
+	t_TestsIncome.resize(4);
+
+	t_tes.OpenFileRead("VectorReadWriteTest.working");
+
+	t_tes.Read(4*sizeof(TestVector), &t_TestsIncome[0]);
+
+	t_tes.Close();
+
+	int working = 0;
 
 
 	return true;

@@ -34,12 +34,24 @@ bool RenderComponent::IsReceivingShadows()
 void RenderComponent::Start()
 {
 	m_RenderingSystem = m_RenderingSystem->GetInstance();
-	m_RenderingSystem->Register(m_Entity);
+	m_RenderingSystem->Register(this);
 }
 
 void RenderComponent::Sleep()
 {
-	m_RenderingSystem->Unregister(m_Entity);
+	m_RenderingSystem->Unregister(this);
+}
+
+void RenderComponent::Enable()
+{
+	Component::Enable();
+	m_RenderingSystem->EnableComponent(this);
+}
+
+void RenderComponent::Disable()
+{
+	Component::Disable();
+	m_RenderingSystem->DisableComponent(this);
 }
 
 bool RenderComponent::Read(Stream &p_Stream)
@@ -49,7 +61,7 @@ bool RenderComponent::Read(Stream &p_Stream)
 	std::string t_MeshName = ReadString(p_Stream); //load mesh here
 
 	ResourceManager* t_RM = t_RM->GetInstance();
-	m_Mesh =  (Mesh*) t_RM->Create(t_MeshName) ;
+	m_Mesh =  (Mesh*)t_RM->Create(t_MeshName) ;
 
 
 	m_CastShadows = ReadBool(p_Stream);

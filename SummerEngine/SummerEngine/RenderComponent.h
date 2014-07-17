@@ -10,6 +10,9 @@ public:
 	RenderComponent(std::string p_Name);
 	~RenderComponent();
 
+	virtual void Enable();
+	virtual void Disable();
+
 	virtual void Start();
 	virtual void Sleep();
 

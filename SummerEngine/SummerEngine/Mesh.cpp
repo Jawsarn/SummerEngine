@@ -171,3 +171,11 @@ HRESULT Mesh::Render(ID3D11DeviceContext* p_DeviceContext)
 }
 
 
+Mesh::VertexGroups* Mesh::GetVertexData()
+{
+	return &m_Groups;
+}
+void Mesh::SetVertexData(VertexGroups p_Groups)
+{
+	m_Groups = p_Groups;
+}

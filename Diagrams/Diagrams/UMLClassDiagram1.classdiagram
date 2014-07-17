@@ -255,6 +255,31 @@
         <elementDefinition Id="4042016f-e22f-42a1-8926-9f802b1c12a3" />
       </class>
     </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="eccc8b26-4fb0-47a7-b240-c39b5d5d584a" name="Mesh" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="e3c4cd94-7ab0-44e0-9e67-5fea610fb4b8" />
+        <ownedOperationsInternal>
+          <operation Id="4c6254c2-7c08-4c6d-a796-d222ca0b9de7" name="Operation1" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="ea4e045f-c413-4c2d-ac7f-b52f19c8cf96" />
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="9222c839-ff09-4b7a-82a1-afd6bb36c71f" name="RenderComponent" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="ab3ffed6-7c21-40de-bb3c-49de303262d1" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="e9ee95dc-19f1-4098-bfda-e64228b3d603" name="ResourceManager" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="39c33fce-dfd0-4c23-b381-27735898c9da" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="4bde6bd7-5fe7-477b-bbf1-33e8fddd9652" name="MeshResourceLoadSave" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="965b8271-0530-4aac-8d11-173a63f32f47" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
   </packagedElements>
   <package Id="82e42c0a-28bc-4df7-bc46-3dc7256036d4" name="Diagrams">
     <elementDefinition Id="ef78e4fa-737c-40bc-97e8-8598a26de76c" />

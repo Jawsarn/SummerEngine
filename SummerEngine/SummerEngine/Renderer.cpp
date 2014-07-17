@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include <DirectXColors.h>
 
+
 Renderer* Renderer::m_Singleton = nullptr;
 
 Renderer* Renderer::GetInstance()
@@ -492,7 +493,19 @@ void Renderer::BeginRender()
 	m_IsRendering = true;
 }
 
-void Renderer::RenderOpaque()
+void Renderer::RenderOpaque(std::vector<Mesh*> p_Meshes) //should be already sorted here on something,
+{
+	//pre deferred things
+
+	int t_Size = p_Meshes.size();
+	for (int i = 0; i < t_Size; i++)
+	{
+		//m_DeviceContext->Draw(,);
+	}
+	
+}
+
+void Renderer::ComputeDeferred()
 {
 
 }

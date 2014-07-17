@@ -1,6 +1,7 @@
 #pragma once
 #include <d3d11_1.h>
 #include <DirectXMath.h>
+#include "Mesh.h"
 
 using namespace DirectX;
 
@@ -12,7 +13,8 @@ public:
 	static Renderer* GetInstance();
 	bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow);
 	void BeginRender();
-	void RenderOpaque();
+	void RenderOpaque(std::vector<Mesh*> p_Meshes);
+	void ComputeDeferred();
 	void RenderTransparent();
 	void EndRender();
 

@@ -33,12 +33,38 @@ void System::Destroy()
 
 }
 
-void System::Register(Entity* p_Entity)
+void System::Register(Component* p_Component)
 {
-	m_Entities.push_back(p_Entity);
+	if (p_Component->IsEnabled())
+	{
+		m_ActiveComponents.push_back(p_Component);
+	}
+	else
+	{
+		m_InactiveComponents.push_back(p_Component);
+	}
 }
 
-void System::Unregister(Entity* p_Entity)
+void System::Unregister(Component* p_Component)
 {
-	m_Entities.remove(p_Entity);
+	if (p_Component->IsEnabled())
+	{
+		m_ActiveComponents.remove(p_Component);
+	}
+	else
+	{
+		m_InactiveComponents.remove(p_Component);
+	}
+}
+
+void System::EnableComponent(Component* p_Component)
+{
+	m_InactiveComponents.remove(p_Component);
+	m_ActiveComponents.push_back(p_Component);
+}
+
+void System::DisableComponent(Component* p_Component)
+{
+	m_ActiveComponents.remove(p_Component);
+	m_InactiveComponents.push_back(p_Component);
 }

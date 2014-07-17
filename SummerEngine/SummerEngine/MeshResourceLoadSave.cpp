@@ -25,7 +25,7 @@ Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 		t_Groups.push_back(t_VertexGroup);
 	}
 
-	//o_Mesh->SetVertexData(t_Groups);
+	o_Mesh->SetVertexData(t_Groups);
 
 	return o_Mesh; //add code to create a mesh from file here
 }
@@ -36,10 +36,10 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 	
 	Mesh* t_Mesh = (Mesh*)p_File;
 	
-	//Mesh::VertexGroups* t_VertexGroups = t_Mesh->GetVertexData();
+	Mesh::VertexGroups* t_VertexGroups = t_Mesh->GetVertexData();
 
-	//int t_NumOfGroups = t_VertexGroups->size();
-	/*WriteInt(t_File, t_NumOfGroups);
+	int t_NumOfGroups = t_VertexGroups->size();
+	WriteInt(t_File, t_NumOfGroups);
 	
 	for (int i = 0; i < t_NumOfGroups; i++)
 	{
@@ -47,7 +47,7 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 		WriteInt(t_File, t_NumOfVertices);
 
 		t_File.Write(sizeof(Mesh::MeshVertex)*t_NumOfVertices, &t_VertexGroups[i][0]);
-	}*/
+	}
 
 	//t_File.Write(); custom data hela vägen, men du måste veta hur den ser ut när du laddar in den på ett bra sätt
 	//eller
