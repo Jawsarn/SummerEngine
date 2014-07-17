@@ -29,6 +29,6 @@ private:
 
 	Mesh* m_Mesh;
 	bool m_CastShadows;
-	bool m_ReceiveShadows;                                                                                                                                                                                                                                                                                                                                                                                               
+	bool m_ReceiveShadows;                                                                                                                                                                                                                                                                                                                                                                                            
 };
 

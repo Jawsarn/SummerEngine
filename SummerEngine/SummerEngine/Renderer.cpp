@@ -493,16 +493,32 @@ void Renderer::BeginRender()
 	m_IsRendering = true;
 }
 
-void Renderer::RenderOpaque(std::vector<Mesh*> p_Meshes) //should be already sorted here on something,
+void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already sorted here on something,
 {
-	//pre deferred things
-
-	int t_Size = p_Meshes.size();
-	for (int i = 0; i < t_Size; i++)
+	int t_NumOfObjects = p_RenderObjects->size();
+	if (t_NumOfObjects == 0)
 	{
-		//m_DeviceContext->Draw(,);
+		return;
 	}
-	
+
+	std::vector<ID3D11Buffer*> t_BuffersToDraw;
+	int lastBufferSpot = -1;
+
+	for (size_t i = 0; i < t_NumOfObjects; i++)
+	{
+		RenderObject t_RenderObject = p_RenderObjects->at(i);
+		ID3D11Buffer* t_Buffer = t_RenderObject.m_Mesh->GetVertexBuffer(t_RenderObject.BufferNum);
+		
+		//if (t_Buffer == t_BuffersToDraw[lastBufferSpot]) //if buffer was same as last, just stack it up and add the translationshizzle to somewhere
+		//{
+
+		//}
+
+	}
+	//textures
+	//vertexBuffers
+	//materialBuffers?
+	//matrixes
 }
 
 void Renderer::ComputeDeferred()
@@ -510,7 +526,7 @@ void Renderer::ComputeDeferred()
 
 }
 
-void Renderer::RenderTransparent()
+void Renderer::RenderTransparent(RenderObjects* p_RenderObjects)
 {
 
 }

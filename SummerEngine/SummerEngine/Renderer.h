@@ -2,6 +2,7 @@
 #include <d3d11_1.h>
 #include <DirectXMath.h>
 #include "Mesh.h"
+#include "Component.h"
 
 using namespace DirectX;
 
@@ -10,12 +11,21 @@ using namespace DirectX;
 class Renderer
 {
 public:
+	struct RenderObject
+	{
+		Mesh* m_Mesh;
+		int BufferNum;
+		Component* m_Component;
+	};
+	typedef std::vector<RenderObject> RenderObjects;
+
+
 	static Renderer* GetInstance();
 	bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow);
 	void BeginRender();
-	void RenderOpaque(std::vector<Mesh*> p_Meshes);
+	void RenderOpaque(RenderObjects* p_RenderObjects);
 	void ComputeDeferred();
-	void RenderTransparent();
+	void RenderTransparent(RenderObjects* p_RenderObjects);
 	void EndRender();
 
 

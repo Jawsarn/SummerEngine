@@ -23,11 +23,11 @@ private:
 	std::vector<Component*> m_CulledComponents;
 
 	//list should be of the culled Components
-	std::vector<Component*> m_Opaque;
-	std::vector<Component*> m_Transparents;
-	std::vector<Component*> m_NonShadowRecieving;
+	std::vector<Renderer::RenderObject*> m_Opaque;
+	std::vector<Renderer::RenderObject*> m_Transparents;
+	std::vector<Renderer::RenderObject*> m_NonShadowRecieving;
 	
 	//only for creating shadow textures
-	std::vector<Component*> m_ShadowGiving;
+	std::vector<Renderer::RenderObject*> m_ShadowGiving;
 };
 

@@ -20,6 +20,9 @@ public:
 		}
 	};
 	typedef std::vector<std::vector<MeshVertex>> VertexGroups;
+	typedef std::vector<int> GroupNumOfVert;
+
+
 	Mesh();
 	~Mesh();
 
@@ -35,6 +38,10 @@ public:
 
 	HRESULT Render(ID3D11DeviceContext* p_DeviceContext);
 
+	ID3D11Buffer* GetVertexBuffer(int p_Slot);
+	GroupNumOfVert* GetNumOfVert();
+
+
 	virtual const std::string &GetName() const;
 	virtual const ResourceType GetType() const;
 
@@ -43,7 +50,7 @@ private:
 	std::string m_FileName;
 	
 	VertexGroups m_Groups;
-
+	GroupNumOfVert m_NumOfVert;
 	//std::vector<std::vector<MeshVertex>> m_Groups;
 	/*GameObject gameObject;
 	ID3D11Buffer* buffer;
