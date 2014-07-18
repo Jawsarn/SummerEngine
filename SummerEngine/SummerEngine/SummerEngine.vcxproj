@@ -72,6 +72,7 @@
     <ClCompile Include="LoadObj.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshResourceLoadSave.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="ExtensibleGameFactory.h" />
     <ClInclude Include="LoadObj.h" />
     <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshResourceLoadSave.h" />

@@ -105,6 +105,9 @@
     <ClCompile Include="AdressTranslator.cpp">
       <Filter>Source Files\InOut</Filter>
     </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="AdressTranslator.h">
       <Filter>Header Files\InOut</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
