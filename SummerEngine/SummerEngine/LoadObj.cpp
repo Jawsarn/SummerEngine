@@ -75,7 +75,11 @@ bool LoadObj::Load(std::string p_fileName)
 
 		else if (type_str == "mtllib")
 		{
+			std::string t_MaterialFileName;
+			int t_LastIndex = p_fileName.find_last_of(".");
+			t_MaterialFileName = p_fileName.substr(0, t_LastIndex) + ".mtl";
 
+			ParseMaterialFile(t_MaterialFileName);
 		}
 	}
 
@@ -195,6 +199,72 @@ void LoadObj::LoadMaterial(std::stringstream& p_MaterialName)
 	m_groups.push_back(t_Group);
 	//sending id (so that object knows which groups that are in it)
 	m_Obj[m_CurrentObj].m_GroupId.push_back(m_CurrentGroup);
+}
+
+bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
+{
+	std::ifstream t_file;
+	t_file.open(p_MaterialName);
+
+	if (!t_file.is_open())
+	{
+		MessageBox(nullptr, L"Material-File could not be loaded", L"Error", MB_ICONERROR | MB_OK);
+		return false;
+	}
+
+	std::string stream_line;
+
+	while (std::getline(t_file, stream_line))
+	{
+		std::stringstream str_stream(stream_line);
+		std::string type_str;
+		str_stream >> type_str;
+
+		if (type_str == "newmtl")
+		{
+
+			std::string t_MaterialName;
+			str_stream >> t_MaterialName;
+			int xD = 0;
+			m_CurrentMaterial += 1;
+		}
+
+		if (type_str == "Ns")
+		{
+
+		}
+
+		if (type_str == "Ka")
+		{
+
+		}
+
+		if (type_str == "Kd")
+		{
+
+		}
+
+		if (type_str == "Ks")
+		{
+
+		}
+
+		if (type_str == "Ni")
+		{
+
+		}
+
+		if (type_str == "d")
+		{
+
+		}
+
+		if (type_str == "illum")
+		{
+
+		}
+	}
+	return true;
 }
 
 void LoadObj::LoadPosition(std::stringstream& f)
