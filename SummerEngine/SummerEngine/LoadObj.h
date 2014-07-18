@@ -28,16 +28,16 @@ struct Obj
 
 struct MaterialData
 {
-	std::string m_Name;
-	UINT32 m_Illum;
-	float m_Kd[3];
-	float m_Ka[3];
-	float m_Tf[3];
+	std::string m_Name;			//Material name
+	UINT32 m_Illum;				//
+	float m_Kd[3];				//Diffuse color
+	float m_Ka[3];				//Ambient color
+	float m_Tf[3];				//Transperancy color
 	std::string m_Map_Kd;
 	std::string m_Bump;
 	std::string m_Disp;
 	std::string m_Occulsion;
-	float m_Ni;
+	float m_Ni;					//Reflection index
 
 	MaterialData()
 	{
@@ -77,11 +77,8 @@ private:
 	
 	int m_CurrentObj;
 	int m_CurrentGroup;
-	bool m_NextMaterial;
-
-	//std::vector<std::vector<XMFLOAT3>>  m_Position;
-	//std::vector<std::vector<XMFLOAT3>>  m_Normal;
-	//std::vector<std::vector<XMFLOAT2>>  m_TexCoord;
+	//bool m_NextMaterial;
+	int m_CurrentMaterial;
 
 	std::vector<ObjGroups> m_groups;
 	std::vector<Obj> m_Obj;
@@ -93,6 +90,6 @@ private:
 	void LoadTexCoord(std::stringstream& f);
 	void LoadMaterial(std::stringstream& g);
 
-	void ParseMaterialFile();
+	bool ParseMaterialFile(std::string p_MaterialName);
 };
 
