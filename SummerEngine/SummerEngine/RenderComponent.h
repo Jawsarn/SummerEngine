@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "RenderingSystem.h"
 #include "Mesh.h"
+#include "Material.h"
 
 class RenderComponent:public Component
 {
@@ -17,6 +18,7 @@ public:
 	virtual void Sleep();
 
 	Mesh* GetMesh();
+	Material* GetMaterial(int p_SlotNumber);
 	bool IsCastingShadows();
 	bool IsReceivingShadows();
 
@@ -30,9 +32,9 @@ private:
 
 
 	Mesh* m_Mesh;
-
+	std::vector<Material*> m_Materials;
 
 	bool m_CastShadows;
-	bool m_ReceiveShadows;                                                                                                                                                                                                                                                                                                                                                                                            
+	bool m_ReceiveShadows;
 };
 

@@ -1,6 +1,6 @@
 #include "Renderer.h"
 #include <DirectXColors.h>
-
+#include "RenderComponent.h"
 
 Renderer* Renderer::m_Singleton = nullptr;
 
@@ -502,16 +502,27 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 	}
 
 	std::vector<ID3D11Buffer*> t_BuffersToDraw;
+	std::vector<Material*> t_Materials;
+	//translations
 	std::vector<int> t_InstancedAmount;
 	int lastBufferSpot = -1;
 
-	for (int i = 0; i < t_NumOfObjects; i++)
+	{
+		RenderObject t_RenderObject = p_RenderObjects->at(0);
+		ID3D11Buffer* t_Buffer = t_RenderObject.m_Mesh->GetVertexBuffer(t_RenderObject.BufferNum);
+		Material* t_Material = ((RenderComponent*)(t_RenderObject.m_Component))->GetMaterial(t_RenderObject.BufferNum);
+	}
+
+	for (int i = 1; i < t_NumOfObjects; i++)
 	{
 		RenderObject t_RenderObject = p_RenderObjects->at(i);
 		ID3D11Buffer* t_Buffer = t_RenderObject.m_Mesh->GetVertexBuffer(t_RenderObject.BufferNum);
 		
 		if (t_Buffer == t_BuffersToDraw[lastBufferSpot]) //if buffer was same as last, just stack it up and add the translationshizzle to somewhere
 		{
+			Material* t_Material = ((RenderComponent*)(t_RenderObject.m_Component))->GetMaterial(t_RenderObject.BufferNum);
+			
+			t_InstancedAmount[lastBufferSpot]++;
 			//check textures here, if ok, then add the tranform info to a instanced buffer
 		}
 	}

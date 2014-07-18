@@ -47,7 +47,7 @@ public:
 
 private:
 	LoadObj* m_Mesh;
-	std::string m_FileName;
+	
 	
 	VertexGroups m_Groups;
 	GroupNumOfVert m_NumOfVert;

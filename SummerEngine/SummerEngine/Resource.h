@@ -17,6 +17,6 @@ public:
 	//virtual bool Load() = 0;
 	//virtual void Save() = 0;
 protected:
-	
+	std::string m_FileName;
 
 };

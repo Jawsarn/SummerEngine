@@ -21,6 +21,11 @@ Mesh* RenderComponent::GetMesh()
 	return m_Mesh;
 }
 
+Material* RenderComponent::GetMaterial(int p_SlotNumber)
+{
+	return m_Materials[p_SlotNumber];
+}
+
 bool RenderComponent::IsCastingShadows()
 {
 	return m_CastShadows;
