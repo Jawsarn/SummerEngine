@@ -14,6 +14,7 @@ struct ObjGroups
 	//std::string name;
 	std::string material;
 	std::vector<Triangle> triangles;
+	int m_ObjId;
 };
 
 struct Obj

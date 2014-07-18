@@ -85,7 +85,6 @@ bool LoadObj::Load(std::string p_fileName)
 
 void LoadObj::LoadGroup(std::stringstream& f)
 {
-
 	if (m_Obj.size() > 0)
 	{
 		m_CurrentObj += 1;
@@ -131,6 +130,50 @@ void LoadObj::LoadFace(std::stringstream& f)
 
 			//Converting to int and also making sure that it's the same as the vector = (-1)
 			t_triangle.index[i][x] = atoi(_new.c_str()) - 1;
+
+			//Check if this is the first object that is loaded or not
+			if (m_CurrentObj > 0)
+			{
+				//We are now loading an object that is after the first object, which means that this triangle index needs to be "reset"
+				if (x == 0)
+				{
+					//Subtracting the triangle position-index by all the objects position count COMBINED
+					int t_Result = 0;
+					for (int x = m_CurrentObj; x > 0; x--)
+					{
+						t_Result += m_Obj[x - 1].m_Position.size();
+					}
+
+					int t_NewTriangleIndex = t_triangle.index[i][x] - t_Result;
+					t_triangle.index[i][x] = t_NewTriangleIndex;
+				}
+
+				//Subtracting the triangle UV-index by all the objects texCoord count COMBINED
+				if (x == 1)
+				{
+					int t_Result = 0;
+					for (int x = m_CurrentObj; x > 0; x--)
+					{
+						t_Result += m_Obj[x - 1].m_TexCoord.size();
+					}
+
+					int t_NewTriangleIndex = t_triangle.index[i][x] - t_Result;
+					t_triangle.index[i][x] = t_NewTriangleIndex;
+				}
+
+				//Subtracting the triangle normal-index by all the objects normal count COMBINED
+				if (x == 2)
+				{
+					int t_Result = 0;
+					for (int x = m_CurrentObj; x > 0; x--)
+					{
+						t_Result += m_Obj[x - 1].m_Normal.size();
+					}
+
+					int t_NewTriangleIndex = t_triangle.index[i][x] - t_Result;
+					t_triangle.index[i][x] = t_NewTriangleIndex;
+				}
+			}
 		}
 	}
 	//Saving triangle
@@ -144,9 +187,12 @@ void LoadObj::LoadMaterial(std::stringstream& p_MaterialName)
 		m_CurrentGroup += 1;
 	}
 
-	ObjGroups t_obj;
-	p_MaterialName >> t_obj.material;
-	m_groups.push_back(t_obj);
+	ObjGroups t_Group;
+	p_MaterialName >> t_Group.material;
+	//Saving obj id to the group
+	t_Group.m_ObjId = m_CurrentObj;
+
+	m_groups.push_back(t_Group);
 	//sending id (so that object knows which groups that are in it)
 	m_Obj[m_CurrentObj].m_GroupId.push_back(m_CurrentGroup);
 }
@@ -202,15 +248,12 @@ ObjGroups* LoadObj::GetGroup(int p_index)
 std::vector<ObjGroups> LoadObj::GetAllGroupsFromAMesh(int p_ObjIndex)
 {
 	std::vector<ObjGroups> t_Groups;
-	int t_ObjSize = m_Obj.size();
+	//int t_ObjSize = m_Obj.size();
 	int t_GroupSize = m_Obj[p_ObjIndex].m_GroupId.size();
 
-	for (int i = 0; i < t_ObjSize; i++)
+	for (int x = 0; x < t_GroupSize; x++)
 	{
-		for (int x = 0; x < t_GroupSize; x++)
-		{
-			t_Groups.push_back(m_groups[m_Obj[p_ObjIndex].m_GroupId[x]]);
-		}
+		t_Groups.push_back(m_groups[m_Obj[p_ObjIndex].m_GroupId[x]]);
 	}
 
 	return t_Groups;

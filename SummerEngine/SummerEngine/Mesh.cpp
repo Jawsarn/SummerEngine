@@ -67,13 +67,25 @@ void Mesh::LoadFromObj(std::string p_FileName)
 	int t_GroupCount = m_Mesh->GetGroupCount();
 
 	std::vector<ObjGroups> t_CurGroup;
+
+	//Get all groups from all meshes in scene
+	std::vector<std::vector<ObjGroups>> t_AllGroups;
 	for (int i = 0; i < t_ObjCount; i++)
 	{
-		for (int x = 0; x < t_GroupCount; x++)
+		t_AllGroups.push_back(m_Mesh->GetAllGroupsFromAMesh(i));
+	}
+
+	//Set them to a vector
+	int t_AllGroupsSize = t_AllGroups.size();
+	for (int i = 0; i < t_AllGroupsSize; i++)
+	{
+		for (int x = 0; x < t_AllGroups[i].size(); x++)
 		{
-			t_CurGroup = m_Mesh->GetAllGroupsFromAMesh(i);
+			t_CurGroup.push_back(t_AllGroups[i][x]);
 		}
 	}
+	//clear old one
+	t_AllGroups.clear();
 
 	int t_CurGroupCount = t_CurGroup.size();
 
@@ -108,16 +120,20 @@ void Mesh::LoadFromObj(std::string p_FileName)
 
 				//Get Positions
 				//int t_position = triangle->index[j][0];//pos 3, pos 2, pos1
-				t_V.position = m_Mesh->GetPositions(0)[t_Triangle->index[j][0]];
+
+				int test_PositionIndex = t_Triangle->index[j][0];
+				int test_TexIndex = t_Triangle->index[j][1];
+				int test_NormIndex = t_Triangle->index[j][2];
+
+				int t_ObjIndex = t_CurGroup[i].m_ObjId;
+
+				t_V.position = m_Mesh->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
 
 				//Get Texture Coordinates
-				t_V.texCoord = m_Mesh->GetTexCoords(0)[t_Triangle->index[j][1]];
+				t_V.texCoord = m_Mesh->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
 
 				//Get Normals
-				t_V.normal = m_Mesh->GetNormals(0)[t_Triangle->index[j][2]];
-
-				//delete(triangle);														DELETE!
-				//triangle = nullptr;
+				t_V.normal = m_Mesh->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
 
 				//t_Vertices[count] = t_V;
 				t_Vertices.push_back(t_V);
@@ -126,6 +142,7 @@ void Mesh::LoadFromObj(std::string p_FileName)
 				count += 1;
 			}
 		}
+		m_NumberOfVerticesInTotal += count;
 		m_Groups.push_back(t_Vertices);
 		t_Vertices.clear();
 		//clear
@@ -162,8 +179,7 @@ HRESULT Mesh::Render(ID3D11DeviceContext* p_DeviceContext)
 			//gameObject.Render(p_DeviceContext, 0);
 
 			//draw three vertices from the bound vertex buffer
-			int amountOfTriangles = m_Mesh->GetGroup(i)->triangles.size();
-			p_DeviceContext->Draw(36, 0);
+		    p_DeviceContext->Draw(m_NumberOfVerticesInTotal, 0);
 		}
 	}
 	*/
