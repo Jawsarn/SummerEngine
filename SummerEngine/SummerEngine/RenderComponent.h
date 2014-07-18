@@ -27,7 +27,11 @@ public:
 private:
 	RenderingSystem* m_RenderingSystem;
 
+
+
 	Mesh* m_Mesh;
+
+
 	bool m_CastShadows;
 	bool m_ReceiveShadows;                                                                                                                                                                                                                                                                                                                                                                                            
 };

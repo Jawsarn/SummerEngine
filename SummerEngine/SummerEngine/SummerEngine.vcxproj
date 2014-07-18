@@ -69,6 +69,8 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="ExtensibleGameFactory.cpp" />
+    <ClCompile Include="InputComponent.cpp" />
+    <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="LoadObj.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -84,6 +86,7 @@
     <ClCompile Include="Stream.cpp" />
     <ClCompile Include="StreamFile.cpp" />
     <ClCompile Include="System.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +94,8 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="ExtensibleGameFactory.h" />
+    <ClInclude Include="InputComponent.h" />
+    <ClInclude Include="InputSystem.h" />
     <ClInclude Include="LoadObj.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Math.h" />
@@ -107,6 +112,7 @@
     <ClInclude Include="Stream.h" />
     <ClInclude Include="StreamFile.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="TransformComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -43,6 +43,12 @@
     <Filter Include="Source Files\InOut">
       <UniqueIdentifier>{4aa28428-8f5d-48af-b681-51a464db938a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ResourceManagement">
+      <UniqueIdentifier>{0762aadf-d3dc-42ef-838d-f57a68e746bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ResourceManagement">
+      <UniqueIdentifier>{5db4d025-506a-400a-a0ca-ef6d9b2acda0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -84,12 +90,6 @@
     <ClCompile Include="StreamFile.cpp">
       <Filter>Source Files\InOut</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Source Files\InOut</Filter>
-    </ClCompile>
-    <ClCompile Include="Resource.cpp">
-      <Filter>Source Files\InOut</Filter>
-    </ClCompile>
     <ClCompile Include="LoadObj.cpp">
       <Filter>Source Files\InOut</Filter>
     </ClCompile>
@@ -99,11 +99,26 @@
     <ClCompile Include="ExtensibleGameFactory.cpp">
       <Filter>Source Files\Factorys</Filter>
     </ClCompile>
-    <ClCompile Include="MeshResourceLoadSave.cpp">
-      <Filter>Source Files\InOut</Filter>
-    </ClCompile>
     <ClCompile Include="AdressTranslator.cpp">
       <Filter>Source Files\InOut</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Source Files\ResourceManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Source Files\ResourceManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshResourceLoadSave.cpp">
+      <Filter>Source Files\ResourceManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="InputComponent.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,12 +158,6 @@
     <ClInclude Include="Serializable.h">
       <Filter>Header Files\InOut</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Header Files\InOut</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files\InOut</Filter>
-    </ClInclude>
     <ClInclude Include="StreamFile.h">
       <Filter>Header Files\InOut</Filter>
     </ClInclude>
@@ -161,14 +170,29 @@
     <ClInclude Include="ExtensibleGameFactory.h">
       <Filter>Header Files\Factorys</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceLoadSave.h">
-      <Filter>Header Files\InOut</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshResourceLoadSave.h">
-      <Filter>Header Files\InOut</Filter>
-    </ClInclude>
     <ClInclude Include="AdressTranslator.h">
       <Filter>Header Files\InOut</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Header Files\ResourceManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceLoadSave.h">
+      <Filter>Header Files\ResourceManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files\ResourceManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshResourceLoadSave.h">
+      <Filter>Header Files\ResourceManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="InputComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

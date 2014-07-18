@@ -502,19 +502,21 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 	}
 
 	std::vector<ID3D11Buffer*> t_BuffersToDraw;
+	std::vector<int> t_InstancedAmount;
 	int lastBufferSpot = -1;
 
-	for (size_t i = 0; i < t_NumOfObjects; i++)
+	for (int i = 0; i < t_NumOfObjects; i++)
 	{
 		RenderObject t_RenderObject = p_RenderObjects->at(i);
 		ID3D11Buffer* t_Buffer = t_RenderObject.m_Mesh->GetVertexBuffer(t_RenderObject.BufferNum);
 		
-		//if (t_Buffer == t_BuffersToDraw[lastBufferSpot]) //if buffer was same as last, just stack it up and add the translationshizzle to somewhere
-		//{
-
-		//}
-
+		if (t_Buffer == t_BuffersToDraw[lastBufferSpot]) //if buffer was same as last, just stack it up and add the translationshizzle to somewhere
+		{
+			//check textures here, if ok, then add the tranform info to a instanced buffer
+		}
 	}
+
+
 	//textures
 	//vertexBuffers
 	//materialBuffers?
