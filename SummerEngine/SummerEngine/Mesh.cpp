@@ -68,14 +68,14 @@ void Mesh::LoadFromObj(std::string p_FileName)
 
 	std::vector<ObjGroups> t_CurGroup;
 
-	//Get all groups from all meshes in scene and store them in a vector
+	//Get all groups from all meshes in scene
 	std::vector<std::vector<ObjGroups>> t_AllGroups;
 	for (int i = 0; i < t_ObjCount; i++)
 	{
 		t_AllGroups.push_back(m_Mesh->GetAllGroupsFromAMesh(i));
 	}
 
-	//Setting the groups to only one vector
+	//Set them to a vector
 	int t_AllGroupsSize = t_AllGroups.size();
 	for (int i = 0; i < t_AllGroupsSize; i++)
 	{
@@ -90,11 +90,15 @@ void Mesh::LoadFromObj(std::string p_FileName)
 	int t_CurGroupCount = t_CurGroup.size();
 
 	//Amount of meshes (groups-objects) in file.
+	//for (int i = 0; i < m_Mesh->GetGroupCount(); i++)
 
 	for (int i = 0; i < t_CurGroupCount; i++)
 	{
 		//ID3D11Buffer* buffer = nullptr;
+		//buffer test
 
+		//curGroup = m_Mesh->GetGroup(i);
+		//	MeshVertex* vertices = myNew(MeshVertex[curGroup->triangles.size() * 3]);
 		std::vector<MeshVertex> t_Vertices;
 
 		MeshVertex t_V;
@@ -102,23 +106,26 @@ void Mesh::LoadFromObj(std::string p_FileName)
 
 		//Need to find a fast way to go through all the triangles.....NOTE
 		int count = 0;
-		for (int x = 0; x < t_CurGroup[i].triangles.size(); x++)
+		int t_TriangleSize = t_CurGroup[i].triangles.size();
+		for (int x = 0; x < t_TriangleSize; x++)
 		{
 			//triangle has all the indexes for v/vn/vt
 			t_Triangle = &t_CurGroup[i].triangles[x];
+			int t_ObjIndex = t_CurGroup[i].m_ObjId;
 
 			//Creating the triangle
 			for (int j = 2; j >= 0; j--)
 			{
 				//iterate throug all triangles and extract the position from the vectors
-				//index from triangle		data from pos, norm, texCoord
+				//index from triangle
+				//data from pos, norm, texCoord
 
+				//Get Positions
+				//int t_position = triangle->index[j][0];//pos 3, pos 2, pos1
 
 				//int test_PositionIndex = t_Triangle->index[j][0];
 				//int test_TexIndex = t_Triangle->index[j][1];
 				//int test_NormIndex = t_Triangle->index[j][2];
-
-				int t_ObjIndex = t_CurGroup[i].m_ObjId;
 
 				t_V.position = m_Mesh->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
 

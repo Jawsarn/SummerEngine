@@ -139,9 +139,9 @@ void LoadObj::LoadFace(std::stringstream& f)
 				{
 					//Subtracting the triangle position-index by all the objects position count COMBINED
 					int t_Result = 0;
-					for (int x = m_CurrentObj; x > 0; x--)
+					for (int y = m_CurrentObj; y > 0; y--)
 					{
-						t_Result += m_Obj[x - 1].m_Position.size();
+						t_Result += m_Obj[y - 1].m_Position.size();
 					}
 
 					int t_NewTriangleIndex = t_triangle.index[i][x] - t_Result;
@@ -152,9 +152,9 @@ void LoadObj::LoadFace(std::stringstream& f)
 				if (x == 1)
 				{
 					int t_Result = 0;
-					for (int x = m_CurrentObj; x > 0; x--)
+					for (int y = m_CurrentObj; y > 0; y--)
 					{
-						t_Result += m_Obj[x - 1].m_TexCoord.size();
+						t_Result += m_Obj[y - 1].m_TexCoord.size();
 					}
 
 					int t_NewTriangleIndex = t_triangle.index[i][x] - t_Result;
@@ -165,9 +165,9 @@ void LoadObj::LoadFace(std::stringstream& f)
 				if (x == 2)
 				{
 					int t_Result = 0;
-					for (int x = m_CurrentObj; x > 0; x--)
+					for (int y = m_CurrentObj; y > 0; y--)
 					{
-						t_Result += m_Obj[x - 1].m_Normal.size();
+						t_Result += m_Obj[y - 1].m_Normal.size();
 					}
 
 					int t_NewTriangleIndex = t_triangle.index[i][x] - t_Result;
