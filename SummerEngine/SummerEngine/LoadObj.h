@@ -26,6 +26,35 @@ struct Obj
 	std::vector<int> m_GroupId;
 };
 
+struct MaterialData
+{
+	std::string m_Name;
+	UINT32 m_Illum;
+	float m_Kd[3];
+	float m_Ka[3];
+	float m_Tf[3];
+	std::string m_Map_Kd;
+	std::string m_Bump;
+	std::string m_Disp;
+	std::string m_Occulsion;
+	float m_Ni;
+
+	MaterialData()
+	{
+		//Default values
+		m_Name = "None";
+		m_Map_Kd = "None";
+		m_Bump = "None";
+		m_Disp = "None";
+		m_Occulsion = "None";
+		m_Kd[3] = 0, 0, 0;
+		m_Ka[3] = 0, 0, 0;
+		m_Tf[3] = 0, 0, 0;
+		m_Ni = 0;
+	}
+
+};
+
 class LoadObj
 {
 public:
@@ -64,6 +93,6 @@ private:
 	void LoadTexCoord(std::stringstream& f);
 	void LoadMaterial(std::stringstream& g);
 
-	//void ParseMaterialFile();
+	void ParseMaterialFile();
 };
 
