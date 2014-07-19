@@ -26,18 +26,22 @@ struct Obj
 	std::vector<int> m_GroupId;
 };
 
+
 struct MaterialData
 {
 	std::string m_Name;			//Material name
-	UINT32 m_Illum;				//
-	float m_Kd[3];				//Diffuse color
-	float m_Ka[3];				//Ambient color
-	float m_Tf[3];				//Transperancy color
+	UINT32 m_Illum;				//Define the illumination model: illum = 1 a flat material with no specular highlights, illum = 2 denotes the presence of specular highlights
+	float m_Kd[3];				//Diffuse color (r,g,b)
+	float m_Ka[3];				//Ambient color (r,g,b)
+	float m_Tf[3];				//Transperancy color (d or Tr)
+	float m_Ks[3];				//Specular color (r,g,b)
 	std::string m_Map_Kd;
 	std::string m_Bump;
 	std::string m_Disp;
 	std::string m_Occulsion;
 	float m_Ni;					//Reflection index
+	float m_Ns;					//Shininess of the material
+	float m_D;					//Transparency Tr (alpha)
 
 	MaterialData()
 	{
@@ -47,12 +51,15 @@ struct MaterialData
 		m_Bump = "None";
 		m_Disp = "None";
 		m_Occulsion = "None";
-		m_Kd[3] = 0, 0, 0;
-		m_Ka[3] = 0, 0, 0;
-		m_Tf[3] = 0, 0, 0;
+		m_Kd[0] = 0; m_Kd[1] = 0; m_Kd[2] = 0;
+		m_Ka[0] = 0; m_Ka[1] = 0; m_Ka[2] = 0;
+		m_Tf[0] = 0; m_Tf[1] = 0; m_Tf[2] = 0;
+		m_Ks[0] = 0; m_Ks[1] = 0; m_Ks[2] = 0;
 		m_Ni = 0;
+		m_Ns = 0;
+		m_D = 0;
+		m_Illum = 0;
 	}
-
 };
 
 class LoadObj
@@ -63,9 +70,9 @@ public:
 
 	bool Load(std::string p_fileName);
 	
-	std::vector<XMFLOAT3 >GetPositions(int p_ObjIndex);
-	std::vector<XMFLOAT3 >GetNormals(int p_ObjIndex);
-	std::vector<XMFLOAT2 >GetTexCoords(int p_ObjIndex);
+	std::vector<XMFLOAT3 >&GetPositions(int p_ObjIndex);
+	std::vector<XMFLOAT3 >&GetNormals(int p_ObjIndex);
+	std::vector<XMFLOAT2 >&GetTexCoords(int p_ObjIndex);
 
 	ObjGroups* GetGroup(int p_GroupIndex);
 
@@ -79,6 +86,7 @@ private:
 	int m_CurrentGroup;
 	//bool m_NextMaterial;
 	int m_CurrentMaterial;
+	std::vector<MaterialData*> m_Material;
 
 	std::vector<ObjGroups> m_groups;
 	std::vector<Obj> m_Obj;

@@ -220,50 +220,65 @@ bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
 		std::string type_str;
 		str_stream >> type_str;
 
+		MaterialData* t_NewMaterial = nullptr;
+
 		if (type_str == "newmtl")
 		{
 
+			if (m_Material.size() > 0)
+			{
+				m_CurrentMaterial += 1;
+			}
+
+			m_Material.resize(m_Material.size() + 1);
+
 			std::string t_MaterialName;
 			str_stream >> t_MaterialName;
-			int xD = 0;
-			m_CurrentMaterial += 1;
+
+			t_NewMaterial = new MaterialData();
+			t_NewMaterial->m_Name = t_MaterialName;
+			m_Material[m_CurrentMaterial] = t_NewMaterial;
 		}
 
 		if (type_str == "Ns")
 		{
-
+			str_stream >> m_Material[m_CurrentMaterial]->m_Ns;
+			int xDD = 0;
 		}
 
 		if (type_str == "Ka")
 		{
-
+			str_stream >> m_Material[m_CurrentMaterial]->m_Ka[0] >> m_Material[m_CurrentMaterial]->m_Ka[1] >> m_Material[m_CurrentMaterial]->m_Ka[2];
+			int edsdsd = 0;
 		}
 
 		if (type_str == "Kd")
 		{
-
+			str_stream >> m_Material[m_CurrentMaterial]->m_Kd[0] >> m_Material[m_CurrentMaterial]->m_Kd[1] >> m_Material[m_CurrentMaterial]->m_Kd[2];
 		}
 
 		if (type_str == "Ks")
 		{
-
+			str_stream >> m_Material[m_CurrentMaterial]->m_Ks[0] >> m_Material[m_CurrentMaterial]->m_Ks[1] >> m_Material[m_CurrentMaterial]->m_Ks[2];
+			int lolsd = 0;
 		}
 
 		if (type_str == "Ni")
 		{
-
+			str_stream >> m_Material[m_CurrentMaterial]->m_Ni;
 		}
 
 		if (type_str == "d")
 		{
-
+			str_stream >> m_Material[m_CurrentMaterial]->m_D;
 		}
 
 		if (type_str == "illum")
 		{
-
+			str_stream >> m_Material[m_CurrentMaterial]->m_Illum;
 		}
 	}
+	t_file.close();
 	return true;
 }
 
@@ -295,17 +310,17 @@ void LoadObj::LoadTexCoord(std::stringstream& f)
 	m_Obj[m_CurrentObj].m_TexCoord.push_back(t_texCoord);
 }
 
-std::vector<XMFLOAT3> LoadObj::GetPositions(int p_ObjIndex)
+std::vector<XMFLOAT3>& LoadObj::GetPositions(int p_ObjIndex)
 {
 	return m_Obj[p_ObjIndex].m_Position;
 }
 
-std::vector<XMFLOAT3> LoadObj::GetNormals(int p_ObjIndex)
+std::vector<XMFLOAT3>& LoadObj::GetNormals(int p_ObjIndex)
 {
 	return m_Obj[p_ObjIndex].m_Normal;
 }
 
-std::vector<XMFLOAT2> LoadObj::GetTexCoords(int p_ObjIndex)
+std::vector<XMFLOAT2>& LoadObj::GetTexCoords(int p_ObjIndex)
 {
 	return m_Obj[p_ObjIndex].m_TexCoord;
 }
