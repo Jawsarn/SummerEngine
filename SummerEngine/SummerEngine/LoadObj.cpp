@@ -344,6 +344,15 @@ std::vector<ObjGroups> LoadObj::GetAllGroupsFromAMesh(int p_ObjIndex)
 	return t_Groups;
 }
 
+MaterialData* LoadObj::GetMaterial(std::string p_MaterialData)
+{
+	MAP_MATERIAL::const_iterator t_Iterator = m_MapMaterial.find(p_MaterialData);
+	if (t_Iterator == m_MapMaterial.end())
+		return nullptr;
+	else
+		return t_Iterator->second;
+}
+
 int LoadObj::GetGroupCount()
 {
 	return m_groups.size();

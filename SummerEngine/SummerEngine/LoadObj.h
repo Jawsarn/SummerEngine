@@ -4,6 +4,7 @@
 #include "Math.h"
 #include <fstream>
 #include <sstream>
+#include <map>
 
 struct ObjGroups
 {
@@ -62,8 +63,11 @@ struct MaterialData
 	}
 };
 
+typedef std::map<std::string, MaterialData*> MAP_MATERIAL;
+
 class LoadObj
 {
+	MAP_MATERIAL	m_MapMaterial;
 public:
 	LoadObj();
 	~LoadObj();
@@ -75,8 +79,9 @@ public:
 	std::vector<XMFLOAT2 >&GetTexCoords(int p_ObjIndex);
 
 	ObjGroups* GetGroup(int p_GroupIndex);
-
+	MaterialData* GetMaterial(std::string p_MaterialData);
 	std::vector<ObjGroups> GetAllGroupsFromAMesh(int p_ObjIndex);
+
 	int GetGroupCount();
 	int GetObjCount();
 
