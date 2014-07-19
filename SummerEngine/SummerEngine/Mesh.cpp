@@ -89,20 +89,13 @@ void Mesh::LoadFromObj(std::string p_FileName)
 
 	int t_CurGroupCount = t_CurGroup.size();
 
-	//Amount of meshes (groups-objects) in file.
-	//for (int i = 0; i < m_Mesh->GetGroupCount(); i++)
-
 	for (int i = 0; i < t_CurGroupCount; i++)
 	{
 		//ID3D11Buffer* buffer = nullptr;
-		//buffer test
-
-		//curGroup = m_Mesh->GetGroup(i);
 
 		MeshVertex t_V;
 		ObjGroups::Triangle* t_Triangle = nullptr;
 
-		//Need to find a fast way to go through all the triangles.....NOTE
 		int count = 0;
 		int t_TriangleSize = t_CurGroup[i].triangles.size();
 
@@ -119,10 +112,6 @@ void Mesh::LoadFromObj(std::string p_FileName)
 			{
 				//iterate throug all triangles and extract the position from the vectors
 				//index from triangle
-				//data from pos, norm, texCoord
-
-				//Get Positions
-				//int t_position = triangle->index[j][0];//pos 3, pos 2, pos1
 
 				//int test_PositionIndex = t_Triangle->index[j][0];
 				//int test_TexIndex = t_Triangle->index[j][1];
@@ -139,14 +128,12 @@ void Mesh::LoadFromObj(std::string p_FileName)
 				t_Vertices[count] = t_V;
 				//t_Vertices.push_back(t_V);
 
-				//Tangent code here....
 				count += 1;
 			}
 		}
 		m_NumberOfVerticesInTotal += count;
 		m_Groups.push_back(t_Vertices);
 		t_Vertices.clear();
-		//clear
 	}
 
 	//CreateMeshBuffers(p_Device);
