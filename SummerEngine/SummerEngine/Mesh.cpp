@@ -98,8 +98,6 @@ void Mesh::LoadFromObj(std::string p_FileName)
 		//buffer test
 
 		//curGroup = m_Mesh->GetGroup(i);
-		//	MeshVertex* vertices = myNew(MeshVertex[curGroup->triangles.size() * 3]);
-		std::vector<MeshVertex> t_Vertices;
 
 		MeshVertex t_V;
 		ObjGroups::Triangle* t_Triangle = nullptr;
@@ -107,6 +105,9 @@ void Mesh::LoadFromObj(std::string p_FileName)
 		//Need to find a fast way to go through all the triangles.....NOTE
 		int count = 0;
 		int t_TriangleSize = t_CurGroup[i].triangles.size();
+
+		std::vector<MeshVertex> t_Vertices(t_TriangleSize * 3);
+
 		for (int x = 0; x < t_TriangleSize; x++)
 		{
 			//triangle has all the indexes for v/vn/vt
@@ -135,8 +136,8 @@ void Mesh::LoadFromObj(std::string p_FileName)
 				//Get Normals
 				t_V.normal = m_Mesh->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
 
-				//t_Vertices[count] = t_V;
-				t_Vertices.push_back(t_V);
+				t_Vertices[count] = t_V;
+				//t_Vertices.push_back(t_V);
 
 				//Tangent code here....
 				count += 1;
