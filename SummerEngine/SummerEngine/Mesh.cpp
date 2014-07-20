@@ -88,7 +88,7 @@ void Mesh::LoadFromObj(std::string p_FileName)
 	t_AllGroups.clear();
 
 	int t_CurGroupCount = t_CurGroup.size();
-
+	MaterialData* t_GroupMaterial;
 	for (int i = 0; i < t_CurGroupCount; i++)
 	{
 		//ID3D11Buffer* buffer = nullptr;
@@ -100,6 +100,8 @@ void Mesh::LoadFromObj(std::string p_FileName)
 		int t_TriangleSize = t_CurGroup[i].triangles.size();
 
 		std::vector<MeshVertex> t_Vertices(t_TriangleSize * 3);
+		std::string t_MaterialName = t_CurGroup[i].material;
+		t_GroupMaterial = m_Mesh->GetMaterial(t_MaterialName);
 
 		for (int x = 0; x < t_TriangleSize; x++)
 		{

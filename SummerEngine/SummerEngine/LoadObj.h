@@ -67,7 +67,6 @@ typedef std::map<std::string, MaterialData*> MAP_MATERIAL;
 
 class LoadObj
 {
-	MAP_MATERIAL	m_MapMaterial;
 public:
 	LoadObj();
 	~LoadObj();
@@ -92,6 +91,7 @@ private:
 	//bool m_NextMaterial;
 	int m_CurrentMaterial;
 	std::vector<MaterialData*> m_Material;
+	MAP_MATERIAL	m_MapMaterial;
 
 	std::vector<ObjGroups> m_groups;
 	std::vector<Obj> m_Obj;

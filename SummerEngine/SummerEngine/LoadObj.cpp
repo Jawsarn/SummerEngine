@@ -238,6 +238,10 @@ bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
 			t_NewMaterial = new MaterialData();
 			t_NewMaterial->m_Name = t_MaterialName;
 			m_Material[m_CurrentMaterial] = t_NewMaterial;
+
+			//Map the material name to a material struct
+			MAP_MATERIAL::const_iterator t_Iterate = m_MapMaterial.find(t_MaterialName);
+			m_MapMaterial[t_MaterialName] = t_NewMaterial;
 		}
 
 		if (type_str == "Ns")
