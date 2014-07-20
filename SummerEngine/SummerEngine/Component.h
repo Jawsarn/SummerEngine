@@ -27,6 +27,7 @@ public:
 
 	std::string GetName() { return m_Name; }
 	void SetEntity(Entity* p_Entity);
+	Entity* GetEntity();
 
 protected:
 	std::string m_Name;

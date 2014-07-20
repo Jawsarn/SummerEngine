@@ -8,6 +8,8 @@ public:
 	TransformComponent(std::string p_Name);
 	~TransformComponent();
 	
+	XMFLOAT4X4 GetMatrix();
+
 	void SetTranslation(XMFLOAT3 p_translation);
 	void SetRotation(XMFLOAT3 p_rotation);
 	void SetScale(XMFLOAT3 p_scale);

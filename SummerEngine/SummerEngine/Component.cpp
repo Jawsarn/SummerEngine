@@ -43,6 +43,11 @@ void Component::SetEntity(Entity* p_Entity)
 	m_Entity = p_Entity;
 }
 
+Entity* Component::GetEntity()
+{
+	return m_Entity;
+}
+
 void Component::Awake()
 {
 
@@ -93,3 +98,4 @@ void Component::Fixup()
 {
 
 }
+

@@ -1,6 +1,8 @@
 #include "Renderer.h"
 #include <DirectXColors.h>
 #include "RenderComponent.h"
+#include "TransformComponent.h"
+
 
 Renderer* Renderer::m_Singleton = nullptr;
 
@@ -501,32 +503,53 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 		return;
 	}
 
-	std::vector<ID3D11Buffer*> t_BuffersToDraw;
-	std::vector<Material*> t_Materials;
-	//translations
-	std::vector<int> t_InstancedAmount;
-	int lastBufferSpot = -1;
+	//std::vector<ID3D11Buffer*> t_BuffersToDraw; //can be direct inputted into the IA stage
+	std::vector<std::vector<Material*>> t_MaterialsPerBuffer; //is to be updated after each "draw"
+	std::vector<XMFLOAT4X4> t_TranslationsPerMaterial; //should be able to be inputted aside with vertex buffer in the early AI stage
 
+	ID3D11Buffer* t_VertexBuffer;
+	Material* t_Material;
+	std::vector<XMFLOAT4X4> t_Matrices;
+
+	//ok so first we do it simple, only taking care of the vertex buffer with checking material as well, ok ? 
 	{
 		RenderObject t_RenderObject = p_RenderObjects->at(0);
-		ID3D11Buffer* t_Buffer = t_RenderObject.m_Mesh->GetVertexBuffer(t_RenderObject.BufferNum);
-		Material* t_Material = ((RenderComponent*)(t_RenderObject.m_Component))->GetMaterial(t_RenderObject.BufferNum);
+		t_VertexBuffer = t_RenderObject.m_Mesh->GetVertexBuffer(t_RenderObject.BufferNum);
+		t_Material = ((RenderComponent*)(t_RenderObject.m_Component))->GetMaterial(t_RenderObject.BufferNum); //woa... but yes
+		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject.m_Component->GetEntity()->GetTransformComponent());
+		t_Matrices.push_back(t_Transform->GetMatrix());
 	}
 
-	for (int i = 1; i < t_NumOfObjects; i++)
+	for (int i = 0; i < t_NumOfObjects; i++)
 	{
-		RenderObject t_RenderObject = p_RenderObjects->at(i);
-		ID3D11Buffer* t_Buffer = t_RenderObject.m_Mesh->GetVertexBuffer(t_RenderObject.BufferNum);
-		
-		if (t_Buffer == t_BuffersToDraw[lastBufferSpot]) //if buffer was same as last, just stack it up and add the translationshizzle to somewhere
+		RenderObject t_RenderObject = p_RenderObjects->at(0);
+		ID3D11Buffer* t_CheckVertexBuffer = t_RenderObject.m_Mesh->GetVertexBuffer(t_RenderObject.BufferNum);
+		Material* t_CheckMaterial = ((RenderComponent*)(t_RenderObject.m_Component))->GetMaterial(t_RenderObject.BufferNum); //woa... but yes
+		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject.m_Component->GetEntity()->GetTransformComponent());
+		//can only have max 32 buffer in the IA stage, 
+
+		if (t_VertexBuffer == t_CheckVertexBuffer && t_Material == t_CheckMaterial) //yey it's the same buffer.. what now? Check materialS?
 		{
-			Material* t_Material = ((RenderComponent*)(t_RenderObject.m_Component))->GetMaterial(t_RenderObject.BufferNum);
-			
-			t_InstancedAmount[lastBufferSpot]++;
-			//check textures here, if ok, then add the tranform info to a instanced buffer
+			t_Matrices.push_back(t_Transform->GetMatrix());
+		}
+		else
+		{
+			ID3D11Buffer* t_Buffer = {0};
+			m_DeviceContext->UpdateSubresource(t_Buffer, 0, nullptr, &t_Matrices, 0, 0);
+
+			//m_DeviceContext->IASetVertexBuffers(0, 2, , , ); //set both vertex and instance buffer
+			//m_DeviceContext->IASetIndexBuffer();
+
+			//m_DeviceContext->DrawIndexedInstanced();
+
+
+
+			//reset the instanced buffer
+			t_Matrices.clear();
+			t_VertexBuffer = t_CheckVertexBuffer;
 		}
 	}
-
+	
 
 	//textures
 	//vertexBuffers

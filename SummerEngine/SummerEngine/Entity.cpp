@@ -75,6 +75,12 @@ Entity* Entity::GetParent()
 	return m_Parent;
 }
 
+Component* Entity::GetTransformComponent()
+{
+	return m_TransformComponent;
+}
+
+
 bool Entity::Read(Stream &p_Stream)
 {
 	m_Name = ReadString(p_Stream);

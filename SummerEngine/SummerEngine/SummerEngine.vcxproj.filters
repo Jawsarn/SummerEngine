@@ -126,6 +126,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files\Graphic</Filter>
     </ClCompile>
+    <ClCompile Include="MaterialResourceLoadSave.cpp">
+      <Filter>Source Files\ResourceManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Header Files\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialResourceLoadSave.h">
+      <Filter>Header Files\ResourceManagement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

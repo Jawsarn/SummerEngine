@@ -20,6 +20,8 @@ public:
 	Entity* GetParent();
 	std::vector<Entity*> GetChildren();
 
+	Component* GetTransformComponent();
+
 	virtual bool Read(Stream &p_Stream);
 	virtual bool Write(Stream &p_Stream);
 	virtual void Fixup();
@@ -32,6 +34,8 @@ protected:
 	std::string m_Name;
 	Entity* m_Parent;
 	std::vector<Entity*> m_Children;
+
+	Component* m_TransformComponent;
 
 	std::vector<Component*> m_Components;
 };

@@ -23,6 +23,12 @@ void TransformComponent::Update()
 	XMStoreFloat4x4(&m_World, XMMatrixTranspose(t_world));
 }
 
+XMFLOAT4X4 TransformComponent::GetMatrix()
+{
+	return m_World;
+}
+
+
 void TransformComponent::AddRotation(XMFLOAT3 p_rotation)
 {
 	// not (  + =  ), so not sure if gonna work yet !!
