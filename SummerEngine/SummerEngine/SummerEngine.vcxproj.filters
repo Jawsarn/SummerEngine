@@ -49,6 +49,12 @@
     <Filter Include="Source Files\ResourceManagement">
       <UniqueIdentifier>{5db4d025-506a-400a-a0ca-ef6d9b2acda0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{8778e790-ca03-479e-ba30-f19b740cf0f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Objs">
+      <UniqueIdentifier>{ddb39a0f-a3d0-47fa-8236-885123f0fbd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -212,5 +218,15 @@
     <ClInclude Include="MaterialResourceLoadSave.h">
       <Filter>Header Files\ResourceManagement</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\Objs\testFile.mtl">
+      <Filter>Graphics\Objs</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Graphics\Objs\testFile.obj">
+      <Filter>Graphics\Objs</Filter>
+    </Object>
   </ItemGroup>
 </Project>
