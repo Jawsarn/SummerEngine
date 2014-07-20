@@ -39,7 +39,7 @@ public:
 	HRESULT Render(ID3D11DeviceContext* p_DeviceContext);
 
 	ID3D11Buffer* GetVertexBuffer(int p_Slot);
-	GroupNumOfVert* GetNumOfVert();
+	int GetNumOfVert(int p_Slot);
 
 
 	virtual const std::string &GetName() const;

@@ -380,6 +380,18 @@ HRESULT Renderer::InitializeConstantBuffers()
 {
 	HRESULT hr = S_OK;
 
+	D3D11_BUFFER_DESC t_ibd;
+	t_ibd.Usage = D3D11_USAGE_DYNAMIC;
+	t_ibd.ByteWidth = sizeof(XMFLOAT4X4)* MAX_INSTANCEBUFFER_SIZE;
+	t_ibd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	t_ibd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	t_ibd.MiscFlags = 0;
+	t_ibd.StructureByteStride = 0;
+
+	hr = m_Device->CreateBuffer(&t_ibd, 0, &m_InstanceBuffer);
+	if (FAILED(hr))
+		return hr;
+	
 
 	return hr;
 }
@@ -511,13 +523,22 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 	Material* t_Material;
 	std::vector<XMFLOAT4X4> t_Matrices;
 
+
+	UINT strides[2] = { sizeof(Mesh::MeshVertex), sizeof(XMMATRIX) };
+	UINT offsets[2] = { 0 , 0};
+	int t_VertexBuffSize = 0;
+	int t_NumOfInstances = 0;
+
 	//ok so first we do it simple, only taking care of the vertex buffer with checking material as well, ok ? 
 	{
 		RenderObject t_RenderObject = p_RenderObjects->at(0);
 		t_VertexBuffer = t_RenderObject.m_Mesh->GetVertexBuffer(t_RenderObject.BufferNum);
+		t_VertexBuffSize = t_RenderObject.m_Mesh->GetNumOfVert(t_RenderObject.BufferNum);
+
 		t_Material = ((RenderComponent*)(t_RenderObject.m_Component))->GetMaterial(t_RenderObject.BufferNum); //woa... but yes
 		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject.m_Component->GetEntity()->GetTransformComponent());
 		t_Matrices.push_back(t_Transform->GetMatrix());
+		t_NumOfInstances++;
 	}
 
 	for (int i = 0; i < t_NumOfObjects; i++)
@@ -528,25 +549,38 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject.m_Component->GetEntity()->GetTransformComponent());
 		//can only have max 32 buffer in the IA stage, 
 
-		if (t_VertexBuffer == t_CheckVertexBuffer && t_Material == t_CheckMaterial) //yey it's the same buffer.. what now? Check materialS?
+		if (t_VertexBuffer == t_CheckVertexBuffer && t_Material == t_CheckMaterial) //yey it's the same buffer.. what now?
 		{
 			t_Matrices.push_back(t_Transform->GetMatrix());
+			t_NumOfInstances++;
 		}
 		else
 		{
-			ID3D11Buffer* t_Buffer = {0};
-			m_DeviceContext->UpdateSubresource(t_Buffer, 0, nullptr, &t_Matrices, 0, 0);
+			//m_DeviceContext->UpdateSubresource(m_InstanceBuffer, 0, nullptr, &t_Matrices, 0, 0);
 
-			//m_DeviceContext->IASetVertexBuffers(0, 2, , , ); //set both vertex and instance buffer
+			//update the instance buffer
+			D3D11_MAPPED_SUBRESOURCE t_MappedData;
+			HRESULT hr = m_DeviceContext->Map(m_InstanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &t_MappedData);
+			XMFLOAT4X4* dataView = reinterpret_cast<XMFLOAT4X4*>(t_MappedData.pData);
+			dataView = &t_Matrices[0];
+			m_DeviceContext->Unmap(m_InstanceBuffer, 0);
+
+			ID3D11Buffer* t_InBuffers[2] = { t_VertexBuffer, m_InstanceBuffer };
+			
+
+			m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets); //set both vertex and instance buffer
 			//m_DeviceContext->IASetIndexBuffer();
 
 			//m_DeviceContext->DrawIndexedInstanced();
 
-
+			m_DeviceContext->DrawInstanced(t_VertexBuffSize, t_NumOfInstances, 0, 0);
 
 			//reset the instanced buffer
 			t_Matrices.clear();
+			t_Matrices.push_back(t_Transform->GetMatrix());
 			t_VertexBuffer = t_CheckVertexBuffer;
+			t_VertexBuffSize = t_RenderObject.m_Mesh->GetNumOfVert(t_RenderObject.BufferNum);
+			t_NumOfInstances = 1;
 		}
 	}
 	

@@ -193,3 +193,8 @@ ID3D11Buffer* Mesh::GetVertexBuffer(int p_Slot)
 {
 	return nullptr;//FIX
 }
+
+int Mesh::GetNumOfVert(int p_Slot)
+{
+	return 0;
+}

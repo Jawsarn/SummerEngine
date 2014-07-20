@@ -8,6 +8,8 @@ using namespace DirectX;
 
 //#define _DEBUG
 
+#define MAX_INSTANCEBUFFER_SIZE 10000
+
 class Renderer
 {
 public:
@@ -83,5 +85,8 @@ private:
 
 	static Renderer* m_Singleton;
 	BOOL m_IsRendering;
+
+	//test thigns
+	ID3D11Buffer* m_InstanceBuffer;
 };
 
