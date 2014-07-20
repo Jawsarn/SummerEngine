@@ -281,6 +281,47 @@ bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
 		{
 			str_stream >> m_Material[m_CurrentMaterial]->m_Illum;
 		}
+
+		if (type_str == "Ke")
+		{
+			str_stream >> m_Material[m_CurrentMaterial]->m_Ke;
+		}
+
+		//Textures
+		if (type_str == "map_Ka")
+		{
+			str_stream >> m_Material[m_CurrentMaterial]->m_Map_Ka;
+		}
+
+		if (type_str == "map_Kd")
+		{
+			str_stream >> m_Material[m_CurrentMaterial]->m_Map_Kd;
+		}
+
+		if (type_str == "map_Ks")
+		{
+			str_stream >> m_Material[m_CurrentMaterial]->m_Map_Ks;
+		}
+
+		if (type_str == "map_Ke")
+		{
+			str_stream >> m_Material[m_CurrentMaterial]->m_Map_Ke;
+		}
+
+		if (type_str == "map_Ns")
+		{
+			str_stream >> m_Material[m_CurrentMaterial]->m_Map_Ns;
+		}
+
+		if (type_str == "map_d")
+		{
+			str_stream >> m_Material[m_CurrentMaterial]->m_Map_D;
+		}
+
+		if (type_str == "map_Bump")
+		{
+			str_stream >> m_Material[m_CurrentMaterial]->m_Bump;
+		}
 	}
 	t_file.close();
 	return true;
