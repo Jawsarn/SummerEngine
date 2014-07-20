@@ -531,22 +531,22 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 
 	//ok so first we do it simple, only taking care of the vertex buffer with checking material as well, ok ? 
 	{
-		RenderObject t_RenderObject = p_RenderObjects->at(0);
-		t_VertexBuffer = t_RenderObject.m_Mesh->GetVertexBuffer(t_RenderObject.BufferNum);
-		t_VertexBuffSize = t_RenderObject.m_Mesh->GetNumOfVert(t_RenderObject.BufferNum);
+		RenderObject* t_RenderObject = p_RenderObjects->at(0);
+		t_VertexBuffer = t_RenderObject->m_Mesh->GetVertexBuffer(t_RenderObject->BufferNum);
+		t_VertexBuffSize = t_RenderObject->m_Mesh->GetNumOfVert(t_RenderObject->BufferNum);
 
-		t_Material = ((RenderComponent*)(t_RenderObject.m_Component))->GetMaterial(t_RenderObject.BufferNum); //woa... but yes
-		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject.m_Component->GetEntity()->GetTransformComponent());
+		t_Material = ((RenderComponent*)(t_RenderObject->m_Component))->GetMaterial(t_RenderObject->BufferNum); //woa... but yes
+		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject->m_Component->GetEntity()->GetTransformComponent());
 		t_Matrices.push_back(t_Transform->GetMatrix());
 		t_NumOfInstances++;
 	}
 
 	for (int i = 0; i < t_NumOfObjects; i++)
 	{
-		RenderObject t_RenderObject = p_RenderObjects->at(0);
-		ID3D11Buffer* t_CheckVertexBuffer = t_RenderObject.m_Mesh->GetVertexBuffer(t_RenderObject.BufferNum);
-		Material* t_CheckMaterial = ((RenderComponent*)(t_RenderObject.m_Component))->GetMaterial(t_RenderObject.BufferNum); //woa... but yes
-		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject.m_Component->GetEntity()->GetTransformComponent());
+		RenderObject* t_RenderObject = p_RenderObjects->at(0);
+		ID3D11Buffer* t_CheckVertexBuffer = t_RenderObject->m_Mesh->GetVertexBuffer(t_RenderObject->BufferNum);
+		Material* t_CheckMaterial = ((RenderComponent*)(t_RenderObject->m_Component))->GetMaterial(t_RenderObject->BufferNum); //woa... but yes
+		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject->m_Component->GetEntity()->GetTransformComponent());
 		//can only have max 32 buffer in the IA stage, 
 
 		if (t_VertexBuffer == t_CheckVertexBuffer && t_Material == t_CheckMaterial) //yey it's the same buffer.. what now?
@@ -579,7 +579,7 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 			t_Matrices.clear();
 			t_Matrices.push_back(t_Transform->GetMatrix());
 			t_VertexBuffer = t_CheckVertexBuffer;
-			t_VertexBuffSize = t_RenderObject.m_Mesh->GetNumOfVert(t_RenderObject.BufferNum);
+			t_VertexBuffSize = t_RenderObject->m_Mesh->GetNumOfVert(t_RenderObject->BufferNum);
 			t_NumOfInstances = 1;
 		}
 	}

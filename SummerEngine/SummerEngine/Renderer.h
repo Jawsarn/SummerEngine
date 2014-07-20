@@ -19,7 +19,7 @@ public:
 		int BufferNum;
 		Component* m_Component;
 	};
-	typedef std::vector<RenderObject> RenderObjects;
+	typedef std::vector<RenderObject*> RenderObjects;
 
 
 	static Renderer* GetInstance();

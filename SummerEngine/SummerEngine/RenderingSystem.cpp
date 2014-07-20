@@ -36,7 +36,7 @@ void RenderingSystem::Update()
 
 	m_Renderer->BeginRender();
 
-	//m_Renderer->RenderOpaque();
+	m_Renderer->RenderOpaque(&m_Opaque);
 
 	//m_Renderer->RenderTransparent();
 
