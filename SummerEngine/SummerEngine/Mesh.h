@@ -42,7 +42,7 @@ public:
 
 private:
 	std::string m_FileName;
-	std::vector<std::vector<MeshVertex>> m_Groups;
+	VertexGroups m_Groups;
 	ID3D11Buffer* buffer;//test
 	std::vector<ID3D11Buffer*> vertexBuffers;//test/
 };

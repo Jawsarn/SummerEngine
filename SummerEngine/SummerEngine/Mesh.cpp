@@ -12,20 +12,14 @@ Mesh::~Mesh()
 
 void Mesh::Release()
 {
-	//SAFE_DELETE(m_Mesh);//test
 	vertexBuffers.clear();//test
-	//shader.Release();//test
-	//gameObject.Release();//test
 }
 
-HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device) //move this code to ResourceMaker ? 
+HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device)
 {
-	/*
 	int t_NumberOfGroups = m_Groups.size();
 	for (int i = 0; i < t_NumberOfGroups; i++)
 	{
-		//vertex-buffer
-
 		D3D11_BUFFER_DESC bufferDesc;
 		memset(&bufferDesc, 0, sizeof(bufferDesc));
 		bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -38,11 +32,13 @@ HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device) //move this code to Reso
 		D3D11_SUBRESOURCE_DATA data;
 		data.pSysMem = &m_Groups[i][0];
 		HRESULT hr = p_Device->CreateBuffer(&bufferDesc, &data, &buffer);
+		if (FAILED(hr))
+		{
+			MessageBox(nullptr, L"Vertex buffer could not be created", L"Error", MB_ICONERROR | MB_OK);
+			return S_FALSE;
+		}
 		vertexBuffers.push_back(buffer);
-
-		//	vertices.clear();
 	}
-	*/
 	return S_OK;
 }
 

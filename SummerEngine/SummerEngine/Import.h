@@ -19,5 +19,6 @@ private:
 
 	int m_NumberOfVerticesInTotal = 0;
 	std::vector<std::vector<Mesh::MeshVertex>> m_Groups;
+	std::vector<Mesh> m_Meshes;
 };
 
