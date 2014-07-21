@@ -29,19 +29,19 @@ public:
 	void Release();
 	HRESULT CreateMeshBuffers(ID3D11Device* p_Device);
 
+	int GetNumOfVert(int p_Slot);
+
+	ID3D11Buffer* GetVertexBuffer(int p_Slot);
+	std::vector<ID3D11Buffer*> GetVertexBuffers();
 	VertexGroups* GetVertexData();
 	void SetVertexData(VertexGroups p_Groups);
 	void ClearLoadData();
-
-	ID3D11Buffer* GetVertexBuffer(int p_Slot);
-	int GetNumOfVert(int p_Slot);
-
 
 	virtual const std::string &GetName() const;
 	virtual const ResourceType GetType() const;
 
 private:
 	VertexGroups m_Groups;
-	ID3D11Buffer* buffer;//test
-	std::vector<ID3D11Buffer*> vertexBuffers;//test/
+	ID3D11Buffer* m_Buffer;
+	std::vector<ID3D11Buffer*> m_VertexBuffers;
 };

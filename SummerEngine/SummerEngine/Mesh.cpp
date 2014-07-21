@@ -12,7 +12,7 @@ Mesh::~Mesh()
 
 void Mesh::Release()
 {
-	vertexBuffers.clear();//test
+	m_VertexBuffers.clear();//test
 }
 
 HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device)
@@ -30,13 +30,13 @@ HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device)
 
 		D3D11_SUBRESOURCE_DATA data;
 		data.pSysMem = &m_Groups[i][0];
-		HRESULT hr = p_Device->CreateBuffer(&bufferDesc, &data, &buffer);
+		HRESULT hr = p_Device->CreateBuffer(&bufferDesc, &data, &m_Buffer);
 		if (FAILED(hr))
 		{
 			MessageBox(nullptr, L"Vertex buffer could not be created", L"Error", MB_ICONERROR | MB_OK);
 			return S_FALSE;
 		}
-		vertexBuffers.push_back(buffer);
+		m_VertexBuffers.push_back(m_Buffer);
 	}
 	return S_OK;
 }
@@ -68,4 +68,9 @@ ID3D11Buffer* Mesh::GetVertexBuffer(int p_Slot)
 int Mesh::GetNumOfVert(int p_Slot)
 {
 	return 0;
+}
+
+std::vector<ID3D11Buffer*> Mesh::GetVertexBuffers()
+{
+	return m_VertexBuffers;
 }

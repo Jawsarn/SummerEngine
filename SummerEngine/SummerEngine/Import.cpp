@@ -21,14 +21,27 @@ void Import::Release()
 		m_LoadObj = nullptr;
 	}
 
-	//gameObject.Release();
+	/*
+	int t_GameObjectSize = gameObjects.size();
+	for (int i = 0; i < t_GameObjectSize; i++)
+		gameObjects[i]->Release();
+
+	for (int i = 0; i < t_GameObjectSize; i++)
+	{
+		if (gameObjects[i])
+		{
+			delete(gameObjects[i]);
+			gameObjects[i] = nullptr;
+		}
+	}
+	*/
 }
 
 
 void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 {
 	m_LoadObj->Load(p_FileName);
-	//gameObject = GameObject(p_Device);
+
 
 	int t_ObjMeshCount = m_LoadObj->GetObjCount();
 	int t_GroupCount = m_LoadObj->GetGroupCount();
@@ -132,13 +145,27 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 			m_Groups.push_back(t_Vertices);
 			t_Vertices.clear();
 		}
-		Mesh t_Mesh;
-		t_Mesh.SetVertexData(m_Groups);
+
+		Mesh* t_Mesh = nullptr;
+		t_Mesh = new Mesh();
+		t_Mesh->SetVertexData(m_Groups);
 		m_Meshes.push_back(t_Mesh);
-		t_Mesh.CreateMeshBuffers(p_Device);
+		t_Mesh->CreateMeshBuffers(p_Device);
 		m_Groups.clear();
-		//CreateMeshBuffers(p_Device);
+
+		//GameObject* t_NewGameObject = new GameObject(p_Device);
+		//gameObjects.push_back(t_NewGameObject);
 	}
 
 }
+
+std::vector<Mesh*>& Import::GetMeshes()
+{
+	return m_Meshes;
+}
+
+// std::vector<GameObject*>& Import::GetGameObjects()
+// {
+// 	return gameObjects;
+// }
 
