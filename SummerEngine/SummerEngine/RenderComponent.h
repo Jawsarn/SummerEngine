@@ -28,10 +28,8 @@ public:
 
 private:
 	RenderingSystem* m_RenderingSystem;
-
-
-
 	Mesh* m_Mesh;
+
 	std::vector<Material*> m_Materials;
 
 	bool m_CastShadows;

@@ -24,6 +24,7 @@ public:
 
 	static Renderer* GetInstance();
 	bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow);
+	void SetViewports(std::vector<D3D11_VIEWPORT> p_Viewports);
 	void BeginRender();
 	void RenderOpaque(RenderObjects* p_RenderObjects);
 	void ComputeDeferred();

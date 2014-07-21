@@ -79,6 +79,10 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 	return true;
 }
 
+void Renderer::SetViewports(std::vector<D3D11_VIEWPORT> p_Viewports)
+{
+	m_DeviceContext->RSSetViewports(p_Viewports.size(), &p_Viewports[0]);
+}
 
 HRESULT Renderer::InitializeDriverAndVersion(HWND p_HandleWindow)
 {
