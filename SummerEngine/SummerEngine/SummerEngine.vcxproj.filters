@@ -55,6 +55,12 @@
     <Filter Include="Graphics\Objs">
       <UniqueIdentifier>{ddb39a0f-a3d0-47fa-8236-885123f0fbd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{06adf8bd-d87b-42be-bd53-d8349a451a77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Test Shaders Not Deferred">
+      <UniqueIdentifier>{39a2037c-ce6a-41cb-9d9f-5ba920ad0327}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -134,6 +140,15 @@
     </ClCompile>
     <ClCompile Include="MaterialResourceLoadSave.cpp">
       <Filter>Source Files\ResourceManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +233,15 @@
     <ClInclude Include="MaterialResourceLoadSave.h">
       <Filter>Header Files\ResourceManagement</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\Objs\testFile.mtl">
@@ -228,5 +252,13 @@
     <Object Include="Graphics\Objs\testFile.obj">
       <Filter>Graphics\Objs</Filter>
     </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Shaders\Test Shaders Not Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>Shaders\Test Shaders Not Deferred</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

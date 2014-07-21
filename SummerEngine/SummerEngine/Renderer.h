@@ -87,6 +87,16 @@ private:
 	BOOL m_IsRendering;
 
 	//test thigns
+	struct PerFrameTestBuffer
+	{
+
+	};
+	ID3D11Buffer* m_TestPerFrameBuffer;
+
 	ID3D11Buffer* m_InstanceBuffer;
+	ID3D11PixelShader* m_TestPixelShader;
+	ID3D11VertexShader* m_TestVertexShader;
+	ID3D11InputLayout* m_TestLayout;
+	void Renderer::SetShaders();
 };
 

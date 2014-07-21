@@ -2,7 +2,7 @@
 #include <DirectXColors.h>
 #include "RenderComponent.h"
 #include "TransformComponent.h"
-
+#include "ShaderLoader.h"
 
 Renderer* Renderer::m_Singleton = nullptr;
 
@@ -371,6 +371,29 @@ HRESULT Renderer::InitializeShaders()
 {
 	HRESULT hr = S_OK;
 
+	ShaderLoader t_ShaderLoader = ShaderLoader();
+
+	{
+		D3D11_INPUT_ELEMENT_DESC t_Layout[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+		};
+		UINT t_NumElements = ARRAYSIZE(t_Layout);
+
+		hr = t_ShaderLoader.CreateVertexShaderWithInputLayout(L"VertexShader.hlsl", "VS", "vs_5_0", m_Device, &m_TestVertexShader, t_Layout, t_NumElements, &m_TestLayout);
+		if (FAILED(hr))
+			return hr;
+	}
+
+	{
+		hr = t_ShaderLoader.CreatePixelShader(L"PixelShader.hlsl", "PS", "ps_5_0", m_Device, &m_TestPixelShader);
+		if (FAILED(hr))
+			return hr;
+	}
+	
 
 	return hr;
 }
@@ -392,6 +415,17 @@ HRESULT Renderer::InitializeConstantBuffers()
 	if (FAILED(hr))
 		return hr;
 	
+
+	t_ibd.Usage = D3D11_USAGE_DEFAULT;
+	t_ibd.ByteWidth = sizeof(PerFrameTestBuffer);
+	t_ibd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	t_ibd.CPUAccessFlags = 0;
+
+	hr = m_Device->CreateBuffer(&t_ibd, 0, &m_TestPerFrameBuffer);
+	if (FAILED(hr))
+		return hr;
+
+	m_DeviceContext->VSSetConstantBuffers(0, 1, &m_TestPerFrameBuffer);
 
 	return hr;
 }
@@ -491,6 +525,17 @@ HRESULT Renderer::InitializeSamplerState()
 	return hr;
 }
 
+void Renderer::SetShaders() //test
+{
+	m_DeviceContext->IASetInputLayout(m_TestLayout);
+	m_DeviceContext->VSSetShader(m_TestVertexShader, nullptr, 0);
+	m_DeviceContext->GSSetShader(nullptr, nullptr, 0);
+	m_DeviceContext->HSSetShader(nullptr, nullptr, 0);
+	m_DeviceContext->DSSetShader(nullptr, nullptr, 0);
+	m_DeviceContext->PSSetShader(m_TestPixelShader, nullptr, 0);
+
+}
+
 void Renderer::BeginRender()
 {
 	if (m_IsRendering)
@@ -509,6 +554,8 @@ void Renderer::BeginRender()
 
 void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already sorted here on something,
 {
+	SetShaders();
+
 	int t_NumOfObjects = p_RenderObjects->size();
 	if (t_NumOfObjects == 0)
 	{
