@@ -28,15 +28,10 @@ public:
 
 	void Release();
 	HRESULT CreateMeshBuffers(ID3D11Device* p_Device);
-	void LoadFromObj(std::string p_FileName);
 
 	VertexGroups* GetVertexData();
 	void SetVertexData(VertexGroups p_Groups);
-
 	void ClearLoadData();
-
-
-	HRESULT Render(ID3D11DeviceContext* p_DeviceContext);
 
 	ID3D11Buffer* GetVertexBuffer(int p_Slot);
 	int GetNumOfVert(int p_Slot);
@@ -46,18 +41,8 @@ public:
 	virtual const ResourceType GetType() const;
 
 private:
-	LoadObj* m_Mesh;
-	
-	
-	VertexGroups m_Groups;
-	GroupNumOfVert m_NumOfVert;
-
-
-
-	int m_NumberOfVerticesInTotal = 0;
-	//std::vector<std::vector<MeshVertex>> m_Groups;
-	/*GameObject gameObject;
-	ID3D11Buffer* buffer;
-	std::vector<ID3D11Buffer*> vertexBuffers;
-	Shader shader;*/
+	std::string m_FileName;
+	std::vector<std::vector<MeshVertex>> m_Groups;
+	ID3D11Buffer* buffer;//test
+	std::vector<ID3D11Buffer*> vertexBuffers;//test/
 };
