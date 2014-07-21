@@ -26,7 +26,6 @@ HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device)
 		bufferDesc.CPUAccessFlags = 0;
 		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 		bufferDesc.MiscFlags = 0;
-		//bufferDesc.ByteWidth = sizeof(MeshVertex)* (UINT32)curGroup->triangles.size() * 3;
 		bufferDesc.ByteWidth = sizeof(MeshVertex)* (UINT32)m_Groups[i].size();
 
 		D3D11_SUBRESOURCE_DATA data;
@@ -44,7 +43,7 @@ HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device)
 
 const std::string & Mesh::GetName() const
 {
-	return m_FileName;
+	return "";
 }
 
 const Mesh::ResourceType Mesh::GetType() const

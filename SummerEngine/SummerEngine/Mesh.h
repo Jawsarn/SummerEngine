@@ -41,7 +41,6 @@ public:
 	virtual const ResourceType GetType() const;
 
 private:
-	std::string m_FileName;
 	VertexGroups m_Groups;
 	ID3D11Buffer* buffer;//test
 	std::vector<ID3D11Buffer*> vertexBuffers;//test/
