@@ -3,9 +3,9 @@
 
 Import::Import()
 {
-	m_Mesh = nullptr;
-	m_Mesh = new LoadObj();
-	*m_Mesh = LoadObj();
+	m_LoadObj = nullptr;
+	m_LoadObj = new LoadObj();
+	*m_LoadObj = LoadObj();
 }
 
 
@@ -15,10 +15,10 @@ Import::~Import()
 
 void Import::Release()
 {
-	if (m_Mesh)
+	if (m_LoadObj)
 	{
-		delete(m_Mesh);
-		m_Mesh = nullptr;
+		delete(m_LoadObj);
+		m_LoadObj = nullptr;
 	}
 
 	//gameObject.Release();
@@ -27,11 +27,11 @@ void Import::Release()
 
 void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 {
-	m_Mesh->Load(p_FileName);
+	m_LoadObj->Load(p_FileName);
 	//gameObject = GameObject(p_Device);
 
-	int t_ObjCount = m_Mesh->GetObjCount();
-	int t_GroupCount = m_Mesh->GetGroupCount();
+	int t_ObjCount = m_LoadObj->GetObjCount();
+	int t_GroupCount = m_LoadObj->GetGroupCount();
 
 	std::vector<ObjGroups> t_CurGroup;
 
@@ -39,7 +39,7 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 	std::vector<std::vector<ObjGroups>> t_AllGroups;
 	for (int i = 0; i < t_ObjCount; i++)
 	{
-		t_AllGroups.push_back(m_Mesh->GetAllGroupsFromAMesh(i));
+		t_AllGroups.push_back(m_LoadObj->GetAllGroupsFromAMesh(i));
 	}
 
 	//Set them to a vector
@@ -89,7 +89,7 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 				//int test_TexIndex = t_Triangle->index[j][1];
 				//int test_NormIndex = t_Triangle->index[j][2];
 
-				if (m_Mesh->GetPositions(t_ObjIndex).size() == 0)
+				if (m_LoadObj->GetPositions(t_ObjIndex).size() == 0)
 				{
 					std::string t_ErrorMessage = "Could not find positions on an OBJ:" + p_FileName;
 					std::wstring t_MeshName(t_ErrorMessage.begin(), t_ErrorMessage.end());
@@ -98,10 +98,10 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 				else
 				{
 					//Get Positions
-					t_V.position = m_Mesh->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
+					t_V.position = m_LoadObj->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
 				}
 
-				if (m_Mesh->GetTexCoords(t_ObjIndex).size() == 0)
+				if (m_LoadObj->GetTexCoords(t_ObjIndex).size() == 0)
 				{
 					std::string t_ErrorMessage = "Could not find UV-Coords on an OBJ:" + p_FileName;
 					std::wstring t_MeshName(t_ErrorMessage.begin(), t_ErrorMessage.end());
@@ -111,10 +111,10 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 				else
 				{
 					//Get Texture Coordinates
-					t_V.texCoord = m_Mesh->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
+					t_V.texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
 				}
 
-				if (m_Mesh->GetNormals(t_ObjIndex).size() == 0)
+				if (m_LoadObj->GetNormals(t_ObjIndex).size() == 0)
 				{
 					std::string t_ErrorMessage = "Could not find Normals on an OBJ:" + p_FileName;
 					std::wstring t_MeshName(t_ErrorMessage.begin(), t_ErrorMessage.end());
@@ -123,7 +123,7 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 				else
 				{
 					//Get Normals
-					t_V.normal = m_Mesh->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
+					t_V.normal = m_LoadObj->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
 				}
 				t_Vertices[count] = t_V;
 				//t_Vertices.push_back(t_V);

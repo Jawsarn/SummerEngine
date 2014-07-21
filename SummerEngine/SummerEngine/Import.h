@@ -15,7 +15,7 @@ public:
 	//GameObject gameObject; //test
 
 private:
-	LoadObj* m_Mesh;
+	LoadObj* m_LoadObj;
 
 	int m_NumberOfVerticesInTotal = 0;
 	std::vector<std::vector<Mesh::MeshVertex>> m_Groups;
