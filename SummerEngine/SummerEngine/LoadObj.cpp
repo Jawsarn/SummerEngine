@@ -25,7 +25,9 @@ bool LoadObj::Load(std::string p_fileName)
 
 	if (!t_file.is_open())
 	{
-		MessageBox(nullptr, L"Mesh could not be loaded", L"Error", MB_ICONERROR | MB_OK);
+		std::string t_ErrorMessage = "Mesh: " + p_fileName + " could not be loaded";
+		std::wstring t_covnvertText(t_ErrorMessage.begin(), t_ErrorMessage.end());
+		MessageBox(nullptr, t_covnvertText.c_str(), L"Error-LoadObj", MB_ICONERROR | MB_OK);
 		return false;
 	}
 
@@ -208,7 +210,9 @@ bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
 
 	if (!t_file.is_open())
 	{
-		MessageBox(nullptr, L"Material-File could not be loaded", L"Error", MB_ICONERROR | MB_OK);
+		std::string t_ErrorMessage = "Material: " + p_MaterialName + " could not be loaded";
+		std::wstring t_covnvertText(t_ErrorMessage.begin(), t_ErrorMessage.end());
+		MessageBox(nullptr, t_covnvertText.c_str(), L"Error", MB_ICONERROR | MB_OK);
 		return false;
 	}
 
@@ -247,13 +251,11 @@ bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
 		if (type_str == "Ns")
 		{
 			str_stream >> m_Material[m_CurrentMaterial]->m_Ns;
-			int xDD = 0;
 		}
 
 		if (type_str == "Ka")
 		{
 			str_stream >> m_Material[m_CurrentMaterial]->m_Ka[0] >> m_Material[m_CurrentMaterial]->m_Ka[1] >> m_Material[m_CurrentMaterial]->m_Ka[2];
-			int edsdsd = 0;
 		}
 
 		if (type_str == "Kd")
@@ -264,7 +266,6 @@ bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
 		if (type_str == "Ks")
 		{
 			str_stream >> m_Material[m_CurrentMaterial]->m_Ks[0] >> m_Material[m_CurrentMaterial]->m_Ks[1] >> m_Material[m_CurrentMaterial]->m_Ks[2];
-			int lolsd = 0;
 		}
 
 		if (type_str == "Ni")

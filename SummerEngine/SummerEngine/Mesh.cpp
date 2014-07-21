@@ -122,14 +122,42 @@ void Mesh::LoadFromObj(std::string p_FileName)
 				//int test_TexIndex = t_Triangle->index[j][1];
 				//int test_NormIndex = t_Triangle->index[j][2];
 
-				t_V.position = m_Mesh->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
+				if (m_Mesh->GetPositions(t_ObjIndex).size() == 0)
+				{
+					std::string t_ErrorMessage = "Could not find positions on an OBJ:" + p_FileName;
+					std::wstring t_MeshName(t_ErrorMessage.begin(), t_ErrorMessage.end());
+					MessageBox(nullptr, t_MeshName.c_str(), L"Error-OBJ", MB_ICONERROR | MB_OK);
+				}
+				else
+				{
+					//Get Positions
+					t_V.position = m_Mesh->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
+				}
 
-				//Get Texture Coordinates
-				t_V.texCoord = m_Mesh->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
+				if (m_Mesh->GetTexCoords(t_ObjIndex).size() == 0)
+				{
+					std::string t_ErrorMessage = "Could not find UV-Coords on an OBJ:" + p_FileName;
+					std::wstring t_MeshName(t_ErrorMessage.begin(), t_ErrorMessage.end());
+					MessageBox(nullptr, t_MeshName.c_str(), L"Error-OBJ", MB_ICONERROR | MB_OK);
+				}
 
-				//Get Normals
-				t_V.normal = m_Mesh->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
+				else
+				{
+					//Get Texture Coordinates
+					t_V.texCoord = m_Mesh->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
+				}
 
+				if (m_Mesh->GetNormals(t_ObjIndex).size() == 0)
+				{
+					std::string t_ErrorMessage = "Could not find Normals on an OBJ:" + p_FileName;
+					std::wstring t_MeshName(t_ErrorMessage.begin(), t_ErrorMessage.end());
+					MessageBox(nullptr, t_MeshName.c_str(), L"Error-OBJ", MB_ICONERROR | MB_OK);
+				}
+				else
+				{
+					//Get Normals
+					t_V.normal = m_Mesh->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
+				}
 				t_Vertices[count] = t_V;
 				//t_Vertices.push_back(t_V);
 
