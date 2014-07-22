@@ -50,6 +50,9 @@ struct TestVector
 	}
 };
 #include "LoadObj.h"
+#include "Entity.h"
+#include "CameraComponent.h"
+#include "TransformComponent.h"
 
 bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 {
@@ -59,6 +62,18 @@ bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 	m_RenderingSystem = m_RenderingSystem->GetInstance();
 	m_RenderingSystem->Start();
 
+	//shouldn't be here untill later maybe? ... depends
+	m_EntityTest = new Entity();
+	CameraComponent* t_NewComponent = new CameraComponent();
+	t_NewComponent->SetLens(XM_PIDIV4, 1920/1080, 0.5f, 10000);
+	TransformComponent* t_NewTransform = new TransformComponent();
+	
+	t_NewTransform->SetTranslation(XMFLOAT3(0,0,0));
+	t_NewTransform->SetRotation(XMFLOAT3(0, 0, 0));
+	t_NewTransform->SetScale(XMFLOAT3(1, 1, 1));
+
+	m_EntityTest->AddComponent(t_NewComponent);
+	m_EntityTest->SetTransformComponent(t_NewTransform);
 	
 
 	int working = 0;

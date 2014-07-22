@@ -53,6 +53,7 @@ Entity::~Entity()
 void Entity::AddComponent( Component *p_Component )
 {
 	m_Components.push_back(p_Component);
+	p_Component->SetEntity(this);
 }
 
 void Entity::SetParent(Entity *p_Parent)
@@ -80,6 +81,10 @@ Component* Entity::GetTransformComponent()
 	return m_TransformComponent;
 }
 
+void Entity::SetTransformComponent(Component* p_TransformComponent)
+{
+	m_TransformComponent = p_TransformComponent;
+}
 
 bool Entity::Read(Stream &p_Stream)
 {
@@ -119,8 +124,7 @@ bool Entity::Read(Stream &p_Stream)
 		{
 			return t_Success;
 		}
-		m_Components.push_back(t_NewComponent);
-		t_NewComponent->SetEntity(this);
+		AddComponent(t_NewComponent);
 	}
 	return true;
 }

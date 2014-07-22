@@ -84,6 +84,11 @@ void Renderer::SetViewports(std::vector<D3D11_VIEWPORT> p_Viewports)
 	m_DeviceContext->RSSetViewports(p_Viewports.size(), &p_Viewports[0]);
 }
 
+void Renderer::SetCameras(std::vector<Renderer::CameraStruct> p_Cameras)
+{
+	m_Cameras = p_Cameras;
+}
+
 HRESULT Renderer::InitializeDriverAndVersion(HWND p_HandleWindow)
 {
 	HRESULT hr = S_OK;

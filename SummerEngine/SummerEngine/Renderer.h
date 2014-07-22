@@ -19,12 +19,19 @@ public:
 		int BufferNum;
 		Component* m_Component;
 	};
+	struct CameraStruct
+	{
+		XMFLOAT4X4 View;
+		XMFLOAT4X4 Proj;
+		XMFLOAT4X4 ViewProj;
+	};
 	typedef std::vector<RenderObject*> RenderObjects;
 
 
 	static Renderer* GetInstance();
 	bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow);
 	void SetViewports(std::vector<D3D11_VIEWPORT> p_Viewports);
+	void SetCameras(std::vector<CameraStruct> p_Cameras);
 	void BeginRender();
 	void RenderOpaque(RenderObjects* p_RenderObjects);
 	void ComputeDeferred();
@@ -99,5 +106,7 @@ private:
 	ID3D11VertexShader* m_TestVertexShader;
 	ID3D11InputLayout* m_TestLayout;
 	void Renderer::SetShaders();
+	std::vector<CameraStruct> m_Cameras;
+	
 };
 

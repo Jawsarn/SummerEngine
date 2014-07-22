@@ -21,6 +21,7 @@ public:
 	std::vector<Entity*> GetChildren();
 
 	Component* GetTransformComponent();
+	void SetTransformComponent(Component* p_Component); //might change this to be a checker when adding a component
 
 	virtual bool Read(Stream &p_Stream);
 	virtual bool Write(Stream &p_Stream);

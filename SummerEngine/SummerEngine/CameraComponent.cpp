@@ -65,6 +65,23 @@ D3D11_VIEWPORT CameraComponent::GetViewport()
 	return m_Viewport;
 }
 
+XMFLOAT4X4 CameraComponent::GetView()const
+{
+	return ((TransformComponent*)m_Entity->GetTransformComponent())->GetMatrix();
+}
+XMFLOAT4X4 CameraComponent::GetProj()const
+{
+	return m_Proj;
+}
+XMFLOAT4X4 CameraComponent::GetViewProj()const
+{
+	XMMATRIX t_View = XMLoadFloat4x4(&((TransformComponent*)m_Entity->GetTransformComponent())->GetMatrix());
+	XMMATRIX t_Proj = XMLoadFloat4x4(&m_Proj);
+	XMFLOAT4X4 t_ViewProj; 
+	XMStoreFloat4x4(&t_ViewProj, XMMatrixMultiply(t_View, t_Proj));
+	return t_ViewProj;
+}
+
 bool CameraComponent::Read(Stream &p_Stream)
 {
 

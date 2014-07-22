@@ -31,18 +31,13 @@ public:
 	
 	// Set frustum.
 	void SetLens(float p_FovY, float p_Aspect, float p_Znear, float p_Zfar);
+
 	D3D11_VIEWPORT GetViewport();
 
+	XMFLOAT4X4 GetView()const;
+	XMFLOAT4X4 GetProj()const;
+	XMFLOAT4X4 GetViewProj()const;
 	/*
-	// set view matrix
-
-
-	// Get View/Proj matrices.
-	
-	XMMATRIX View()const;
-	XMMATRIX Proj()const;
-	XMMATRIX ViewProj()const;
-
 	// Strafe/Walk the camera a distance d.
 	void Strafe(float p_Distance);
 	void Walk(float p_Distance);

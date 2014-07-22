@@ -1,7 +1,7 @@
 #pragma once
 #include "RenderingSystem.h"
 #include "Renderer.h"
-
+#include "Entity.h"
 
 class GameEngine
 {
@@ -32,5 +32,8 @@ private:
 	ULONGLONG* m_PrevTime;
 	DOUBLE* m_DeltaTime;
 	DOUBLE* m_GameTime;
+
+	//tempos
+	Entity* m_EntityTest;
 };
 
