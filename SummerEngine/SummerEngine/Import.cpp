@@ -41,6 +41,7 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 {
 	m_LoadObj->Load(p_FileName);
 
+
 	int t_ObjMeshCount = m_LoadObj->GetObjCount();
 	int t_GroupCount = m_LoadObj->GetGroupCount();
 
@@ -78,8 +79,8 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 			int t_TriangleSize = t_CurGroup[x].triangles.size();
 
 
-			std::vector<Mesh::MeshVertex> t_Vertices(t_TriangleSize * 3);
-
+			//std::vector<Mesh::MeshVertex> t_Vertices(t_TriangleSize * 3);
+			std::vector<Mesh::MeshVertex> t_Vertices;
 
 			//std::string t_MaterialName = t_CurGroup[x].material;
 			//t_GroupMaterial = m_LoadObj->GetMaterial(t_MaterialName);
@@ -115,6 +116,12 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 						m_Indecies[x].push_back(t_CurrentIndexCount);
 						t_CurrentIndexCount++;
 
+						t_Vertex->position = m_LoadObj->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
+						t_Vertex->texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
+						t_Vertex->normal = m_LoadObj->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
+
+						t_Vertices.push_back(*t_Vertex);
+
 					}
 
 					else
@@ -138,32 +145,35 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 			}
 
 			m_NumberOfVerticesInTotal += t_CurrentVertexCount;
+
+			/*
 			int t_ObjIndex = t_CurGroup[x].m_ObjId;
 
 			for (int createVertex = 0; createVertex < t_CurrentVertexCount; createVertex++)
 			{
 
-				MapVertex::const_iterator it;
-				std::vector<int> key;
+			MapVertex::const_iterator it;
+			std::vector<int> key;
 
-				for (it = m_MapVertex.begin(); it != m_MapVertex.end(); ++it)
-				{
-					if (it->second == m_Indecies[x][createVertex])
-					{
-						key = it->first;
-						break;
-					}
-				}
-				t_Vertex->position = m_LoadObj->GetPositions(t_ObjIndex)[key[0]];
-				t_Vertex->texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[key[1]];
-				t_Vertex->normal = m_LoadObj->GetNormals(t_ObjIndex)[key[2]];
-
-				//t_Vertex->position = m_LoadObj->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
-				//t_Vertex->texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
-				//t_Vertex->normal = m_LoadObj->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
-
-				t_Vertices[createVertex] = *t_Vertex;
+			for (it = m_MapVertex.begin(); it != m_MapVertex.end(); ++it)
+			{
+			if (it->second == m_Indecies[x][createVertex])
+			{
+			key = it->first;
+			break;
 			}
+			}
+			t_Vertex->position = m_LoadObj->GetPositions(t_ObjIndex)[key[0]];
+			t_Vertex->texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[key[1]];
+			t_Vertex->normal = m_LoadObj->GetNormals(t_ObjIndex)[key[2]];
+
+			//t_Vertex->position = m_LoadObj->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
+			//t_Vertex->texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
+			//t_Vertex->normal = m_LoadObj->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
+
+			t_Vertices[createVertex] = *t_Vertex;
+			}
+			*/
 
 			m_Groups.push_back(t_Vertices);
 			t_Vertices.clear();
