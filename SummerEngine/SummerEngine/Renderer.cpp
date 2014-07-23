@@ -659,7 +659,7 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 		}
 	}
 	
-
+	
 	//textures
 	//vertexBuffers
 	//materialBuffers?
