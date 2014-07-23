@@ -388,6 +388,10 @@ HRESULT Renderer::InitializeShaders()
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "WORLDMATRIX", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLDMATRIX", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLDMATRIX", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLDMATRIX", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
 
 		};
 		UINT t_NumElements = ARRAYSIZE(t_Layout);
@@ -557,6 +561,21 @@ void Renderer::BeginRender()
 	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, Colors::Black);
 	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
+	//set cameras
+	if (m_Cameras.size() != 0)
+	{
+		m_DeviceContext->UpdateSubresource(m_TestPerFrameBuffer, 0, nullptr, &m_Cameras[0], 0, 0); //be aware of change
+	}
+	else
+	{
+		CameraStruct t_Temp;
+		XMFLOAT4X4 t_Mat;
+		XMStoreFloat4x4(&t_Mat, XMMatrixIdentity());
+		t_Temp.Proj = t_Mat;
+		t_Temp.View = t_Mat;
+		t_Temp.ViewProj = t_Mat;
+		m_DeviceContext->UpdateSubresource(m_TestPerFrameBuffer, 0, nullptr, &t_Temp,0,0);
+	}
 	
 	m_IsRendering = true;
 }
