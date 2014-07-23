@@ -65,7 +65,6 @@ HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device)
 			return S_FALSE;
 		}
 		m_IndexBuffers.push_back(m_IndexBuffer);
-		int test = 0;
 	}
 	return S_OK;
 }
@@ -106,8 +105,14 @@ ID3D11Buffer* Mesh::GetVertexBuffer(int p_Slot)
 
 int Mesh::GetNumOfVert(int p_Slot)
 {
-	return 0;
+	return m_Groups[p_Slot].size();
 }
+
+int Mesh::GetNumOfIndecies(int p_Group)
+{
+	return m_IndicesGroups[p_Group].size();
+}
+
 
 std::vector<ID3D11Buffer*> Mesh::GetVertexBuffers()
 {

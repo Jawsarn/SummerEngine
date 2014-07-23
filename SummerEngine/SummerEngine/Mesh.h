@@ -30,6 +30,7 @@ public:
 	HRESULT CreateMeshBuffers(ID3D11Device* p_Device);
 
 	int GetNumOfVert(int p_Slot);
+	int GetNumOfIndecies(int p_Group);
 
 	ID3D11Buffer* GetVertexBuffer(int p_Slot);
 	std::vector<ID3D11Buffer*> GetVertexBuffers();
