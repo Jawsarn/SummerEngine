@@ -12,8 +12,11 @@ public:
 	virtual void Enable();
 	virtual void Disable();
 
+	virtual void Awake();
 	virtual void Start();
 	virtual void Sleep();
+	virtual void Update();
+	virtual void Destroy();
 
 	virtual bool Read(Stream &p_Stream);
 	virtual bool Write(Stream &p_Stream);

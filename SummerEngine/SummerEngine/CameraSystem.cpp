@@ -47,6 +47,7 @@ void CameraSystem::Update()
 			
 		}
 		t_Renderer->SetViewports(t_Viewports);
+		m_Changed = false;
 	}
 
 	std::vector<Renderer::CameraStruct> t_CameraMatrices;
@@ -67,4 +68,28 @@ void CameraSystem::Update()
 void CameraSystem::Destroy()
 {
 
+}
+
+void CameraSystem::Register(Component* p_Component)
+{
+	System::Register(p_Component);
+	m_Changed = true;
+}
+
+void CameraSystem::Unregister(Component* p_Component)
+{
+	System::Unregister(p_Component);
+	m_Changed = true;
+}
+
+void CameraSystem::EnableComponent(Component* p_Component)
+{
+	System::EnableComponent(p_Component);
+	m_Changed = true;
+}
+
+void CameraSystem::DisableComponent(Component* p_Component)
+{
+	System::DisableComponent(p_Component);
+	m_Changed = true;
 }

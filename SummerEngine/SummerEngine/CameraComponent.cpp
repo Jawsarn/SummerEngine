@@ -3,11 +3,12 @@
 
 CameraComponent::CameraComponent()
 {
+	this->Awake();
 }
 
 CameraComponent::CameraComponent(std::string p_Name) :Component(p_Name)
 {
-
+	this->Awake();
 }
 
 CameraComponent::~CameraComponent()
@@ -15,15 +16,30 @@ CameraComponent::~CameraComponent()
 }
 
 
-void CameraComponent::Start()
+void CameraComponent::Awake()
 {
 	m_CameraSystem = m_CameraSystem->GetInstance();
 	m_CameraSystem->Register(this);
 }
 
+void CameraComponent::Start()
+{
+
+}
+
 void CameraComponent::Sleep()
 {
 	m_CameraSystem->Unregister(this);
+}
+
+void CameraComponent::Update()
+{
+
+}
+
+void CameraComponent::Destroy()
+{
+	Sleep();
 }
 
 void CameraComponent::Enable()
@@ -75,7 +91,8 @@ XMFLOAT4X4 CameraComponent::GetProj()const
 }
 XMFLOAT4X4 CameraComponent::GetViewProj()const
 {
-	XMMATRIX t_View = XMLoadFloat4x4(&((TransformComponent*)m_Entity->GetTransformComponent())->GetMatrix());
+	XMFLOAT4X4 t_FloatView = ((TransformComponent*)m_Entity->GetTransformComponent())->GetMatrix();
+	XMMATRIX t_View = XMLoadFloat4x4(&t_FloatView);
 	XMMATRIX t_Proj = XMLoadFloat4x4(&m_Proj);
 	XMFLOAT4X4 t_ViewProj; 
 	XMStoreFloat4x4(&t_ViewProj, XMMatrixMultiply(t_View, t_Proj));

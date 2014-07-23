@@ -3,12 +3,12 @@
 
 RenderComponent::RenderComponent() : Component("RenderComponent")
 {
-	
+	this->Awake();
 }
 
 RenderComponent::RenderComponent(std::string p_Name) :Component(p_Name)
 {
-
+	this->Awake();
 }
 
 RenderComponent::~RenderComponent()
@@ -36,15 +36,30 @@ bool RenderComponent::IsReceivingShadows()
 	return m_ReceiveShadows;
 }
 
-void RenderComponent::Start()
+void RenderComponent::Awake()
 {
 	m_RenderingSystem = m_RenderingSystem->GetInstance();
 	m_RenderingSystem->Register(this);
 }
 
+void RenderComponent::Start()
+{
+
+}
+
 void RenderComponent::Sleep()
 {
 	m_RenderingSystem->Unregister(this);
+}
+
+void RenderComponent::Update()
+{
+
+}
+
+void RenderComponent::Destroy()
+{
+	Sleep();
 }
 
 void RenderComponent::Enable()

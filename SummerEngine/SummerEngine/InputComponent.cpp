@@ -3,10 +3,12 @@
 
 InputComponent::InputComponent() : Component("InputComponent")
 {
+	this->Awake();
 }
 
 InputComponent::InputComponent(std::string p_Name) :Component(p_Name)
 {
+	this->Awake();
 }
 
 InputComponent::~InputComponent()
@@ -14,15 +16,30 @@ InputComponent::~InputComponent()
 }
 
 
-void InputComponent::Start()
+void InputComponent::Awake()
 {
 	m_InputSystem = m_InputSystem->GetInstance();
 	m_InputSystem->Register(this);
 }
 
+void InputComponent::Start()
+{
+
+}
+
 void InputComponent::Sleep()
 {
 	m_InputSystem->Unregister(this);
+}
+
+void InputComponent::Update()
+{
+
+}
+
+void InputComponent::Destroy()
+{
+	Sleep();
 }
 
 void InputComponent::Enable()

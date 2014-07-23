@@ -14,8 +14,11 @@ public:
 	virtual void Enable();
 	virtual void Disable();
 
+	virtual void Awake();
 	virtual void Start();
 	virtual void Sleep();
+	virtual void Update();
+	virtual void Destroy();;
 
 	Mesh* GetMesh();
 	Material* GetMaterial(int p_SlotNumber);

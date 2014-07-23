@@ -1,5 +1,5 @@
 #pragma once
-#include "RenderingSystem.h"
+#include "System.h"
 #include "Renderer.h"
 #include "Entity.h"
 
@@ -28,10 +28,13 @@ private:
 
 	static GameEngine* m_Singleton;
 
-	RenderingSystem* m_RenderingSystem;
+	
 	ULONGLONG* m_PrevTime;
 	DOUBLE* m_DeltaTime;
 	DOUBLE* m_GameTime;
+
+	//testsers
+	std::vector<System*> m_Systems;
 
 	//tempos
 	Entity* m_EntityTest;

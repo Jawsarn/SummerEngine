@@ -13,10 +13,10 @@ public:
 	virtual void Update();
 	virtual void Destroy();
 
-	void Register(Component* p_Component);
-	void Unregister(Component* p_Component);
-	void EnableComponent(Component* p_Component);
-	void DisableComponent(Component* p_Component);
+	virtual void Register(Component* p_Component);
+	virtual void Unregister(Component* p_Component);
+	virtual void EnableComponent(Component* p_Component);
+	virtual void DisableComponent(Component* p_Component);
 
 	//will add more here
 protected:

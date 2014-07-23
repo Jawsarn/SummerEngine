@@ -3,11 +3,12 @@
 
 TransformComponent::TransformComponent() :Component( "TransformComponent" )
 { 
+	this->Awake();
 }
 
 TransformComponent::TransformComponent(std::string p_Name) : Component(p_Name)
 {
-	
+	this->Awake();
 }
 
 TransformComponent::~TransformComponent()
@@ -48,19 +49,39 @@ void TransformComponent::AddTranslation(XMFLOAT3 p_translation)
 	Math::Add2XMFLOAT3(&m_Translation, &p_translation);
 }
 
-void TransformComponent::SetTranslation(XMFLOAT3 p_translation)
+void TransformComponent::SetTranslation(XMFLOAT3 p_Translation)
 {
-	this->m_Translation = m_Translation;
+	this->m_Translation = p_Translation;
 }
 
-void TransformComponent::SetRotation(XMFLOAT3 p_rotation)
+void TransformComponent::SetRotation(XMFLOAT3 p_Rotation)
 {
-	this->m_Rotation = m_Rotation;
+	this->m_Rotation = p_Rotation;
 }
 
-void TransformComponent::SetScale(XMFLOAT3 p_scale)
+void TransformComponent::SetScale(XMFLOAT3 p_Scale)
 {
-	this->m_Scale = m_Scale;
+	this->m_Scale = p_Scale;
+}
+
+void TransformComponent::Awake()
+{
+	
+}
+
+void TransformComponent::Start()
+{
+
+}
+
+void TransformComponent::Sleep()
+{
+	
+}
+
+void TransformComponent::Destroy()
+{
+	Sleep();
 }
 
 bool TransformComponent::Read(Stream &p_Stream)

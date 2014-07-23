@@ -8,7 +8,7 @@ using namespace DirectX;
 
 //#define _DEBUG
 
-#define MAX_INSTANCEBUFFER_SIZE 10000
+#define MAX_INSTANCEBUFFER_SIZE 1000
 
 class Renderer
 {
@@ -45,7 +45,7 @@ private:
 
 	HRESULT InitializeDriverAndVersion(HWND p_HandleWindow);
 	HRESULT InitializeRenderTargetView();
-	void InitializeViewports();
+	//void InitializeViewports();
 	HRESULT InitializeRasterizers();
 	HRESULT InitializeDeptpAndStates();
 	HRESULT InitializeBlendAndStates();
@@ -97,6 +97,7 @@ private:
 	//test thigns
 	struct PerFrameTestBuffer
 	{
+		XMFLOAT4X4 Matrix;
 
 	};
 	ID3D11Buffer* m_TestPerFrameBuffer;

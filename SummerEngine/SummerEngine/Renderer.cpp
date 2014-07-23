@@ -44,7 +44,7 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 	if (FAILED(hr))
 		return false;
 
-	InitializeViewports();
+	//InitializeViewports();
 
 	hr = InitializeRasterizers();
 	if (FAILED(hr))
@@ -202,19 +202,19 @@ HRESULT Renderer::InitializeRenderTargetView()
 	return hr;
 }
 
-void Renderer::InitializeViewports()
-{
-	D3D11_VIEWPORT vp;
-
-	vp.Width = (FLOAT)*m_Width;
-	vp.Height = (FLOAT)*m_Height;
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
-
-	m_DeviceContext->RSSetViewports(1, &vp);
-}
+//void Renderer::InitializeViewports()
+//{
+//	D3D11_VIEWPORT vp;
+//
+//	vp.Width = (FLOAT)*m_Width;
+//	vp.Height = (FLOAT)*m_Height;
+//	vp.MinDepth = 0.0f;
+//	vp.MaxDepth = 1.0f;
+//	vp.TopLeftX = 0;
+//	vp.TopLeftY = 0;
+//
+//	m_DeviceContext->RSSetViewports(1, &vp);
+//}
 
 HRESULT Renderer::InitializeRasterizers()
 {

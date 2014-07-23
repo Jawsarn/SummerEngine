@@ -2,7 +2,7 @@
 #include "ResourceLoadSave.h"
 
 
-class MeshResourceLoadSave :ResourceLoadSave
+class MeshResourceLoadSave : public ResourceLoadSave
 {
 public:
 	virtual Resource* Load(std::string p_FileName);

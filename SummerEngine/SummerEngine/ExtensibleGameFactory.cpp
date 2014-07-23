@@ -35,11 +35,8 @@ Entity* ExtensibleGameFactory::CreateEntity(ObjectType p_Type)
 
 Component* ExtensibleGameFactory::CreateComponent(ComponentType p_Type) //could change this but that'll take lot of time, and is not really needed for this small project
 {
-	if (p_Type == "Component")
-	{
-		return new Component();
-	}
-	else if (p_Type == "RenderComponent")
+
+	if (p_Type == "RenderComponent")
 	{
 		return new RenderComponent();
 	}

@@ -1,7 +1,7 @@
 #pragma once
 #include "ResourceLoadSave.h"
 
-class TextureResourceLoadSave: ResourceLoadSave
+class TextureResourceLoadSave : public ResourceLoadSave
 {
 public:
 	virtual Resource* Load(std::string p_FileName);

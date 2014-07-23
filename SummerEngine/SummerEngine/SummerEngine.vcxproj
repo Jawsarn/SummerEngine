@@ -132,7 +132,9 @@
     <ClInclude Include="TransformComponent.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Graphics\Objs\testFile.mtl" />
+    <None Include="Graphics\Objs\testFile.mtl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Object Include="Graphics\Objs\testFile.obj">

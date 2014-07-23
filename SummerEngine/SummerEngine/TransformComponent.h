@@ -23,6 +23,10 @@ public:
 	virtual bool Read(Stream &p_Stream);
 	virtual bool Write(Stream &p_Stream);
 
+	virtual void Awake();
+	virtual void Start();
+	virtual void Sleep();
+	virtual void Destroy();
 
 private:
 

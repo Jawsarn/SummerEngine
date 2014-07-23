@@ -22,17 +22,13 @@ GameEngine::GameEngine()
 	*m_DeltaTime = 0;
 	*m_GameTime = 0;
 	*m_PrevTime = 0;
-	m_RenderingSystem = nullptr;
 }
 
 
 GameEngine::~GameEngine()
 {
 }
-#include "RenderComponent.h"
-#include "ExtensibleGameFactory.h"
-#include "StreamFile.h"
-#include "Stream.h"
+
 
 struct TestVector
 {
@@ -49,34 +45,70 @@ struct TestVector
 		b = p_b;
 	}
 };
+
+#include "RenderComponent.h"
+#include "ExtensibleGameFactory.h"
+#include "StreamFile.h"
+#include "Stream.h"
+#include "RenderingSystem.h"
 #include "LoadObj.h"
 #include "Entity.h"
 #include "CameraComponent.h"
 #include "TransformComponent.h"
+#include "ResourceManager.h"
+#include "MeshResourceLoadSave.h"
+#include "TextureResourceLoadSave.h"
+#include "MaterialResourceLoadSave.h"
+
 
 bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 {
+	//initialize Systems
 	Renderer* t_RendererStartup = t_RendererStartup->GetInstance();
 	t_RendererStartup->Initialize(1920, 1080, p_HandleWindow);
 
-	m_RenderingSystem = m_RenderingSystem->GetInstance();
-	m_RenderingSystem->Start();
+	RenderingSystem* t_RenderingSystem = t_RenderingSystem->GetInstance();
+	CameraSystem* t_CameraSystem = t_CameraSystem->GetInstance();
+
+	//push back systems in order to be updated
+	m_Systems.push_back(t_CameraSystem);
+	m_Systems.push_back(t_RenderingSystem);
+
+	//startup everything
+	for (int i = 0; i < m_Systems.size(); i++)
+	{
+		m_Systems[i]->Start();
+	}
+
+	//set up the ResourceManager
+	ResourceManager* t_ResourceManager = t_ResourceManager->GetInstance();
+	
+	MeshResourceLoadSave* t_MeshResourceLoadSave = new MeshResourceLoadSave();
+	TextureResourceLoadSave* t_TextureResourceLoadSave = new TextureResourceLoadSave();
+	MaterialResourceLoadSave* t_MaterialResourceLoadSave = new MaterialResourceLoadSave();
+
+	//register valid resources to the manager
+	t_ResourceManager->Register(t_MeshResourceLoadSave);
+	t_ResourceManager->Register(t_TextureResourceLoadSave);
+	t_ResourceManager->Register(t_MaterialResourceLoadSave);
+
 
 	//shouldn't be here untill later maybe? ... depends
 	m_EntityTest = new Entity();
 	CameraComponent* t_NewComponent = new CameraComponent();
 	t_NewComponent->SetLens(XM_PIDIV4, 1920/1080, 0.5f, 10000);
 	TransformComponent* t_NewTransform = new TransformComponent();
+
+	RenderComponent* t_NewRenderComponent = new RenderComponent();
 	
-	t_NewTransform->SetTranslation(XMFLOAT3(0,0,0));
-	t_NewTransform->SetRotation(XMFLOAT3(0, 0, 0));
+	t_NewTransform->SetTranslation(XMFLOAT3(10,5,3));
+	t_NewTransform->SetRotation(XMFLOAT3(2, 0, 0));
 	t_NewTransform->SetScale(XMFLOAT3(1, 1, 1));
+	t_NewTransform->Update();
 
 	m_EntityTest->AddComponent(t_NewComponent);
 	m_EntityTest->SetTransformComponent(t_NewTransform);
 	
-
-	int working = 0;
 
 
 	return true;
@@ -91,14 +123,18 @@ void GameEngine::Destroy()
 
 void GameEngine::Update()
 {
-	UpdateTime();
+	//UpdateTime();
 	//GetInput();
 	//GetNetworkMessages();
 	//SimulateWorld();
 	//CollisionStep();
 	//UpdateObjects();
-	RenderWorld();
+	//RenderWorld();
 	//MiscTasks();
+	for (int i = 0; i < m_Systems.size(); i++)
+	{
+		m_Systems[i]->Update();
+	}
 }
 
 void GameEngine::UpdateTime()
@@ -138,7 +174,7 @@ void GameEngine::UpdateObjects()
 
 void GameEngine::RenderWorld()
 {
-	m_RenderingSystem->Update();
+	
 }
 
 void GameEngine::MiscTasks()
