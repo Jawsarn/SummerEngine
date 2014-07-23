@@ -65,6 +65,10 @@ void Mesh::SetIndexData(IndicesGroups* p_IndexGroups)
 	m_IndicesGroups = *p_IndexGroups;
 }
 
+Mesh::IndicesGroups* Mesh::GetIndexData()
+{
+	return &m_IndicesGroups;
+}
 
 ID3D11Buffer* Mesh::GetVertexBuffer(int p_Slot)
 {
