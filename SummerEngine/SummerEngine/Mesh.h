@@ -45,6 +45,8 @@ public:
 private:
 	VertexGroups m_Groups;
 	IndicesGroups m_IndicesGroups;
-	ID3D11Buffer* m_Buffer;
+	ID3D11Buffer* m_VertexBuffer;
+	ID3D11Buffer* m_IndexBuffer;
 	std::vector<ID3D11Buffer*> m_VertexBuffers;
+	std::vector<ID3D11Buffer*> m_IndexBuffers;
 };
