@@ -21,7 +21,7 @@ public:
 	};
 	typedef std::vector<std::vector<MeshVertex>> VertexGroups;
 	typedef std::vector<int> GroupNumOfVert;
-
+	typedef std::vector<std::vector<int>> IndicesGroups;
 
 	Mesh();
 	~Mesh();
@@ -35,6 +35,7 @@ public:
 	std::vector<ID3D11Buffer*> GetVertexBuffers();
 	VertexGroups* GetVertexData();
 	void SetVertexData(VertexGroups p_Groups);
+	void SetIndexData(IndicesGroups* p_IndexGroups);
 	void ClearLoadData();
 
 	virtual const std::string &GetName() const;
@@ -42,6 +43,7 @@ public:
 
 private:
 	VertexGroups m_Groups;
+	IndicesGroups m_IndicesGroups;
 	ID3D11Buffer* m_Buffer;
 	std::vector<ID3D11Buffer*> m_VertexBuffers;
 };

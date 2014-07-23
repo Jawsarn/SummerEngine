@@ -37,11 +37,9 @@ void Import::Release()
 	*/
 }
 
-
 void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 {
 	m_LoadObj->Load(p_FileName);
-
 
 	int t_ObjMeshCount = m_LoadObj->GetObjCount();
 	int t_GroupCount = m_LoadObj->GetGroupCount();
@@ -62,6 +60,8 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 		//MaterialData* t_GroupMaterial;
 
 		//Iterate through the meshes groups
+		/////////////////////////////////////////MapVertex t_MapVertex;
+
 		for (int x = 0; x < t_GroupCount; x++)
 		{
 			//Assaign the current group to the meshes index group
@@ -69,16 +69,25 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 
 			//ID3D11Buffer* buffer = nullptr;
 
-			Mesh::MeshVertex t_V;
+			Mesh::MeshVertex* t_Vertex = nullptr;
+			t_Vertex = new Mesh::MeshVertex;
+
 			ObjGroups::Triangle* t_Triangle = nullptr;
 
-			int count = 0;
+			int t_CurrentVertexCount = 0;
 			int t_TriangleSize = t_CurGroup[x].triangles.size();
+
 
 			std::vector<Mesh::MeshVertex> t_Vertices(t_TriangleSize * 3);
 
+
 			//std::string t_MaterialName = t_CurGroup[x].material;
 			//t_GroupMaterial = m_LoadObj->GetMaterial(t_MaterialName);
+
+			//Index list
+
+			int t_CurrentIndexCount = 0;
+			m_Indecies.resize(t_GroupCount);
 
 			//Iterate through the groups triangles
 			for (int y = 0; y < t_TriangleSize; y++)
@@ -91,56 +100,70 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 				for (int j = 2; j >= 0; j--)
 				{
 					//iterate throug all triangles and extract the position from the vectors
-					//index from triangle
 
-					//int test_PositionIndex = t_Triangle->index[j][0];
-					//int test_TexIndex = t_Triangle->index[j][1];
-					//int test_NormIndex = t_Triangle->index[j][2];
+					//obj starts from 1 not 0!
 
-					if (m_LoadObj->GetPositions(t_ObjIndex).size() == 0)
-					{
-						std::string t_ErrorMessage = "Could not find positions on an OBJ:" + p_FileName;
-						std::wstring t_MeshName(t_ErrorMessage.begin(), t_ErrorMessage.end());
-						MessageBox(nullptr, t_MeshName.c_str(), L"Error-OBJ", MB_ICONERROR | MB_OK);
-					}
-					else
-					{
-						//Get Positions
-						t_V.position = m_LoadObj->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
-					}
+					//Triangle to int mapping!
+					std::vector<int> t_TriangleIndex = { t_Triangle->index[j][0],
+						t_Triangle->index[j][1],
+						t_Triangle->index[j][2] };
 
-					if (m_LoadObj->GetTexCoords(t_ObjIndex).size() == 0)
+					MapVertex::const_iterator t_Iterator = m_MapVertex.find(t_TriangleIndex);
+					if (t_Iterator == m_MapVertex.end())
 					{
-						std::string t_ErrorMessage = "Could not find UV-Coords on an OBJ:" + p_FileName;
-						std::wstring t_MeshName(t_ErrorMessage.begin(), t_ErrorMessage.end());
-						MessageBox(nullptr, t_MeshName.c_str(), L"Error-OBJ", MB_ICONERROR | MB_OK);
+						m_MapVertex[t_TriangleIndex] = t_CurrentIndexCount;
+						m_Indecies[x].push_back(t_CurrentIndexCount);
+						t_CurrentIndexCount++;
+
 					}
 
 					else
 					{
-						//Get Texture Coordinates
-						t_V.texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
+						int t_Second = t_Iterator->second;
+						m_Indecies[x].push_back(t_Second);
 					}
 
-					if (m_LoadObj->GetNormals(t_ObjIndex).size() == 0)
-					{
-						std::string t_ErrorMessage = "Could not find Normals on an OBJ:" + p_FileName;
-						std::wstring t_MeshName(t_ErrorMessage.begin(), t_ErrorMessage.end());
-						MessageBox(nullptr, t_MeshName.c_str(), L"Error-OBJ", MB_ICONERROR | MB_OK);
-					}
-					else
-					{
-						//Get Normals
-						t_V.normal = m_LoadObj->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
-					}
-					t_Vertices[count] = t_V;
-					//t_Vertices.push_back(t_V);
 
-					count += 1;
+
+
+					//t_Vertex->position = m_LoadObj->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
+					//t_Vertex->texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
+					//t_Vertex->normal = m_LoadObj->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
+
+					//t_Vertices[t_CurrentVertexCount] = *t_Vertex;
+
+
+					t_CurrentVertexCount += 1;
 				}
 			}
 
-			m_NumberOfVerticesInTotal += count;
+			m_NumberOfVerticesInTotal += t_CurrentVertexCount;
+			int t_ObjIndex = t_CurGroup[x].m_ObjId;
+
+			for (int createVertex = 0; createVertex < t_CurrentVertexCount; createVertex++)
+			{
+
+				MapVertex::const_iterator it;
+				std::vector<int> key;
+
+				for (it = m_MapVertex.begin(); it != m_MapVertex.end(); ++it)
+				{
+					if (it->second == m_Indecies[x][createVertex])
+					{
+						key = it->first;
+						break;
+					}
+				}
+				t_Vertex->position = m_LoadObj->GetPositions(t_ObjIndex)[key[0]];
+				t_Vertex->texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[key[1]];
+				t_Vertex->normal = m_LoadObj->GetNormals(t_ObjIndex)[key[2]];
+
+				//t_Vertex->position = m_LoadObj->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
+				//t_Vertex->texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
+				//t_Vertex->normal = m_LoadObj->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
+
+				t_Vertices[createVertex] = *t_Vertex;
+			}
 
 			m_Groups.push_back(t_Vertices);
 			t_Vertices.clear();
@@ -149,6 +172,8 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 		Mesh* t_Mesh = nullptr;
 		t_Mesh = new Mesh();
 		t_Mesh->SetVertexData(m_Groups);
+		t_Mesh->SetIndexData(&m_Indecies);
+
 		m_Meshes.push_back(t_Mesh);
 		t_Mesh->CreateMeshBuffers(p_Device);
 		m_Groups.clear();
