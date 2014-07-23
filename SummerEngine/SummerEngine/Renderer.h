@@ -97,9 +97,11 @@ private:
 	//test thigns
 	struct PerFrameTestBuffer
 	{
-		XMFLOAT4X4 Matrix;
-
+		XMFLOAT4X4 View;
+		XMFLOAT4X4 Proj;
+		XMFLOAT4X4 ViewProj;
 	};
+
 	ID3D11Buffer* m_TestPerFrameBuffer;
 
 	ID3D11Buffer* m_InstanceBuffer;
