@@ -30,7 +30,8 @@ public:
 	
 	
 	// Set frustum.
-	void SetLens(float p_FovY, float p_Aspect, float p_Znear, float p_Zfar);
+	void SetLens(float p_FovY, float p_Width, float p_Height, float p_Znear, float p_Zfar, float p_TopX, float p_TopY);
+
 
 	D3D11_VIEWPORT GetViewport();
 

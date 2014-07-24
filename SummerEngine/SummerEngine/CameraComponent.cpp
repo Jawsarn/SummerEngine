@@ -55,10 +55,10 @@ void CameraComponent::Disable()
 }
 
 
-void CameraComponent::SetLens(float p_FovY, float p_Aspect, float p_Znear, float p_Zfar)
+void CameraComponent::SetLens(float p_FovY, float p_Width, float p_Height, float p_Znear, float p_Zfar, float p_TopX, float p_TopY)
 {
 	m_FovY = p_FovY;
-	m_Aspect = p_Aspect;
+	m_Aspect = (p_Width/p_Height);
 
 	m_NearZ = p_Znear;
 	m_FarZ = p_Zfar;
@@ -74,7 +74,15 @@ void CameraComponent::SetLens(float p_FovY, float p_Aspect, float p_Znear, float
 	XMMATRIX t_Projection = XMMatrixPerspectiveFovLH(m_FovY, m_Aspect, m_NearZ, m_FarZ);
 	XMStoreFloat4x4(&m_Proj, t_Projection);
 
+	m_Viewport.Height = p_Height;
+	m_Viewport.Width = p_Width;
+	m_Viewport.MaxDepth = 1;
+	m_Viewport.MinDepth = 0;
+	m_Viewport.TopLeftX = p_TopX;
+	m_Viewport.TopLeftY = p_TopY;
 }
+
+
 
 D3D11_VIEWPORT CameraComponent::GetViewport()
 {
