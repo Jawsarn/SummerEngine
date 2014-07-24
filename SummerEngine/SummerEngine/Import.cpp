@@ -78,8 +78,6 @@ void Import::LoadFromObj(std::string p_FileName)
 			int t_CurrentVertexCount = 0;
 			int t_TriangleSize = t_CurGroup[x].triangles.size();
 
-
-			//std::vector<Mesh::MeshVertex> t_Vertices(t_TriangleSize * 3);
 			std::vector<Mesh::MeshVertex> t_Vertices;
 
 			//std::string t_MaterialName = t_CurGroup[x].material;
@@ -112,73 +110,42 @@ void Import::LoadFromObj(std::string p_FileName)
 					MapVertex::const_iterator t_Iterator = m_MapVertex.find(t_TriangleIndex);
 					if (t_Iterator == m_MapVertex.end())
 					{
+						//New vertex found, mapping it to an int (which is increasing everytime we find a new vertex)
 						m_MapVertex[t_TriangleIndex] = t_CurrentIndexCount;
-						m_Indecies[x].push_back(t_CurrentIndexCount);
+
+						m_Indecies[x].push_back(t_CurrentIndexCount);	//Storing the index to the list
 						t_CurrentIndexCount++;
 
+						//Getting the position, texture coordinate and normal from the mesh loader class
 						t_Vertex->position = m_LoadObj->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
 						t_Vertex->texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
 						t_Vertex->normal = m_LoadObj->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
 
+						//storing it to an temporary list
 						t_Vertices.push_back(*t_Vertex);
 
 					}
 
 					else
 					{
+						//There is already a vertex like this one, so it is just a matter of copying it from the index-list
 						int t_Second = t_Iterator->second;
 						m_Indecies[x].push_back(t_Second);
 					}
 
-
-
-
-					//t_Vertex->position = m_LoadObj->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
-					//t_Vertex->texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
-					//t_Vertex->normal = m_LoadObj->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
-
-					//t_Vertices[t_CurrentVertexCount] = *t_Vertex;
-
-
+					t_TriangleIndex.clear();
 					t_CurrentVertexCount += 1;
 				}
 			}
 
 			m_NumberOfVerticesInTotal += t_CurrentVertexCount;
 
-			/*
-			int t_ObjIndex = t_CurGroup[x].m_ObjId;
-
-			for (int createVertex = 0; createVertex < t_CurrentVertexCount; createVertex++)
-			{
-
-			MapVertex::const_iterator it;
-			std::vector<int> key;
-
-			for (it = m_MapVertex.begin(); it != m_MapVertex.end(); ++it)
-			{
-			if (it->second == m_Indecies[x][createVertex])
-			{
-			key = it->first;
-			break;
-			}
-			}
-			t_Vertex->position = m_LoadObj->GetPositions(t_ObjIndex)[key[0]];
-			t_Vertex->texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[key[1]];
-			t_Vertex->normal = m_LoadObj->GetNormals(t_ObjIndex)[key[2]];
-
-			//t_Vertex->position = m_LoadObj->GetPositions(t_ObjIndex)[t_Triangle->index[j][0]];
-			//t_Vertex->texCoord = m_LoadObj->GetTexCoords(t_ObjIndex)[t_Triangle->index[j][1]];
-			//t_Vertex->normal = m_LoadObj->GetNormals(t_ObjIndex)[t_Triangle->index[j][2]];
-
-			t_Vertices[createVertex] = *t_Vertex;
-			}
-			*/
-
+			//Storing the vertices 
 			m_Groups.push_back(t_Vertices);
 			t_Vertices.clear();
 		}
 
+		//Creating a mesh
 		Mesh* t_Mesh = nullptr;
 		t_Mesh = new Mesh();
 		t_Mesh->SetVertexData(m_Groups);
@@ -186,10 +153,16 @@ void Import::LoadFromObj(std::string p_FileName)
 
 		m_Meshes.push_back(t_Mesh);
 		t_Mesh->CreateMeshBuffers();
-		m_Groups.clear();
 
+
+		//Making it a gameobject
 		//GameObject* t_NewGameObject = new GameObject(p_Device);
 		//gameObjects.push_back(t_NewGameObject);
+
+		//Clear everything, prepare for next list
+		m_Groups.clear();
+		m_Indecies.clear();
+		m_MapVertex.clear();
 	}
 
 }

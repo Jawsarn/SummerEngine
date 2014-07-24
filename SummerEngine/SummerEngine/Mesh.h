@@ -30,6 +30,7 @@ public:
 	HRESULT CreateMeshBuffers();
 
 	int GetNumOfVert(int p_Slot);
+	int GetNumOfIndecies(int p_Group);
 
 	int GetNumOfBuffers();
 
