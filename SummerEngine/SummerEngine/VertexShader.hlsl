@@ -21,13 +21,23 @@ cbuffer ConstantBuffer : register(c0)
 	matrix ViewProj;
 };
 
+//testar
+cbuffer ConstantBuffer : register(c1)
+{
+	matrix world;
+};
+
+
 VS_OUTPUT VS(VS_INPUT p_Input)
 {
 	VS_OUTPUT o_Output;
 
-	o_Output.Position = mul(float4(p_Input.Position, 1), p_Input.World);
-	o_Output.Position = mul(o_Output.Position, View);
-	o_Output.Position = mul(o_Output.Position, Proj);
+	//something is wrong with view and projection so trying to render without those for now
+	o_Output.Position = float4(p_Input.Position, 1);//testar
+
+	//o_Output.Position = mul(float4(p_Input.Position, 1), p_Input.World);
+	//o_Output.Position = mul(o_Output.Position, View);
+	//o_Output.Position = mul(o_Output.Position, Proj);
 
 	o_Output.Normal = p_Input.Normal;
 

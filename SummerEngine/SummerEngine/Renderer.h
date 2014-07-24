@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 #include "Mesh.h"
 #include "Component.h"
+#include "Rectangles.h"//testar
 
 using namespace DirectX;
 
@@ -112,6 +113,9 @@ private:
 	ID3D11InputLayout* m_TestLayout;
 	void Renderer::SetShaders();
 	std::vector<CameraStruct> m_Cameras;
+
+
+	Rectangles rect;//testar
 	
 };
 
