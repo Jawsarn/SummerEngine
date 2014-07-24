@@ -397,10 +397,10 @@ HRESULT Renderer::InitializeShaders()
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			//{ "WORLDMATRIX", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-			//{ "WORLDMATRIX", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-			//{ "WORLDMATRIX", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-			//{ "WORLDMATRIX", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLDMATRIX", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLDMATRIX", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLDMATRIX", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLDMATRIX", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
 
 		};
 		UINT t_NumElements = ARRAYSIZE(t_Layout);
@@ -669,10 +669,10 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 			ID3D11Buffer* t_InBuffers[2] = { t_VertexBuffer, m_InstanceBuffer };
 			
 
-			//m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets); //set both vertex and instance buffer
-			UINT VertexStrides[1] = { sizeof(Mesh::MeshVertex) };
+			m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets); //set both vertex and instance buffer
+			/*UINT VertexStrides[1] = { sizeof(Mesh::MeshVertex) };
 			UINT VertexOffsets[1] = { 0 };
-			m_DeviceContext->IASetVertexBuffers(0, 1, &t_VertexBuffer, VertexStrides, VertexOffsets);
+			m_DeviceContext->IASetVertexBuffers(0, 1, &t_VertexBuffer, VertexStrides, VertexOffsets);*/
 
 			m_DeviceContext->IASetIndexBuffer(t_IndexBuffer, DXGI_FORMAT_R32_UINT, indexOffset);
 			//m_DeviceContext->IASetIndexBuffer();
