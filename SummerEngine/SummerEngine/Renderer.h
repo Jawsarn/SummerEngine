@@ -23,7 +23,7 @@ public:
 	{
 		XMFLOAT4X4 View;
 		XMFLOAT4X4 Proj;
-		XMFLOAT4X4 ViewProj;
+		//XMFLOAT4X4 ViewProj;
 	};
 	typedef std::vector<RenderObject*> RenderObjects;
 
@@ -102,7 +102,7 @@ private:
 	{
 		XMMATRIX View;
 		XMMATRIX Proj;
-		XMMATRIX ViewProj;
+		//XMMATRIX ViewProj;
 	};
 
 	ID3D11Buffer* m_TestPerFrameBuffer;
