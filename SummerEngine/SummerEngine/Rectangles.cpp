@@ -7,8 +7,8 @@ Rectangles::Rectangles()
 Rectangles::Rectangles(ID3D11Device* device)
 {
 	//Buffers
-	vertexBuffer = NULL;
-	constantBuffer = NULL;
+	m_VertexBuffer = NULL;
+	m_ConstantBuffer = NULL;
 	CreateButton(device);
 
 	//WORLD MATRIX
@@ -16,14 +16,14 @@ Rectangles::Rectangles(ID3D11Device* device)
 	XMMATRIX scale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
 	XMMATRIX translation = XMMatrixTranslation(1.0f, 1.0f, 0.0f);
 	XMMATRIX world = XMMatrixTranspose(rotation * scale * translation);
-	cbPerObj.WORLD = world;
+	m_WorldStruct.WORLD = world;
 }
 
 Rectangles::~Rectangles()
 {
 }
 
-HRESULT Rectangles::CreateButton(ID3D11Device* device)
+HRESULT Rectangles::CreateButton(ID3D11Device* p_Device)
 {
 	Vertex Rect[4] =
 	{
@@ -44,7 +44,7 @@ HRESULT Rectangles::CreateButton(ID3D11Device* device)
 
 	D3D11_SUBRESOURCE_DATA data;
 	data.pSysMem = Rect;
-	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
+	HRESULT hr = p_Device->CreateBuffer(&bufferDesc, &data, &m_VertexBuffer);
 
 
 	//CREATE BUFFER FOR Constantbuffer (WORLD)
@@ -57,7 +57,7 @@ HRESULT Rectangles::CreateButton(ID3D11Device* device)
 	cbbd.CPUAccessFlags = 0;
 	cbbd.MiscFlags = 0;
 
-	hr = device->CreateBuffer(&cbbd, NULL, &constantBuffer);
+	hr = p_Device->CreateBuffer(&cbbd, NULL, &m_ConstantBuffer);
 	if (FAILED(hr))
 		return hr;
 	return hr;
@@ -68,19 +68,19 @@ HRESULT Rectangles::Update(float deltaTime)
 	return S_OK;
 }
 
-HRESULT Rectangles::Render(ID3D11DeviceContext* deviceContext)
+HRESULT Rectangles::Render(ID3D11DeviceContext* p_DeviceContext)
 {
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	p_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	//draw triangle
 	UINT32 vertexSize = sizeof(Vertex);
 	UINT32 offset = 0;
-	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &vertexSize, &offset);
+	p_DeviceContext->IASetVertexBuffers(0, 1, &m_VertexBuffer, &vertexSize, &offset);
 
-	deviceContext->UpdateSubresource(constantBuffer, 0, NULL, &cbPerObj, 0, 0);
-	deviceContext->VSSetConstantBuffers(1, 1, &constantBuffer);
+	p_DeviceContext->UpdateSubresource(m_ConstantBuffer, 0, NULL, &m_WorldStruct, 0, 0);
+	p_DeviceContext->VSSetConstantBuffers(1, 1, &m_ConstantBuffer);
 
-	deviceContext->Draw(4, 0);
+	p_DeviceContext->Draw(4, 0);
 
 	return S_OK;
 }
