@@ -15,6 +15,7 @@ bool LoadObj::Load(std::string p_fileName)
 	//m_Obj.resize(1);
 	m_CurrentObj = 0;//object with triangles and materials and pos,norm,texcoord
 	m_CurrentGroup = 0;//group of triangles
+	m_CurrentMaterial = 0;
 
 	//m_Position.resize(1);
 	//m_Normal.resize(1);

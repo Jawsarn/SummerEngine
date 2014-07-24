@@ -26,6 +26,13 @@ Material* RenderComponent::GetMaterial(int p_SlotNumber)
 	return m_Materials[p_SlotNumber];
 }
 
+void RenderComponent::SetObject(Mesh* p_Mesh, std::vector<Material*> p_Materials)
+{
+	m_Mesh = m_Mesh;
+	m_Materials = p_Materials;
+	m_RenderingSystem->UpdateComponent(this);
+}
+
 bool RenderComponent::IsCastingShadows()
 {
 	return m_CastShadows;
@@ -98,4 +105,9 @@ bool RenderComponent::Write(Stream &p_Stream)
 	WriteBool(p_Stream, m_ReceiveShadows);
 	
 	return true;
+}
+
+int RenderComponent::GetNumOfObjects()
+{
+	return m_Materials.size();
 }

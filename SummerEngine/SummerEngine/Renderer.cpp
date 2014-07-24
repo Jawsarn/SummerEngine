@@ -79,6 +79,15 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 	return true;
 }
 
+void Renderer::CreateBuffer(D3D11_BUFFER_DESC* p_Desc, D3D11_SUBRESOURCE_DATA* p_Data, ID3D11Buffer** o_Buffer)
+{
+	HRESULT hr = m_Device->CreateBuffer(p_Desc, p_Data, o_Buffer);
+	if (FAILED(hr))
+	{
+		MessageBox(nullptr, L"Buffer could not be created", L"Error", MB_ICONERROR | MB_OK);
+	}
+}
+
 void Renderer::SetViewports(std::vector<D3D11_VIEWPORT> p_Viewports)
 {
 	m_DeviceContext->RSSetViewports(p_Viewports.size(), &p_Viewports[0]);
@@ -607,10 +616,12 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 	//ok so first we do it simple, only taking care of the vertex buffer with checking material as well, ok ? 
 	{
 		RenderObject* t_RenderObject = p_RenderObjects->at(0);
-		t_VertexBuffer = t_RenderObject->m_Mesh->GetVertexBuffer(t_RenderObject->BufferNum);
-		t_VertexBuffSize = t_RenderObject->m_Mesh->GetNumOfVert(t_RenderObject->BufferNum);
+		RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
 
-		t_Material = ((RenderComponent*)(t_RenderObject->m_Component))->GetMaterial(t_RenderObject->BufferNum); //woa... but yes
+		t_VertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
+		t_VertexBuffSize = t_RenderComponent->GetMesh()->GetNumOfVert(t_RenderObject->BufferNum);
+
+		t_Material = t_RenderComponent->GetMaterial(t_RenderObject->BufferNum); //woa... but yes
 		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject->m_Component->GetEntity()->GetTransformComponent());
 		t_Matrices.push_back(t_Transform->GetMatrix());
 		t_NumOfInstances++;
@@ -619,8 +630,11 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 	for (int i = 0; i < t_NumOfObjects; i++)
 	{
 		RenderObject* t_RenderObject = p_RenderObjects->at(0);
-		ID3D11Buffer* t_CheckVertexBuffer = t_RenderObject->m_Mesh->GetVertexBuffer(t_RenderObject->BufferNum);
-		Material* t_CheckMaterial = ((RenderComponent*)(t_RenderObject->m_Component))->GetMaterial(t_RenderObject->BufferNum); //woa... but yes
+		RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
+
+		ID3D11Buffer* t_CheckVertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
+		Material* t_CheckMaterial = t_RenderComponent->GetMaterial(t_RenderObject->BufferNum); //woa... but yes
+
 		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject->m_Component->GetEntity()->GetTransformComponent());
 		//can only have max 32 buffer in the IA stage, 
 
@@ -651,10 +665,11 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 			m_DeviceContext->DrawInstanced(t_VertexBuffSize, t_NumOfInstances, 0, 0);
 
 			//reset the instanced buffer
+			RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
 			t_Matrices.clear();
 			t_Matrices.push_back(t_Transform->GetMatrix());
 			t_VertexBuffer = t_CheckVertexBuffer;
-			t_VertexBuffSize = t_RenderObject->m_Mesh->GetNumOfVert(t_RenderObject->BufferNum);
+			t_VertexBuffSize = t_RenderComponent->GetMesh()->GetNumOfVert(t_RenderObject->BufferNum);
 			t_NumOfInstances = 1;
 		}
 	}

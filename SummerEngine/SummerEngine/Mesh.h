@@ -27,9 +27,11 @@ public:
 	~Mesh();
 
 	void Release();
-	HRESULT CreateMeshBuffers(ID3D11Device* p_Device);
+	HRESULT CreateMeshBuffers();
 
 	int GetNumOfVert(int p_Slot);
+
+	int GetNumOfBuffers();
 
 	ID3D11Buffer* GetVertexBuffer(int p_Slot);
 	std::vector<ID3D11Buffer*> GetVertexBuffers();
@@ -45,8 +47,7 @@ public:
 private:
 	VertexGroups m_Groups;
 	IndicesGroups m_IndicesGroups;
-	ID3D11Buffer* m_VertexBuffer;
-	ID3D11Buffer* m_IndexBuffer;
+	
 	std::vector<ID3D11Buffer*> m_VertexBuffers;
 	std::vector<ID3D11Buffer*> m_IndexBuffers;
 };

@@ -37,7 +37,7 @@ void Import::Release()
 	*/
 }
 
-void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
+void Import::LoadFromObj(std::string p_FileName)
 {
 	m_LoadObj->Load(p_FileName);
 
@@ -185,7 +185,7 @@ void Import::LoadFromObj(ID3D11Device* p_Device, std::string p_FileName)
 		t_Mesh->SetIndexData(&m_Indecies);
 
 		m_Meshes.push_back(t_Mesh);
-		t_Mesh->CreateMeshBuffers(p_Device);
+		t_Mesh->CreateMeshBuffers();
 		m_Groups.clear();
 
 		//GameObject* t_NewGameObject = new GameObject(p_Device);

@@ -15,7 +15,6 @@ class Renderer
 public:
 	struct RenderObject
 	{
-		Mesh* m_Mesh;
 		int BufferNum;
 		Component* m_Component;
 	};
@@ -30,6 +29,9 @@ public:
 
 	static Renderer* GetInstance();
 	bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow);
+
+	void CreateBuffer(D3D11_BUFFER_DESC* p_Desc, D3D11_SUBRESOURCE_DATA* p_Data, ID3D11Buffer** o_Buffer);
+
 	void SetViewports(std::vector<D3D11_VIEWPORT> p_Viewports);
 	void SetCameras(std::vector<CameraStruct> p_Cameras);
 	void BeginRender();

@@ -18,16 +18,22 @@ public:
 	virtual void Start();
 	virtual void Sleep();
 	virtual void Update();
-	virtual void Destroy();;
+	virtual void Destroy();
 
 	Mesh* GetMesh();
 	Material* GetMaterial(int p_SlotNumber);
+
+	//void AddMaterial(Material* p_Material);
+	void SetObject(Mesh* p_Mesh, std::vector<Material*> p_Materials);
+
 	bool IsCastingShadows();
 	bool IsReceivingShadows();
 
 
 	virtual bool Read(Stream &p_Stream);
 	virtual bool Write(Stream &p_Stream);
+
+	int GetNumOfObjects();
 
 private:
 	RenderingSystem* m_RenderingSystem;

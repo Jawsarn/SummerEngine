@@ -1,5 +1,5 @@
 #include "Mesh.h"
-
+#include "Renderer.h"
 
 Mesh::Mesh()
 {
@@ -15,10 +15,14 @@ void Mesh::Release()
 	m_VertexBuffers.clear();//test
 }
 
-HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device)
+HRESULT Mesh::CreateMeshBuffers()
 {
+	Renderer* t_Renderer = t_Renderer->GetInstance();
+
 	int t_NumberOfGroups = m_Groups.size();
 	int t_IndiciesGroupsCount = m_IndicesGroups.size();
+	ID3D11Buffer* t_VertexBuffer;
+	ID3D11Buffer* t_IndexBuffer;
 
 	for (int i = 0; i < t_NumberOfGroups; i++)
 	{
@@ -33,13 +37,10 @@ HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device)
 
 		D3D11_SUBRESOURCE_DATA data;
 		data.pSysMem = &m_Groups[i][0];
-		HRESULT hr = p_Device->CreateBuffer(&bufferDesc, &data, &m_VertexBuffer);
-		if (FAILED(hr))
-		{
-			MessageBox(nullptr, L"Vertex buffer could not be created", L"Error", MB_ICONERROR | MB_OK);
-			return S_FALSE;
-		}
-		m_VertexBuffers.push_back(m_VertexBuffer);
+
+		t_Renderer->CreateBuffer(&bufferDesc,&data,&t_VertexBuffer);
+
+		m_VertexBuffers.push_back(t_VertexBuffer);
 
 		//Index Buffer
 		D3D11_BUFFER_DESC indexBufferDesc;
@@ -58,13 +59,9 @@ HRESULT Mesh::CreateMeshBuffers(ID3D11Device* p_Device)
 		indexData.SysMemSlicePitch = 0;
 
 		// Create the index buffer.
-		hr = p_Device->CreateBuffer(&indexBufferDesc, &indexData, &m_IndexBuffer);
-		if (FAILED(hr))
-		{
-			MessageBox(nullptr, L"Index buffer could not be created", L"Error", MB_ICONERROR | MB_OK);
-			return S_FALSE;
-		}
-		m_IndexBuffers.push_back(m_IndexBuffer);
+		t_Renderer->CreateBuffer(&indexBufferDesc, &indexData, &t_IndexBuffer);
+
+		m_IndexBuffers.push_back(t_IndexBuffer);
 		int test = 0;
 	}
 	return S_OK;
@@ -107,6 +104,11 @@ ID3D11Buffer* Mesh::GetVertexBuffer(int p_Slot)
 int Mesh::GetNumOfVert(int p_Slot)
 {
 	return 0;
+}
+
+int Mesh::GetNumOfBuffers()
+{
+	return m_VertexBuffers.size();
 }
 
 std::vector<ID3D11Buffer*> Mesh::GetVertexBuffers()

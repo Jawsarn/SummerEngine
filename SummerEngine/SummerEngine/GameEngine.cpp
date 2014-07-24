@@ -94,20 +94,24 @@ bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 
 
 	//shouldn't be here untill later maybe? ... depends
-	m_EntityTest = new Entity();
-	CameraComponent* t_NewComponent = new CameraComponent();
-	t_NewComponent->SetLens(XM_PIDIV4, 1920/1080, 0.5f, 10000);
-	TransformComponent* t_NewTransform = new TransformComponent();
+	{
+		m_EntityTest = new Entity();
+		CameraComponent* t_NewComponent = new CameraComponent();
+		t_NewComponent->SetLens(XM_PIDIV4, 1920 / 1080, 0.5f, 10000);
+		TransformComponent* t_NewTransform = new TransformComponent();
 
-	RenderComponent* t_NewRenderComponent = new RenderComponent();
+		t_NewTransform->SetTranslation(XMFLOAT3(0, 0, 0));
+		t_NewTransform->SetRotation(XMFLOAT3(0, 0, 0));
+		t_NewTransform->SetScale(XMFLOAT3(1, 1, 1));
+		t_NewTransform->Update();
+
+		m_EntityTest->AddComponent(t_NewComponent);
+		m_EntityTest->SetTransformComponent(t_NewTransform);
+	}
+	m_Editor = new Editor();
+	m_Editor->InitEditor();
 	
-	t_NewTransform->SetTranslation(XMFLOAT3(10,5,3));
-	t_NewTransform->SetRotation(XMFLOAT3(2, 0, 0));
-	t_NewTransform->SetScale(XMFLOAT3(1, 1, 1));
-	t_NewTransform->Update();
-
-	m_EntityTest->AddComponent(t_NewComponent);
-	m_EntityTest->SetTransformComponent(t_NewTransform);
+	
 	
 
 

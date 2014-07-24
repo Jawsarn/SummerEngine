@@ -14,7 +14,7 @@ public:
 	Import();
 	~Import();
 	void Release();
-	void LoadFromObj(ID3D11Device* p_Device, std::string p_FileName);
+	void LoadFromObj(std::string p_FileName);
 	std::vector<Mesh*>& GetMeshes();
 	//std::vector<GameObject*>& GetGameObjects();
 

@@ -22,8 +22,11 @@ void Editor::Release()
 	//shader.Release();
 }
 
+#include "Entity.h"
+#include "TransformComponent.h"
+#include "RenderComponent.h"
 
-void Editor::InitEditor(ID3D11Device* p_Device)
+void Editor::InitEditor()
 {
 	//test--------------------------------------
 	//Shader Class
@@ -31,7 +34,48 @@ void Editor::InitEditor(ID3D11Device* p_Device)
 	//shader.CreateShadersAndInputLayout3D("../Shaders/DrawMeshVS.hlsl", "VS_main", "../Shaders/DrawMeshPS.hlsl", "PS_main");
 	//------------------------------------------
 
-	m_import->LoadFromObj(p_Device, "../Shaders/ObjModels/twoObj.obj");
+	m_import->LoadFromObj("../SummerEngine/Graphics/Objs/testFile.obj");
+
+	{
+		std::vector<Mesh*> t_Meshes = m_import->GetMeshes();
+		int t_NumOfMeshes = t_Meshes.size();
+		for (int i = 0; i < t_NumOfMeshes; i++)
+		{
+			Entity* t_NewEntity = new Entity();
+			TransformComponent* t_NewTransform = new TransformComponent();
+
+			t_NewTransform->SetTranslation(XMFLOAT3(0, 0, 30));
+			t_NewTransform->SetRotation(XMFLOAT3(0, 0, 0));
+			t_NewTransform->SetScale(XMFLOAT3(1, 1, 1));
+			t_NewTransform->Update();
+
+			RenderComponent* t_RenderingComponent = new RenderComponent();
+			
+			int t_NumOfBuffers = t_Meshes[i]->GetNumOfBuffers();
+			std::vector<Material*> t_NewMaterials;
+			for (size_t i = 0; i < t_NumOfBuffers; i++)
+			{
+				Material* t_NewMaterial = new Material();;
+				t_NewMaterials.push_back(t_NewMaterial);
+			}
+			t_RenderingComponent->SetObject(t_Meshes[i], t_NewMaterials);
+
+			t_NewEntity->AddComponent(t_RenderingComponent);
+			t_NewEntity->SetTransformComponent(t_NewTransform);
+
+			m_TestEntities.push_back(t_NewEntity);
+		}
+
+		
+		//add test material and mesh here from the editor
+
+		
+
+
+		
+
+		
+	}
 }
 
 void Editor::Update()

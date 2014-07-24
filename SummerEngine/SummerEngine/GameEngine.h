@@ -2,6 +2,7 @@
 #include "System.h"
 #include "Renderer.h"
 #include "Entity.h"
+#include "Editor.h"
 
 class GameEngine
 {
@@ -38,5 +39,7 @@ private:
 
 	//tempos
 	Entity* m_EntityTest;
+
+	Editor* m_Editor;
 };
 
