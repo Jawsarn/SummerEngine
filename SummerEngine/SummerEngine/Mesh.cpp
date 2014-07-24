@@ -62,6 +62,9 @@ HRESULT Mesh::CreateMeshBuffers()
 		t_Renderer->CreateBuffer(&indexBufferDesc, &indexData, &t_IndexBuffer);
 
 		m_IndexBuffers.push_back(t_IndexBuffer);
+
+		m_NumOfVertex.push_back(m_Groups[i].size());
+		m_NumOfIndex.push_back( m_IndicesGroups[i].size());
 		int test = 0;
 	}
 	return S_OK;
@@ -98,12 +101,22 @@ Mesh::IndicesGroups* Mesh::GetIndexData()
 
 ID3D11Buffer* Mesh::GetVertexBuffer(int p_Slot)
 {
-	return nullptr;//FIX
+	return m_VertexBuffers[p_Slot];
+}
+
+ID3D11Buffer* Mesh::GetIndexBuffer(int p_Slot)
+{
+	return m_IndexBuffers[p_Slot];
 }
 
 int Mesh::GetNumOfVert(int p_Slot)
 {
-	return 0;
+	return m_NumOfVertex[p_Slot];
+}
+
+int Mesh::GetNumOfIndecies(int p_Slot)
+{
+	return m_NumOfIndex[p_Slot];
 }
 
 int Mesh::GetNumOfBuffers()

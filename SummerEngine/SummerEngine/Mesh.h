@@ -35,6 +35,7 @@ public:
 	int GetNumOfBuffers();
 
 	ID3D11Buffer* GetVertexBuffer(int p_Slot);
+	ID3D11Buffer* GetIndexBuffer(int p_Slot);
 	std::vector<ID3D11Buffer*> GetVertexBuffers();
 	IndicesGroups* GetIndexData();
 	VertexGroups* GetVertexData();
@@ -50,5 +51,7 @@ private:
 	IndicesGroups m_IndicesGroups;
 	
 	std::vector<ID3D11Buffer*> m_VertexBuffers;
+	std::vector<int> m_NumOfVertex;
+	std::vector<int> m_NumOfIndex;
 	std::vector<ID3D11Buffer*> m_IndexBuffers;
 };

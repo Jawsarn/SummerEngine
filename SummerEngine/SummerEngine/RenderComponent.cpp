@@ -28,7 +28,7 @@ Material* RenderComponent::GetMaterial(int p_SlotNumber)
 
 void RenderComponent::SetObject(Mesh* p_Mesh, std::vector<Material*> p_Materials)
 {
-	m_Mesh = m_Mesh;
+	m_Mesh = p_Mesh;
 	m_Materials = p_Materials;
 	m_RenderingSystem->UpdateComponent(this);
 }

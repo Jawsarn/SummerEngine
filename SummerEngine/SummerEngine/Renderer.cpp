@@ -592,6 +592,8 @@ void Renderer::BeginRender()
 void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already sorted here on something,
 {
 	SetShaders();
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 
 	int t_NumOfObjects = p_RenderObjects->size();
 	if (t_NumOfObjects == 0)
@@ -604,12 +606,14 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 	std::vector<XMFLOAT4X4> t_TranslationsPerMaterial; //should be able to be inputted aside with vertex buffer in the early AI stage
 
 	ID3D11Buffer* t_VertexBuffer;
+	ID3D11Buffer* t_IndexBuffer;
 	Material* t_Material;
 	std::vector<XMFLOAT4X4> t_Matrices;
 
 
 	UINT strides[2] = { sizeof(Mesh::MeshVertex), sizeof(XMMATRIX) };
 	UINT offsets[2] = { 0 , 0};
+	UINT indexOffset = 0;
 	int t_VertexBuffSize = 0;
 	int t_NumOfInstances = 0;
 
@@ -619,7 +623,8 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 		RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
 
 		t_VertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
-		t_VertexBuffSize = t_RenderComponent->GetMesh()->GetNumOfVert(t_RenderObject->BufferNum);
+		t_IndexBuffer = t_RenderComponent->GetMesh()->GetIndexBuffer(t_RenderObject->BufferNum);
+		t_VertexBuffSize = t_RenderComponent->GetMesh()->GetNumOfIndecies(t_RenderObject->BufferNum);
 
 		t_Material = t_RenderComponent->GetMaterial(t_RenderObject->BufferNum); //woa... but yes
 		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject->m_Component->GetEntity()->GetTransformComponent());
@@ -627,9 +632,9 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 		t_NumOfInstances++;
 	}
 
-	for (int i = 0; i < t_NumOfObjects; i++)
+	for (int i = 1; i < t_NumOfObjects; i++)
 	{
-		RenderObject* t_RenderObject = p_RenderObjects->at(0);
+		RenderObject* t_RenderObject = p_RenderObjects->at(i);
 		RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
 
 		ID3D11Buffer* t_CheckVertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
@@ -658,18 +663,20 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 			
 
 			m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets); //set both vertex and instance buffer
+			m_DeviceContext->IASetIndexBuffer(t_IndexBuffer, DXGI_FORMAT_R32_UINT, indexOffset);
 			//m_DeviceContext->IASetIndexBuffer();
 
-			//m_DeviceContext->DrawIndexedInstanced();
+			m_DeviceContext->DrawIndexedInstanced( t_VertexBuffSize, t_NumOfInstances,0,0,0);
 
-			m_DeviceContext->DrawInstanced(t_VertexBuffSize, t_NumOfInstances, 0, 0);
+			//m_DeviceContext->DrawInstanced(t_VertexBuffSize, t_NumOfInstances, 0, 0);
 
 			//reset the instanced buffer
 			RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
 			t_Matrices.clear();
 			t_Matrices.push_back(t_Transform->GetMatrix());
 			t_VertexBuffer = t_CheckVertexBuffer;
-			t_VertexBuffSize = t_RenderComponent->GetMesh()->GetNumOfVert(t_RenderObject->BufferNum);
+			t_IndexBuffer = t_RenderComponent->GetMesh()->GetIndexBuffer(t_RenderObject->BufferNum);
+			t_VertexBuffSize = t_RenderComponent->GetMesh()->GetNumOfIndecies(t_RenderObject->BufferNum);
 			t_NumOfInstances = 1;
 		}
 	}
