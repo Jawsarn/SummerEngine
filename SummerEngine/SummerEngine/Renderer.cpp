@@ -426,10 +426,10 @@ HRESULT Renderer::InitializeConstantBuffers()
 	HRESULT hr = S_OK;
 
 	D3D11_BUFFER_DESC t_ibd;
-	t_ibd.Usage = D3D11_USAGE_DYNAMIC;
+	t_ibd.Usage = D3D11_USAGE_DYNAMIC; // D3D11_USAGE_DEFAULT  D3D11_USAGE_DYNAMIC
 	t_ibd.ByteWidth = sizeof(XMMATRIX)* MAX_INSTANCEBUFFER_SIZE;
 	t_ibd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	t_ibd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	t_ibd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; //D3D11_CPU_ACCESS_WRITE
 	t_ibd.MiscFlags = 0;
 	t_ibd.StructureByteStride = 0;
 
@@ -657,13 +657,19 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 		}
 		else
 		{
-			//m_DeviceContext->UpdateSubresource(m_InstanceBuffer, 0, nullptr, &t_Matrices, 0, 0);
+			//m_DeviceContext->UpdateSubresource(m_InstanceBuffer, 0, nullptr, &t_Matrices[0], 0, 0);
 
 			//update the instance buffer
 			D3D11_MAPPED_SUBRESOURCE t_MappedData;
 			HRESULT hr = m_DeviceContext->Map(m_InstanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &t_MappedData);
 			XMMATRIX* dataView = reinterpret_cast<XMMATRIX*>(t_MappedData.pData);
-			dataView = &t_Matrices[0];
+
+			int t_NumOfMatrices = t_Matrices.size();
+			for (int i = 0; i < t_NumOfMatrices; i++)
+			{
+				dataView[i] = t_Matrices[i];
+			}
+			
 			m_DeviceContext->Unmap(m_InstanceBuffer, 0);
 
 			ID3D11Buffer* t_InBuffers[2] = { t_VertexBuffer, m_InstanceBuffer };
