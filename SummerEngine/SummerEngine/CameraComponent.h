@@ -35,6 +35,7 @@ public:
 
 	D3D11_VIEWPORT GetViewport();
 
+	void LookAt(const XMFLOAT3& p_Pos, const XMFLOAT3& p_Target, const XMFLOAT3& p_Up);
 	XMFLOAT4X4 GetView()const;
 	XMFLOAT4X4 GetProj()const;
 	XMFLOAT4X4 GetViewProj()const;
@@ -92,5 +93,6 @@ private:
 	
 	// Cache View/Proj matrices.
 	XMFLOAT4X4 m_Proj;
+	XMFLOAT4X4 m_View;
 };
 

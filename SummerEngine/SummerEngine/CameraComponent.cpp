@@ -89,9 +89,28 @@ D3D11_VIEWPORT CameraComponent::GetViewport()
 	return m_Viewport;
 }
 
+void CameraComponent::LookAt(const XMFLOAT3& p_Pos, const XMFLOAT3& p_Target, const XMFLOAT3& p_Up)
+{
+	XMVECTOR t_Eye = XMLoadFloat3(&p_Pos);
+	XMVECTOR t_At = XMLoadFloat3(&p_Target);
+	XMVECTOR t_Up = XMLoadFloat3(&p_Up);
+	XMMATRIX t_View = XMMatrixLookAtLH(t_Eye, t_At, t_Up);
+
+	m_Position = p_Pos;
+
+	XMVECTOR t_Right = XMVector3Cross(t_Up, t_At);
+	XMStoreFloat3(&m_Right, t_Right); // view space x-axis
+	m_Up = p_Up; // view space y-axis
+	m_Look = p_Target; // view space z-axis
+
+
+	XMStoreFloat4x4(&m_View, t_View);
+}
+
 XMFLOAT4X4 CameraComponent::GetView()const
 {
-	return ((TransformComponent*)m_Entity->GetTransformComponent())->GetMatrix();
+	//return ((TransformComponent*)m_Entity->GetTransformComponent())->GetMatrix();
+	return m_View;
 }
 XMFLOAT4X4 CameraComponent::GetProj()const
 {

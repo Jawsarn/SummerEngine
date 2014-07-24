@@ -34,7 +34,7 @@ VS_OUTPUT VS(VS_INPUT p_Input)
 
 	//something is wrong with view and projection so trying to render without those for now
 	o_Output.Position = float4(p_Input.Position, 1);//testar
-
+	//o_Output.Position = mul(o_Output.Position, View);
 	//o_Output.Position = mul(float4(p_Input.Position, 1), p_Input.World);
 	//o_Output.Position = mul(o_Output.Position, View);
 	//o_Output.Position = mul(o_Output.Position, Proj);
