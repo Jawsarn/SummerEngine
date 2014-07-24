@@ -99,9 +99,9 @@ private:
 	//test thigns
 	struct PerFrameTestBuffer
 	{
-		XMFLOAT4X4 View;
-		XMFLOAT4X4 Proj;
-		XMFLOAT4X4 ViewProj;
+		XMMATRIX View;
+		XMMATRIX Proj;
+		XMMATRIX ViewProj;
 	};
 
 	ID3D11Buffer* m_TestPerFrameBuffer;

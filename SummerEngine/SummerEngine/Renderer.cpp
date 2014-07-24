@@ -397,10 +397,10 @@ HRESULT Renderer::InitializeShaders()
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "WORLDMATRIX", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-			{ "WORLDMATRIX", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-			{ "WORLDMATRIX", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-			{ "WORLDMATRIX", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			//{ "WORLDMATRIX", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			//{ "WORLDMATRIX", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			//{ "WORLDMATRIX", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			//{ "WORLDMATRIX", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
 
 		};
 		UINT t_NumElements = ARRAYSIZE(t_Layout);
@@ -427,7 +427,7 @@ HRESULT Renderer::InitializeConstantBuffers()
 
 	D3D11_BUFFER_DESC t_ibd;
 	t_ibd.Usage = D3D11_USAGE_DYNAMIC;
-	t_ibd.ByteWidth = sizeof(XMFLOAT4X4)* MAX_INSTANCEBUFFER_SIZE;
+	t_ibd.ByteWidth = sizeof(XMMATRIX)* MAX_INSTANCEBUFFER_SIZE;
 	t_ibd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	t_ibd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	t_ibd.MiscFlags = 0;
@@ -567,13 +567,20 @@ void Renderer::BeginRender()
 	}
 	
 	//clear the render target
-	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, Colors::Black);
+	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, Colors::Teal);
 	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	//set cameras
 	if (m_Cameras.size() != 0)
 	{
-		m_DeviceContext->UpdateSubresource(m_TestPerFrameBuffer, 0, nullptr, &m_Cameras[0], 0, 0); //be aware of change
+		int t_NumOfCameras = m_Cameras.size();
+		PerFrameTestBuffer t_PerFrameBuffer;
+		
+		t_PerFrameBuffer.Proj = XMMatrixTranspose( XMLoadFloat4x4( &m_Cameras[0].Proj ));
+		t_PerFrameBuffer.View = XMMatrixTranspose(XMLoadFloat4x4(&m_Cameras[0].View));
+		t_PerFrameBuffer.ViewProj = XMMatrixTranspose( XMLoadFloat4x4(&m_Cameras[0].ViewProj));
+
+		m_DeviceContext->UpdateSubresource( m_TestPerFrameBuffer, 0, nullptr, &m_Cameras[0], 0, 0 ); //be aware of change
 	}
 	else
 	{
@@ -608,7 +615,7 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 	ID3D11Buffer* t_VertexBuffer;
 	ID3D11Buffer* t_IndexBuffer;
 	Material* t_Material;
-	std::vector<XMFLOAT4X4> t_Matrices;
+	std::vector<XMMATRIX> t_Matrices;
 
 
 	UINT strides[2] = { sizeof(Mesh::MeshVertex), sizeof(XMMATRIX) };
@@ -628,7 +635,7 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 
 		t_Material = t_RenderComponent->GetMaterial(t_RenderObject->BufferNum); //woa... but yes
 		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject->m_Component->GetEntity()->GetTransformComponent());
-		t_Matrices.push_back(t_Transform->GetMatrix());
+		t_Matrices.push_back(XMMatrixTranspose( XMLoadFloat4x4( &t_Transform->GetMatrix() )));
 		t_NumOfInstances++;
 	}
 
@@ -645,7 +652,7 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 
 		if (t_VertexBuffer == t_CheckVertexBuffer && t_Material == t_CheckMaterial) //yey it's the same buffer.. what now?
 		{
-			t_Matrices.push_back(t_Transform->GetMatrix());
+			t_Matrices.push_back(XMMatrixTranspose( XMLoadFloat4x4(&t_Transform->GetMatrix())));
 			t_NumOfInstances++;
 		}
 		else
@@ -655,14 +662,18 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 			//update the instance buffer
 			D3D11_MAPPED_SUBRESOURCE t_MappedData;
 			HRESULT hr = m_DeviceContext->Map(m_InstanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &t_MappedData);
-			XMFLOAT4X4* dataView = reinterpret_cast<XMFLOAT4X4*>(t_MappedData.pData);
+			XMMATRIX* dataView = reinterpret_cast<XMMATRIX*>(t_MappedData.pData);
 			dataView = &t_Matrices[0];
 			m_DeviceContext->Unmap(m_InstanceBuffer, 0);
 
 			ID3D11Buffer* t_InBuffers[2] = { t_VertexBuffer, m_InstanceBuffer };
 			
 
-			m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets); //set both vertex and instance buffer
+			//m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets); //set both vertex and instance buffer
+			UINT VertexStrides[1] = { sizeof(Mesh::MeshVertex) };
+			UINT VertexOffsets[1] = { 0 };
+			m_DeviceContext->IASetVertexBuffers(0, 1, &t_VertexBuffer, VertexStrides, VertexOffsets);
+
 			m_DeviceContext->IASetIndexBuffer(t_IndexBuffer, DXGI_FORMAT_R32_UINT, indexOffset);
 			//m_DeviceContext->IASetIndexBuffer();
 
@@ -673,7 +684,7 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 			//reset the instanced buffer
 			RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
 			t_Matrices.clear();
-			t_Matrices.push_back(t_Transform->GetMatrix());
+			t_Matrices.push_back(XMMatrixTranspose( XMLoadFloat4x4( &t_Transform->GetMatrix())) );
 			t_VertexBuffer = t_CheckVertexBuffer;
 			t_IndexBuffer = t_RenderComponent->GetMesh()->GetIndexBuffer(t_RenderObject->BufferNum);
 			t_VertexBuffSize = t_RenderComponent->GetMesh()->GetNumOfIndecies(t_RenderObject->BufferNum);
