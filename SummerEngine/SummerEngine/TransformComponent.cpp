@@ -21,7 +21,7 @@ void TransformComponent::Update()
 	XMMATRIX t_scale = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
 	XMMATRIX t_translation = XMMatrixTranslation(m_Translation.x, m_Translation.y,m_Translation.z);
 	XMMATRIX t_world = t_rotation * t_scale * t_translation;
-	XMStoreFloat4x4(&m_World, XMMatrixTranspose(t_world));
+	XMStoreFloat4x4(&m_World, t_world);
 }
 
 XMFLOAT4X4 TransformComponent::GetMatrix()

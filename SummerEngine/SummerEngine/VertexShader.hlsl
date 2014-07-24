@@ -33,14 +33,14 @@ VS_OUTPUT VS(VS_INPUT p_Input)
 	VS_OUTPUT o_Output;
 
 	//something is wrong with view and projection so trying to render without those for now
-	o_Output.Position = float4(p_Input.Position, 1);//testar
+	//o_Output.Position = float4(p_Input.Position, 1);//testar
 	//o_Output.Position = mul(o_Output.Position, ViewProj);
-	o_Output.Position = mul(o_Output.Position, View);
-	//o_Output.Position = mul(float4(p_Input.Position, 1), p_Input.World);
 	//o_Output.Position = mul(o_Output.Position, View);
+	o_Output.Position = mul(float4(p_Input.Position, 1), p_Input.World);
+	o_Output.Position = mul(o_Output.Position, View);
 	o_Output.Position = mul(o_Output.Position, Proj);
 
-	o_Output.Normal = p_Input.Normal;
+	o_Output.Normal = mul(float4(p_Input.Normal, 1), p_Input.World).xyz;
 
 	o_Output.Texcord = p_Input.Texcord;
 

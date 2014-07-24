@@ -44,7 +44,7 @@ void Editor::InitEditor()
 			Entity* t_NewEntity = new Entity();
 			TransformComponent* t_NewTransform = new TransformComponent();
 
-			t_NewTransform->SetTranslation(XMFLOAT3(0, 0, -50));
+			t_NewTransform->SetTranslation(XMFLOAT3(0, 0, -0));
 			t_NewTransform->SetRotation(XMFLOAT3(0, 0, 0));
 			t_NewTransform->SetScale(XMFLOAT3(1, 1, 1));
 			t_NewTransform->Update();
