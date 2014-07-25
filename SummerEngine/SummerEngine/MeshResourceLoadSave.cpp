@@ -39,8 +39,7 @@ Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 
 		t_IndexGroup.resize(t_NumOfIndecies);
 		int t_BytesToRead = sizeof(int)*t_NumOfIndecies;
-
-		int t_BytesToRead = t_File.Read(sizeof(int)*t_NumOfIndecies, &t_IndexGroup[0]);
+		int t_BytesRead = t_File.Read(sizeof(int)*t_NumOfIndecies, &t_IndexGroup[0]);
 		t_IndexGroups.push_back(t_IndexGroup);
 	}
 
