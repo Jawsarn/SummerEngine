@@ -3,8 +3,7 @@
 #include <DirectXMath.h>
 #include "Mesh.h"
 #include "Component.h"
-#include "Rectangles.h"//testar
-#include "Camera.h"
+
 
 using namespace DirectX;
 
@@ -41,13 +40,6 @@ public:
 	void ComputeDeferred();
 	void RenderTransparent(RenderObjects* p_RenderObjects);
 	void EndRender();
-
-	//test mouse
-	void Strafe(float p_Distance);
-	void Walk(float p_Distance);
-
-	void Pitch(float p_Angle);
-	void RotateY(float p_Angle);
 
 private:
 	Renderer();
@@ -120,10 +112,5 @@ private:
 	ID3D11InputLayout* m_TestLayout;
 	void Renderer::SetShaders();
 	std::vector<CameraStruct> m_Cameras;
-
-
-	Rectangles rect;//testar
-	Camera* m_TestCamera;
-	
 };
 

@@ -35,22 +35,22 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 void UpdateScene(float dt)
 {
 	m_Renderer = m_Renderer->GetInstance();
-	if (GetAsyncKeyState('W') & 0x8000)
-	{
-		m_Renderer->Walk(200.0*dt);
-	}
-	if (GetAsyncKeyState('S') & 0x8000)
-	{
-		m_Renderer->Walk(-200.0*dt);
-	}
-	if (GetAsyncKeyState('A') & 0x8000)
-	{
-		m_Renderer->Strafe(-200.0*dt);
-	}
-	if (GetAsyncKeyState('D') & 0x8000)
-	{
-		m_Renderer->Strafe(200.0*dt);
-	}
+	//if (GetAsyncKeyState('W') & 0x8000)
+	//{
+	//	m_Renderer->Walk(200.0*dt);
+	//}
+	//if (GetAsyncKeyState('S') & 0x8000)
+	//{
+	//	m_Renderer->Walk(-200.0*dt);
+	//}
+	//if (GetAsyncKeyState('A') & 0x8000)
+	//{
+	//	m_Renderer->Strafe(-200.0*dt);
+	//}
+	//if (GetAsyncKeyState('D') & 0x8000)
+	//{
+	//	m_Renderer->Strafe(200.0*dt);
+	//}
 }
 
 void OnMouseMove(WPARAM btnStae, int x, int y)
@@ -61,8 +61,8 @@ void OnMouseMove(WPARAM btnStae, int x, int y)
 		float dx = XMConvertToRadians(0.25f*static_cast<float>(x - g_LastMousePos.x));
 		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - g_LastMousePos.y));
 
-		m_Renderer->Pitch(dy);
-		m_Renderer->RotateY(dx);
+		//m_Renderer->Pitch(dy);
+		//m_Renderer->RotateY(dx);
 	}
 
 	g_LastMousePos.x = x;

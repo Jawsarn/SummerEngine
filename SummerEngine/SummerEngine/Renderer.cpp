@@ -74,12 +74,6 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 	if (FAILED(hr))
 		return false;
 
-	//testar
-	rect = Rectangles(m_Device);
-
-	m_TestCamera = new Camera();
-	m_TestCamera->SetLens(XM_PIDIV4, 1920.0f / 1080.0f, 0.5f, 10000.0f);
-	m_TestCamera->LookAt(XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, -1), XMFLOAT3(0, 1, 0));
 
 	return true;
 }
@@ -575,37 +569,26 @@ void Renderer::BeginRender()
 	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	//set cameras
-	//if (m_Cameras.size() != 0)
-	//{
-	//	int t_NumOfCameras = m_Cameras.size();
-	//	PerFrameTestBuffer t_PerFrameBuffer;
-	//	
-	//	t_PerFrameBuffer.Proj = XMMatrixTranspose( XMLoadFloat4x4( &m_Cameras[0].Proj ));
-	//	t_PerFrameBuffer.View = XMMatrixTranspose(XMLoadFloat4x4(&m_Cameras[0].View));
-	//	//t_PerFrameBuffer.ViewProj = XMMatrixTranspose( XMLoadFloat4x4(&m_Cameras[0].ViewProj));
-
-	//	m_DeviceContext->UpdateSubresource( m_TestPerFrameBuffer, 0, nullptr, &m_Cameras[0], 0, 0 ); //be aware of change
-	//}
-	//else
-	//{
-	//	CameraStruct t_Temp;
-	//	XMFLOAT4X4 t_Mat;
-	//	XMStoreFloat4x4(&t_Mat, XMMatrixIdentity());
-	//	t_Temp.Proj = t_Mat;
-	//	t_Temp.View = t_Mat;
-	//	//t_Temp.ViewProj = t_Mat;
-	//	m_DeviceContext->UpdateSubresource(m_TestPerFrameBuffer, 0, nullptr, &t_Temp,0,0);
-	//}
-
+	if (m_Cameras.size() != 0)
 	{
-		m_TestCamera->UpdateViewMatrix();
-		PerFrameTestBuffer t_Temp;
+		int t_NumOfCameras = m_Cameras.size();
+		PerFrameTestBuffer t_PerFrameBuffer;
+		
+		t_PerFrameBuffer.Proj = XMMatrixTranspose( XMLoadFloat4x4( &m_Cameras[0].Proj ));
+		t_PerFrameBuffer.View = XMMatrixTranspose(XMLoadFloat4x4(&m_Cameras[0].View));
+		//t_PerFrameBuffer.ViewProj = XMMatrixTranspose( XMLoadFloat4x4(&m_Cameras[0].ViewProj));
 
-		t_Temp.Proj = XMMatrixTranspose( m_TestCamera->Proj() );
-		t_Temp.View = XMMatrixTranspose( m_TestCamera->View() );
-
+		m_DeviceContext->UpdateSubresource(m_TestPerFrameBuffer, 0, nullptr, &t_PerFrameBuffer, 0, 0); //be aware of change
+	}
+	else
+	{
+		CameraStruct t_Temp;
+		XMFLOAT4X4 t_Mat;
+		XMStoreFloat4x4(&t_Mat, XMMatrixIdentity());
+		t_Temp.Proj = t_Mat;
+		t_Temp.View = t_Mat;
 		//t_Temp.ViewProj = t_Mat;
-		m_DeviceContext->UpdateSubresource(m_TestPerFrameBuffer, 0, nullptr, &t_Temp, 0, 0);
+		m_DeviceContext->UpdateSubresource(m_TestPerFrameBuffer, 0, nullptr, &t_Temp,0,0);
 	}
 	
 	m_IsRendering = true;
@@ -754,22 +737,4 @@ void Renderer::EndRender()
 
 	m_SwapChain->Present(1, 0);
 	m_IsRendering = false;
-}
-
-void Renderer::Strafe(float p_Distance)
-{
-	m_TestCamera->Strafe(p_Distance);
-}
-void Renderer::Walk(float p_Distance)
-{
-	m_TestCamera->Walk(p_Distance);
-}
-
-void Renderer::Pitch(float p_Angle)
-{
-	m_TestCamera->Pitch(p_Angle);
-}
-void Renderer::RotateY(float p_Angle)
-{
-	m_TestCamera->RotateY(p_Angle);
 }
