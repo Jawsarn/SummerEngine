@@ -711,32 +711,27 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
  			t_NumOfInstances = 1;
  		}
  	}
+	{
+		//last one fix?
+		D3D11_MAPPED_SUBRESOURCE t_MappedData;
+		HRESULT hr = m_DeviceContext->Map(m_InstanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &t_MappedData);
+		XMMATRIX* dataView = reinterpret_cast<XMMATRIX*>(t_MappedData.pData);
 
-	//for (int i = 0; i < t_NumOfObjects; i++)
-	//{
-	//	RenderObject* t_RenderObject = p_RenderObjects->at(i);
-	//	RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
-	//	ID3D11Buffer* t_TestVertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
-	//	ID3D11Buffer* t_TestIndexBuffer = t_RenderComponent->GetMesh()->GetIndexBuffer(t_RenderObject->BufferNum);
-	//	int IndexSize = t_RenderComponent->GetMesh()->GetNumOfIndecies(t_RenderObject->BufferNum);
+		int t_NumOfMatrices = t_Matrices.size();
+		for (int i = 0; i < t_NumOfMatrices; i++)
+		{
+			dataView[i] = t_Matrices[i];
+		}
 
-	//	UINT VertexStrides[1] = { sizeof(Mesh::MeshVertex) };
-	//	UINT VertexOffsets[1] = { 0 };
-	//	UINT TestIndexOffset = 0;
-	//	m_DeviceContext->IASetVertexBuffers(0, 1, &t_TestVertexBuffer, VertexStrides, VertexOffsets);
-	//	m_DeviceContext->IASetIndexBuffer(t_TestIndexBuffer, DXGI_FORMAT_R32_UINT, TestIndexOffset);
+		m_DeviceContext->Unmap(m_InstanceBuffer, 0);
+
+		ID3D11Buffer* t_InBuffers[2] = { t_VertexBuffer, m_InstanceBuffer };
+		m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets);
+		m_DeviceContext->IASetIndexBuffer(t_IndexBuffer, DXGI_FORMAT_R32_UINT, indexOffset);
 
 
-	//	m_DeviceContext->DrawIndexed(IndexSize, 0, 0);
-	//}
-
-
-	//rect.Render(m_DeviceContext);//testar
-	
-	//textures
-	//vertexBuffers
-	//materialBuffers?
-	//matrixes
+		m_DeviceContext->DrawIndexedInstanced(t_VertexBuffSize, t_NumOfInstances, 0, 0, 0);
+	}
 }
 
 void Renderer::ComputeDeferred()
