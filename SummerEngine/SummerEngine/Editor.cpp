@@ -78,6 +78,12 @@ void Editor::InitEditor()
 			t_NewEntity->SetTransformComponent(t_NewTransform);
 
 			m_TestEntities.push_back(t_NewEntity);
+
+
+			ResourceManager* t_ResourceManager = t_ResourceManager->GetInstance();
+			t_ResourceManager->SaveResource(t_Meshes[i]);
+
+
 		}
 
 		

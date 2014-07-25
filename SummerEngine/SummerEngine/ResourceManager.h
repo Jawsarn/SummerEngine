@@ -11,11 +11,11 @@ public:
 	void Register(ResourceLoadSave* p_ResourceLoadSave);
 	Resource* Create(std::string p_ResourceName);
 	static ResourceManager* GetInstance();
+	
+	void SaveResource(Resource* p_Resource);
 
 private:
 	Resource* LoadResource(std::string p_ResourceName);
-	void SaveResource(Resource* p_ResourceName);
-
 	typedef std::map<std::string, ResourceLoadSave*> MakerMap;
 	MakerMap m_Makers;
 
