@@ -39,3 +39,13 @@ std::vector<Texture*> Material::GetTextures()
 {
 	return m_Textures;
 }
+
+void Material::SetFileName(std::string p_FileName)
+{
+	m_FileName = p_FileName;
+}
+
+void Material::SetTextures(std::vector<Texture*> p_Textures)
+{
+	m_Textures = p_Textures;
+}

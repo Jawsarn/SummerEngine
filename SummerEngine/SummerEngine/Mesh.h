@@ -42,6 +42,7 @@ public:
 	void SetVertexData(VertexGroups p_Groups);
 	void SetIndexData(IndicesGroups p_IndexGroups);
 	void ClearLoadData();
+	void SetFileName(std::string p_FileName);
 
 	virtual void SetName(std::string p_Name);
 	virtual const std::string GetName();

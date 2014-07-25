@@ -99,17 +99,6 @@ void LoadObj::LoadGroup(std::stringstream& f)
 
 	m_Obj.resize(m_Obj.size() + 1);
 	f >> m_Obj[m_CurrentObj].name;
-
-	//next group
-	//m_CurrentGroup += 1;
-
-	//m_Obj[m_CurrentObj].m_Position.resize(m_CurrentObj + 1);
-	//m_Obj[m_CurrentObj].m_Normal.resize(m_CurrentObj + 1);
-	//m_Obj[m_CurrentObj].m_TexCoord.resize(m_CurrentObj + 1);
-
-	//ObjGroups t_obj;
-	//f >> t_obj.name;
-	//m_groups.push_back(t_obj);
 }
 
 void LoadObj::LoadFace(std::stringstream& f)
