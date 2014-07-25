@@ -10,7 +10,8 @@ public:
 	virtual ~Resource() {};
 	typedef std::string ResourceType;
 
-	virtual const std::string &GetName() const = 0;
+	virtual void SetName(std::string p_Name) = 0;
+	virtual const std::string GetName() = 0;
 	virtual const ResourceType GetType() const = 0;
 
 

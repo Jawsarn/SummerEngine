@@ -47,7 +47,7 @@ Resource* ResourceManager::Create(const std::string p_ResourceName)
 
 Resource* ResourceManager::LoadResource(std::string p_ResourceName)
 {
-	std::size_t t_Spot = p_ResourceName.find(".");
+	std::size_t t_Spot = p_ResourceName.find_last_of(".");
 	if (t_Spot == std::string::npos)
 	{
 		 //no . found, that'd be an error filename
@@ -68,7 +68,7 @@ Resource* ResourceManager::LoadResource(std::string p_ResourceName)
 
 void ResourceManager::SaveResource(Resource* p_Resource)
 {
-	std::size_t t_Spot = p_Resource->GetName().find(".");
+	std::size_t t_Spot = p_Resource->GetName().find_last_of(".");
 	if (t_Spot == std::string::npos)
 	{
 		//no . found, that'd be an error filename

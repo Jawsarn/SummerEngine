@@ -25,6 +25,7 @@ void Editor::Release()
 #include "Entity.h"
 #include "TransformComponent.h"
 #include "RenderComponent.h"
+#include "ResourceManager.h"
 
 void Editor::InitEditor()
 {
@@ -33,6 +34,9 @@ void Editor::InitEditor()
 	//shader = Shader(p_Device);
 	//shader.CreateShadersAndInputLayout3D("../Shaders/DrawMeshVS.hlsl", "VS_main", "../Shaders/DrawMeshPS.hlsl", "PS_main");
 	//------------------------------------------
+
+	//ResourceManager* t_Manager = t_Manager->GetInstance();
+	//Resource* t_Test = t_Manager->Create("Sphere_Sphere.001.mesh");
 
 	m_import->LoadFromObj("../SummerEngine/Graphics/Objs/testFile.obj");
 
@@ -80,8 +84,7 @@ void Editor::InitEditor()
 			m_TestEntities.push_back(t_NewEntity);
 
 
-			ResourceManager* t_ResourceManager = t_ResourceManager->GetInstance();
-			t_ResourceManager->SaveResource(t_Meshes[i]);
+			
 
 
 		}

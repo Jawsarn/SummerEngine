@@ -20,7 +20,12 @@ ID3D11ShaderResourceView* Texture::GetTextureView()
 	return m_Texture;
 }
 
-const std::string & Texture::GetName() const
+void Texture::SetName(std::string p_Name)
+{
+	m_FileName = p_Name;
+}
+
+const std::string Texture::GetName()
 {
 	return m_FileName;
 }

@@ -65,7 +65,8 @@ public:
 	MaterialData* GetMaterialData();
 	std::vector<Texture*> GetTextures();
 
-	virtual const std::string &GetName() const;
+	virtual void SetName(std::string p_Name);
+	virtual const std::string GetName();
 	virtual const ResourceType GetType() const;
 
 private:

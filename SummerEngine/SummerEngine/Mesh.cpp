@@ -85,9 +85,14 @@ HRESULT Mesh::CreateMeshBuffers()
 	return S_OK;
 }
 
-const std::string & Mesh::GetName() const
+void Mesh::SetName(std::string p_Name)
 {
-	return "";
+	m_FileName = p_Name;
+}
+
+const std::string Mesh::GetName()
+{
+	return m_FileName;
 }
 
 const Mesh::ResourceType Mesh::GetType() const

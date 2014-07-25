@@ -42,6 +42,7 @@ Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 		t_IndexGroups.push_back(t_IndexGroup);
 	}
 
+	o_Mesh->SetName(p_FileName);
 	o_Mesh->SetIndexData(t_IndexGroups);
 	o_Mesh->SetVertexData(t_Groups);
 
@@ -65,10 +66,10 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 	
 	for (int i = 0; i < t_NumOfGroups; i++)
 	{
-		int t_NumOfVertices = t_VertexGroups[i].size();
+		int t_NumOfVertices = t_VertexGroups->at(i).size();
 		WriteInt(t_File, t_NumOfVertices);
 
-		t_File.Write(sizeof(Mesh::MeshVertex)*t_NumOfVertices, &t_VertexGroups[i][0]);
+		t_File.Write(sizeof(Mesh::MeshVertex)*t_NumOfVertices, &t_VertexGroups->at(i)[0]);
 	}
 
 	//index
@@ -79,10 +80,10 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 
 	for (int i = 0; i < t_NumOfIndecies; i++)
 	{
-		int t_NumOfIndecies = t_IndexGroups[i].size();
+		int t_NumOfIndecies = t_IndexGroups->at(i).size();
 		WriteInt(t_File, t_NumOfIndecies);
 
-		t_File.Write(sizeof(int)*t_NumOfIndecies, &t_IndexGroups[i][0]);
+		t_File.Write(sizeof(int)*t_NumOfIndecies, &t_IndexGroups->at(i)[0]);
 	}
 
 	//t_File.Write(); custom data hela vägen, men du måste veta hur den ser ut när du laddar in den på ett bra sätt

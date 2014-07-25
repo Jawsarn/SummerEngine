@@ -1,7 +1,7 @@
 #pragma once
 #include "Import.h"
 #include "Entity.h"
-#include "ResourceManager.h"
+
 
 class Editor
 {

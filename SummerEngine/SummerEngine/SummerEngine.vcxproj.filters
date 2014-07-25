@@ -64,9 +64,6 @@
     <Filter Include="Source Files\Graphic\Primitives">
       <UniqueIdentifier>{4b0e04a8-6238-4751-8f7d-34db0927c5c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphic\Primitives">
-      <UniqueIdentifier>{f5fdf336-ed33-47cd-bdcc-ad789fe7f4bc}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -97,9 +94,6 @@
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files\Graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="model.cpp">
       <Filter>Source Files\Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
@@ -135,9 +129,6 @@
     <ClCompile Include="InputComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TextureResourceLoadSave.cpp">
       <Filter>Source Files\ResourceManagement</Filter>
     </ClCompile>
@@ -162,14 +153,17 @@
     <ClCompile Include="CameraSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Rectangles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Time.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DDSTextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rectangles.cpp">
-      <Filter>Source Files\Graphic\Primitives</Filter>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files\Graphic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -198,9 +192,6 @@
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Header Files\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="model.h">
       <Filter>Header Files\Graphic</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
@@ -269,14 +260,14 @@
     <ClInclude Include="CameraSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="Rectangles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Time.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DDSTextureLoader.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rectangles.h">
-      <Filter>Header Files\Graphic\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

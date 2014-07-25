@@ -10,7 +10,12 @@ Material::~Material()
 {
 }
 
-const std::string & Material::GetName() const
+void Material::SetName(std::string p_Name)
+{
+	m_FileName = p_Name;
+}
+
+const std::string Material::GetName()
 {
 	return m_FileName;
 }

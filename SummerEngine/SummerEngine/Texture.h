@@ -8,7 +8,8 @@ public:
 	Texture();
 	~Texture();
 
-	virtual const std::string &GetName() const;
+	virtual void SetName(std::string p_Name);
+	virtual const std::string GetName();
 	virtual const ResourceType GetType() const;
 
 	void SetTextureView(ID3D11ShaderResourceView* p_TextureView);
