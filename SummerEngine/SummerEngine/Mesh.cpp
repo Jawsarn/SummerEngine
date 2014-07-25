@@ -88,9 +88,9 @@ void Mesh::SetVertexData(VertexGroups p_Groups)
 	m_Groups = p_Groups;
 }
 
-void Mesh::SetIndexData(IndicesGroups* p_IndexGroups)
+void Mesh::SetIndexData(IndicesGroups p_IndexGroups)
 {
-	m_IndicesGroups = *p_IndexGroups;
+	m_IndicesGroups = p_IndexGroups;
 }
 
 Mesh::IndicesGroups* Mesh::GetIndexData()

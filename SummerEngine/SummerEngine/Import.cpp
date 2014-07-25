@@ -149,7 +149,7 @@ void Import::LoadFromObj(std::string p_FileName)
 		Mesh* t_Mesh = nullptr;
 		t_Mesh = new Mesh();
 		t_Mesh->SetVertexData(m_Groups);
-		t_Mesh->SetIndexData(&m_Indecies);
+		t_Mesh->SetIndexData(m_Indecies);
 
 		m_Meshes.push_back(t_Mesh);
 		t_Mesh->CreateMeshBuffers();

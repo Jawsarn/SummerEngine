@@ -42,7 +42,30 @@ Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 		t_IndexGroups.push_back(t_IndexGroup);
 	}
 
+	o_Mesh->SetIndexData(t_IndexGroups);
 	o_Mesh->SetVertexData(t_Groups);
+
+	o_Mesh->CreateMeshBuffers();
+	
+
+	//CLEAR EVERYTHING
+	//---------------------------------------------------
+	int t_IndexDataSize = o_Mesh->GetIndexData()->size();
+		//maybe not needed?
+	for (int i = 0; i < t_IndexDataSize; i++)
+	{
+		o_Mesh->GetIndexData()[i].clear();
+	}
+	o_Mesh->GetIndexData()->clear();
+
+	int t_VertexDataSize = o_Mesh->GetVertexData()->size();
+		//maybe not needed?
+	for (int i = 0; i < t_VertexDataSize; i++)
+	{
+		o_Mesh->GetVertexData()[i].clear();
+	}
+	o_Mesh->GetVertexData()->clear();
+	//-----------------------------------------------------
 
 	return o_Mesh; //add code to create a mesh from file here
 }
