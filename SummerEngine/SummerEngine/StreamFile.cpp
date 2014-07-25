@@ -19,7 +19,7 @@ bool StreamFile::OpenFileRead(std::string p_FileName)
 	{
 		return false;
 	}
-	fopen_s(&m_File, p_FileName.c_str(), "r");
+	fopen_s(&m_File, p_FileName.c_str(), "rb");
 	
 	m_ReadMode = (m_File != nullptr);
 
