@@ -27,10 +27,10 @@ HRESULT Rectangles::CreateButton(ID3D11Device* p_Device)
 {
 	Vertex Rect[4] =
 	{
-		/*POSITION*/-0.25f, -0.25f, 0,	/*NORMAL*/0, 0, -1,/*UV*/0, 1,
-		/*POSITION*/ -0.25f, 0.25f, 0,	/*NORMAL*/0, 0, -1,/*UV*/0, 0,
-		/*POSITION*/ 0.25f, -0.25f, 0,  /*NORMAL*/0, 0, -1,/*UV*/1, 1,
-		/*POSITION*/ 0.25f, 0.25f, 0,  /*NORMAL*/0, 0, -1,/*UV*/1, 0,
+		/*POSITION*/-0.25f, -0.25f, 1,	/*NORMAL*/0, 0, -1,/*UV*/0, 1,
+		/*POSITION*/ -0.25f, 0.25f, 1,	/*NORMAL*/0, 0, -1,/*UV*/0, 0,
+		/*POSITION*/ 0.25f, -0.25f, 1,  /*NORMAL*/0, 0, -1,/*UV*/1, 1,
+		/*POSITION*/ 0.25f, 0.25f, 1,  /*NORMAL*/0, 0, -1,/*UV*/1, 0,
 	};
 
 	//Set vertex description
@@ -77,8 +77,8 @@ HRESULT Rectangles::Render(ID3D11DeviceContext* p_DeviceContext)
 	UINT32 offset = 0;
 	p_DeviceContext->IASetVertexBuffers(0, 1, &m_VertexBuffer, &vertexSize, &offset);
 
-	p_DeviceContext->UpdateSubresource(m_ConstantBuffer, 0, NULL, &m_WorldStruct, 0, 0);
-	p_DeviceContext->VSSetConstantBuffers(1, 1, &m_ConstantBuffer);
+	//p_DeviceContext->UpdateSubresource(m_ConstantBuffer, 0, NULL, &m_WorldStruct, 0, 0);
+	//p_DeviceContext->VSSetConstantBuffers(1, 1, &m_ConstantBuffer);
 
 	p_DeviceContext->Draw(4, 0);
 
