@@ -11,6 +11,7 @@ public:
 	virtual const std::string &GetName() const;
 	virtual const ResourceType GetType() const;
 
+	void SetTextureView(ID3D11ShaderResourceView* p_TextureView);
 	ID3D11ShaderResourceView* GetTextureView();
 
 private:

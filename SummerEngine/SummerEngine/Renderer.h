@@ -32,6 +32,7 @@ public:
 	bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow);
 
 	void CreateBuffer(D3D11_BUFFER_DESC* p_Desc, D3D11_SUBRESOURCE_DATA* p_Data, ID3D11Buffer** o_Buffer);
+	bool CreateTexture(const wchar_t * p_FileName, ID3D11ShaderResourceView** t_NewSRV);
 
 	void SetViewports(std::vector<D3D11_VIEWPORT> p_Viewports);
 	void SetCameras(std::vector<CameraStruct> p_Cameras);

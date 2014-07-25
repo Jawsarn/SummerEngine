@@ -3,6 +3,7 @@
 #include "RenderComponent.h"
 #include "TransformComponent.h"
 #include "ShaderLoader.h"
+#include "DDSTextureLoader.h"
 
 Renderer* Renderer::m_Singleton = nullptr;
 
@@ -84,6 +85,22 @@ void Renderer::CreateBuffer(D3D11_BUFFER_DESC* p_Desc, D3D11_SUBRESOURCE_DATA* p
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr, L"Buffer could not be created", L"Error", MB_ICONERROR | MB_OK);
+	}
+}
+
+bool Renderer::CreateTexture(const wchar_t * p_FileName, ID3D11ShaderResourceView** t_NewSRV)
+{
+	HRESULT hr = S_OK;
+	
+	hr = CreateDDSTextureFromFile(m_Device, p_FileName, nullptr, t_NewSRV);
+
+	if (FAILED(hr))
+	{
+		return false;
+	}
+	else
+	{
+		return true;
 	}
 }
 
