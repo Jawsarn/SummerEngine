@@ -52,6 +52,8 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 	Mesh::IndicesGroups* t_IndexGroups = t_Mesh->GetIndexData();
 
 	int t_NumOfIndecies = t_IndexGroups->size();
+	WriteInt(t_File, t_NumOfIndecies);
+
 	for (int i = 0; i < t_NumOfIndecies; i++)
 	{
 		int t_NumOfIndecies = t_IndexGroups[i].size();
