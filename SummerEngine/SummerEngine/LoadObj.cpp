@@ -409,3 +409,23 @@ int LoadObj::GetObjCount()
 {
 	return m_Obj.size();
 }
+
+std::vector<MaterialData*> LoadObj::GetMaterials(int p_ObjIndex)
+{
+	std::vector<ObjGroups> t_Groups;
+	int t_GroupSize = m_Obj[p_ObjIndex].m_GroupId.size();
+
+	for (int x = 0; x < t_GroupSize; x++)
+	{
+		t_Groups.push_back(m_groups[m_Obj[p_ObjIndex].m_GroupId[x]]);
+	}
+	
+	std::vector<MaterialData*> t_MaterialData(t_GroupSize);
+	for (int i = 0; i < t_GroupSize; i++)
+	{
+		t_MaterialData[i] = GetMaterial(t_Groups[i].material);
+	}
+
+	return t_MaterialData;
+}
+

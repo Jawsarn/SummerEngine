@@ -52,13 +52,26 @@ void Editor::InitEditor()
 			RenderComponent* t_RenderingComponent = new RenderComponent();
 			
 			int t_NumOfBuffers = t_Meshes[i]->GetNumOfBuffers();
+			//std::vector<Material*> t_NewMaterials;
+			
+			//All material information for the current mesh
+			std::vector<MaterialData*> t_NewMaterialData;
+			t_NewMaterialData = m_import->GetAllMaterialsFromAMesh(i);
+
 			std::vector<Material*> t_NewMaterials;
 			for (size_t i = 0; i < t_NumOfBuffers; i++)
 			{
-				Material* t_NewMaterial = new Material();;
+				//Material* t_NewMaterial = new Material();
+				//t_NewMaterials.push_back(t_NewMaterial);
+				Material* t_NewMaterial = new Material();
+				
 				t_NewMaterials.push_back(t_NewMaterial);
+
 			}
 			t_RenderingComponent->SetObject(t_Meshes[i], t_NewMaterials);
+
+			
+			//t_RenderingComponent->SetObject(t_Meshes[i], t_NewMaterials);
 
 			t_NewEntity->AddComponent(t_RenderingComponent);
 			t_NewEntity->SetTransformComponent(t_NewTransform);

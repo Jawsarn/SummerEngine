@@ -4,7 +4,7 @@
 #include "LoadObj.h"
 //#include "GameObject.h"//test
 #include "Mesh.h"
-
+#include "Material.h"
 //Map triangle to int
 typedef std::map<std::vector<int>, int> MapVertex;
 
@@ -16,6 +16,7 @@ public:
 	void Release();
 	void LoadFromObj(std::string p_FileName);
 	std::vector<Mesh*>& GetMeshes();
+	std::vector<MaterialData*> GetAllMaterialsFromAMesh(int p_ObjIndex);
 	//std::vector<GameObject*>& GetGameObjects();
 
 private:
