@@ -102,9 +102,6 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>Source Files\Graphic</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Graphic</Filter>
     </ClCompile>
@@ -201,9 +198,6 @@
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Header Files\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="model.h">
       <Filter>Header Files\Graphic</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">

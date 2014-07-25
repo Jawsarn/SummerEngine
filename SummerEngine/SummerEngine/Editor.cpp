@@ -34,7 +34,7 @@ void Editor::InitEditor()
 	//shader.CreateShadersAndInputLayout3D("../Shaders/DrawMeshVS.hlsl", "VS_main", "../Shaders/DrawMeshPS.hlsl", "PS_main");
 	//------------------------------------------
 
-	m_import->LoadFromObj("../SummerEngine/Graphics/Objs/testFile.obj");
+	m_import->LoadFromObj("../SummerEngine/Graphics/Objs/SoccerBall.obj");
 
 	{
 		std::vector<Mesh*> t_Meshes = m_import->GetMeshes();

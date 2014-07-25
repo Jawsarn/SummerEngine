@@ -85,7 +85,6 @@
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshResourceLoadSave.cpp" />
-    <ClCompile Include="model.cpp" />
     <ClCompile Include="Rectangles.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -120,7 +119,6 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshResourceLoadSave.h" />
-    <ClInclude Include="model.h" />
     <ClInclude Include="Rectangles.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
@@ -145,7 +143,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Object Include="Graphics\Objs\SoccerBall.obj" />
+    <Object Include="Graphics\Objs\SoccerBall.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </Object>
     <Object Include="Graphics\Objs\testFile.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </Object>

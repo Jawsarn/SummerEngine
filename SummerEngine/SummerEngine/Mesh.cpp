@@ -87,7 +87,7 @@ HRESULT Mesh::CreateMeshBuffers()
 
 const std::string & Mesh::GetName() const
 {
-	return "";
+	return m_FileName;
 }
 
 const Mesh::ResourceType Mesh::GetType() const
@@ -142,4 +142,9 @@ int Mesh::GetNumOfBuffers()
 std::vector<ID3D11Buffer*> Mesh::GetVertexBuffers()
 {
 	return m_VertexBuffers;
+}
+
+void Mesh::SetFileName(std::string p_FileName)
+{
+	m_FileName = p_FileName;
 }
