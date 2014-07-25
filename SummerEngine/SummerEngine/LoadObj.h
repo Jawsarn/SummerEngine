@@ -28,7 +28,7 @@ struct Obj
 	std::vector<int> m_GroupId;
 };
 
-typedef std::map<std::string, MaterialData*> MAP_MATERIAL;
+typedef std::map<std::string, Material::MaterialData*> MAP_MATERIAL;
 
 class LoadObj
 {
@@ -43,8 +43,8 @@ public:
 	std::vector<XMFLOAT2 >&GetTexCoords(int p_ObjIndex);
 
 	ObjGroups* GetGroup(int p_GroupIndex);
-	MaterialData* GetMaterial(std::string p_MaterialData);
-	std::vector<MaterialData*> LoadObj::GetMaterials(int p_ObjIndex);
+	Material::MaterialData* GetMaterial(std::string p_MaterialData);
+	std::vector<Material::MaterialData*> LoadObj::GetMaterials(int p_ObjIndex);
 	std::vector<ObjGroups> GetAllGroupsFromAMesh(int p_ObjIndex);
 
 	int GetGroupCount();
@@ -56,7 +56,7 @@ private:
 	int m_CurrentGroup;
 	//bool m_NextMaterial;
 	int m_CurrentMaterial;
-	std::vector<MaterialData*> m_Material;
+	std::vector<Material::MaterialData*> m_Material;
 	MAP_MATERIAL	m_MapMaterial;
 
 	std::vector<ObjGroups> m_groups;

@@ -55,7 +55,7 @@ void Editor::InitEditor()
 			//std::vector<Material*> t_NewMaterials;
 			
 			//All material information for the current mesh
-			std::vector<MaterialData*> t_NewMaterialData;
+			std::vector<Material::MaterialData*> t_NewMaterialData;
 			t_NewMaterialData = m_import->GetAllMaterialsFromAMesh(i);
 
 			std::vector<Material*> t_NewMaterials;
@@ -64,7 +64,7 @@ void Editor::InitEditor()
 				//Material* t_NewMaterial = new Material();
 				//t_NewMaterials.push_back(t_NewMaterial);
 				Material* t_NewMaterial = new Material();
-				
+				t_NewMaterial->SetMaterialData(t_NewMaterialData[i]);
 				t_NewMaterials.push_back(t_NewMaterial);
 
 			}

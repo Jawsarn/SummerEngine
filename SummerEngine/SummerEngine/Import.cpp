@@ -173,9 +173,9 @@ std::vector<Mesh*>& Import::GetMeshes()
 }
 
 
-std::vector<MaterialData*> Import::GetAllMaterialsFromAMesh(int p_ObjIndex)
+std::vector<Material::MaterialData*> Import::GetAllMaterialsFromAMesh(int p_ObjIndex)
 {
-	std::vector<MaterialData*> t_MaterialData = m_LoadObj->GetMaterials(p_ObjIndex);
+	std::vector<Material::MaterialData*> t_MaterialData = m_LoadObj->GetMaterials(p_ObjIndex);
 
 	return t_MaterialData;
 }

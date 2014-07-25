@@ -16,7 +16,7 @@ public:
 	void Release();
 	void LoadFromObj(std::string p_FileName);
 	std::vector<Mesh*>& GetMeshes();
-	std::vector<MaterialData*> GetAllMaterialsFromAMesh(int p_ObjIndex);
+	std::vector<Material::MaterialData*> GetAllMaterialsFromAMesh(int p_ObjIndex);
 	//std::vector<GameObject*>& GetGameObjects();
 
 private:
