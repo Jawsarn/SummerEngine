@@ -66,6 +66,12 @@ void Editor::InitEditor()
 				//t_NewMaterials.push_back(t_NewMaterial);
 				Material* t_NewMaterial = new Material();
 				t_NewMaterial->SetMaterialData(t_NewMaterialData[i]);
+
+				//Loading materials here
+				
+				//t_NewMaterial->SetTextures();
+
+
 				t_NewMaterials.push_back(t_NewMaterial);
 
 			}

@@ -64,6 +64,7 @@ public:
 	void SetMaterialData(MaterialData* p_MaterialData);
 	MaterialData* GetMaterialData();
 	std::vector<Texture*> GetTextures();
+	void SetTextures(std::vector<Texture*> p_Textures);
 	void SetFileName(std::string p_FileName);
 
 	virtual const std::string &GetName() const;
