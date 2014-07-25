@@ -49,6 +49,17 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 		t_File.Write(sizeof(Mesh::MeshVertex)*t_NumOfVertices, &t_VertexGroups[i][0]);
 	}
 
+	Mesh::IndicesGroups* t_IndexGroups = t_Mesh->GetIndexData();
+
+	int t_NumOfIndecies = t_IndexGroups->size();
+	for (int i = 0; i < t_NumOfIndecies; i++)
+	{
+		int t_NumOfIndecies = t_IndexGroups[i].size();
+		WriteInt(t_File, t_NumOfIndecies);
+
+		t_File.Write(sizeof(int)*t_NumOfIndecies, &t_IndexGroups[i][0]);
+	}
+
 	//t_File.Write(); custom data hela vägen, men du måste veta hur den ser ut när du laddar in den på ett bra sätt
 	//eller
 	//WriteFloat(); //loopa tills du läst in allt
