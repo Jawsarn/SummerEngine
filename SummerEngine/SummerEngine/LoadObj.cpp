@@ -225,7 +225,7 @@ bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
 		std::string type_str;
 		str_stream >> type_str;
 
-		MaterialData* t_NewMaterial = nullptr;
+		Material::MaterialData* t_NewMaterial = nullptr;
 
 		if (type_str == "newmtl")
 		{
@@ -240,7 +240,7 @@ bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
 			std::string t_MaterialName;
 			str_stream >> t_MaterialName;
 
-			t_NewMaterial = new MaterialData();
+			t_NewMaterial = new Material::MaterialData();
 			t_NewMaterial->m_Name = t_MaterialName;
 			m_Material[m_CurrentMaterial] = t_NewMaterial;
 
@@ -391,7 +391,7 @@ std::vector<ObjGroups> LoadObj::GetAllGroupsFromAMesh(int p_ObjIndex)
 	return t_Groups;
 }
 
-MaterialData* LoadObj::GetMaterial(std::string p_MaterialData)
+Material::MaterialData* LoadObj::GetMaterial(std::string p_MaterialData)
 {
 	MAP_MATERIAL::const_iterator t_Iterator = m_MapMaterial.find(p_MaterialData);
 	if (t_Iterator == m_MapMaterial.end())
@@ -409,3 +409,23 @@ int LoadObj::GetObjCount()
 {
 	return m_Obj.size();
 }
+
+std::vector<Material::MaterialData*> LoadObj::GetMaterials(int p_ObjIndex)
+{
+	std::vector<ObjGroups> t_Groups;
+	int t_GroupSize = m_Obj[p_ObjIndex].m_GroupId.size();
+
+	for (int x = 0; x < t_GroupSize; x++)
+	{
+		t_Groups.push_back(m_groups[m_Obj[p_ObjIndex].m_GroupId[x]]);
+	}
+	
+	std::vector<Material::MaterialData*> t_MaterialData(t_GroupSize);
+	for (int i = 0; i < t_GroupSize; i++)
+	{
+		t_MaterialData[i] = GetMaterial(t_Groups[i].material);
+	}
+
+	return t_MaterialData;
+}
+

@@ -65,7 +65,6 @@ HRESULT Mesh::CreateMeshBuffers()
 
 		m_NumOfVertex.push_back(m_Groups[i].size());
 		m_NumOfIndex.push_back( m_IndicesGroups[i].size());
-		int test = 0;
 	}
 	return S_OK;
 }

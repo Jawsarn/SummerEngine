@@ -172,6 +172,15 @@ std::vector<Mesh*>& Import::GetMeshes()
 	return m_Meshes;
 }
 
+
+std::vector<Material::MaterialData*> Import::GetAllMaterialsFromAMesh(int p_ObjIndex)
+{
+	std::vector<Material::MaterialData*> t_MaterialData = m_LoadObj->GetMaterials(p_ObjIndex);
+
+	return t_MaterialData;
+}
+
+
 // std::vector<GameObject*>& Import::GetGameObjects()
 // {
 // 	return gameObjects;
