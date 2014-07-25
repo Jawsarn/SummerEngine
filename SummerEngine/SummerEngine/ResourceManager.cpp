@@ -81,6 +81,8 @@ void ResourceManager::SaveResource(std::string p_ResourceName)
 	MakerMap::iterator t_It = m_Makers.find(t_Extension);
 	if (t_It == m_Makers.end())
 	{
-		m_Makers[t_Extension] = t_It->second;
+		return;
 	}
+	//t_It->second->Save(*INSERT RESOURCE HERE*);
+	//m_Resources[p_ResourceName] = *INSERT RESOURCE HERE*
 }
