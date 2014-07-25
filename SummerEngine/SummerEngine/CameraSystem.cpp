@@ -1,6 +1,8 @@
 #include "CameraSystem.h"
 #include "Renderer.h"
 #include "CameraComponent.h"
+#include "TransformComponent.h"
+#include "Time.h"
 
 CameraSystem* CameraSystem::m_Singleton = nullptr;
 
@@ -56,7 +58,7 @@ void CameraSystem::Update()
 	{
 		Renderer::CameraStruct t_NewStruct;
 		CameraComponent* t_Camera = (CameraComponent*)(*it);
-
+		
 		t_NewStruct.Proj = t_Camera->GetProj();
 		t_NewStruct.View = t_Camera->GetView();
 		//t_NewStruct.ViewProj = t_Camera->GetViewProj();
@@ -92,4 +94,50 @@ void CameraSystem::DisableComponent(Component* p_Component)
 {
 	System::DisableComponent(p_Component);
 	m_Changed = true;
+}
+
+void CameraSystem::Walk(int p_Amount)
+{
+	for (std::list<Component*>::iterator it = m_ActiveComponents.begin(); it != m_ActiveComponents.end(); it++)
+	{
+		Time* t_Time = t_Time->GetInstace();
+
+		((TransformComponent*)(*it)->GetEntity()->GetTransformComponent())->Walk(t_Time->GetDeltaTime() * 200 * p_Amount);
+	}
+}
+
+void CameraSystem::Strafe(int p_Amount)
+{
+	for (std::list<Component*>::iterator it = m_ActiveComponents.begin(); it != m_ActiveComponents.end(); it++)
+	{
+		Time* t_Time = t_Time->GetInstace();
+
+		((TransformComponent*)(*it)->GetEntity()->GetTransformComponent())->Strafe(t_Time->GetDeltaTime() * 200 * p_Amount);
+	}
+}
+
+void CameraSystem::HoverY(int p_Amount)
+{
+	for (std::list<Component*>::iterator it = m_ActiveComponents.begin(); it != m_ActiveComponents.end(); it++)
+	{
+		Time* t_Time = t_Time->GetInstace();
+
+		((TransformComponent*)(*it)->GetEntity()->GetTransformComponent())->HoverY(t_Time->GetDeltaTime() * 200 * p_Amount);
+	}
+}
+
+void CameraSystem::Pitch(float p_Dy)
+{
+	for (std::list<Component*>::iterator it = m_ActiveComponents.begin(); it != m_ActiveComponents.end(); it++)
+	{
+		((TransformComponent*)(*it)->GetEntity()->GetTransformComponent())->Pitch(p_Dy);
+	}
+}
+
+void CameraSystem::RotateY(float p_Dx)
+{
+	for (std::list<Component*>::iterator it = m_ActiveComponents.begin(); it != m_ActiveComponents.end(); it++)
+	{
+		((TransformComponent*)(*it)->GetEntity()->GetTransformComponent())->RotateY(p_Dx);
+	}
 }

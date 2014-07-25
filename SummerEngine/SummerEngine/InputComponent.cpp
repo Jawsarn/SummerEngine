@@ -37,9 +37,14 @@ void InputComponent::Update()
 	
 }
 
+void InputComponent::RegisterFunctions(char p_Key, std::function<void()> p_Function)
+{
+	m_Functions[p_Key] = p_Function;
+}
+
 void InputComponent::TranslateInput(char p_Key)
 {
-
+	m_Functions[p_Key]();
 }
 
 void InputComponent::Destroy()

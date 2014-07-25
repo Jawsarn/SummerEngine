@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "InputSystem.h"
+#include <functional>
 
 class InputComponent: public Component
 {
@@ -9,6 +10,7 @@ public:
 	InputComponent(std::string p_Name);
 	~InputComponent();
 
+	void RegisterFunctions(char p_Key, std::function<void()> p_Function);
 	void TranslateInput(char p_Key);
 
 	virtual void Enable();
@@ -24,5 +26,6 @@ public:
 	virtual bool Write(Stream &p_Stream);
 private:
 	InputSystem* m_InputSystem;
+	std::map<char, std::function<void()>> m_Functions;
 };
 

@@ -14,7 +14,8 @@ void RunGameEngine();
 
 //game 
 GameEngine* m_GameEngine;
-
+#include "CameraSystem.h"
+XMFLOAT2 g_LastMousePos;
 
 int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstance, _In_ LPWSTR p_LpCmdLine, _In_ int p_NCmdShow)
 {
@@ -27,6 +28,53 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 
 
 	return 0;
+}
+
+void UpdateScene()
+{
+	CameraSystem* m_Cam = m_Cam->GetInstance();
+
+	if (GetAsyncKeyState('W') & 0x8000)
+	{
+		m_Cam->Walk(1);
+	}
+	if (GetAsyncKeyState('S') & 0x8000)
+	{
+		m_Cam->Walk(-1);
+	}
+	if (GetAsyncKeyState('A') & 0x8000)
+	{
+		m_Cam->Strafe(-1);
+	}
+	if (GetAsyncKeyState('D') & 0x8000)
+	{
+		m_Cam->Strafe(1);
+	}
+	if (GetAsyncKeyState('E') & 0x8000)
+	{
+		m_Cam->HoverY(1);
+	}
+	if (GetAsyncKeyState('Q') & 0x8000)
+	{
+		m_Cam->HoverY(-1);
+	}
+}
+
+void OnMouseMove(WPARAM btnStae, int x, int y)
+{
+	CameraSystem* m_Cam = m_Cam->GetInstance();
+
+	if (btnStae & MK_LBUTTON != 0)
+	{
+		float dx = XMConvertToRadians(0.25f*static_cast<float>(x - g_LastMousePos.x));
+		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - g_LastMousePos.y));
+
+		m_Cam->Pitch(dy);
+		m_Cam->RotateY(dx);
+	}
+
+	g_LastMousePos.x = x;
+	g_LastMousePos.y = y;
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -42,10 +90,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_DESTROY:
-
 		PostQuitMessage(0);
 		break;
 	case WM_KEYDOWN:
+		UpdateScene();
 		switch (wParam)
 		{
 		case VK_ESCAPE:
@@ -54,6 +102,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_MOUSEMOVE:
+		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		break;
 
 	default:

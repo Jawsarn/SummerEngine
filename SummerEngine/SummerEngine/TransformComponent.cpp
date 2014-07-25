@@ -35,60 +35,115 @@ void TransformComponent::LookAt(const XMFLOAT3& p_Pos, const XMFLOAT3& p_Target,
 
 void TransformComponent::Update()
 {
-	/*XMMATRIX t_rotation = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
-	XMMATRIX t_scale = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
-	XMMATRIX t_translation = XMMatrixTranslation(m_Translation.x, m_Translation.y,m_Translation.z);
-	XMMATRIX t_world = t_rotation * t_scale * t_translation;
-	XMStoreFloat4x4(&m_World, t_world);*/
+	if (m_HasMoved)
+	{
+		/*XMMATRIX t_rotation = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
+		XMMATRIX t_scale = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+		XMMATRIX t_translation = XMMatrixTranslation(m_Translation.x, m_Translation.y,m_Translation.z);
+		XMMATRIX t_world = t_rotation * t_scale * t_translation;
+		XMStoreFloat4x4(&m_World, t_world);*/
 
-	XMVECTOR t_Right = XMLoadFloat3(&m_Right);
-	XMVECTOR t_Up = XMLoadFloat3(&m_Up);
+		XMVECTOR t_Right = XMLoadFloat3(&m_Right);
+		XMVECTOR t_Up = XMLoadFloat3(&m_Up);
+		XMVECTOR t_Look = XMLoadFloat3(&m_Look);
+		XMVECTOR t_Pos = XMLoadFloat3(&m_Position);
+
+		//
+		// Orthonormalize the right, up and look vectors.
+		//
+		// Make look vector unit length.
+		t_Look = XMVector3Normalize(t_Look);
+
+		// Compute a new corrected "up" vector and normalize it.
+		t_Up = XMVector3Normalize(XMVector3Cross(t_Look, t_Right));
+
+		// Compute a new corrected "right" vector.
+		t_Right = XMVector3Cross(t_Up, t_Look);
+
+		//
+		// Fill in the view matrix entries.
+		//
+		float t_X = -XMVectorGetX(XMVector3Dot(t_Pos, t_Right));
+		float t_Y = -XMVectorGetX(XMVector3Dot(t_Pos, t_Up));
+		float t_Z = -XMVectorGetX(XMVector3Dot(t_Pos, t_Look));
+
+		XMStoreFloat3(&m_Right, t_Right);
+		XMStoreFloat3(&m_Up, t_Up);
+		XMStoreFloat3(&m_Look, t_Look);
+
+		m_Matrix(0, 0) = m_Right.x;
+		m_Matrix(1, 0) = m_Right.y;
+		m_Matrix(2, 0) = m_Right.z;
+		m_Matrix(3, 0) = t_X;
+		m_Matrix(0, 1) = m_Up.x;
+		m_Matrix(1, 1) = m_Up.y;
+		m_Matrix(2, 1) = m_Up.z;
+		m_Matrix(3, 1) = t_Y;
+		m_Matrix(0, 2) = m_Look.x;
+		m_Matrix(1, 2) = m_Look.y;
+		m_Matrix(2, 2) = m_Look.z;
+		m_Matrix(3, 2) = t_Z;
+		m_Matrix(0, 3) = 0.0f;
+		m_Matrix(1, 3) = 0.0f;
+		m_Matrix(2, 3) = 0.0f;
+		m_Matrix(3, 3) = 1.0f;
+		m_HasMoved = false;
+	}
+}
+
+void TransformComponent::Walk(float p_Distance)
+{
+	//prettey damn good
+	XMVECTOR t_Singed = XMVectorReplicate(p_Distance);
 	XMVECTOR t_Look = XMLoadFloat3(&m_Look);
 	XMVECTOR t_Pos = XMLoadFloat3(&m_Position);
 
-	//
-	// Orthonormalize the right, up and look vectors.
-	//
-	// Make look vector unit length.
-	t_Look = XMVector3Normalize(t_Look);
 
-	// Compute a new corrected "up" vector and normalize it.
-	t_Up = XMVector3Normalize(XMVector3Cross(t_Look, t_Right));
+	XMStoreFloat3(&m_Position, XMVectorMultiplyAdd(t_Singed, t_Look, t_Pos));
+	m_HasMoved = true;
+}
 
-	// Compute a new corrected "right" vector.
-	t_Right = XMVector3Cross(t_Up, t_Look);
+void TransformComponent::Strafe(float p_Distance)
+{
+	XMVECTOR t_Singed = XMVectorReplicate(p_Distance);
+	XMVECTOR t_Right = XMLoadFloat3(&m_Right);
+	XMVECTOR t_Pos = XMLoadFloat3(&m_Position);
 
-	//
-	// Fill in the view matrix entries.
-	//
-	float t_X = -XMVectorGetX(XMVector3Dot(t_Pos, t_Right));
-	float t_Y = -XMVectorGetX(XMVector3Dot(t_Pos, t_Up));
-	float t_Z = -XMVectorGetX(XMVector3Dot(t_Pos, t_Look));
+	XMStoreFloat3(&m_Position, XMVectorMultiplyAdd(t_Singed, t_Right, t_Pos));
+	m_HasMoved = true;
+}
+void TransformComponent::Pitch(float p_Angle)
+{
+	//Rotate up and look vector about the right vector.
+	XMMATRIX t_Right = XMMatrixRotationAxis(XMLoadFloat3(&m_Right), p_Angle);
 
-	XMStoreFloat3(&m_Right, t_Right);
-	XMStoreFloat3(&m_Up, t_Up);
-	XMStoreFloat3(&m_Look, t_Look);
+	XMStoreFloat3(&m_Up, XMVector3TransformNormal(XMLoadFloat3(&m_Up), t_Right));
+	XMStoreFloat3(&m_Look, XMVector3TransformNormal(XMLoadFloat3(&m_Look), t_Right));
+	m_HasMoved = true;
+}
+void TransformComponent::RotateY(float p_Angle)
+{
+	// Rotate the basis vectors about the world y-axis.
+	XMMATRIX t_Rotation = XMMatrixRotationY(p_Angle);
 
-	m_Matrix(0, 0) = m_Right.x;
-	m_Matrix(1, 0) = m_Right.y;
-	m_Matrix(2, 0) = m_Right.z;
-	m_Matrix(3, 0) = t_X;
-	m_Matrix(0, 1) = m_Up.x;
-	m_Matrix(1, 1) = m_Up.y;
-	m_Matrix(2, 1) = m_Up.z;
-	m_Matrix(3, 1) = t_Y;
-	m_Matrix(0, 2) = m_Look.x;
-	m_Matrix(1, 2) = m_Look.y;
-	m_Matrix(2, 2) = m_Look.z;
-	m_Matrix(3, 2) = t_Z;
-	m_Matrix(0, 3) = 0.0f;
-	m_Matrix(1, 3) = 0.0f;
-	m_Matrix(2, 3) = 0.0f;
-	m_Matrix(3, 3) = 1.0f;
+	XMStoreFloat3(&m_Right, XMVector3TransformNormal(XMLoadFloat3(&m_Right), t_Rotation));
+	XMStoreFloat3(&m_Up, XMVector3TransformNormal(XMLoadFloat3(&m_Up), t_Rotation));
+	XMStoreFloat3(&m_Look, XMVector3TransformNormal(XMLoadFloat3(&m_Look), t_Rotation));
+	m_HasMoved = true;
+}
+
+void TransformComponent::HoverY(float p_Amount)
+{
+	m_Position.y += p_Amount;
+	m_HasMoved = true;
 }
 
 XMFLOAT4X4 TransformComponent::GetMatrix()
 {
+	if (m_HasMoved)
+	{
+		Update();
+	}
 	return m_Matrix;
 }
 
@@ -129,7 +184,7 @@ XMFLOAT4X4 TransformComponent::GetMatrix()
 
 void TransformComponent::Awake()
 {
-	
+	m_HasMoved = true;
 }
 
 void TransformComponent::Start()

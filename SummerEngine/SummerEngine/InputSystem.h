@@ -1,6 +1,9 @@
 #pragma once
 #include "System.h"
 #include <map>
+#include <DirectXMath.h>
+
+using namespace DirectX;
 
 class InputSystem: public System
 {
@@ -17,7 +20,9 @@ private:
 	~InputSystem();
 	static InputSystem* m_Singleton;
 	typedef std::map<char,std::vector<Component*>> KeyList;
-
+	std::vector<Component*> MouseList;
 	KeyList m_KeyWatchers;
+
+	XMFLOAT2 m_LastMousePos;
 };
 

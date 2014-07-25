@@ -1,5 +1,5 @@
 #include "GameEngine.h"
-
+#include "Time.h"
 
 GameEngine* GameEngine::m_Singleton = nullptr;
 
@@ -15,13 +15,7 @@ GameEngine* GameEngine::GetInstance()
 
 GameEngine::GameEngine()
 {
-	m_DeltaTime = new DOUBLE();
-	m_GameTime = new DOUBLE();
-	m_PrevTime = new ULONGLONG();
-
-	*m_DeltaTime = 0;
-	*m_GameTime = 0;
-	*m_PrevTime = 0;
+	
 }
 
 
@@ -134,21 +128,16 @@ void GameEngine::Update()
 	//UpdateObjects();
 	//RenderWorld();
 	//MiscTasks();
+	Time* t_Time = t_Time->GetInstace();
+	t_Time->Update();
+
 	for (int i = 0; i < m_Systems.size(); i++)
 	{
 		m_Systems[i]->Update();
 	}
 }
 
-void GameEngine::UpdateTime()
-{
-	ULONGLONG timeCur = GetTickCount64();
-	if (*m_PrevTime == 0)
-		*m_PrevTime = timeCur;
-	*m_DeltaTime = (timeCur - *m_PrevTime) / 1000.0f;
-	*m_GameTime += *m_DeltaTime;
-	*m_PrevTime = timeCur;
-}
+
 
 void GameEngine::GetInput()
 {

@@ -30,9 +30,7 @@ private:
 	static GameEngine* m_Singleton;
 
 	
-	ULONGLONG* m_PrevTime;
-	DOUBLE* m_DeltaTime;
-	DOUBLE* m_GameTime;
+
 
 	//testsers
 	std::vector<System*> m_Systems;

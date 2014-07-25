@@ -20,6 +20,13 @@ public:
 
 	void LookAt(const XMFLOAT3& p_Pos, const XMFLOAT3& p_Target, const XMFLOAT3& p_Up);
 
+	void Walk(float p_Distance);
+	void Strafe(float p_Distance);
+	void Pitch(float p_Angle);
+	void RotateY(float p_Angle);
+	void HoverY(float p_Amount);
+
+
 	void Update();
 
 	virtual bool Read(Stream &p_Stream);
@@ -43,5 +50,6 @@ private:
 	XMFLOAT3 m_Look; // view space z-axis
 
 	XMFLOAT4X4 m_Matrix;
+	bool m_HasMoved;
 };
 
