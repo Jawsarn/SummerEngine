@@ -429,3 +429,8 @@ std::vector<Material::MaterialData*> LoadObj::GetMaterials(int p_ObjIndex)
 	return t_MaterialData;
 }
 
+std::string LoadObj::GetMeshName(int p_ObjIndex)
+{
+	return m_Obj[p_ObjIndex].name;
+}
+

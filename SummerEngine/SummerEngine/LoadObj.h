@@ -47,6 +47,8 @@ public:
 	std::vector<Material::MaterialData*> LoadObj::GetMaterials(int p_ObjIndex);
 	std::vector<ObjGroups> GetAllGroupsFromAMesh(int p_ObjIndex);
 
+	std::string GetMeshName(int p_ObjIndex);
+
 	int GetGroupCount();
 	int GetObjCount();
 
