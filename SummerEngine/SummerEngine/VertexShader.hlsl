@@ -3,7 +3,7 @@ struct VS_INPUT
 {
 	float3 Position		: POSITION;
 	float3 Normal		: NORMAL;
-	float2 Texcord		: TEXCOORD;
+	float2 TexCoord		: TEXCOORD;
 	matrix World		: WORLDMATRIX;
 };
 
@@ -11,7 +11,7 @@ struct VS_OUTPUT
 {
 	float4 Position		: SV_POSITION;
 	float3 Normal		: NORMAL;
-	float2 Texcord		: TEXCORD;
+	float2 TexCoord		: TEXCORD;
 };
 
 cbuffer ConstantBuffer : register(c0)
@@ -34,7 +34,7 @@ VS_OUTPUT VS(VS_INPUT p_Input)
 
 
 	o_Output.Normal = p_Input.Normal;
-	o_Output.Texcord = p_Input.Texcord;
+	o_Output.TexCoord = p_Input.TexCoord;
 
 	return o_Output;
 }

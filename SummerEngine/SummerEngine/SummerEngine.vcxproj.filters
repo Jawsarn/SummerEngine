@@ -67,6 +67,9 @@
     <Filter Include="Header Files\Graphic\Primitives">
       <UniqueIdentifier>{f5fdf336-ed33-47cd-bdcc-ad789fe7f4bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Textures">
+      <UniqueIdentifier>{011f6e6a-63fe-43fe-a2c1-fc098e7a7dd9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -283,9 +286,15 @@
     <None Include="Graphics\Objs\testFile.mtl">
       <Filter>Graphics\Objs</Filter>
     </None>
+    <None Include="Graphics\Objs\SoccerBall.mtl">
+      <Filter>Graphics\Objs</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Object Include="Graphics\Objs\testFile.obj">
+      <Filter>Graphics\Objs</Filter>
+    </Object>
+    <Object Include="Graphics\Objs\SoccerBall.obj">
       <Filter>Graphics\Objs</Filter>
     </Object>
   </ItemGroup>
@@ -296,5 +305,13 @@
     <FxCompile Include="PixelShader.hlsl">
       <Filter>Shaders\Test Shaders Not Deferred</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Graphics\Textures\COL.dds">
+      <Filter>Graphics\Textures</Filter>
+    </Image>
+    <Image Include="Graphics\Textures\NRM.dds">
+      <Filter>Graphics\Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -154,7 +154,7 @@ void Import::LoadFromObj(std::string p_FileName)
 		m_Meshes.push_back(t_Mesh);
 		t_Mesh->CreateMeshBuffers();
 		
-		std::string t_TheMeshName = m_LoadObj->GetMeshName(0);
+		std::string t_TheMeshName = m_LoadObj->GetMeshName(i);
 
 		//Making it a gameobject
 		//GameObject* t_NewGameObject = new GameObject(p_Device);
