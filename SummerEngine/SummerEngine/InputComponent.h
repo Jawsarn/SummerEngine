@@ -9,6 +9,8 @@ public:
 	InputComponent(std::string p_Name);
 	~InputComponent();
 
+	void TranslateInput(char p_Key);
+
 	virtual void Enable();
 	virtual void Disable();
 

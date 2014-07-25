@@ -40,8 +40,6 @@ private:
 
 	D3D11_VIEWPORT m_Viewport;
 
-
-	
 	// Cache frustum properties.
 	float m_NearZ;
 	float m_FarZ;

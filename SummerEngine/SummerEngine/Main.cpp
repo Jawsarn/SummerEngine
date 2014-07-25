@@ -15,9 +15,6 @@ void RunGameEngine();
 //game 
 GameEngine* m_GameEngine;
 
-//testmouse
-XMFLOAT2 g_LastMousePos;
-Renderer* m_Renderer;
 
 int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstance, _In_ LPWSTR p_LpCmdLine, _In_ int p_NCmdShow)
 {
@@ -30,43 +27,6 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 
 
 	return 0;
-}
-
-void UpdateScene(float dt)
-{
-	m_Renderer = m_Renderer->GetInstance();
-	//if (GetAsyncKeyState('W') & 0x8000)
-	//{
-	//	m_Renderer->Walk(200.0*dt);
-	//}
-	//if (GetAsyncKeyState('S') & 0x8000)
-	//{
-	//	m_Renderer->Walk(-200.0*dt);
-	//}
-	//if (GetAsyncKeyState('A') & 0x8000)
-	//{
-	//	m_Renderer->Strafe(-200.0*dt);
-	//}
-	//if (GetAsyncKeyState('D') & 0x8000)
-	//{
-	//	m_Renderer->Strafe(200.0*dt);
-	//}
-}
-
-void OnMouseMove(WPARAM btnStae, int x, int y)
-{
-	m_Renderer = m_Renderer->GetInstance();
-	if (btnStae & MK_LBUTTON != 0)
-	{
-		float dx = XMConvertToRadians(0.25f*static_cast<float>(x - g_LastMousePos.x));
-		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - g_LastMousePos.y));
-
-		//m_Renderer->Pitch(dy);
-		//m_Renderer->RotateY(dx);
-	}
-
-	g_LastMousePos.x = x;
-	g_LastMousePos.y = y;
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -86,7 +46,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		break;
 	case WM_KEYDOWN:
-		UpdateScene(0.02);
 		switch (wParam)
 		{
 		case VK_ESCAPE:
@@ -95,7 +54,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_MOUSEMOVE:
-		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		break;
 
 	default:

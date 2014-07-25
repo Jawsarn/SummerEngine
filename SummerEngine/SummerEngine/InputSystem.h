@@ -1,5 +1,6 @@
 #pragma once
 #include "System.h"
+#include <map>
 
 class InputSystem: public System
 {
@@ -15,6 +16,8 @@ private:
 	InputSystem();
 	~InputSystem();
 	static InputSystem* m_Singleton;
+	typedef std::map<char,std::vector<Component*>> KeyList;
 
+	KeyList m_KeyWatchers;
 };
 
