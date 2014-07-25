@@ -35,8 +35,8 @@ void Editor::InitEditor()
 	//shader.CreateShadersAndInputLayout3D("../Shaders/DrawMeshVS.hlsl", "VS_main", "../Shaders/DrawMeshPS.hlsl", "PS_main");
 	//------------------------------------------
 
-	//ResourceManager* t_Manager = t_Manager->GetInstance();
-	//Resource* t_Test = t_Manager->Create("Sphere_Sphere.001.mesh");
+	ResourceManager* t_Manager = t_Manager->GetInstance();
+	Resource* t_Test = t_Manager->Create("Sphere_Sphere.001.mesh");
 
 	m_import->LoadFromObj("../SummerEngine/Graphics/Objs/testFile.obj");
 

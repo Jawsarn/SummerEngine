@@ -20,8 +20,8 @@ Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 		std::vector<Mesh::MeshVertex> t_VertexGroup;
 		
 		t_VertexGroup.resize(t_NumOfVertices);
-
-		t_File.Read(sizeof(Mesh::MeshVertex)*t_NumOfVertices, &t_VertexGroup[0]);
+		int t_BytesToRead = sizeof(Mesh::MeshVertex)*t_NumOfVertices;
+		int t_BytesRead = t_File.Read(sizeof(Mesh::MeshVertex)*t_NumOfVertices, &t_VertexGroup[0]);
 
 		t_Groups.push_back(t_VertexGroup);
 	}
@@ -38,7 +38,9 @@ Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 		std::vector<int> t_IndexGroup;
 
 		t_IndexGroup.resize(t_NumOfIndecies);
-		t_File.Read(sizeof(int)*t_NumOfIndecies, &t_IndexGroup[0]);
+		int t_BytesToRead = sizeof(int)*t_NumOfIndecies;
+
+		int t_BytesToRead = t_File.Read(sizeof(int)*t_NumOfIndecies, &t_IndexGroup[0]);
 		t_IndexGroups.push_back(t_IndexGroup);
 	}
 
@@ -69,7 +71,9 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 		int t_NumOfVertices = t_VertexGroups->at(i).size();
 		WriteInt(t_File, t_NumOfVertices);
 
-		t_File.Write(sizeof(Mesh::MeshVertex)*t_NumOfVertices, &t_VertexGroups->at(i)[0]);
+		int t_BytesToWrite = sizeof(Mesh::MeshVertex)*t_NumOfVertices;
+		int t_SizeOfWrittenData = t_File.Write(sizeof(Mesh::MeshVertex)*t_NumOfVertices, &t_VertexGroups->at(i)[0]);
+		int t_Break = 0;
 	}
 
 	//index
@@ -83,7 +87,9 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 		int t_NumOfIndecies = t_IndexGroups->at(i).size();
 		WriteInt(t_File, t_NumOfIndecies);
 
-		t_File.Write(sizeof(int)*t_NumOfIndecies, &t_IndexGroups->at(i)[0]);
+		int t_BytesToWrite = sizeof(int)*t_NumOfIndecies;
+		int t_SizeOfWrittenData = t_File.Write(sizeof(int)*t_NumOfIndecies, &t_IndexGroups->at(i)[0]);
+		int t_Break = 0;
 	}
 
 	//t_File.Write(); custom data hela vägen, men du måste veta hur den ser ut när du laddar in den på ett bra sätt
