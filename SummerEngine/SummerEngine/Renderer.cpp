@@ -402,10 +402,10 @@ HRESULT Renderer::InitializeShaders()
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			//{ "WORLDMATRIX", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-			//{ "WORLDMATRIX", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-			//{ "WORLDMATRIX", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-			//{ "WORLDMATRIX", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLDMATRIX", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLDMATRIX", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLDMATRIX", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLDMATRIX", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
 
 		};
 		UINT t_NumElements = ARRAYSIZE(t_Layout);
@@ -618,117 +618,117 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 
 	int t_NumOfObjects = p_RenderObjects->size();
-	//if (t_NumOfObjects == 0)
-	//{
-	//	return;
-	//}
-
-	////std::vector<ID3D11Buffer*> t_BuffersToDraw; //can be direct inputted into the IA stage
-	//std::vector<std::vector<Material*>> t_MaterialsPerBuffer; //is to be updated after each "draw"
-	//std::vector<XMFLOAT4X4> t_TranslationsPerMaterial; //should be able to be inputted aside with vertex buffer in the early AI stage
-
-	//ID3D11Buffer* t_VertexBuffer;
-	//ID3D11Buffer* t_IndexBuffer;
-	//Material* t_Material;
-	//std::vector<XMMATRIX> t_Matrices;
-
-
-	//UINT strides[2] = { sizeof(Mesh::MeshVertex), sizeof(XMMATRIX) };
-	//UINT offsets[2] = { 0 , 0};
-	//UINT indexOffset = 0;
-	//int t_VertexBuffSize = 0;
-	//int t_NumOfInstances = 0;
-
-	////ok so first we do it simple, only taking care of the vertex buffer with checking material as well, ok ? 
-	//{
-	//	RenderObject* t_RenderObject = p_RenderObjects->at(0);
-	//	RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
-
-	//	t_VertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
-	//	t_IndexBuffer = t_RenderComponent->GetMesh()->GetIndexBuffer(t_RenderObject->BufferNum);
-	//	t_VertexBuffSize = t_RenderComponent->GetMesh()->GetNumOfIndecies(t_RenderObject->BufferNum);
-
-	//	t_Material = t_RenderComponent->GetMaterial(t_RenderObject->BufferNum); //woa... but yes
-	//	TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject->m_Component->GetEntity()->GetTransformComponent());
-	//	t_Matrices.push_back(XMMatrixTranspose( XMLoadFloat4x4( &t_Transform->GetMatrix() )));
-	//	t_NumOfInstances++;
-	//}
- //	for (int i = 1; i < t_NumOfObjects; i++)
- //	{
- //		RenderObject* t_RenderObject = p_RenderObjects->at(i);
- //		RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
- //
- //		ID3D11Buffer* t_CheckVertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
- //		Material* t_CheckMaterial = t_RenderComponent->GetMaterial(t_RenderObject->BufferNum); //woa... but yes
- //
- //		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject->m_Component->GetEntity()->GetTransformComponent());
- //		//can only have max 32 buffer in the IA stage, 
- //
- //		if (t_VertexBuffer == t_CheckVertexBuffer && t_Material == t_CheckMaterial) //yey it's the same buffer.. what now?
- //		{
- //			t_Matrices.push_back(XMMatrixTranspose( XMLoadFloat4x4(&t_Transform->GetMatrix())));
- //			t_NumOfInstances++;
- //		}
- //		else
- //		{
- //			//m_DeviceContext->UpdateSubresource(m_InstanceBuffer, 0, nullptr, &t_Matrices[0], 0, 0);
- //
- //			//update the instance buffer
- //			D3D11_MAPPED_SUBRESOURCE t_MappedData;
- //			HRESULT hr = m_DeviceContext->Map(m_InstanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &t_MappedData);
- //			XMMATRIX* dataView = reinterpret_cast<XMMATRIX*>(t_MappedData.pData);
- //
- //			int t_NumOfMatrices = t_Matrices.size();
- //			for (int i = 0; i < t_NumOfMatrices; i++)
- //			{
- //				dataView[i] = t_Matrices[i];
- //			}
- //			
- //			m_DeviceContext->Unmap(m_InstanceBuffer, 0);
- //
- //			ID3D11Buffer* t_InBuffers[2] = { t_VertexBuffer, m_InstanceBuffer };
- //			
- //
- //			m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets); //set both vertex and instance buffer
- //			/*UINT VertexStrides[1] = { sizeof(Mesh::MeshVertex) };
- //			UINT VertexOffsets[1] = { 0 };
- //			m_DeviceContext->IASetVertexBuffers(0, 1, &t_VertexBuffer, VertexStrides, VertexOffsets);*/
- //
- //			m_DeviceContext->IASetIndexBuffer(t_IndexBuffer, DXGI_FORMAT_R32_UINT, indexOffset);
- //			//m_DeviceContext->IASetIndexBuffer();
- //
- //			m_DeviceContext->DrawIndexedInstanced( t_VertexBuffSize, t_NumOfInstances,0,0,0);
- //
- //			//m_DeviceContext->DrawInstanced(t_VertexBuffSize, t_NumOfInstances, 0, 0);
- //
- //			//reset the instanced buffer
- //			RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
- //			t_Matrices.clear();
- //			t_Matrices.push_back(XMMatrixTranspose( XMLoadFloat4x4( &t_Transform->GetMatrix())) );
- //			t_VertexBuffer = t_CheckVertexBuffer;
- //			t_IndexBuffer = t_RenderComponent->GetMesh()->GetIndexBuffer(t_RenderObject->BufferNum);
- //			t_VertexBuffSize = t_RenderComponent->GetMesh()->GetNumOfIndecies(t_RenderObject->BufferNum);
- //			t_NumOfInstances = 1;
- //		}
- //	}
-
-	for (int i = 0; i < t_NumOfObjects; i++)
+	if (t_NumOfObjects == 0)
 	{
-		RenderObject* t_RenderObject = p_RenderObjects->at(i);
-		RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
-		ID3D11Buffer* t_TestVertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
-		ID3D11Buffer* t_TestIndexBuffer = t_RenderComponent->GetMesh()->GetIndexBuffer(t_RenderObject->BufferNum);
-		int IndexSize = t_RenderComponent->GetMesh()->GetNumOfIndecies(t_RenderObject->BufferNum);
-
-		UINT VertexStrides[1] = { sizeof(Mesh::MeshVertex) };
-		UINT VertexOffsets[1] = { 0 };
-		UINT TestIndexOffset = 0;
-		m_DeviceContext->IASetVertexBuffers(0, 1, &t_TestVertexBuffer, VertexStrides, VertexOffsets);
-		m_DeviceContext->IASetIndexBuffer(t_TestIndexBuffer, DXGI_FORMAT_R32_UINT, TestIndexOffset);
-
-
-		m_DeviceContext->DrawIndexed(IndexSize, 0, 0);
+		return;
 	}
+
+	//std::vector<ID3D11Buffer*> t_BuffersToDraw; //can be direct inputted into the IA stage
+	std::vector<std::vector<Material*>> t_MaterialsPerBuffer; //is to be updated after each "draw"
+	std::vector<XMFLOAT4X4> t_TranslationsPerMaterial; //should be able to be inputted aside with vertex buffer in the early AI stage
+
+	ID3D11Buffer* t_VertexBuffer;
+	ID3D11Buffer* t_IndexBuffer;
+	Material* t_Material;
+	std::vector<XMMATRIX> t_Matrices;
+
+
+	UINT strides[2] = { sizeof(Mesh::MeshVertex), sizeof(XMMATRIX) };
+	UINT offsets[2] = { 0 , 0};
+	UINT indexOffset = 0;
+	int t_VertexBuffSize = 0;
+	int t_NumOfInstances = 0;
+
+	//ok so first we do it simple, only taking care of the vertex buffer with checking material as well, ok ? 
+	{
+		RenderObject* t_RenderObject = p_RenderObjects->at(0);
+		RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
+
+		t_VertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
+		t_IndexBuffer = t_RenderComponent->GetMesh()->GetIndexBuffer(t_RenderObject->BufferNum);
+		t_VertexBuffSize = t_RenderComponent->GetMesh()->GetNumOfIndecies(t_RenderObject->BufferNum);
+
+		t_Material = t_RenderComponent->GetMaterial(t_RenderObject->BufferNum); //woa... but yes
+		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject->m_Component->GetEntity()->GetTransformComponent());
+		t_Matrices.push_back(XMMatrixTranspose( XMLoadFloat4x4( &t_Transform->GetMatrix() )));
+		t_NumOfInstances++;
+	}
+ 	for (int i = 1; i < t_NumOfObjects; i++)
+ 	{
+ 		RenderObject* t_RenderObject = p_RenderObjects->at(i);
+ 		RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
+ 
+ 		ID3D11Buffer* t_CheckVertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
+ 		Material* t_CheckMaterial = t_RenderComponent->GetMaterial(t_RenderObject->BufferNum); //woa... but yes
+ 
+ 		TransformComponent* t_Transform = (TransformComponent*)(t_RenderObject->m_Component->GetEntity()->GetTransformComponent());
+ 		//can only have max 32 buffer in the IA stage, 
+ 
+ 		if (t_VertexBuffer == t_CheckVertexBuffer && t_Material == t_CheckMaterial) //yey it's the same buffer.. what now?
+ 		{
+ 			t_Matrices.push_back(XMMatrixTranspose( XMLoadFloat4x4(&t_Transform->GetMatrix())));
+ 			t_NumOfInstances++;
+ 		}
+ 		else
+ 		{
+ 			//m_DeviceContext->UpdateSubresource(m_InstanceBuffer, 0, nullptr, &t_Matrices[0], 0, 0);
+ 
+ 			//update the instance buffer
+ 			D3D11_MAPPED_SUBRESOURCE t_MappedData;
+ 			HRESULT hr = m_DeviceContext->Map(m_InstanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &t_MappedData);
+ 			XMMATRIX* dataView = reinterpret_cast<XMMATRIX*>(t_MappedData.pData);
+ 
+ 			int t_NumOfMatrices = t_Matrices.size();
+ 			for (int i = 0; i < t_NumOfMatrices; i++)
+ 			{
+ 				dataView[i] = t_Matrices[i];
+ 			}
+ 			
+ 			m_DeviceContext->Unmap(m_InstanceBuffer, 0);
+ 
+ 			ID3D11Buffer* t_InBuffers[2] = { t_VertexBuffer, m_InstanceBuffer };
+ 			
+ 
+ 			m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets); //set both vertex and instance buffer
+ 			/*UINT VertexStrides[1] = { sizeof(Mesh::MeshVertex) };
+ 			UINT VertexOffsets[1] = { 0 };
+ 			m_DeviceContext->IASetVertexBuffers(0, 1, &t_VertexBuffer, VertexStrides, VertexOffsets);*/
+ 
+ 			m_DeviceContext->IASetIndexBuffer(t_IndexBuffer, DXGI_FORMAT_R32_UINT, indexOffset);
+ 			//m_DeviceContext->IASetIndexBuffer();
+ 
+ 			m_DeviceContext->DrawIndexedInstanced( t_VertexBuffSize, t_NumOfInstances,0,0,0);
+ 
+ 			//m_DeviceContext->DrawInstanced(t_VertexBuffSize, t_NumOfInstances, 0, 0);
+ 
+ 			//reset the instanced buffer
+ 			RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
+ 			t_Matrices.clear();
+ 			t_Matrices.push_back(XMMatrixTranspose( XMLoadFloat4x4( &t_Transform->GetMatrix())) );
+ 			t_VertexBuffer = t_CheckVertexBuffer;
+ 			t_IndexBuffer = t_RenderComponent->GetMesh()->GetIndexBuffer(t_RenderObject->BufferNum);
+ 			t_VertexBuffSize = t_RenderComponent->GetMesh()->GetNumOfIndecies(t_RenderObject->BufferNum);
+ 			t_NumOfInstances = 1;
+ 		}
+ 	}
+
+	//for (int i = 0; i < t_NumOfObjects; i++)
+	//{
+	//	RenderObject* t_RenderObject = p_RenderObjects->at(i);
+	//	RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
+	//	ID3D11Buffer* t_TestVertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
+	//	ID3D11Buffer* t_TestIndexBuffer = t_RenderComponent->GetMesh()->GetIndexBuffer(t_RenderObject->BufferNum);
+	//	int IndexSize = t_RenderComponent->GetMesh()->GetNumOfIndecies(t_RenderObject->BufferNum);
+
+	//	UINT VertexStrides[1] = { sizeof(Mesh::MeshVertex) };
+	//	UINT VertexOffsets[1] = { 0 };
+	//	UINT TestIndexOffset = 0;
+	//	m_DeviceContext->IASetVertexBuffers(0, 1, &t_TestVertexBuffer, VertexStrides, VertexOffsets);
+	//	m_DeviceContext->IASetIndexBuffer(t_TestIndexBuffer, DXGI_FORMAT_R32_UINT, TestIndexOffset);
+
+
+	//	m_DeviceContext->DrawIndexed(IndexSize, 0, 0);
+	//}
 
 
 	//rect.Render(m_DeviceContext);//testar
