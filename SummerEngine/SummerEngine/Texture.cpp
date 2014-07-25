@@ -32,5 +32,5 @@ const std::string Texture::GetName()
 
 const Texture::ResourceType Texture::GetType() const
 {
-	return "Mesh";
+	return "Texture";
 }

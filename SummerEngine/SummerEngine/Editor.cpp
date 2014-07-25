@@ -38,7 +38,7 @@ void Editor::InitEditor()
 	ResourceManager* t_Manager = t_Manager->GetInstance();
 	Resource* t_Test = t_Manager->Create("Sphere_Sphere.001.mesh");
 
-	m_import->LoadFromObj("../SummerEngine/Graphics/Objs/testFile.obj");
+	m_import->LoadFromObj("../SummerEngine/Graphics/Objs/SoccerBall.obj");
 
 	{
 		std::vector<Mesh*> t_Meshes = m_import->GetMeshes();
@@ -73,7 +73,14 @@ void Editor::InitEditor()
 
 				//Loading materials here
 				
-				//t_NewMaterial->SetTextures();
+				//Loading all the textures
+				LoadTexture(t_NewMaterialData[i]->m_Map_Kd, t_NewMaterialData[i]);
+				LoadTexture(t_NewMaterialData[i]->m_Bump, t_NewMaterialData[i]);
+				LoadTexture(t_NewMaterialData[i]->m_Map_D, t_NewMaterialData[i]);
+				LoadTexture(t_NewMaterialData[i]->m_Map_Ka, t_NewMaterialData[i]);
+				LoadTexture(t_NewMaterialData[i]->m_Map_Ke, t_NewMaterialData[i]);
+				LoadTexture(t_NewMaterialData[i]->m_Map_Ks, t_NewMaterialData[i]);
+				LoadTexture(t_NewMaterialData[i]->m_Map_Ns, t_NewMaterialData[i]);
 
 
 				t_NewMaterials.push_back(t_NewMaterial);
@@ -105,6 +112,20 @@ void Editor::InitEditor()
 
 		
 	}
+}
+
+bool Editor::LoadTexture(std::string p_FileName, Material::MaterialData* p_MaterialData)
+{
+	if (p_FileName != "None")
+	{
+		ResourceManager* t_Manager = t_Manager->GetInstance();
+		std::string t_Extension = ".dds";
+
+		std::string t_NewTexturePath = "../SummerEngine/Graphics/Textures/" +
+			p_FileName + t_Extension;
+		t_Manager->Create(t_NewTexturePath);
+	}
+	return true;
 }
 
 void Editor::Update()
