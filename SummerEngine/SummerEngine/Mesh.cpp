@@ -66,6 +66,22 @@ HRESULT Mesh::CreateMeshBuffers()
 		m_NumOfVertex.push_back(m_Groups[i].size());
 		m_NumOfIndex.push_back( m_IndicesGroups[i].size());
 	}
+
+	//clear
+	int t_VertexGroupSize = m_Groups.size();
+	for (int i = 0; i < t_VertexGroupSize; i++)
+	{
+		m_Groups[i].clear();
+	}
+	m_Groups.clear();
+
+	int t_IndexGroupSize = m_IndicesGroups.size();
+	for (int i = 0; i < t_IndexGroupSize; i++)
+	{
+		m_IndicesGroups[i].clear();
+	}
+	m_IndicesGroups.clear();
+
 	return S_OK;
 }
 
