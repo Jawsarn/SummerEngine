@@ -65,3 +65,22 @@ Resource* ResourceManager::LoadResource(std::string p_ResourceName)
 
 	return t_It->second->Load(p_ResourceName);
 }
+
+void ResourceManager::SaveResource(std::string p_ResourceName)
+{
+	std::size_t t_Spot = p_ResourceName.find(".");
+	if (t_Spot == std::string::npos)
+	{
+		//no . found, that'd be an error filename
+		return;
+	}
+	std::size_t t_Length = p_ResourceName.length();
+
+	std::string t_Extension = p_ResourceName.substr(t_Spot, t_Length);
+
+	MakerMap::iterator t_It = m_Makers.find(t_Extension);
+	if (t_It == m_Makers.end())
+	{
+		m_Makers[t_Extension] = t_It->second;
+	}
+}

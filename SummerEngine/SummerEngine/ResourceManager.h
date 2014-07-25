@@ -14,6 +14,7 @@ public:
 
 private:
 	Resource* LoadResource(std::string p_ResourceName);
+	void SaveResource(std::string p_ResourceName);
 
 	typedef std::map<std::string, ResourceLoadSave*> MakerMap;
 	MakerMap m_Makers;
