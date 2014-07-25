@@ -128,14 +128,11 @@ XMFLOAT4X4 CameraComponent::GetViewProj()const
 
 bool CameraComponent::Read(Stream &p_Stream)
 {
-
-
 	return true;
 }
 bool CameraComponent::Write(Stream &p_Stream)
 {
 	Component::Write(p_Stream);
-
 
 	return true;
 }

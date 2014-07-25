@@ -1,5 +1,5 @@
 #include "InputComponent.h"
-
+#include <Windows.h>
 
 InputComponent::InputComponent() : Component("InputComponent")
 {
@@ -33,6 +33,11 @@ void InputComponent::Sleep()
 }
 
 void InputComponent::Update()
+{
+	
+}
+
+void InputComponent::TranslateInput(char p_Key)
 {
 
 }
