@@ -7,8 +7,9 @@ class Entity:Serializable
 {
 public:
 	Entity();
+	Entity(std::string p_Name);
 	Entity(const Entity &p_Copy);
-	Entity(const Entity &p_Copy, Entity* p_Parent);
+	//Entity(const Entity &p_Copy, Entity* p_Parent);
 	~Entity();
 
 	int GetID();
@@ -21,11 +22,12 @@ public:
 	std::vector<Entity*> GetChildren();
 
 	Component* GetTransformComponent();
-	void SetTransformComponent(Component* p_Component); //might change this to be a checker when adding a component
 
 	virtual bool Read(Stream &p_Stream);
 	virtual bool Write(Stream &p_Stream);
 	virtual void Fixup();
+
+	std::string GetName() const;
 
 private:
 	void Initialize(const Entity &p_Copy);

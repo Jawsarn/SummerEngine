@@ -35,8 +35,8 @@ void Editor::InitEditor()
 	//shader.CreateShadersAndInputLayout3D("../Shaders/DrawMeshVS.hlsl", "VS_main", "../Shaders/DrawMeshPS.hlsl", "PS_main");
 	//------------------------------------------
 
-	ResourceManager* t_Manager = t_Manager->GetInstance();
-	Resource* t_Test = t_Manager->Create("Sphere_Sphere.001.mesh");
+	/*ResourceManager* t_Manager = t_Manager->GetInstance();
+	Resource* t_Test = t_Manager->Create("Sphere_Sphere.001.mesh");*/
 
 	m_import->LoadFromObj("../SummerEngine/Graphics/Objs/SoccerBall.obj");
 
@@ -92,7 +92,7 @@ void Editor::InitEditor()
 			//t_RenderingComponent->SetObject(t_Meshes[i], t_NewMaterials);
 
 			t_NewEntity->AddComponent(t_RenderingComponent);
-			t_NewEntity->SetTransformComponent(t_NewTransform);
+			t_NewEntity->AddComponent(t_NewTransform);
 
 			m_TestEntities.push_back(t_NewEntity);
 

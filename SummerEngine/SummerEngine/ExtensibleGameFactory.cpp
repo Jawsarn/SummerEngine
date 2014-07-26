@@ -1,6 +1,8 @@
 #include "ExtensibleGameFactory.h"
 #include "RenderComponent.h"
 #include "TransformComponent.h"
+#include "CameraComponent.h"
+#include "InputComponent.h"
 
 ExtensibleGameFactory* ExtensibleGameFactory::m_Singleton = nullptr;
 
@@ -43,6 +45,14 @@ Component* ExtensibleGameFactory::CreateComponent(ComponentType p_Type) //could 
 	else if (p_Type == "TransformComponent")
 	{
 		return new TransformComponent();
+	}
+	else if (p_Type == "CameraComponent")
+	{
+		return new CameraComponent();
+	}
+	else if (p_Type == "InputComponent")
+	{
+		return new InputComponent();
 	}
 	else
 	{

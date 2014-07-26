@@ -6,10 +6,6 @@ RenderComponent::RenderComponent() : Component("RenderComponent")
 	this->Awake();
 }
 
-RenderComponent::RenderComponent(std::string p_Name) :Component(p_Name)
-{
-	this->Awake();
-}
 
 RenderComponent::~RenderComponent()
 {

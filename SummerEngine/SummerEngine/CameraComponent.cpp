@@ -1,15 +1,11 @@
 #include "CameraComponent.h"
 #include "TransformComponent.h"
 
-CameraComponent::CameraComponent()
+CameraComponent::CameraComponent() :Component("CameraComponent")
 {
 	this->Awake();
 }
 
-CameraComponent::CameraComponent(std::string p_Name) :Component(p_Name)
-{
-	this->Awake();
-}
 
 CameraComponent::~CameraComponent()
 {

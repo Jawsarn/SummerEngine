@@ -6,11 +6,6 @@ InputComponent::InputComponent() : Component("InputComponent")
 	this->Awake();
 }
 
-InputComponent::InputComponent(std::string p_Name) :Component(p_Name)
-{
-	this->Awake();
-}
-
 InputComponent::~InputComponent()
 {
 }

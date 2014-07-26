@@ -6,11 +6,6 @@ TransformComponent::TransformComponent() :Component( "TransformComponent" )
 	this->Awake();
 }
 
-TransformComponent::TransformComponent(std::string p_Name) : Component(p_Name)
-{
-	this->Awake();
-}
-
 TransformComponent::~TransformComponent()
 {
 }

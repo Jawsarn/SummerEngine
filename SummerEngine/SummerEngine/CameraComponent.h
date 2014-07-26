@@ -9,7 +9,7 @@ class CameraComponent: public Component
 {
 public:
 	CameraComponent();
-	CameraComponent(std::string p_Name);
+
 	~CameraComponent();
 
 	void SetView(CXMMATRIX p_Matrix);

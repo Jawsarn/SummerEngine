@@ -6,19 +6,27 @@
 Entity::Entity()
 {
 	m_Parent = nullptr;
+	m_Name = "Entity";
+}
+
+Entity::Entity(std::string p_Name)
+{
+	m_Parent = nullptr;
+	m_Name = p_Name;
 }
 
 Entity::Entity(const Entity &p_Copy)
 {
 	m_Parent = nullptr;
+	m_Name = p_Copy.GetName();
 	Initialize(p_Copy);
 }
 
-Entity::Entity(const Entity &p_Copy, Entity* p_Parent)
-{
-	m_Parent = p_Parent;
-	Initialize(p_Copy);
-}
+//Entity::Entity(const Entity &p_Copy, Entity* p_Parent)
+//{
+//	m_Parent = p_Parent;
+//	Initialize(p_Copy);
+//}
 void Entity::Initialize(const Entity &p_Copy)
 {
 	int t_NumOfComponents = p_Copy.m_Components.size();
@@ -37,7 +45,8 @@ void Entity::Initialize(const Entity &p_Copy)
 
 	for (int i = 0; i < t_NumOfChildren; i++)
 	{
-		this->m_Children.push_back(new Entity(*p_Copy.m_Children[i], this));
+		Entity* t_NewChild = new Entity(*p_Copy.m_Children[i]);
+		this->AddChild(t_NewChild);
 	}
 }
 
@@ -52,7 +61,14 @@ Entity::~Entity()
 
 void Entity::AddComponent( Component *p_Component )
 {
-	m_Components.push_back(p_Component);
+	if (p_Component->GetName() == "TransformComponent")
+	{
+		m_TransformComponent = p_Component;
+	}
+	else
+	{
+		m_Components.push_back(p_Component);
+	}
 	p_Component->SetEntity(this);
 }
 
@@ -63,6 +79,7 @@ void Entity::SetParent(Entity *p_Parent)
 
 void Entity::AddChild(Entity* p_Child)
 {
+	p_Child->SetParent(this);
 	m_Children.push_back(p_Child);
 }
 
@@ -81,10 +98,7 @@ Component* Entity::GetTransformComponent()
 	return m_TransformComponent;
 }
 
-void Entity::SetTransformComponent(Component* p_TransformComponent)
-{
-	m_TransformComponent = p_TransformComponent;
-}
+
 
 bool Entity::Read(Stream &p_Stream)
 {
@@ -106,13 +120,18 @@ bool Entity::Read(Stream &p_Stream)
 		{
 			return t_Success;
 		}
-		m_Children.push_back(t_NewChild);
-		t_NewChild->SetParent(this);
+		AddChild(t_NewChild);
 	}
+
+	ExtensibleGameFactory* t_Factory = t_Factory->GetInstance(); //could just add this to the foor loop
+	std::string t_TransformName = ReadString(p_Stream);
+	Component* t_NewTranform = t_Factory->CreateComponent(t_TransformName);
+	t_NewTranform->Read(p_Stream);
+	AddComponent(t_NewTranform);
 
 	int t_NumOfComponents = ReadInt(p_Stream);
 
-	ExtensibleGameFactory* t_Factory = t_Factory->GetInstance();
+	
 
 	for (int i = 0; i < t_NumOfComponents; i++)
 	{
@@ -142,7 +161,7 @@ bool Entity::Write(Stream &p_Stream)
 
 	for (int i = 0; i < t_NumOfChildren; i++)
 	{
-		bool t_Success = m_Children[i]->Read(p_Stream);
+		bool t_Success = m_Children[i]->Write(p_Stream);
 
 		if (!t_Success)
 		{
@@ -150,12 +169,18 @@ bool Entity::Write(Stream &p_Stream)
 		}
 	}
 
+	bool t_Success = m_TransformComponent->Write(p_Stream);
+	if (!t_Success)
+	{
+		return t_Success;
+	}
+
 	int t_NumOfComponents = m_Components.size();
 	WriteInt(p_Stream, t_NumOfComponents);
 
 	for (int i = 0; i < t_NumOfComponents; i++)
 	{
-		bool t_Success = m_Components[i]->Read(p_Stream);
+		bool t_Success = m_Components[i]->Write(p_Stream);
 
 		if (!t_Success)
 		{
@@ -180,4 +205,9 @@ void Entity::Fixup()
 	{
 		m_Components[i]->Fixup();
 	}
+}
+
+std::string Entity::GetName() const
+{
+	return m_Name;
 }

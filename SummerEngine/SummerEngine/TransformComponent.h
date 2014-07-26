@@ -5,7 +5,7 @@ class TransformComponent:public Component
 {
 public:
 	TransformComponent();
-	TransformComponent(std::string p_Name);
+
 	~TransformComponent();
 	
 	XMFLOAT4X4 GetMatrix();
