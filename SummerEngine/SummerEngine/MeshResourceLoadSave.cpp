@@ -5,7 +5,7 @@
 Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 {
 	Mesh* o_Mesh = new Mesh();
-
+	
 	StreamFile t_File = StreamFile();
 	t_File.OpenFileRead(p_FileName);
 
@@ -22,7 +22,12 @@ Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 		t_VertexGroup.resize(t_NumOfVertices);
 		int t_BytesToRead = sizeof(Mesh::MeshVertex)*t_NumOfVertices;
 		int t_BytesRead = t_File.Read(sizeof(Mesh::MeshVertex)*t_NumOfVertices, &t_VertexGroup[0]);
-
+		if (t_BytesToRead != t_BytesRead)
+		{
+			std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
+			std::wstring t_Message = L"Error loading Mesh Vertexdata " + t_LoadTextString;
+			MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+		}
 		t_Groups.push_back(t_VertexGroup);
 	}
 
@@ -40,6 +45,12 @@ Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 		t_IndexGroup.resize(t_NumOfIndecies);
 		int t_BytesToRead = sizeof(int)*t_NumOfIndecies;
 		int t_BytesRead = t_File.Read(sizeof(int)*t_NumOfIndecies, &t_IndexGroup[0]);
+		if (t_BytesToRead != t_BytesRead)
+		{
+			std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
+			std::wstring t_Message = L"Error loading Mesh Indexdata " + t_LoadTextString;
+			MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+		}
 		t_IndexGroups.push_back(t_IndexGroup);
 	}
 
@@ -72,7 +83,13 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 
 		int t_BytesToWrite = sizeof(Mesh::MeshVertex)*t_NumOfVertices;
 		int t_SizeOfWrittenData = t_File.Write(sizeof(Mesh::MeshVertex)*t_NumOfVertices, &t_VertexGroups->at(i)[0]);
-		int t_Break = 0;
+		if (t_BytesToWrite != t_SizeOfWrittenData)
+		{
+			std::string p_FileName = p_File->GetName();
+			std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
+			std::wstring t_Message = L"Error saving Mesh Vertexdata " + t_LoadTextString;
+			MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+		}
 	}
 
 	//index
@@ -88,12 +105,15 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 
 		int t_BytesToWrite = sizeof(int)*t_NumOfIndecies;
 		int t_SizeOfWrittenData = t_File.Write(sizeof(int)*t_NumOfIndecies, &t_IndexGroups->at(i)[0]);
-		int t_Break = 0;
+		if (t_BytesToWrite != t_SizeOfWrittenData)
+		{
+			std::string p_FileName = p_File->GetName();
+			std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
+			std::wstring t_Message = L"Error saving Mesh Indexdata " + t_LoadTextString;
+			MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+		}
 	}
 
-	//t_File.Write(); custom data hela vägen, men du måste veta hur den ser ut när du laddar in den på ett bra sätt
-	//eller
-	//WriteFloat(); //loopa tills du läst in allt
 	
 	t_File.Close();
 }

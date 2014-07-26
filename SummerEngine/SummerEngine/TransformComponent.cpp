@@ -206,37 +206,43 @@ bool TransformComponent::Read(Stream &p_Stream)
 {
 	Component::Read(p_Stream);
 
-	//m_Rotation.x = ReadFloat(p_Stream);
-	//m_Rotation.y = ReadFloat(p_Stream);
-	//m_Rotation.z = ReadFloat(p_Stream);
+	m_Position.x = ReadFloat(p_Stream);
+	m_Position.y = ReadFloat(p_Stream);
+	m_Position.z = ReadFloat(p_Stream);
 
-	//m_Scale.x = ReadFloat(p_Stream);
-	//m_Scale.y = ReadFloat(p_Stream);
-	//m_Scale.z = ReadFloat(p_Stream);
+	m_Right.x = ReadFloat(p_Stream);
+	m_Right.y = ReadFloat(p_Stream);
+	m_Right.z = ReadFloat(p_Stream);
 
-	//m_Translation.x = ReadFloat(p_Stream);
-	//m_Translation.y = ReadFloat(p_Stream);
-	//m_Translation.z = ReadFloat(p_Stream);
+	m_Up.x = ReadFloat(p_Stream);
+	m_Up.y = ReadFloat(p_Stream);
+	m_Up.z = ReadFloat(p_Stream);
 
-	//m_World._11 = ReadFloat(p_Stream);
-	//m_World._12 = ReadFloat(p_Stream);
-	//m_World._13 = ReadFloat(p_Stream);
-	//m_World._14 = ReadFloat(p_Stream);
+	m_Look.x = ReadFloat(p_Stream);
+	m_Look.y = ReadFloat(p_Stream);
+	m_Look.z = ReadFloat(p_Stream);
 
-	//m_World._21 = ReadFloat(p_Stream);
-	//m_World._22 = ReadFloat(p_Stream);
-	//m_World._23 = ReadFloat(p_Stream);
-	//m_World._24 = ReadFloat(p_Stream);
+	m_Matrix._11 = ReadFloat(p_Stream);
+	m_Matrix._12 = ReadFloat(p_Stream);
+	m_Matrix._13 = ReadFloat(p_Stream);
+	m_Matrix._14 = ReadFloat(p_Stream);
 
-	//m_World._31 = ReadFloat(p_Stream);
-	//m_World._32 = ReadFloat(p_Stream);
-	//m_World._33 = ReadFloat(p_Stream);
-	//m_World._34 = ReadFloat(p_Stream);
+	m_Matrix._21 = ReadFloat(p_Stream);
+	m_Matrix._22 = ReadFloat(p_Stream);
+	m_Matrix._23 = ReadFloat(p_Stream);
+	m_Matrix._24 = ReadFloat(p_Stream);
 
-	//m_World._41 = ReadFloat(p_Stream);
-	//m_World._42 = ReadFloat(p_Stream);
-	//m_World._43 = ReadFloat(p_Stream);
-	//m_World._44 = ReadFloat(p_Stream);
+	m_Matrix._31 = ReadFloat(p_Stream);
+	m_Matrix._32 = ReadFloat(p_Stream);
+	m_Matrix._33 = ReadFloat(p_Stream);
+	m_Matrix._34 = ReadFloat(p_Stream);
+
+	m_Matrix._41 = ReadFloat(p_Stream);
+	m_Matrix._42 = ReadFloat(p_Stream);
+	m_Matrix._43 = ReadFloat(p_Stream);
+	m_Matrix._44 = ReadFloat(p_Stream);
+
+	m_HasMoved = ReadBool(p_Stream);
 
 	return true;
 }
@@ -244,37 +250,43 @@ bool TransformComponent::Write(Stream &p_Stream)
 {
 	Component::Write(p_Stream);
 
-	//WriteFloat(p_Stream, m_Rotation.x);
-	//WriteFloat(p_Stream, m_Rotation.y);
-	//WriteFloat(p_Stream, m_Rotation.z);
+	WriteFloat(p_Stream, m_Position.x);
+	WriteFloat(p_Stream, m_Position.y);
+	WriteFloat(p_Stream, m_Position.z);
 
-	//WriteFloat(p_Stream, m_Scale.x);
-	//WriteFloat(p_Stream, m_Scale.y);
-	//WriteFloat(p_Stream, m_Scale.z);
+	WriteFloat(p_Stream, m_Right.x);
+	WriteFloat(p_Stream, m_Right.y);
+	WriteFloat(p_Stream, m_Right.z);
 
-	//WriteFloat(p_Stream, m_Translation.x);
-	//WriteFloat(p_Stream, m_Translation.y);
-	//WriteFloat(p_Stream, m_Translation.z);
+	WriteFloat(p_Stream, m_Up.x);
+	WriteFloat(p_Stream, m_Up.y);
+	WriteFloat(p_Stream, m_Up.z);
 
-	//WriteFloat(p_Stream, m_World._11);
-	//WriteFloat(p_Stream, m_World._12);
-	//WriteFloat(p_Stream, m_World._13);
-	//WriteFloat(p_Stream, m_World._14);
+	WriteFloat(p_Stream, m_Look.x);
+	WriteFloat(p_Stream, m_Look.y);
+	WriteFloat(p_Stream, m_Look.z);
 
-	//WriteFloat(p_Stream, m_World._21);
-	//WriteFloat(p_Stream, m_World._22);
-	//WriteFloat(p_Stream, m_World._23);
-	//WriteFloat(p_Stream, m_World._24);
+	WriteFloat(p_Stream, m_Matrix._11);
+	WriteFloat(p_Stream, m_Matrix._12);
+	WriteFloat(p_Stream, m_Matrix._13);
+	WriteFloat(p_Stream, m_Matrix._14);
 
-	//WriteFloat(p_Stream, m_World._31);
-	//WriteFloat(p_Stream, m_World._32);
-	//WriteFloat(p_Stream, m_World._33);
-	//WriteFloat(p_Stream, m_World._34);
+	WriteFloat(p_Stream, m_Matrix._21);
+	WriteFloat(p_Stream, m_Matrix._22);
+	WriteFloat(p_Stream, m_Matrix._23);
+	WriteFloat(p_Stream, m_Matrix._24);
 
-	//WriteFloat(p_Stream, m_World._41);
-	//WriteFloat(p_Stream, m_World._42);
-	//WriteFloat(p_Stream, m_World._43);
-	//WriteFloat(p_Stream, m_World._44);
+	WriteFloat(p_Stream, m_Matrix._31);
+	WriteFloat(p_Stream, m_Matrix._32);
+	WriteFloat(p_Stream, m_Matrix._33);
+	WriteFloat(p_Stream, m_Matrix._34);
+
+	WriteFloat(p_Stream, m_Matrix._41);
+	WriteFloat(p_Stream, m_Matrix._42);
+	WriteFloat(p_Stream, m_Matrix._43);
+	WriteFloat(p_Stream, m_Matrix._44);
+
+	WriteBool(p_Stream, m_HasMoved);
 
 	return true;
 }

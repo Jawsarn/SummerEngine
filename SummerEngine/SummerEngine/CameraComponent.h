@@ -38,7 +38,7 @@ public:
 private:
 	CameraSystem* m_CameraSystem;
 
-	D3D11_VIEWPORT m_Viewport;
+	D3D11_VIEWPORT* m_Viewport;
 
 	// Cache frustum properties.
 	float m_NearZ;

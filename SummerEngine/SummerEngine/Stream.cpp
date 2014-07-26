@@ -1,4 +1,5 @@
 #include "Stream.h"
+#include <Windows.h>
 
 int ReadInt(Stream &p_Stream)
 {
@@ -58,3 +59,5 @@ bool WriteString(Stream &p_Stream, const std::string &p_Val)
 
 	return (p_Stream.Write(t_StringLenght, p_Val.c_str()) == t_StringLenght);
 }
+
+

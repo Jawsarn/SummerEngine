@@ -24,7 +24,10 @@ Resource* TextureResourceLoadSave::Load(std::string p_FileName)
 
 void TextureResourceLoadSave::Save(Resource* p_File)
 {
-	
+	std::string p_FileName = p_File->GetName();
+	std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
+	std::wstring t_Message = L"Can't save textures, regarding " + t_LoadTextString;
+	MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
 }
 
 const char* TextureResourceLoadSave::GetExtension()

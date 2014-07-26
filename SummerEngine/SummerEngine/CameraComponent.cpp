@@ -18,6 +18,15 @@ CameraComponent::~CameraComponent()
 
 void CameraComponent::Awake()
 {
+	m_Viewport = new D3D11_VIEWPORT();
+	m_NearZ = 0;
+	m_FarZ = 0;
+	m_Aspect = 0;
+	m_FovY = 0;
+	m_NearWindowHeight = 0;
+	m_FarWindowHeight = 0;
+	XMStoreFloat4x4( &m_Proj, XMMatrixIdentity());
+
 	m_CameraSystem = m_CameraSystem->GetInstance();
 	m_CameraSystem->Register(this);
 }
@@ -74,19 +83,19 @@ void CameraComponent::SetLens(float p_FovY, float p_Width, float p_Height, float
 	XMMATRIX t_Projection = XMMatrixPerspectiveFovLH(m_FovY, m_Aspect, m_NearZ, m_FarZ);
 	XMStoreFloat4x4(&m_Proj, t_Projection);
 
-	m_Viewport.Height = p_Height;
-	m_Viewport.Width = p_Width;
-	m_Viewport.MaxDepth = 1;
-	m_Viewport.MinDepth = 0;
-	m_Viewport.TopLeftX = p_TopX;
-	m_Viewport.TopLeftY = p_TopY;
+	m_Viewport->Height = p_Height;
+	m_Viewport->Width = p_Width;
+	m_Viewport->MaxDepth = 1;
+	m_Viewport->MinDepth = 0;
+	m_Viewport->TopLeftX = p_TopX;
+	m_Viewport->TopLeftY = p_TopY;
 }
 
 
 
 D3D11_VIEWPORT CameraComponent::GetViewport()
 {
-	return m_Viewport;
+	return *m_Viewport;
 }
 
 //void CameraComponent::LookAt(const XMFLOAT3& p_Pos, const XMFLOAT3& p_Target, const XMFLOAT3& p_Up)
@@ -128,11 +137,79 @@ XMFLOAT4X4 CameraComponent::GetViewProj()const
 
 bool CameraComponent::Read(Stream &p_Stream)
 {
+	Component::Read(p_Stream);
+	m_Viewport->Height = ReadFloat(p_Stream);
+	m_Viewport->MaxDepth = ReadFloat(p_Stream);
+	m_Viewport->MinDepth = ReadFloat(p_Stream);
+	m_Viewport->TopLeftX = ReadFloat(p_Stream);
+	m_Viewport->TopLeftY = ReadFloat(p_Stream);
+	m_Viewport->Width = ReadFloat(p_Stream);
+
+	m_NearZ = ReadFloat(p_Stream);
+	m_FarZ = ReadFloat(p_Stream);
+	m_Aspect = ReadFloat(p_Stream);
+	m_FovY = ReadFloat(p_Stream);
+	m_NearWindowHeight = ReadFloat(p_Stream);
+	m_FarWindowHeight = ReadFloat(p_Stream);
+
+	m_Proj._11 = ReadFloat(p_Stream);
+	m_Proj._12 = ReadFloat(p_Stream);
+	m_Proj._13 = ReadFloat(p_Stream);
+	m_Proj._14 = ReadFloat(p_Stream);
+
+	m_Proj._21 = ReadFloat(p_Stream);
+	m_Proj._22 = ReadFloat(p_Stream);
+	m_Proj._23 = ReadFloat(p_Stream);
+	m_Proj._24 = ReadFloat(p_Stream);
+
+	m_Proj._31 = ReadFloat(p_Stream);
+	m_Proj._32 = ReadFloat(p_Stream);
+	m_Proj._33 = ReadFloat(p_Stream);
+	m_Proj._34 = ReadFloat(p_Stream);
+
+	m_Proj._41 = ReadFloat(p_Stream);
+	m_Proj._42 = ReadFloat(p_Stream);
+	m_Proj._43 = ReadFloat(p_Stream);
+	m_Proj._44 = ReadFloat(p_Stream);
+
 	return true;
 }
 bool CameraComponent::Write(Stream &p_Stream)
 {
 	Component::Write(p_Stream);
+	WriteFloat(p_Stream, m_Viewport->Height);
+	WriteFloat(p_Stream, m_Viewport->MaxDepth);
+	WriteFloat(p_Stream, m_Viewport->MinDepth);
+	WriteFloat(p_Stream, m_Viewport->TopLeftX);
+	WriteFloat(p_Stream, m_Viewport->TopLeftY);
+	WriteFloat(p_Stream, m_Viewport->Width);
+
+	WriteFloat(p_Stream, m_NearZ);
+	WriteFloat(p_Stream, m_FarZ);
+	WriteFloat(p_Stream, m_Aspect);
+	WriteFloat(p_Stream, m_FovY);
+	WriteFloat(p_Stream, m_NearWindowHeight);
+	WriteFloat(p_Stream, m_FarWindowHeight);
+	
+	WriteFloat(p_Stream, m_Proj._11);
+	WriteFloat(p_Stream, m_Proj._12);
+	WriteFloat(p_Stream, m_Proj._13);
+	WriteFloat(p_Stream, m_Proj._14);
+
+	WriteFloat(p_Stream, m_Proj._21);
+	WriteFloat(p_Stream, m_Proj._22);
+	WriteFloat(p_Stream, m_Proj._23);
+	WriteFloat(p_Stream, m_Proj._24);
+
+	WriteFloat(p_Stream, m_Proj._31);
+	WriteFloat(p_Stream, m_Proj._32);
+	WriteFloat(p_Stream, m_Proj._33);
+	WriteFloat(p_Stream, m_Proj._34);
+
+	WriteFloat(p_Stream, m_Proj._41);
+	WriteFloat(p_Stream, m_Proj._42);
+	WriteFloat(p_Stream, m_Proj._43);
+	WriteFloat(p_Stream, m_Proj._44);
 
 	return true;
 }
