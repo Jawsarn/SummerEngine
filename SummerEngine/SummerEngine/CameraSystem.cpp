@@ -61,6 +61,7 @@ void CameraSystem::Update()
 		
 		t_NewStruct.Proj = t_Camera->GetProj();
 		t_NewStruct.View = t_Camera->GetView();
+		t_NewStruct.Position = t_Camera->GetPosition();
 		//t_NewStruct.ViewProj = t_Camera->GetViewProj();
 		t_CameraMatrices.push_back(t_NewStruct);
 	}

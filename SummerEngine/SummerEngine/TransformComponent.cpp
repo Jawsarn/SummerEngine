@@ -28,6 +28,11 @@ void TransformComponent::LookAt(const XMFLOAT3& p_Pos, const XMFLOAT3& p_Target,
 	XMStoreFloat4x4(&m_Matrix, t_View);
 }
 
+XMFLOAT3 TransformComponent::GetPosition()
+{
+	return m_Position;
+}
+
 void TransformComponent::Update()
 {
 	if (m_HasMoved)

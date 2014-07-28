@@ -19,6 +19,7 @@ cbuffer ConstantBuffer : register(c0)
 {
 	matrix View;
 	matrix Proj;
+	float4 EyePosition;
 };
 
 
@@ -33,7 +34,7 @@ VS_OUTPUT VS(VS_INPUT p_Input)
 	o_Output.Depth = o_Output.Position.zw;
 
 
-	o_Output.Normal = mul(float4(p_Input.Normal,1), p_Input.World).xyz;
+	o_Output.Normal = mul(float4(p_Input.Normal,0), p_Input.World).xyz;
 
 	o_Output.Texcord = p_Input.TexCoord;
 

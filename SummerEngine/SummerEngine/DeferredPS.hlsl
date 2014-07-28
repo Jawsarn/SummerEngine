@@ -21,7 +21,7 @@ PS_OUTPUT PS(PS_INPUT p_Input) : SV_TARGET
 	float depth = p_Input.Depth.x / p_Input.Depth.y;
 
 	o_Output.Normal_Depth = float4(p_Input.Normal, depth);
-	o_Output.DiffuseColor_Spec = float4(p_Input.Texcord, 1, 1);
+	o_Output.DiffuseColor_Spec = float4(p_Input.Texcord, 1, 1.0f);
 	o_Output.Temp = float4(1, 1, 1, 1);
 
 	return o_Output;

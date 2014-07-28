@@ -78,10 +78,18 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	//test stuff
 	
-	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(0,0,0), 10, XMFLOAT3(1,0,0));
+	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(0,6,-15), 10, XMFLOAT3(1,0,0));
 	m_AmountOfPointLights++;
 
 	m_DeviceContext->UpdateSubresource(m_PointLightsBuffer, 0, nullptr, &m_PointLights[0], 0, 0);
+
+	PerComputeBuffer t_PerCompute;
+	t_PerCompute.AmbientLight = XMFLOAT4(0.1f,0.1f,0.1f,0);
+	t_PerCompute.CamNearFar = XMFLOAT2(0.5f, 10000.0f);
+	t_PerCompute.ColorOverlay = XMFLOAT4(0, 0, 0, 0);
+	t_PerCompute.ScreenDimensions = XMFLOAT2(1920, 1080);
+
+	m_DeviceContext->UpdateSubresource(m_PerComputeBuffer, 0, nullptr, &t_PerCompute, 0, 0);
 
 	return true;
 }
@@ -483,7 +491,7 @@ HRESULT Renderer::InitializeConstantBuffers()
 		t_BufferDesc.MiscFlags = 0;
 		t_BufferDesc.StructureByteStride = 0;
 		t_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		t_BufferDesc.ByteWidth = sizeof(PerFrameTestBuffer);
+		t_BufferDesc.ByteWidth = sizeof(PerComputeBuffer);
 		t_BufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		t_BufferDesc.CPUAccessFlags = 0;
 
@@ -658,6 +666,8 @@ void Renderer::BeginRender()
 		
 		t_PerFrameBuffer.Proj = XMMatrixTranspose( XMLoadFloat4x4( &m_Cameras[0].Proj ));
 		t_PerFrameBuffer.View = XMMatrixTranspose(XMLoadFloat4x4(&m_Cameras[0].View));
+		XMFLOAT3 t_Pos = m_Cameras[0].Position;
+		t_PerFrameBuffer.EyePosition = XMFLOAT4(t_Pos.x, t_Pos.y, t_Pos.z, 0);
 		//t_PerFrameBuffer.ViewProj = XMMatrixTranspose( XMLoadFloat4x4(&m_Cameras[0].ViewProj));
 
 		m_DeviceContext->UpdateSubresource(m_TestPerFrameBuffer, 0, nullptr, &t_PerFrameBuffer, 0, 0); //be aware of change

@@ -87,6 +87,10 @@ void CameraComponent::SetLens(float p_FovY, float p_Width, float p_Height, float
 	m_Viewport->TopLeftY = p_TopY;
 }
 
+XMFLOAT3 CameraComponent::GetPosition()
+{
+	return ((TransformComponent*)m_Entity->GetTransformComponent())->GetPosition();
+}
 
 
 D3D11_VIEWPORT CameraComponent::GetViewport()

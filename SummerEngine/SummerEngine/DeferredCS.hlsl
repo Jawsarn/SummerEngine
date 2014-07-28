@@ -4,11 +4,11 @@ cbuffer ConstantBuffer : register(c0)
 {
 	matrix View;
 	matrix Projection;
+	float4 EyePosition;
 };
 
 cbuffer PerCompute : register(c1)
 {
-	float4 EyePosition[4];
 	float2 ScreenDimensions;
 	float2 CamNearFar;
 
@@ -79,7 +79,7 @@ PixelData GetPixelData(uint2 p_GlobalCord)
 
 	//
 	float2 t_ScreenPixelOffset = float2(2.0f, -2.0f) / ScreenDimensions;
-	float2 t_ScreenPos = (float2(p_GlobalCord)+0.5f)* t_ScreenPixelOffset + float2(-1.0f, 1.0f); //not sure if this is ok?
+	float2 t_ScreenPos = (float2(p_GlobalCord) + 0.5f)* t_ScreenPixelOffset + float2(-1.0f, 1.0f); //not sure if this is ok?
 
 	t_Depth = Projection._43 / (t_Depth - Projection._33); //getting depth from projection matrix,
 
@@ -174,7 +174,7 @@ float3 DirectIllumination(float3 pos, float3 norm, PointLight light, float inSpe
 		float3 v = reflect(-lightVec, norm);
 
 
-		float specFactor = pow(max(dot(v, toEye), 0.0f), 1)*inSpec;
+	float specFactor = pow(max(dot(v, toEye), 0.0f), 1)*inSpec;
 
 	return (light.color *att * (diffuseFactor + specFactor));
 }
@@ -268,6 +268,9 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_Grou
 
 	float3 finalColor = CalculateLighting(p_ThreadID.xy, t_Data);
 
-	o_Output[p_ThreadID.xy] = float4(finalColor, 1);
-	//o_Output[p_ThreadID.xy] = float4(g_VisibleLightCount, g_VisibleLightCount, g_VisibleLightCount, 1);
+		//o_Output[p_ThreadID.xy] = g_DiffuseColor_Spec[p_ThreadID.xy];
+		o_Output[p_ThreadID.xy] = float4(finalColor, 1);
+		//o_Output[p_ThreadID.xy] = g_Normal_Depth[p_ThreadID.xy];
+		//o_Output[p_ThreadID.xy] = float4(g_MaxDepth, g_MaxDepth, g_MaxDepth, 1);
+		//o_Output[p_ThreadID.xy] = float4(t_Data.NormalView.x, t_Data.NormalView.y, t_Data.NormalView.z, 0);
 }

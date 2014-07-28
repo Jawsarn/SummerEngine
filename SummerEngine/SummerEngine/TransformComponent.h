@@ -26,6 +26,7 @@ public:
 	void RotateY(float p_Angle);
 	void HoverY(float p_Amount);
 
+	XMFLOAT3 GetPosition();
 
 	void Update();
 

@@ -25,6 +25,7 @@ public:
 	{
 		XMFLOAT4X4 View;
 		XMFLOAT4X4 Proj;
+		XMFLOAT3 Position;
 		//XMFLOAT4X4 ViewProj;
 	};
 	typedef std::vector<RenderObject*> RenderObjects;
@@ -104,12 +105,12 @@ private:
 	{
 		XMMATRIX View;
 		XMMATRIX Proj;
+		XMFLOAT4 EyePosition;
 		//XMMATRIX ViewProj;
 	};
 	
 	struct PerComputeBuffer
 	{
-		XMFLOAT4 EyePosition[4];
 		XMFLOAT2 ScreenDimensions;
 		XMFLOAT2 CamNearFar;
 

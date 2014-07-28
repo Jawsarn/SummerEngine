@@ -91,7 +91,7 @@ bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 	{
 		m_EntityTest = new Entity();
 		CameraComponent* t_NewComponent = new CameraComponent();
-		t_NewComponent->SetLens(XM_PIDIV4, 1920.0f, 1080.0f, 0.5f, 10000.0f, 0, 0);
+		t_NewComponent->SetLens(XM_PIDIV4, 1920.0f, 1080.0f, 0.5f, 10000.0f, 0, 0); //if change nearfar change in engine too in buffer
 
 		TransformComponent* t_NewTransform = new TransformComponent();
 		t_NewTransform->LookAt(XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, -1), XMFLOAT3(0, 1, 0));

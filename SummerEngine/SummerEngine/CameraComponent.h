@@ -17,6 +17,7 @@ public:
 
 	void SetLens(float p_FovY, float p_Width, float p_Height, float p_Znear, float p_Zfar, float p_TopX, float p_TopY);
 
+	XMFLOAT3 GetPosition();
 
 	D3D11_VIEWPORT GetViewport();
 
