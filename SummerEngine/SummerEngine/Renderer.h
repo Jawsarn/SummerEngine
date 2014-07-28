@@ -10,6 +10,8 @@ using namespace DirectX;
 //#define _DEBUG
 
 #define MAX_INSTANCEBUFFER_SIZE 1000
+#define THREAD_BLOCK_DIMENSIONS 16
+#define MAX_NUM_OF_LIGHTS 1024
 
 class Renderer
 {
@@ -104,14 +106,56 @@ private:
 		XMMATRIX Proj;
 		//XMMATRIX ViewProj;
 	};
+	
+	struct PerComputeBuffer
+	{
+		XMFLOAT4 EyePosition[4];
+		XMFLOAT2 ScreenDimensions;
+		XMFLOAT2 CamNearFar;
+
+		XMFLOAT4 AmbientLight;
+		XMFLOAT4 ColorOverlay;
+	};
+
+	struct PointLight
+	{
+		
+		XMFLOAT3 Position;
+		float Radius;
+
+		XMFLOAT3 Color;
+		float Filler;
+		PointLight()
+		{
+			Position = XMFLOAT3(0,0,0);
+			Radius = 0;
+			Color = XMFLOAT3(0, 0, 0);
+			Filler = 0;
+		}
+		PointLight(XMFLOAT3 p_Pos, float p_rad, XMFLOAT3 p_Col)
+		{
+			Position = p_Pos;
+			Radius = p_rad;
+			Color = p_Col;
+			Filler = 0;
+		}
+	};
+
 
 	ID3D11Buffer* m_TestPerFrameBuffer;
+	ID3D11Buffer* m_PerComputeBuffer;
 
 	ID3D11Buffer* m_InstanceBuffer;
-	ID3D11PixelShader* m_TestPixelShader;
-	ID3D11VertexShader* m_TestVertexShader;
+	ID3D11PixelShader* m_DeferredPS;
+	ID3D11VertexShader* m_DeferredVS;
+	ID3D11ComputeShader* m_DeferredCS;
 	ID3D11InputLayout* m_TestLayout;
 	void Renderer::SetShaders();
 	std::vector<CameraStruct> m_Cameras;
+
+	std::vector<PointLight>		m_PointLights;
+	int m_AmountOfPointLights;
+	ID3D11Buffer*				m_PointLightsBuffer;
+	ID3D11ShaderResourceView*	m_PointLightsBufferSRV;
 };
 

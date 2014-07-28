@@ -39,6 +39,8 @@ void RenderingSystem::Update()
 
 	m_Renderer->RenderOpaque(&m_Opaque); //fix
 
+	m_Renderer->ComputeDeferred();
+
 	//m_Renderer->RenderTransparent();
 
 	m_Renderer->EndRender();

@@ -11,7 +11,8 @@ struct VS_OUTPUT
 {
 	float4 Position		: SV_POSITION;
 	float3 Normal		: NORMAL;
-	float2 TexCoord		: TEXCORD;
+	float2 Texcord		: TEXCOORD;
+	float2 Depth		: DEPTH;
 };
 
 cbuffer ConstantBuffer : register(c0)
@@ -27,14 +28,14 @@ VS_OUTPUT VS(VS_INPUT p_Input)
 
 
 	o_Output.Position = mul(float4(p_Input.Position, 1), p_Input.World);
-	//o_Output.Position = float4(p_Input.Position, 1);
 	o_Output.Position = mul(o_Output.Position, View);
 	o_Output.Position = mul(o_Output.Position, Proj);
+	o_Output.Depth = o_Output.Position.zw;
 
 
+	o_Output.Normal = mul(float4(p_Input.Normal,1), p_Input.World).xyz;
 
-	o_Output.Normal = p_Input.Normal;
-	o_Output.TexCoord = p_Input.TexCoord;
+	o_Output.Texcord = p_Input.TexCoord;
 
 	return o_Output;
 }

@@ -293,11 +293,17 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="VertexShader.hlsl">
-      <Filter>Shaders\Test Shaders Not Deferred</Filter>
-    </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
       <Filter>Shaders\Test Shaders Not Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredCS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredPS.hlsl">
+      <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

@@ -23,6 +23,7 @@ Renderer::Renderer()
 	*m_Height = 0;
 	*m_Width = 0;
 	m_IsRendering = false;
+	m_AmountOfPointLights = 0;
 }
 
 
@@ -75,6 +76,12 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 	if (FAILED(hr))
 		return false;
 
+	//test stuff
+	
+	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(0,0,0), 10, XMFLOAT3(1,0,0));
+	m_AmountOfPointLights++;
+
+	m_DeviceContext->UpdateSubresource(m_PointLightsBuffer, 0, nullptr, &m_PointLights[0], 0, 0);
 
 	return true;
 }
@@ -421,17 +428,22 @@ HRESULT Renderer::InitializeShaders()
 		};
 		UINT t_NumElements = ARRAYSIZE(t_Layout);
 
-		hr = t_ShaderLoader.CreateVertexShaderWithInputLayout(L"VertexShader.hlsl", "VS", "vs_5_0", m_Device, &m_TestVertexShader, t_Layout, t_NumElements, &m_TestLayout);
+		hr = t_ShaderLoader.CreateVertexShaderWithInputLayout(L"DeferredVS.hlsl", "VS", "vs_5_0", m_Device, &m_DeferredVS, t_Layout, t_NumElements, &m_TestLayout);
 		if (FAILED(hr))
 			return hr;
 	}
 
 	{
-		hr = t_ShaderLoader.CreatePixelShader(L"PixelShader.hlsl", "PS", "ps_5_0", m_Device, &m_TestPixelShader);
+		hr = t_ShaderLoader.CreatePixelShader(L"DeferredPS.hlsl", "PS", "ps_5_0", m_Device, &m_DeferredPS);
 		if (FAILED(hr))
 			return hr;
 	}
-	
+
+	{
+		hr = t_ShaderLoader.CreateComputeShader(L"DeferredCS.hlsl", "CS", "cs_5_0", m_Device, &m_DeferredCS);
+		if (FAILED(hr))
+			return hr;
+	}
 
 	return hr;
 }
@@ -440,31 +452,77 @@ HRESULT Renderer::InitializeShaders()
 HRESULT Renderer::InitializeConstantBuffers()
 {
 	HRESULT hr = S_OK;
+	{
+		D3D11_BUFFER_DESC t_ibd;
+		t_ibd.Usage = D3D11_USAGE_DYNAMIC; // D3D11_USAGE_DEFAULT  D3D11_USAGE_DYNAMIC
+		t_ibd.ByteWidth = sizeof(XMMATRIX)* MAX_INSTANCEBUFFER_SIZE;
+		t_ibd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		t_ibd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; //D3D11_CPU_ACCESS_WRITE
+		t_ibd.MiscFlags = 0;
+		t_ibd.StructureByteStride = 0;
 
-	D3D11_BUFFER_DESC t_ibd;
-	t_ibd.Usage = D3D11_USAGE_DYNAMIC; // D3D11_USAGE_DEFAULT  D3D11_USAGE_DYNAMIC
-	t_ibd.ByteWidth = sizeof(XMMATRIX)* MAX_INSTANCEBUFFER_SIZE;
-	t_ibd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	t_ibd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; //D3D11_CPU_ACCESS_WRITE
-	t_ibd.MiscFlags = 0;
-	t_ibd.StructureByteStride = 0;
+		hr = m_Device->CreateBuffer(&t_ibd, 0, &m_InstanceBuffer);
+		if (FAILED(hr))
+			return hr;
 
-	hr = m_Device->CreateBuffer(&t_ibd, 0, &m_InstanceBuffer);
-	if (FAILED(hr))
-		return hr;
-	
 
-	t_ibd.Usage = D3D11_USAGE_DEFAULT;
-	t_ibd.ByteWidth = sizeof(PerFrameTestBuffer);
-	t_ibd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	t_ibd.CPUAccessFlags = 0;
+		t_ibd.Usage = D3D11_USAGE_DEFAULT;
+		t_ibd.ByteWidth = sizeof(PerFrameTestBuffer);
+		t_ibd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		t_ibd.CPUAccessFlags = 0;
 
-	hr = m_Device->CreateBuffer(&t_ibd, 0, &m_TestPerFrameBuffer);
-	if (FAILED(hr))
-		return hr;
+		hr = m_Device->CreateBuffer(&t_ibd, 0, &m_TestPerFrameBuffer);
+		if (FAILED(hr))
+			return hr;
 
-	m_DeviceContext->VSSetConstantBuffers(0, 1, &m_TestPerFrameBuffer);
+		m_DeviceContext->VSSetConstantBuffers(0, 1, &m_TestPerFrameBuffer);
+		m_DeviceContext->CSSetConstantBuffers(0, 1, &m_TestPerFrameBuffer);
+	}
+	{
+		D3D11_BUFFER_DESC t_BufferDesc;
+		t_BufferDesc.MiscFlags = 0;
+		t_BufferDesc.StructureByteStride = 0;
+		t_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		t_BufferDesc.ByteWidth = sizeof(PerFrameTestBuffer);
+		t_BufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		t_BufferDesc.CPUAccessFlags = 0;
 
+		hr = m_Device->CreateBuffer(&t_BufferDesc, 0, &m_PerComputeBuffer);
+		if (FAILED(hr))
+			return hr;
+
+		m_DeviceContext->CSSetConstantBuffers(1, 1, &m_PerComputeBuffer);
+	}
+
+	{
+		D3D11_BUFFER_DESC t_BufferDesc;
+		ZeroMemory(&t_BufferDesc, sizeof(t_BufferDesc));
+		t_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		t_BufferDesc.CPUAccessFlags = 0;
+
+		m_PointLights.resize(MAX_NUM_OF_LIGHTS);
+		/*bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		bd.Usage = D3D11_USAGE_DYNAMIC;*/
+		t_BufferDesc.ByteWidth = sizeof(PointLight)*MAX_NUM_OF_LIGHTS;
+		t_BufferDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		t_BufferDesc.StructureByteStride = sizeof(PointLight);
+		t_BufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+		D3D11_SUBRESOURCE_DATA t_InitData;
+		t_InitData.pSysMem = &m_PointLights[0];
+
+		hr = m_Device->CreateBuffer(&t_BufferDesc, &t_InitData, &m_PointLightsBuffer);
+		if (FAILED(hr))
+			return hr;
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC t_SrvDesc;
+		t_SrvDesc.Format = DXGI_FORMAT_UNKNOWN;
+		t_SrvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFEREX;
+		t_SrvDesc.BufferEx.FirstElement = 0;
+		t_SrvDesc.BufferEx.Flags = 0;
+		t_SrvDesc.BufferEx.NumElements = MAX_NUM_OF_LIGHTS;
+
+		hr = m_Device->CreateShaderResourceView(m_PointLightsBuffer, &t_SrvDesc, &m_PointLightsBufferSRV);
+	}
 	return hr;
 }
 
@@ -566,11 +624,13 @@ HRESULT Renderer::InitializeSamplerState()
 void Renderer::SetShaders() //test
 {
 	m_DeviceContext->IASetInputLayout(m_TestLayout);
-	m_DeviceContext->VSSetShader(m_TestVertexShader, nullptr, 0);
+	m_DeviceContext->VSSetShader(m_DeferredVS, nullptr, 0);
 	m_DeviceContext->GSSetShader(nullptr, nullptr, 0);
 	m_DeviceContext->HSSetShader(nullptr, nullptr, 0);
 	m_DeviceContext->DSSetShader(nullptr, nullptr, 0);
-	m_DeviceContext->PSSetShader(m_TestPixelShader, nullptr, 0);
+	m_DeviceContext->PSSetShader(m_DeferredPS, nullptr, 0);
+
+	m_DeviceContext->CSSetShader(m_DeferredCS, nullptr, 0);
 }
 
 void Renderer::BeginRender()
@@ -584,6 +644,11 @@ void Renderer::BeginRender()
 	//clear the render target
 	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, Colors::Black);
 	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+	for (int i = 0; i < 3; i++)
+	{
+		m_DeviceContext->ClearRenderTargetView(m_GbufferTargetViews[i], Colors::Black);
+	}
 
 	//set cameras
 	if (m_Cameras.size() != 0)
@@ -615,7 +680,7 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 {
 	SetShaders();
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
+	m_DeviceContext->OMSetRenderTargets(3, m_GbufferTargetViews, m_DepthStencilView);
 
 	int t_NumOfObjects = p_RenderObjects->size();
 	if (t_NumOfObjects == 0)
@@ -736,7 +801,23 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 
 void Renderer::ComputeDeferred()
 {
+	ID3D11RenderTargetView* t_Deleters[3] = { 0, 0, 0 };
+	m_DeviceContext->OMSetRenderTargets(3, t_Deleters, m_DepthStencilView);
 
+	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &m_BackBufferUAV, nullptr);
+	m_DeviceContext->CSSetShaderResources(1, 3, m_GbufferShaderResource);
+	m_DeviceContext->CSSetShaderResources(4, 1, &m_PointLightsBufferSRV);
+
+	UINT x = ceil(*m_Width / (FLOAT)THREAD_BLOCK_DIMENSIONS);
+	UINT y = ceil(*m_Height / (FLOAT)THREAD_BLOCK_DIMENSIONS);
+
+	m_DeviceContext->Dispatch(x, y, 1);
+
+	ID3D11ShaderResourceView* t_TempDelete1[3] = { 0, 0, 0 };
+	m_DeviceContext->CSSetShaderResources(1, 3, t_TempDelete1);
+
+	ID3D11UnorderedAccessView* t_TempDelete2 = { 0 };
+	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &t_TempDelete2, nullptr);
 }
 
 void Renderer::RenderTransparent(RenderObjects* p_RenderObjects)

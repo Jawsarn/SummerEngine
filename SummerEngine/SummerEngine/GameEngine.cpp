@@ -105,19 +105,19 @@ bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 	}
 	m_Editor = new Editor();
 	m_Editor->InitEditor();
-	{
-		RenderComponent* t_NewRenderComponent = new RenderComponent();
-		Mesh* t_NewMesh = (Mesh*)t_ResourceManager->Create("SoccerBall.mesh");
-		std::vector<Material*> t_mats;
-		for (int i = 0; i < t_NewMesh->GetNumOfBuffers(); i++)
-		{
-			Material* t_Mat = new Material();
-			t_mats.push_back(t_Mat);
-		}
-		t_NewRenderComponent->SetObject(t_NewMesh, t_mats);
-		m_EntityTest->AddComponent(t_NewRenderComponent);
-	}
-	{
+	//{
+	//	RenderComponent* t_NewRenderComponent = new RenderComponent();
+	//	Mesh* t_NewMesh = (Mesh*)t_ResourceManager->Create("SoccerBall.mesh");
+	//	std::vector<Material*> t_mats;
+	//	for (int i = 0; i < t_NewMesh->GetNumOfBuffers(); i++)
+	//	{
+	//		Material* t_Mat = new Material();
+	//		t_mats.push_back(t_Mat);
+	//	}
+	//	t_NewRenderComponent->SetObject(t_NewMesh, t_mats);
+	//	m_EntityTest->AddComponent(t_NewRenderComponent);
+	//}
+	/*{
 		Entity* t_ChildEntity = new Entity();
 		TransformComponent* t_NewTransform = new TransformComponent();
 		t_NewTransform->LookAt(XMFLOAT3(6, 6, 6), XMFLOAT3(0, 0, -1), XMFLOAT3(0, 1, 0));
@@ -136,23 +136,23 @@ bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 		t_ChildEntity->AddComponent(t_NewRenderComponent);
 
 		m_EntityTest->AddChild(t_ChildEntity);
-	}
+	}*/
 
-	{
-		//now test safe file first
-		StreamFile file = StreamFile();
-		file.OpenFileWrite("jawsTestHeirarcy.works");
-		m_EntityTest->Write(file);
-		file.Close();
-	}
+	//{
+	//	//now test safe file first
+	//	StreamFile file = StreamFile();
+	//	file.OpenFileWrite("jawsTestHeirarcy.works");
+	//	m_EntityTest->Write(file);
+	//	file.Close();
+	//}
 
-	{
-		StreamFile file = StreamFile();
-		file.OpenFileRead("jawsTestHeirarcy.works");
-		Entity* t_NewEntityRead = new Entity();
-		t_NewEntityRead->Read(file);
-		int t_break = 0;
-	}
+	//{
+	//	StreamFile file = StreamFile();
+	//	file.OpenFileRead("jawsTestHeirarcy.works");
+	//	Entity* t_NewEntityRead = new Entity();
+	//	t_NewEntityRead->Read(file);
+	//	int t_break = 0;
+	//}
 
 
 	return true;
