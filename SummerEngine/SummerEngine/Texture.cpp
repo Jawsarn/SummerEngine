@@ -34,3 +34,13 @@ const Texture::ResourceType Texture::GetType() const
 {
 	return "Texture";
 }
+
+float Texture::GetWidth()
+{
+	return 0;
+}
+
+float Texture::GetHeight()
+{
+	return 0;
+}
