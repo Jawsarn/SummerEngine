@@ -86,7 +86,7 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 	PerComputeBuffer t_PerCompute;
 	t_PerCompute.AmbientLight = XMFLOAT4(0.1f,0.1f,0.1f,0);
 	t_PerCompute.CamNearFar = XMFLOAT2(0.5f, 10000.0f);
-	t_PerCompute.ColorOverlay = XMFLOAT4(0, 0, 0, 0);
+	t_PerCompute.ColorOverlay = XMFLOAT4(0.0f, 0, 0, 0);
 	t_PerCompute.ScreenDimensions = XMFLOAT2(1920, 1080);
 
 	m_DeviceContext->UpdateSubresource(m_PerComputeBuffer, 0, nullptr, &t_PerCompute, 0, 0);

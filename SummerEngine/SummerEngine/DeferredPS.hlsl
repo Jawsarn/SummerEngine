@@ -25,8 +25,11 @@ PS_OUTPUT PS(PS_INPUT p_Input) : SV_TARGET
 
 	float depth = p_Input.Depth.x / p_Input.Depth.y;
 
+	float4 NormalColor = g_DiffuseTexture.Sample(g_Sampler, p_Input.Texcord);
 	o_Output.Normal_Depth = float4(p_Input.Normal, depth);
-	o_Output.DiffuseColor_Spec = float4(0.5f,0.5f,0.5f, 1.0f);
+
+	float4 DiffuseColor = g_DiffuseTexture.Sample(g_Sampler, p_Input.Texcord);
+	o_Output.DiffuseColor_Spec = float4(DiffuseColor.xyz, 1.0f);
 	o_Output.Temp = float4(1, 1, 1, 1);
 
 	return o_Output;
