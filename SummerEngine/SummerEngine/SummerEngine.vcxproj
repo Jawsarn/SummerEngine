@@ -92,6 +92,7 @@
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="ScreenManager.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Stream.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="ResourceLoadSave.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Screen.h" />
+    <ClInclude Include="ScreenManager.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="Sprite.h" />

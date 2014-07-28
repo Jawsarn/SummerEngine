@@ -49,12 +49,6 @@
     <Filter Include="Source Files\ResourceManagement">
       <UniqueIdentifier>{5db4d025-506a-400a-a0ca-ef6d9b2acda0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics">
-      <UniqueIdentifier>{8778e790-ca03-479e-ba30-f19b740cf0f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Graphics\Objs">
-      <UniqueIdentifier>{ddb39a0f-a3d0-47fa-8236-885123f0fbd7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{06adf8bd-d87b-42be-bd53-d8349a451a77}</UniqueIdentifier>
     </Filter>
@@ -67,14 +61,26 @@
     <Filter Include="Header Files\Graphic\Primitives">
       <UniqueIdentifier>{f5fdf336-ed33-47cd-bdcc-ad789fe7f4bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\Textures">
-      <UniqueIdentifier>{011f6e6a-63fe-43fe-a2c1-fc098e7a7dd9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Collision">
       <UniqueIdentifier>{0e2356a3-8aff-4c3f-b464-683f462c6a6e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Collision">
       <UniqueIdentifier>{4a24f1bc-c7f7-4454-98fc-26946b7cc895}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphic\2D">
+      <UniqueIdentifier>{2a68b07a-2c30-4ffa-a7f3-a17f2d3c6d92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphic\2D">
+      <UniqueIdentifier>{153082ec-ebd3-4527-abf0-e8e5311b822f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{8778e790-ca03-479e-ba30-f19b740cf0f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Objs">
+      <UniqueIdentifier>{ddb39a0f-a3d0-47fa-8236-885123f0fbd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Textures">
+      <UniqueIdentifier>{011f6e6a-63fe-43fe-a2c1-fc098e7a7dd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -174,14 +180,17 @@
     <ClCompile Include="DDSTextureLoader.cpp">
       <Filter>Source Files\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source Files\Graphic</Filter>
-    </ClCompile>
     <ClCompile Include="Rect.cpp">
       <Filter>Source Files\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Screen.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Graphic\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files\Graphic\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenManager.cpp">
+      <Filter>Source Files\Graphic\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -284,48 +293,51 @@
     <ClInclude Include="DDSTextureLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Header Files\Graphic</Filter>
-    </ClInclude>
     <ClInclude Include="Rect.h">
       <Filter>Header Files\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files\Graphic\2D</Filter>
+    </ClInclude>
     <ClInclude Include="Screen.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Graphic\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenManager.h">
+      <Filter>Header Files\Graphic\2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\Objs\testFile.mtl">
-      <Filter>Graphics\Objs</Filter>
+      <Filter>Resources\Objs</Filter>
     </None>
     <None Include="Graphics\Objs\SoccerBall.mtl">
-      <Filter>Graphics\Objs</Filter>
+      <Filter>Resources\Objs</Filter>
     </None>
     <None Include="Graphics\Objs\SkelletonScene.mtl">
-      <Filter>Graphics\Objs</Filter>
+      <Filter>Resources\Objs</Filter>
     </None>
     <None Include="Graphics\Objs\Robot.mtl">
-      <Filter>Graphics\Objs</Filter>
+      <Filter>Resources\Objs</Filter>
     </None>
     <None Include="Graphics\Objs\Avatar.mtl">
-      <Filter>Graphics\Objs</Filter>
+      <Filter>Resources\Objs</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Object Include="Graphics\Objs\testFile.obj">
-      <Filter>Graphics\Objs</Filter>
+      <Filter>Resources\Objs</Filter>
     </Object>
     <Object Include="Graphics\Objs\SoccerBall.obj">
-      <Filter>Graphics\Objs</Filter>
+      <Filter>Resources\Objs</Filter>
     </Object>
     <Object Include="Graphics\Objs\SkelletonScene.obj">
-      <Filter>Graphics\Objs</Filter>
+      <Filter>Resources\Objs</Filter>
     </Object>
     <Object Include="Graphics\Objs\Robot.obj">
-      <Filter>Graphics\Objs</Filter>
+      <Filter>Resources\Objs</Filter>
     </Object>
     <Object Include="Graphics\Objs\Avatar.obj">
-      <Filter>Graphics\Objs</Filter>
+      <Filter>Resources\Objs</Filter>
     </Object>
   </ItemGroup>
   <ItemGroup>
@@ -344,10 +356,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Graphics\Textures\COL.dds">
-      <Filter>Graphics\Textures</Filter>
+      <Filter>Resources\Textures</Filter>
     </Image>
     <Image Include="Graphics\Textures\NRM.dds">
-      <Filter>Graphics\Textures</Filter>
+      <Filter>Resources\Textures</Filter>
     </Image>
   </ItemGroup>
 </Project>
