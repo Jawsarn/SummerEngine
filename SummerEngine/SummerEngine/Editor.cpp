@@ -38,7 +38,7 @@ void Editor::InitEditor()
 	/*ResourceManager* t_Manager = t_Manager->GetInstance();
 	Resource* t_Test = t_Manager->Create("Sphere_Sphere.001.mesh");*/
 
-	m_import->LoadFromObj("../SummerEngine/Graphics/Objs/SoccerBall.obj");
+	m_import->LoadFromObj("../SummerEngine/Graphics/Objs/SkelletonScene.obj");
 
 	{
 		std::vector<Mesh*> t_Meshes = m_import->GetMeshes();

@@ -283,12 +283,18 @@
     <None Include="Graphics\Objs\SoccerBall.mtl">
       <Filter>Graphics\Objs</Filter>
     </None>
+    <None Include="Graphics\Objs\SkelletonScene.mtl">
+      <Filter>Graphics\Objs</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Object Include="Graphics\Objs\testFile.obj">
       <Filter>Graphics\Objs</Filter>
     </Object>
     <Object Include="Graphics\Objs\SoccerBall.obj">
+      <Filter>Graphics\Objs</Filter>
+    </Object>
+    <Object Include="Graphics\Objs\SkelletonScene.obj">
       <Filter>Graphics\Objs</Filter>
     </Object>
   </ItemGroup>
