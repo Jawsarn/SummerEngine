@@ -5,7 +5,9 @@ Resource* TextureResourceLoadSave::Load(std::string p_FileName)
 {
 	Renderer* m_Renderer = m_Renderer->GetInstance();
 	ID3D11ShaderResourceView* t_NewSRV;
-	std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
+	std::string t_FilePath = "Graphics/Textures/" + p_FileName;
+	
+	std::wstring t_LoadTextString = std::wstring(t_FilePath.begin(), t_FilePath.end());
 
 	bool t_Success = m_Renderer->CreateTexture(t_LoadTextString.c_str(), &t_NewSRV);
 
@@ -19,6 +21,8 @@ Resource* TextureResourceLoadSave::Load(std::string p_FileName)
 	{
 		Texture* t_NewTexture = new Texture();
 		t_NewTexture->SetTextureView(t_NewSRV);
+		t_NewTexture->SetName(p_FileName);
+		return t_NewTexture;
 	}
 }
 

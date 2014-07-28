@@ -78,7 +78,7 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	//test stuff
 	
-	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(0,6,-15), 10, XMFLOAT3(1,0,0));
+	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(1,6,-19), 15, XMFLOAT3(1,1,1));
 	m_AmountOfPointLights++;
 
 	m_DeviceContext->UpdateSubresource(m_PointLightsBuffer, 0, nullptr, &m_PointLights[0], 0, 0);
@@ -641,6 +641,37 @@ void Renderer::SetShaders() //test
 	m_DeviceContext->CSSetShader(m_DeferredCS, nullptr, 0);
 }
 
+void Renderer::SetTextures(RenderObject* p_Object)
+{
+	RenderComponent* t_Comp = (RenderComponent*)p_Object->m_Component;
+	Material* t_Mat = t_Comp->GetMaterial(p_Object->BufferNum);
+
+	
+	std::map<std::string, Texture*>* m_Textures = t_Mat->GetTextures();
+	if (m_Textures->size() >= 2)
+	{
+		std::map<std::string, Texture*>::iterator t_It;
+
+		t_It = m_Textures->find("DIFFUSE");
+		if (t_It != m_Textures->end())
+		{
+			ID3D11ShaderResourceView* t_Resource = t_It->second->GetTextureView();
+			m_DeviceContext->PSSetShaderResources(0, 1, &t_Resource);
+		}
+
+		t_It = m_Textures->find("NORMAL");
+		if (t_It != m_Textures->end())
+		{
+			ID3D11ShaderResourceView* t_Resource = t_It->second->GetTextureView();
+			m_DeviceContext->PSSetShaderResources(1, 1, &t_Resource);
+		}
+	}
+	else
+	{
+		MessageBox(nullptr, L"Well.. SetTexture function failed not enought textures...", L"ErrorMessage", MB_OK);
+	}
+}
+
 void Renderer::BeginRender()
 {
 	if (m_IsRendering)
@@ -713,10 +744,10 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 	UINT indexOffset = 0;
 	int t_VertexBuffSize = 0;
 	int t_NumOfInstances = 0;
-
+	RenderObject* t_RenderObject;
 	//ok so first we do it simple, only taking care of the vertex buffer with checking material as well, ok ? 
 	{
-		RenderObject* t_RenderObject = p_RenderObjects->at(0);
+		t_RenderObject = p_RenderObjects->at(0);
 		RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
 
 		t_VertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
@@ -730,7 +761,7 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 	}
  	for (int i = 1; i < t_NumOfObjects; i++)
  	{
- 		RenderObject* t_RenderObject = p_RenderObjects->at(i);
+ 		t_RenderObject = p_RenderObjects->at(i);
  		RenderComponent* t_RenderComponent = ((RenderComponent*)(t_RenderObject->m_Component));
  
  		ID3D11Buffer* t_CheckVertexBuffer = t_RenderComponent->GetMesh()->GetVertexBuffer(t_RenderObject->BufferNum);
@@ -763,12 +794,10 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
  
  			ID3D11Buffer* t_InBuffers[2] = { t_VertexBuffer, m_InstanceBuffer };
  			
- 
+
+			SetTextures(t_RenderObject);
+
  			m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets); //set both vertex and instance buffer
- 			/*UINT VertexStrides[1] = { sizeof(Mesh::MeshVertex) };
- 			UINT VertexOffsets[1] = { 0 };
- 			m_DeviceContext->IASetVertexBuffers(0, 1, &t_VertexBuffer, VertexStrides, VertexOffsets);*/
- 
  			m_DeviceContext->IASetIndexBuffer(t_IndexBuffer, DXGI_FORMAT_R32_UINT, indexOffset);
  			//m_DeviceContext->IASetIndexBuffer();
  
@@ -800,6 +829,7 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 
 		m_DeviceContext->Unmap(m_InstanceBuffer, 0);
 
+		SetTextures(t_RenderObject);
 		ID3D11Buffer* t_InBuffers[2] = { t_VertexBuffer, m_InstanceBuffer };
 		m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets);
 		m_DeviceContext->IASetIndexBuffer(t_IndexBuffer, DXGI_FORMAT_R32_UINT, indexOffset);

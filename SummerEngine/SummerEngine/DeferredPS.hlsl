@@ -14,6 +14,11 @@ struct PS_OUTPUT
 	float4 Temp					:SV_TARGET2;
 };
 
+SamplerState g_Sampler		: register(s0);
+
+Texture2D g_DiffuseTexture	: register(t0);
+Texture2D g_NormalTexture	: register(t1);
+
 PS_OUTPUT PS(PS_INPUT p_Input) : SV_TARGET
 {
 	PS_OUTPUT o_Output;
@@ -21,7 +26,7 @@ PS_OUTPUT PS(PS_INPUT p_Input) : SV_TARGET
 	float depth = p_Input.Depth.x / p_Input.Depth.y;
 
 	o_Output.Normal_Depth = float4(p_Input.Normal, depth);
-	o_Output.DiffuseColor_Spec = float4(p_Input.Texcord, 1, 1.0f);
+	o_Output.DiffuseColor_Spec = float4(0.5f,0.5f,0.5f, 1.0f);
 	o_Output.Temp = float4(1, 1, 1, 1);
 
 	return o_Output;

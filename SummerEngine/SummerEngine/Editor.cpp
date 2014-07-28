@@ -38,7 +38,7 @@ void Editor::InitEditor()
 	/*ResourceManager* t_Manager = t_Manager->GetInstance();
 	Resource* t_Test = t_Manager->Create("Sphere_Sphere.001.mesh");*/
 
-	m_import->LoadFromObj("../SummerEngine/Graphics/Objs/Avatar.obj");
+	m_import->LoadFromObj("../SummerEngine/Graphics/Objs/SoccerBall.obj");
 
 	{
 		std::vector<Mesh*> t_Meshes = m_import->GetMeshes();
@@ -60,33 +60,15 @@ void Editor::InitEditor()
 			//std::vector<Material*> t_NewMaterials;
 			
 			//All material information for the current mesh
-			std::vector<Material::MaterialData*> t_NewMaterialData;
+			std::vector<Material*> t_NewMaterialData;
 			t_NewMaterialData = m_import->GetAllMaterialsFromAMesh(i);
 
-			std::vector<Material*> t_NewMaterials;
+
 			for (size_t i = 0; i < t_NumOfBuffers; i++)
 			{
-				//Material* t_NewMaterial = new Material();
-				//t_NewMaterials.push_back(t_NewMaterial);
-				Material* t_NewMaterial = new Material();
-				t_NewMaterial->SetMaterialData(t_NewMaterialData[i]);
-
-				//Loading materials here
-				
-				//Loading all the textures
-				if (t_NewMaterialData[i]->m_Map_Kd != "None")LoadTexture(t_NewMaterialData[i]->m_Map_Kd, t_NewMaterialData[i]);
-				if (t_NewMaterialData[i]->m_Bump   != "None")LoadTexture(t_NewMaterialData[i]->m_Bump  , t_NewMaterialData[i]);
-				if (t_NewMaterialData[i]->m_Map_D  != "None")LoadTexture(t_NewMaterialData[i]->m_Map_D , t_NewMaterialData[i]);
-				if (t_NewMaterialData[i]->m_Map_Ka != "None")LoadTexture(t_NewMaterialData[i]->m_Map_Ka, t_NewMaterialData[i]);
-				if (t_NewMaterialData[i]->m_Map_Ke != "None")LoadTexture(t_NewMaterialData[i]->m_Map_Ke, t_NewMaterialData[i]);
-				if (t_NewMaterialData[i]->m_Map_Ks != "None")LoadTexture(t_NewMaterialData[i]->m_Map_Ks, t_NewMaterialData[i]);
-				if (t_NewMaterialData[i]->m_Map_Ns != "None")LoadTexture(t_NewMaterialData[i]->m_Map_Ns, t_NewMaterialData[i]);
-
-
-				t_NewMaterials.push_back(t_NewMaterial);
-
+				t_NewMaterialData[i]->LoadTextures();
 			}
-			t_RenderingComponent->SetObject(t_Meshes[i], t_NewMaterials);
+			t_RenderingComponent->SetObject(t_Meshes[i], t_NewMaterialData);
 
 			
 			//t_RenderingComponent->SetObject(t_Meshes[i], t_NewMaterials);
@@ -103,6 +85,7 @@ void Editor::InitEditor()
 		}
 
 		
+		
 		//add test material and mesh here from the editor
 
 		
@@ -112,19 +95,6 @@ void Editor::InitEditor()
 
 		
 	}
-}
-
-bool Editor::LoadTexture(std::string p_FileName, Material::MaterialData* p_MaterialData)
-{
-
-	ResourceManager* t_Manager = t_Manager->GetInstance();
-	std::string t_Extension = ".dds";
-
-	std::string t_NewTexturePath = "../SummerEngine/Graphics/Textures/" +
-		p_FileName + t_Extension;
-	t_Manager->Create(t_NewTexturePath);
-	
-	return true;
 }
 
 void Editor::Update()

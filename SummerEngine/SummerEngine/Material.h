@@ -1,7 +1,7 @@
 #pragma once
 #include "Resource.h"
-#include <vector>
 #include "Texture.h"
+#include <map>
 
 class Material:Resource
 {
@@ -9,62 +9,29 @@ public:
 	Material();
 	~Material();
 
+	float m_Ns;					//Shininess of the material
+	float m_Ka[3];				//Ambient color (r,g,b)
+	float m_Kd[3];				//Diffuse color (r,g,b)
+	float m_Ks[3];				//Specular color (r,g,b)
+	float m_Ni;					//Reflection index
+	float m_D;					//Transparency Tr (alpha)
+	float m_Tf[3];				//Color Transperancy color (d or Tr)
+	float m_Ke;					//Emissive color
+	UINT32 m_Illum;				//Define the illumination model: illum = 1 a flat material with no specular highlights, illum = 2 denotes the presence of specular highlights
 
-	struct MaterialData
-	{
-		std::string m_Name;			//Material name
-		float m_Ns;					//Shininess of the material
-		float m_Ka[3];				//Ambient color (r,g,b)
-		float m_Kd[3];				//Diffuse color (r,g,b)
-		float m_Ks[3];				//Specular color (r,g,b)
-		float m_Ni;					//Reflection index
-		float m_D;					//Transparency Tr (alpha)
-		float m_Tf[3];				//Color Transperancy color (d or Tr)
-		float m_Ke;					//Emissive color
-		UINT32 m_Illum;				//Define the illumination model: illum = 1 a flat material with no specular highlights, illum = 2 denotes the presence of specular highlights
+	std::string m_Map_Kd;		//diffuse
+	std::string m_Map_Ka;		//ambient
+	std::string m_Map_Ks;		//specular
+	std::string m_Map_Ke;		//emissive fucked up shit
+	std::string m_Map_Ns;		//specular shinyness
+	std::string m_Map_D;		//transparency
+	std::string m_Bump;			//normal map
+	std::string m_Disp;			//displacment map
+	std::string m_Occulsion;	//diffuse blackmap
 
-		std::string m_Map_Kd;
-		std::string m_Map_Ka;
-		std::string m_Map_Ks;
-		std::string m_Map_Ke;
-		std::string m_Map_Ns;
-		std::string m_Map_D;
-		std::string m_Bump;
-		std::string m_Disp;
-		std::string m_Occulsion;
+	std::map<std::string, Texture*>* GetTextures();
+	void LoadTextures();
 
-		MaterialData()
-		{
-			//Default values
-			m_Kd[0] = 0; m_Kd[1] = 0; m_Kd[2] = 0;
-			m_Ka[0] = 0; m_Ka[1] = 0; m_Ka[2] = 0;
-			m_Tf[0] = 0; m_Tf[1] = 0; m_Tf[2] = 0;
-			m_Ks[0] = 0; m_Ks[1] = 0; m_Ks[2] = 0;
-			m_Ni = 0;
-			m_Ns = 0;
-			m_D = 0;
-			m_Illum = 0;
-			m_Ke = 0;
-
-			m_Name = "None";
-
-			//Textures
-			m_Map_Kd = "None";
-			m_Map_Ka = "None";
-			m_Map_Ks = "None";
-			m_Map_Ke = "None";
-			m_Map_Ns = "None";
-			m_Map_D = "None";
-			m_Bump = "None";
-			m_Disp = "None";
-			m_Occulsion = "None";
-		}
-	};
-
-	void SetMaterialData(MaterialData* p_MaterialData);
-	MaterialData* GetMaterialData();
-	std::vector<Texture*> GetTextures();
-	void SetTextures(std::vector<Texture*> p_Textures);
 	void SetFileName(std::string p_FileName);
 
 	virtual void SetName(std::string p_Name);
@@ -72,8 +39,8 @@ public:
 	virtual const ResourceType GetType() const;
 
 private:
-	std::vector<Texture*> m_Textures;
-	MaterialData* m_MaterialData;
+	std::map<std::string, Texture*> m_Textures;
+
 };
 
 //struct Diffuse

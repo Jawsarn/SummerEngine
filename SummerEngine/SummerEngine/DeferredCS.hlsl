@@ -168,13 +168,13 @@ float3 DirectIllumination(float3 pos, float3 norm, PointLight light, float inSpe
 		return float3(0, 0, 0);
 	}
 
-	float att = pow(max(0.0f, 1.0 - (d / light.radius)), 2);
+	float att = pow(max(0.0f, 1.0 - (d / light.radius)), 2.0f);
 
 	float3 toEye = normalize(-pos);
 		float3 v = reflect(-lightVec, norm);
 
 
-	float specFactor = pow(max(dot(v, toEye), 0.0f), 1)*inSpec;
+	float specFactor = pow(max(dot(v, toEye), 0.0f), 1.0f)*inSpec;
 
 	return (light.color *att * (diffuseFactor + specFactor));
 }
@@ -194,7 +194,7 @@ void CalculateTileAndLightCollision(uint p_MaxNumOfPointLights, uint p_GroupInde
 		{
 			float4 lightPos = mul(float4(light.position, 1), View);
 
-				float distance = dot(p_FrustrumPlanes[i], lightPos);
+			float distance = dot(p_FrustrumPlanes[i], lightPos);
 			inFrustum = inFrustum && (distance >= -light.radius);
 		}
 		if (inFrustum)
@@ -268,9 +268,9 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_Grou
 
 	float3 finalColor = CalculateLighting(p_ThreadID.xy, t_Data);
 
-		//o_Output[p_ThreadID.xy] = g_DiffuseColor_Spec[p_ThreadID.xy];
-		o_Output[p_ThreadID.xy] = float4(finalColor, 1);
-		//o_Output[p_ThreadID.xy] = g_Normal_Depth[p_ThreadID.xy];
-		//o_Output[p_ThreadID.xy] = float4(g_MaxDepth, g_MaxDepth, g_MaxDepth, 1);
-		//o_Output[p_ThreadID.xy] = float4(t_Data.NormalView.x, t_Data.NormalView.y, t_Data.NormalView.z, 0);
+	//o_Output[p_ThreadID.xy] = g_DiffuseColor_Spec[p_ThreadID.xy];
+	o_Output[p_ThreadID.xy] = float4(finalColor, 1);
+	//o_Output[p_ThreadID.xy] = g_Normal_Depth[p_ThreadID.xy];
+	//o_Output[p_ThreadID.xy] = float4(g_MaxDepth, g_MaxDepth, g_MaxDepth, 1);
+	//o_Output[p_ThreadID.xy] = float4(t_Data.NormalView.x, t_Data.NormalView.y, t_Data.NormalView.z, 0);
 }

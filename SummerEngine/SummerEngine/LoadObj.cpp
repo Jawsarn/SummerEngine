@@ -214,7 +214,7 @@ bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
 		std::string type_str;
 		str_stream >> type_str;
 
-		Material::MaterialData* t_NewMaterial = nullptr;
+		Material* t_NewMaterial = nullptr;
 
 		if (type_str == "newmtl")
 		{
@@ -229,8 +229,8 @@ bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
 			std::string t_MaterialName;
 			str_stream >> t_MaterialName;
 
-			t_NewMaterial = new Material::MaterialData();
-			t_NewMaterial->m_Name = t_MaterialName;
+			t_NewMaterial = new Material();
+			t_NewMaterial->SetName( t_MaterialName + ".material");
 			m_Material[m_CurrentMaterial] = t_NewMaterial;
 
 			//Map the material name to a material struct
@@ -282,36 +282,43 @@ bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
 		if (type_str == "map_Ka")
 		{
 			str_stream >> m_Material[m_CurrentMaterial]->m_Map_Ka;
+			m_Material[m_CurrentMaterial]->m_Map_Ka = m_Material[m_CurrentMaterial]->m_Map_Ka + ".dds";
 		}
 
 		if (type_str == "map_Kd")
 		{
 			str_stream >> m_Material[m_CurrentMaterial]->m_Map_Kd;
+			m_Material[m_CurrentMaterial]->m_Map_Kd = m_Material[m_CurrentMaterial]->m_Map_Kd + ".dds";
 		}
 
 		if (type_str == "map_Ks")
 		{
 			str_stream >> m_Material[m_CurrentMaterial]->m_Map_Ks;
+			m_Material[m_CurrentMaterial]->m_Map_Ks = m_Material[m_CurrentMaterial]->m_Map_Ks + ".dds";
 		}
 
 		if (type_str == "map_Ke")
 		{
 			str_stream >> m_Material[m_CurrentMaterial]->m_Map_Ke;
+			m_Material[m_CurrentMaterial]->m_Map_Ke = m_Material[m_CurrentMaterial]->m_Map_Ke + ".dds";
 		}
 
 		if (type_str == "map_Ns")
 		{
 			str_stream >> m_Material[m_CurrentMaterial]->m_Map_Ns;
+			m_Material[m_CurrentMaterial]->m_Map_Ns = m_Material[m_CurrentMaterial]->m_Map_Ns + ".dds";
 		}
 
 		if (type_str == "map_d")
 		{
 			str_stream >> m_Material[m_CurrentMaterial]->m_Map_D;
+			m_Material[m_CurrentMaterial]->m_Map_D = m_Material[m_CurrentMaterial]->m_Map_D + ".dds";
 		}
 
 		if (type_str == "map_Bump")
 		{
 			str_stream >> m_Material[m_CurrentMaterial]->m_Bump;
+			m_Material[m_CurrentMaterial]->m_Bump = m_Material[m_CurrentMaterial]->m_Bump + ".dds";
 		}
 	}
 	t_file.close();
@@ -380,7 +387,7 @@ std::vector<ObjGroups> LoadObj::GetAllGroupsFromAMesh(int p_ObjIndex)
 	return t_Groups;
 }
 
-Material::MaterialData* LoadObj::GetMaterial(std::string p_MaterialData)
+Material* LoadObj::GetMaterial(std::string p_MaterialData)
 {
 	MAP_MATERIAL::const_iterator t_Iterator = m_MapMaterial.find(p_MaterialData);
 	if (t_Iterator == m_MapMaterial.end())
@@ -399,7 +406,7 @@ int LoadObj::GetObjCount()
 	return m_Obj.size();
 }
 
-std::vector<Material::MaterialData*> LoadObj::GetMaterials(int p_ObjIndex)
+std::vector<Material*> LoadObj::GetMaterials(int p_ObjIndex)
 {
 	std::vector<ObjGroups> t_Groups;
 	int t_GroupSize = m_Obj[p_ObjIndex].m_GroupId.size();
@@ -409,7 +416,7 @@ std::vector<Material::MaterialData*> LoadObj::GetMaterials(int p_ObjIndex)
 		t_Groups.push_back(m_groups[m_Obj[p_ObjIndex].m_GroupId[x]]);
 	}
 	
-	std::vector<Material::MaterialData*> t_MaterialData(t_GroupSize);
+	std::vector<Material*> t_MaterialData(t_GroupSize);
 	for (int i = 0; i < t_GroupSize; i++)
 	{
 		t_MaterialData[i] = GetMaterial(t_Groups[i].material);

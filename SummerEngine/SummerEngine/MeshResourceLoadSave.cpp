@@ -5,9 +5,10 @@
 Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 {
 	Mesh* o_Mesh = new Mesh();
-	
+
+	std::string t_FolderPath = "Graphics/Meshes/";
 	StreamFile t_File = StreamFile();
-	t_File.OpenFileRead(p_FileName);
+	t_File.OpenFileRead(t_FolderPath + p_FileName);
 
 	//vertex
 	Mesh::VertexGroups t_Groups;
@@ -66,7 +67,8 @@ Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 void MeshResourceLoadSave::Save(Resource* p_File)
 {
 	StreamFile t_File = StreamFile();
-	t_File.OpenFileWrite(p_File->GetName());
+	std::string t_FolderPath = "Graphics/Meshes/";
+	t_File.OpenFileWrite(t_FolderPath + p_File->GetName());
 	
 	Mesh* t_Mesh = (Mesh*)p_File;
 	

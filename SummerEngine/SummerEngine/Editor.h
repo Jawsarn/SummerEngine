@@ -20,6 +20,6 @@ private:
 	//test
 	std::vector<Entity*> m_TestEntities;
 
-	bool LoadTexture(std::string p_FileName,  Material::MaterialData* p_MaterialData);
+	bool LoadTexture(std::string p_FileName,  Material* p_MaterialData);
 };
 

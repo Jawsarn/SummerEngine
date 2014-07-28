@@ -59,7 +59,9 @@ private:
 	HRESULT InitializeConstantBuffers();
 	HRESULT InitializeGBuffers();
 	HRESULT InitializeSamplerState();
-	
+
+	void SetShaders();
+	void SetTextures(RenderObject* p_Object);
 
 
 	//initialize and handles
@@ -151,7 +153,7 @@ private:
 	ID3D11VertexShader* m_DeferredVS;
 	ID3D11ComputeShader* m_DeferredCS;
 	ID3D11InputLayout* m_TestLayout;
-	void Renderer::SetShaders();
+
 	std::vector<CameraStruct> m_Cameras;
 
 	std::vector<PointLight>		m_PointLights;
