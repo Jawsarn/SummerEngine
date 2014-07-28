@@ -1,0 +1,19 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl None
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+
+newmtl Skelleton
+Ns 194.117647
+Ka 0.000000 0.000000 0.000000
+Kd 0.794667 0.789333 0.800000
+Ks 0.050000 0.050000 0.050000
+Ni 1.000000
+d 1.000000
+illum 2
