@@ -14,6 +14,7 @@ public:
 
 	void SetTextureView(ID3D11ShaderResourceView* p_TextureView);
 	ID3D11ShaderResourceView* GetTextureView();
+	D3D11_TEXTURE2D_DESC* GetDesc2D();
 	float GetWidth();
 	float GetHeight();
 
