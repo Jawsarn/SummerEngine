@@ -23,7 +23,7 @@ ScreenManager::~ScreenManager()
 
 void ScreenManager::Init()
 {
-	std::string t_TextureName = "COL.dds";
+	std::string t_TextureName = "COL";
 	Screen* t_NewScreen = new Screen(t_TextureName);
 	
 	m_Screens.push_back(t_NewScreen);

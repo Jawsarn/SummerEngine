@@ -73,8 +73,8 @@ void OnMouseMove(WPARAM btnStae, int x, int y)
 		m_Cam->RotateY(dx);
 	}
 	
-	//ScreenManager* t_ScreenManager = t_ScreenManager->GetInstance();
-	//t_ScreenManager->Update(x, y);
+	/*ScreenManager* t_ScreenManager = t_ScreenManager->GetInstance();
+	t_ScreenManager->Update(x, y);*/
 
 	g_LastMousePos.x = x;
 	g_LastMousePos.y = y;
