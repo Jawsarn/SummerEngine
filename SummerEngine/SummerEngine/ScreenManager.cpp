@@ -23,7 +23,7 @@ ScreenManager::~ScreenManager()
 
 void ScreenManager::Init()
 {
-	std::string t_TextureName = "COL";
+	std::string t_TextureName = "COL.dds";
 	Screen* t_NewScreen = new Screen(t_TextureName);
 	
 	m_Screens.push_back(t_NewScreen);
@@ -39,7 +39,12 @@ void ScreenManager::Update(int x, int y)
 
 	if (m_Screens[0]->GetCollisionBox()->Contains(t_Point))
 	{
-		int xD = 0;
+		m_Screens[0]->SetColor(XMFLOAT4(1,0,0,0));
+	}
+
+	else
+	{
+		m_Screens[0]->SetColor(XMFLOAT4(0, 0, 0, 0));
 	}
 	
 	
