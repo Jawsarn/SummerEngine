@@ -3,7 +3,7 @@
 #include <DirectXMath.h>
 #include "Mesh.h"
 #include "Component.h"
-
+#include "ShadowMap.h"
 
 using namespace DirectX;
 
@@ -85,7 +85,7 @@ private:
 
 	void SetShaders(ShaderProgram *p_Program);
 	void SetTextures(RenderObject* p_Object);
-
+	void SetPerFrameBuffers(std::vector<CameraStruct>* p_Cameras);
 
 	//initialize and handles
 	ID3D11Device*			m_Device;
@@ -184,5 +184,9 @@ private:
 
 	ShaderProgram* m_DeferredShaderProgram;
 	ShaderProgram* m_ShadowMapShaderProgram;
+	ShadowMap* m_ShadowMap;
+	std::vector<D3D11_VIEWPORT> m_Viewports;
+
+	std::vector<CameraStruct> m_ShadowMapMatrices;
 };
 

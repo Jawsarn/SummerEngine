@@ -93,6 +93,18 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	m_DeviceContext->UpdateSubresource(m_PerComputeBuffer, 0, nullptr, &t_PerCompute, 0, 0);
 
+	m_ShadowMap = new ShadowMap(m_Device, 2048, 2048);
+	CameraStruct t_Cam;
+	t_Cam.Position = XMFLOAT3(1, 0, 0);
+	
+	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(0, 10, -15));
+	XMVECTOR t_At = XMLoadFloat3(&XMFLOAT3(0, 0, 0));
+	XMVECTOR t_Up = XMLoadFloat3(&XMFLOAT3(0, 1, 0));
+	XMStoreFloat4x4(&t_Cam.Proj, XMMatrixOrthographicLH(2048, 2048, 0, 10000.0f));
+	XMStoreFloat4x4(&t_Cam.View, XMMatrixLookAtLH(t_Eye, t_At, t_Up));
+
+	m_ShadowMapMatrices.push_back(t_Cam);
+
 	return true;
 }
 
@@ -123,7 +135,7 @@ bool Renderer::CreateTexture(const wchar_t * p_FileName, ID3D11ShaderResourceVie
 
 void Renderer::SetViewports(std::vector<D3D11_VIEWPORT> p_Viewports)
 {
-	m_DeviceContext->RSSetViewports(p_Viewports.size(), &p_Viewports[0]);
+	m_Viewports = p_Viewports;
 }
 
 void Renderer::SetCameras(std::vector<Renderer::CameraStruct> p_Cameras)
@@ -737,6 +749,34 @@ void Renderer::SetTextures(RenderObject* p_Object)
 	}
 }
 
+void Renderer::SetPerFrameBuffers(std::vector<CameraStruct>* p_Cameras)
+{
+	//set cameras
+	if (p_Cameras->size() != 0)
+	{
+		int t_NumOfCameras = p_Cameras->size();
+		PerFrameTestBuffer t_PerFrameBuffer;
+
+		t_PerFrameBuffer.Proj = XMMatrixTranspose(XMLoadFloat4x4(&p_Cameras->at(0).Proj));
+		t_PerFrameBuffer.View = XMMatrixTranspose(XMLoadFloat4x4(&p_Cameras->at(0).View));
+		XMFLOAT3 t_Pos = p_Cameras->at(0).Position;
+		t_PerFrameBuffer.EyePosition = XMFLOAT4(t_Pos.x, t_Pos.y, t_Pos.z, 0);
+		//t_PerFrameBuffer.ViewProj = XMMatrixTranspose( XMLoadFloat4x4(&m_Cameras[0].ViewProj));
+
+		m_DeviceContext->UpdateSubresource(m_TestPerFrameBuffer, 0, nullptr, &t_PerFrameBuffer, 0, 0); //be aware of change
+	}
+	else
+	{
+		CameraStruct t_Temp;
+		XMFLOAT4X4 t_Mat;
+		XMStoreFloat4x4(&t_Mat, XMMatrixIdentity());
+		t_Temp.Proj = t_Mat;
+		t_Temp.View = t_Mat;
+		//t_Temp.ViewProj = t_Mat;
+		m_DeviceContext->UpdateSubresource(m_TestPerFrameBuffer, 0, nullptr, &t_Temp, 0, 0);
+	}
+}
+
 void Renderer::BeginRender()
 {
 	if (m_IsRendering)
@@ -754,36 +794,15 @@ void Renderer::BeginRender()
 		m_DeviceContext->ClearRenderTargetView(m_GbufferTargetViews[i], Colors::Black);
 	}
 
-	//set cameras
-	if (m_Cameras.size() != 0)
-	{
-		int t_NumOfCameras = m_Cameras.size();
-		PerFrameTestBuffer t_PerFrameBuffer;
-		
-		t_PerFrameBuffer.Proj = XMMatrixTranspose( XMLoadFloat4x4( &m_Cameras[0].Proj ));
-		t_PerFrameBuffer.View = XMMatrixTranspose(XMLoadFloat4x4(&m_Cameras[0].View));
-		XMFLOAT3 t_Pos = m_Cameras[0].Position;
-		t_PerFrameBuffer.EyePosition = XMFLOAT4(t_Pos.x, t_Pos.y, t_Pos.z, 0);
-		//t_PerFrameBuffer.ViewProj = XMMatrixTranspose( XMLoadFloat4x4(&m_Cameras[0].ViewProj));
-
-		m_DeviceContext->UpdateSubresource(m_TestPerFrameBuffer, 0, nullptr, &t_PerFrameBuffer, 0, 0); //be aware of change
-	}
-	else
-	{
-		CameraStruct t_Temp;
-		XMFLOAT4X4 t_Mat;
-		XMStoreFloat4x4(&t_Mat, XMMatrixIdentity());
-		t_Temp.Proj = t_Mat;
-		t_Temp.View = t_Mat;
-		//t_Temp.ViewProj = t_Mat;
-		m_DeviceContext->UpdateSubresource(m_TestPerFrameBuffer, 0, nullptr, &t_Temp,0,0);
-	}
+	SetPerFrameBuffers(&m_Cameras);
 	
 	m_IsRendering = true;
 }
 
 void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already sorted here on something,
 {
+	m_DeviceContext->RSSetViewports(m_Viewports.size(), &m_Viewports[0]);
+
 	SetShaders(m_DeferredShaderProgram);
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_DeviceContext->OMSetRenderTargets(3, m_GbufferTargetViews, m_DepthStencilView);
@@ -912,7 +931,7 @@ void Renderer::RenderShadowmaps(RenderObjects* p_RenderObjects)
 	SetShaders(m_ShadowMapShaderProgram);
 
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	
+	m_ShadowMap->PrepareDraw(m_DeviceContext);
 
 	int t_NumOfObjects = p_RenderObjects->size();
 	if (t_NumOfObjects == 0)
@@ -920,7 +939,7 @@ void Renderer::RenderShadowmaps(RenderObjects* p_RenderObjects)
 		return;
 	}
 
-	//std::vector<ID3D11Buffer*> t_BuffersToDraw; //can be direct inputted into the IA stage
+
 	std::vector<std::vector<Material*>> t_MaterialsPerBuffer; //is to be updated after each "draw"
 	std::vector<XMFLOAT4X4> t_TranslationsPerMaterial; //should be able to be inputted aside with vertex buffer in the early AI stage
 
@@ -985,9 +1004,6 @@ void Renderer::RenderShadowmaps(RenderObjects* p_RenderObjects)
 
 			ID3D11Buffer* t_InBuffers[2] = { t_VertexBuffer, m_InstanceBuffer };
 
-
-			SetTextures(t_RenderObject);
-
 			m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets); //set both vertex and instance buffer
 			m_DeviceContext->IASetIndexBuffer(t_IndexBuffer, DXGI_FORMAT_R32_UINT, indexOffset);
 			//m_DeviceContext->IASetIndexBuffer();
@@ -1020,11 +1036,10 @@ void Renderer::RenderShadowmaps(RenderObjects* p_RenderObjects)
 
 		m_DeviceContext->Unmap(m_InstanceBuffer, 0);
 
-		SetTextures(t_RenderObject);
+
 		ID3D11Buffer* t_InBuffers[2] = { t_VertexBuffer, m_InstanceBuffer };
 		m_DeviceContext->IASetVertexBuffers(0, 2, t_InBuffers, strides, offsets);
 		m_DeviceContext->IASetIndexBuffer(t_IndexBuffer, DXGI_FORMAT_R32_UINT, indexOffset);
-
 
 		m_DeviceContext->DrawIndexedInstanced(t_VertexBuffSize, t_NumOfInstances, 0, 0, 0);
 	}
@@ -1032,6 +1047,8 @@ void Renderer::RenderShadowmaps(RenderObjects* p_RenderObjects)
 
 void Renderer::ComputeDeferred()
 {
+	SetPerFrameBuffers(&m_Cameras);
+	
 	m_DeviceContext->CSSetShader(m_DeferredCS, nullptr, 0);
 
 
