@@ -13,6 +13,7 @@ Screen::Screen(std::string p_TextureName)
 	this->m_Speed = 0.0f;
 	this->m_Position = XMFLOAT2(0.5f,0.5f);
 	this->m_IsRendered = true;
+	LoadContent(p_TextureName);
 }
 
 

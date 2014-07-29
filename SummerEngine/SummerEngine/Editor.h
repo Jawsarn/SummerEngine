@@ -1,7 +1,7 @@
 #pragma once
 #include "Import.h"
 #include "Entity.h"
-
+#include "ScreenManager.h"
 
 class Editor
 {
@@ -11,11 +11,10 @@ public:
 	void Release();
 	void InitEditor();
 	void Update();
-	HRESULT Render(ID3D11DeviceContext* p_DeviceContext);
 
 private:
-	//Shader shader;//test
 	Import* m_import;
+	ScreenManager* m_ScreenManager;
 
 	//test
 	std::vector<Entity*> m_TestEntities;
