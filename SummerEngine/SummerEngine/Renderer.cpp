@@ -80,8 +80,9 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	//test stuff
 	
-	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(1,6,-19), 15, XMFLOAT3(1,1,1));
+	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(1,6,-19), 30, XMFLOAT3(1,1,1));
 	m_AmountOfPointLights++;
+	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(4, 6, -13), 30, XMFLOAT3(1, 0, 0));
 
 	m_DeviceContext->UpdateSubresource(m_PointLightsBuffer, 0, nullptr, &m_PointLights[0], 0, 0);
 
@@ -1043,6 +1044,9 @@ void Renderer::RenderShadowmaps(RenderObjects* p_RenderObjects)
 
 		m_DeviceContext->DrawIndexedInstanced(t_VertexBuffSize, t_NumOfInstances, 0, 0, 0);
 	}
+
+	ID3D11RenderTargetView* t_NullView = { 0 };
+	m_DeviceContext->OMSetRenderTargets(1, &t_NullView, m_DepthStencilView);
 }
 
 void Renderer::ComputeDeferred()
