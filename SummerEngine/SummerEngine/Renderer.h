@@ -28,6 +28,7 @@ public:
 		XMFLOAT3 Position;
 		//XMFLOAT4X4 ViewProj;
 	};
+
 	typedef std::vector<RenderObject*> RenderObjects;
 
 
@@ -41,6 +42,7 @@ public:
 	void SetCameras(std::vector<CameraStruct> p_Cameras);
 	void BeginRender();
 	void RenderOpaque(RenderObjects* p_RenderObjects);
+	void RenderShadowmaps(RenderObjects* p_RenderObjects);
 	void ComputeDeferred();
 	void RenderTransparent(RenderObjects* p_RenderObjects);
 	void EndRender();
@@ -48,6 +50,27 @@ public:
 private:
 	Renderer();
 	~Renderer();
+
+	struct ShaderProgram
+	{
+		ID3D11InputLayout* InputLayout;
+		ID3D11VertexShader* VertexShader;
+		ID3D11GeometryShader* GeometryShader;
+		ID3D11HullShader* HullShader;
+		ID3D11DomainShader* DomainShader;
+		ID3D11PixelShader* PixelShader;
+		ID3D11ComputeShader* ComputeShader;
+		ShaderProgram()
+		{
+			InputLayout = nullptr;
+			VertexShader = nullptr;
+			GeometryShader = nullptr;
+			HullShader = nullptr;
+			DomainShader = nullptr;
+			PixelShader = nullptr;
+			ComputeShader = nullptr;
+		}
+	};
 
 	HRESULT InitializeDriverAndVersion(HWND p_HandleWindow);
 	HRESULT InitializeRenderTargetView();
@@ -60,7 +83,7 @@ private:
 	HRESULT InitializeGBuffers();
 	HRESULT InitializeSamplerState();
 
-	void SetShaders();
+	void SetShaders(ShaderProgram *p_Program);
 	void SetTextures(RenderObject* p_Object);
 
 
@@ -144,15 +167,13 @@ private:
 		}
 	};
 
-
+	
 	ID3D11Buffer* m_TestPerFrameBuffer;
 	ID3D11Buffer* m_PerComputeBuffer;
 
 	ID3D11Buffer* m_InstanceBuffer;
-	ID3D11PixelShader* m_DeferredPS;
-	ID3D11VertexShader* m_DeferredVS;
 	ID3D11ComputeShader* m_DeferredCS;
-	ID3D11InputLayout* m_TestLayout;
+
 
 	std::vector<CameraStruct> m_Cameras;
 
@@ -160,5 +181,8 @@ private:
 	int m_AmountOfPointLights;
 	ID3D11Buffer*				m_PointLightsBuffer;
 	ID3D11ShaderResourceView*	m_PointLightsBufferSRV;
+
+	ShaderProgram* m_DeferredShaderProgram;
+	ShaderProgram* m_ShadowMapShaderProgram;
 };
 
