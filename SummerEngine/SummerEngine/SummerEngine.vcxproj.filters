@@ -334,6 +334,9 @@
     <None Include="Graphics\Objs\Avatar.mtl">
       <Filter>Resources\Objs</Filter>
     </None>
+    <None Include="Graphics\Objs\scene.mtl">
+      <Filter>Resources\Objs</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Object Include="Graphics\Objs\testFile.obj">
@@ -349,6 +352,9 @@
       <Filter>Resources\Objs</Filter>
     </Object>
     <Object Include="Graphics\Objs\Avatar.obj">
+      <Filter>Resources\Objs</Filter>
+    </Object>
+    <Object Include="Graphics\Objs\scene.obj">
       <Filter>Resources\Objs</Filter>
     </Object>
   </ItemGroup>

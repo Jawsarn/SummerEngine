@@ -147,6 +147,7 @@
   <ItemGroup>
     <None Include="Graphics\Objs\Avatar.mtl" />
     <None Include="Graphics\Objs\Robot.mtl" />
+    <None Include="Graphics\Objs\scene.mtl" />
     <None Include="Graphics\Objs\SkelletonScene.mtl" />
     <None Include="Graphics\Objs\SoccerBall.mtl" />
     <None Include="Graphics\Objs\testFile.mtl">
@@ -158,6 +159,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Graphics\Objs\Robot.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="Graphics\Objs\scene.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Graphics\Objs\SkelletonScene.obj">
