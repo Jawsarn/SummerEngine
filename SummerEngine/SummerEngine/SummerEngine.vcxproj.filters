@@ -88,6 +88,9 @@
     <Filter Include="Graphics\Textures">
       <UniqueIdentifier>{011f6e6a-63fe-43fe-a2c1-fc098e7a7dd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Sprites">
+      <UniqueIdentifier>{9c94b1d4-c936-4288-beae-d722e0197fc1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -376,6 +379,12 @@
     </FxCompile>
     <FxCompile Include="ShadowMapPS.hlsl">
       <Filter>Shaders\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="SpriteVS.hlsl">
+      <Filter>Shaders\Sprites</Filter>
+    </FxCompile>
+    <FxCompile Include="SpritePS.hlsl">
+      <Filter>Shaders\Sprites</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

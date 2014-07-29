@@ -182,6 +182,7 @@ private:
 	ID3D11Buffer*				m_PointLightsBuffer;
 	ID3D11ShaderResourceView*	m_PointLightsBufferSRV;
 
+	ShaderProgram* m_SpriteShaderProgram;
 	ShaderProgram* m_DeferredShaderProgram;
 	ShaderProgram* m_ShadowMapShaderProgram;
 	ShadowMap* m_ShadowMap;
