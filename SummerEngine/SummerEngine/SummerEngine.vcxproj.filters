@@ -73,20 +73,20 @@
     <Filter Include="Header Files\Graphic\2D">
       <UniqueIdentifier>{153082ec-ebd3-4527-abf0-e8e5311b822f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{8778e790-ca03-479e-ba30-f19b740cf0f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Objs">
-      <UniqueIdentifier>{ddb39a0f-a3d0-47fa-8236-885123f0fbd7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Textures">
-      <UniqueIdentifier>{011f6e6a-63fe-43fe-a2c1-fc098e7a7dd9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shaders\Deferred">
       <UniqueIdentifier>{8626dae1-4b8f-4460-a790-61b55c77efa3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shaders\ShadowMap">
       <UniqueIdentifier>{34302b92-0613-4169-8f70-4e1f91376b8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{8778e790-ca03-479e-ba30-f19b740cf0f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Objs">
+      <UniqueIdentifier>{ddb39a0f-a3d0-47fa-8236-885123f0fbd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Textures">
+      <UniqueIdentifier>{011f6e6a-63fe-43fe-a2c1-fc098e7a7dd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -320,42 +320,42 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\Objs\testFile.mtl">
-      <Filter>Resources\Objs</Filter>
+      <Filter>Graphics\Objs</Filter>
     </None>
     <None Include="Graphics\Objs\SoccerBall.mtl">
-      <Filter>Resources\Objs</Filter>
+      <Filter>Graphics\Objs</Filter>
     </None>
     <None Include="Graphics\Objs\SkelletonScene.mtl">
-      <Filter>Resources\Objs</Filter>
+      <Filter>Graphics\Objs</Filter>
     </None>
     <None Include="Graphics\Objs\Robot.mtl">
-      <Filter>Resources\Objs</Filter>
+      <Filter>Graphics\Objs</Filter>
     </None>
     <None Include="Graphics\Objs\Avatar.mtl">
-      <Filter>Resources\Objs</Filter>
+      <Filter>Graphics\Objs</Filter>
     </None>
     <None Include="Graphics\Objs\scene.mtl">
-      <Filter>Resources\Objs</Filter>
+      <Filter>Graphics\Objs</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Object Include="Graphics\Objs\testFile.obj">
-      <Filter>Resources\Objs</Filter>
+      <Filter>Graphics\Objs</Filter>
     </Object>
     <Object Include="Graphics\Objs\SoccerBall.obj">
-      <Filter>Resources\Objs</Filter>
+      <Filter>Graphics\Objs</Filter>
     </Object>
     <Object Include="Graphics\Objs\SkelletonScene.obj">
-      <Filter>Resources\Objs</Filter>
+      <Filter>Graphics\Objs</Filter>
     </Object>
     <Object Include="Graphics\Objs\Robot.obj">
-      <Filter>Resources\Objs</Filter>
+      <Filter>Graphics\Objs</Filter>
     </Object>
     <Object Include="Graphics\Objs\Avatar.obj">
-      <Filter>Resources\Objs</Filter>
+      <Filter>Graphics\Objs</Filter>
     </Object>
     <Object Include="Graphics\Objs\scene.obj">
-      <Filter>Resources\Objs</Filter>
+      <Filter>Graphics\Objs</Filter>
     </Object>
   </ItemGroup>
   <ItemGroup>
@@ -380,10 +380,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Graphics\Textures\COL.dds">
-      <Filter>Resources\Textures</Filter>
+      <Filter>Graphics\Textures</Filter>
     </Image>
     <Image Include="Graphics\Textures\NRM.dds">
-      <Filter>Resources\Textures</Filter>
+      <Filter>Graphics\Textures</Filter>
     </Image>
   </ItemGroup>
 </Project>
