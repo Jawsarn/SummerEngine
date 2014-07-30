@@ -24,6 +24,7 @@ Renderer::Renderer()
 	*m_Width = 0;
 	m_IsRendering = false;
 	m_AmountOfPointLights = 0;
+	m_SpriteShaderProgram = new ShaderProgram();
 	m_DeferredShaderProgram = new ShaderProgram();
 	m_ShadowMapShaderProgram = new ShaderProgram();
 }
@@ -437,6 +438,36 @@ HRESULT Renderer::InitializeShaders()
 	HRESULT hr = S_OK;
 
 	ShaderLoader t_ShaderLoader = ShaderLoader();
+	////SPRITE RENDERING
+	{
+		ID3D11VertexShader* t_VertexShader;
+		ID3D11InputLayout* t_InputLayout;
+
+		D3D11_INPUT_ELEMENT_DESC t_Layout[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+		};
+		UINT t_NumElements = ARRAYSIZE(t_Layout);
+
+		hr = t_ShaderLoader.CreateVertexShaderWithInputLayout(L"SpriteVS.hlsl", "VS", "vs_5_0", m_Device, &t_VertexShader, t_Layout, t_NumElements, &t_InputLayout);
+		if (FAILED(hr))
+			return hr;
+
+		m_SpriteShaderProgram->VertexShader = t_VertexShader;
+		m_SpriteShaderProgram->InputLayout = t_InputLayout;
+	}
+
+	{
+		ID3D11PixelShader* t_PixelShader;
+		hr = t_ShaderLoader.CreatePixelShader(L"SpritePS.hlsl", "PS", "ps_5_0", m_Device, &t_PixelShader);
+		if (FAILED(hr))
+			return hr;
+		m_SpriteShaderProgram->PixelShader = t_PixelShader;
+	}
+
+
 	////DEFERRED RENDERING
 	{
 		ID3D11VertexShader* t_VertexShader;
