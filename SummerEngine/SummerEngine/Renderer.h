@@ -143,6 +143,14 @@ private:
 		XMFLOAT4 ColorOverlay;
 	};
 
+	struct ShadowMapBuffer
+	{
+		XMMATRIX WorldViewProj;
+		float Shadow_Width;
+		float Shadow_Height;
+		XMFLOAT2 Fillers;
+	};
+
 	struct PointLight
 	{
 		
@@ -170,6 +178,7 @@ private:
 	
 	ID3D11Buffer* m_TestPerFrameBuffer;
 	ID3D11Buffer* m_PerComputeBuffer;
+	ID3D11Buffer* m_ShadowMapBuffer;
 
 	ID3D11Buffer* m_InstanceBuffer;
 	ID3D11ComputeShader* m_DeferredCS;

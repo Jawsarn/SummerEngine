@@ -8,6 +8,9 @@ public:
 	~ShadowMap();
 	void PrepareDraw(ID3D11DeviceContext* p_DeviceContext);
 
+	ID3D11ShaderResourceView* GetResourceView();
+	UINT GetWidth();
+	UINT GetHeight();
 private:
 	UINT m_Width;
 	UINT m_Height;

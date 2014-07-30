@@ -80,9 +80,9 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	//test stuff
 	
-	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(1,6,-19), 30, XMFLOAT3(1,1,1));
+	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(1,6,2), 30, XMFLOAT3(1,1,1));
 	m_AmountOfPointLights++;
-	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(4, 6, -13), 30, XMFLOAT3(1, 0, 0));
+	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(4, 6, -3), 30, XMFLOAT3(1, 0, 0));
 
 	m_DeviceContext->UpdateSubresource(m_PointLightsBuffer, 0, nullptr, &m_PointLights[0], 0, 0);
 
@@ -98,10 +98,11 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 	CameraStruct t_Cam;
 	t_Cam.Position = XMFLOAT3(1, 0, 0);
 	
-	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(0, 10, -15));
+	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(0, 30, 0));
 	XMVECTOR t_At = XMLoadFloat3(&XMFLOAT3(0, 0, 0));
-	XMVECTOR t_Up = XMLoadFloat3(&XMFLOAT3(0, 1, 0));
-	XMStoreFloat4x4(&t_Cam.Proj, XMMatrixOrthographicLH(2048, 2048, 0, 10000.0f));
+	XMVECTOR t_Up = XMLoadFloat3(&XMFLOAT3(1, 0, 0));
+	//XMStoreFloat4x4(&t_Cam.Proj, XMMatrixOrthographicLH(2048, 2048, 0, 10000.0f));
+	XMStoreFloat4x4(&t_Cam.Proj, XMMatrixPerspectiveFovLH(XM_PIDIV4, 1.0, 0, 10000.0f));
 	XMStoreFloat4x4(&t_Cam.View, XMMatrixLookAtLH(t_Eye, t_At, t_Up));
 
 	m_ShadowMapMatrices.push_back(t_Cam);
@@ -561,6 +562,22 @@ HRESULT Renderer::InitializeConstantBuffers()
 
 	{
 		D3D11_BUFFER_DESC t_BufferDesc;
+		t_BufferDesc.MiscFlags = 0;
+		t_BufferDesc.StructureByteStride = 0;
+		t_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		t_BufferDesc.ByteWidth = sizeof(ShadowMapBuffer);
+		t_BufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		t_BufferDesc.CPUAccessFlags = 0;
+
+		hr = m_Device->CreateBuffer(&t_BufferDesc, 0, &m_ShadowMapBuffer);
+		if (FAILED(hr))
+			return hr;
+
+		m_DeviceContext->CSSetConstantBuffers(2, 1, &m_ShadowMapBuffer);
+	}
+
+	{
+		D3D11_BUFFER_DESC t_BufferDesc;
 		ZeroMemory(&t_BufferDesc, sizeof(t_BufferDesc));
 		t_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
 		t_BufferDesc.CPUAccessFlags = 0;
@@ -588,6 +605,8 @@ HRESULT Renderer::InitializeConstantBuffers()
 
 		hr = m_Device->CreateShaderResourceView(m_PointLightsBuffer, &t_SrvDesc, &m_PointLightsBufferSRV);
 	}
+
+
 	return hr;
 }
 
@@ -795,13 +814,15 @@ void Renderer::BeginRender()
 		m_DeviceContext->ClearRenderTargetView(m_GbufferTargetViews[i], Colors::Black);
 	}
 
-	SetPerFrameBuffers(&m_Cameras);
+	
 	
 	m_IsRendering = true;
 }
 
 void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already sorted here on something,
 {
+	SetPerFrameBuffers(&m_Cameras);
+
 	m_DeviceContext->RSSetViewports(m_Viewports.size(), &m_Viewports[0]);
 
 	SetShaders(m_DeferredShaderProgram);
@@ -929,6 +950,8 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 
 void Renderer::RenderShadowmaps(RenderObjects* p_RenderObjects)
 {
+	SetPerFrameBuffers(&m_ShadowMapMatrices);
+	
 	SetShaders(m_ShadowMapShaderProgram);
 
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -1053,12 +1076,30 @@ void Renderer::ComputeDeferred()
 {
 	SetPerFrameBuffers(&m_Cameras);
 	
+	//set the shadowmap
+	ShadowMapBuffer t_ShadowMapBuffer;
+	XMMATRIX t_ViewInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_Cameras[0].View));
+	XMMATRIX t_ShadowView = XMLoadFloat4x4(&m_ShadowMapMatrices[0].View);
+	XMMATRIX t_ShadowProj = XMLoadFloat4x4(&m_ShadowMapMatrices[0].Proj);
+
+	XMMATRIX t_Finish = XMMatrixMultiply(t_ViewInv, t_ShadowView);
+	t_Finish = XMMatrixMultiply(t_Finish, t_ShadowProj);
+
+	t_ShadowMapBuffer.WorldViewProj = XMMatrixTranspose( t_Finish);
+	t_ShadowMapBuffer.Shadow_Width = (FLOAT)m_ShadowMap->GetWidth();
+	t_ShadowMapBuffer.Shadow_Height = (FLOAT)m_ShadowMap->GetHeight();
+	t_ShadowMapBuffer.Fillers = XMFLOAT2(0, 0);
+
+	m_DeviceContext->UpdateSubresource(m_ShadowMapBuffer, 0, nullptr, &t_ShadowMapBuffer, 0, 0);
+
 	m_DeviceContext->CSSetShader(m_DeferredCS, nullptr, 0);
 
 
 	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &m_BackBufferUAV, nullptr);
 	m_DeviceContext->CSSetShaderResources(1, 3, m_GbufferShaderResource);
 	m_DeviceContext->CSSetShaderResources(4, 1, &m_PointLightsBufferSRV);
+	ID3D11ShaderResourceView* t_View = m_ShadowMap->GetResourceView();
+	m_DeviceContext->CSSetShaderResources(5, 1, &t_View);
 
 	UINT x = ceil(*m_Width / (FLOAT)THREAD_BLOCK_DIMENSIONS);
 	UINT y = ceil(*m_Height / (FLOAT)THREAD_BLOCK_DIMENSIONS);
@@ -1070,6 +1111,9 @@ void Renderer::ComputeDeferred()
 
 	ID3D11UnorderedAccessView* t_TempDelete2 = { 0 };
 	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &t_TempDelete2, nullptr);
+
+	ID3D11ShaderResourceView* t_TempDelete3[1] = { 0 };
+	m_DeviceContext->CSSetShaderResources(5, 1, t_TempDelete3);
 }
 
 void Renderer::RenderTransparent(RenderObjects* p_RenderObjects)

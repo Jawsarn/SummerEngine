@@ -18,7 +18,7 @@ ShadowMap::ShadowMap(ID3D11Device* p_Device, UINT p_Width, UINT p_Height)
 	t_Desc.Height = m_Height;
 	t_Desc.MipLevels = 1;
 	t_Desc.ArraySize = 1;
-	t_Desc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+	t_Desc.Format = DXGI_FORMAT_R24G8_TYPELESS; //DXGI_FORMAT_R24G8_TYPELESS
 	t_Desc.SampleDesc.Count = 1;
 	t_Desc.SampleDesc.Quality = 0;
 	t_Desc.Usage = D3D11_USAGE_DEFAULT;
@@ -72,4 +72,19 @@ void ShadowMap::PrepareDraw(ID3D11DeviceContext* p_DeviceContext)
 	p_DeviceContext->OMSetRenderTargets(1, &t_EmptyRenderTarget, m_ShadowMap);
 
 	p_DeviceContext->ClearDepthStencilView(m_ShadowMap, D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
+ID3D11ShaderResourceView* ShadowMap::GetResourceView()
+{
+	return m_ShadowMapSRV;
+}
+
+UINT ShadowMap::GetWidth()
+{
+	return m_Width;
+}
+
+UINT ShadowMap::GetHeight()
+{
+	return m_Height;
 }

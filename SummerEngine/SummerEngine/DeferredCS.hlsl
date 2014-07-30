@@ -16,6 +16,14 @@ cbuffer PerCompute : register(c1)
 	float4 ColorOverlay;
 }
 
+cbuffer ShadowMapBuffer : register(c2)
+{
+	matrix ShadowMatrix;
+	float Shadow_Width;
+	float Shadow_Height;
+	float2 fillers;
+};
+
 struct PointLight
 {
 	float3 position;
@@ -48,7 +56,7 @@ RWTexture2D<float4> o_Output				:register(u0);
 
 //lights
 StructuredBuffer<PointLight> g_PointLights	:register(t4);
-StructuredBuffer<SpotLight> g_SpotLights	:register(t5);
+Texture2D<float> g_ShadowMap				:register(t5);
 
 //groupshared
 groupshared uint g_MinDepth;
@@ -240,6 +248,35 @@ float3 CalculateLighting(uint2 p_ThreadID, PixelData p_Data)
 	return finalColor;
 }
 
+float CalcShadowFactor(PixelData p_Data)
+{
+	float4 t_ShadowPos = mul(float4(p_Data.PositionView, 1), ShadowMatrix);
+		t_ShadowPos.xyz /= t_ShadowPos.w;
+
+	float t_Depth = t_ShadowPos.z;
+
+	if (t_ShadowPos.x >= 0.0f && t_ShadowPos.x <= 1.0f && 
+		t_ShadowPos.y >= 0.0f && t_ShadowPos.y <= 1.0f)
+	{
+		uint x = asuint(t_ShadowPos.x);
+		uint y = asuint(t_ShadowPos.y);
+		uint2 cordinates = uint2( x* Shadow_Width,  y* Shadow_Height);
+		
+		float t_ShadowDepth = g_ShadowMap[cordinates];
+		if (t_ShadowDepth < t_Depth)
+		{
+			return 0.0f;
+		}
+		else
+		{
+			return 1.0f;
+		}
+	}
+	else
+	{
+		return 1.0f;
+	}
+}
 
 [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)]
 void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_GroupThreadID, uint3 p_GroupID : SV_GroupID )
@@ -268,9 +305,15 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_Grou
 
 	float3 finalColor = CalculateLighting(p_ThreadID.xy, t_Data);
 
-		//o_Output[p_ThreadID.xy] = g_DiffuseColor_Spec[p_ThreadID.xy];
-		o_Output[p_ThreadID.xy] = float4(finalColor, 1);
-		//o_Output[p_ThreadID.xy] = g_Normal_Depth[p_ThreadID.xy];
-		//o_Output[p_ThreadID.xy] = float4(g_MaxDepth, g_MaxDepth, g_MaxDepth, 1);
-		//o_Output[p_ThreadID.xy] = float4(t_Data.NormalView.x, t_Data.NormalView.y, t_Data.NormalView.z, 0);
+	float t_DepthFactor = CalcShadowFactor(t_Data);
+
+	finalColor *= t_DepthFactor;
+
+	//o_Output[p_ThreadID.xy] = g_DiffuseColor_Spec[p_ThreadID.xy];
+	o_Output[p_ThreadID.xy] = float4(finalColor, 1);
+	//o_Output[p_ThreadID.xy] = g_Normal_Depth[p_ThreadID.xy];
+	//o_Output[p_ThreadID.xy] = float4(g_MaxDepth, g_MaxDepth, g_MaxDepth, 1);
+	//o_Output[p_ThreadID.xy] = float4(t_Data.NormalView.x, t_Data.NormalView.y, t_Data.NormalView.z, 0);
+	/*float deepth = g_ShadowMap[p_ThreadID.xy];
+	o_Output[p_ThreadID.xy] = float4(deepth, deepth, deepth,1);*/
 }
