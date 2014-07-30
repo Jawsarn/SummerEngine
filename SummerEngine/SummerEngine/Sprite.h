@@ -7,6 +7,18 @@
 class Sprite
 {
 public:
+	struct Vertex2D
+	{
+		XMFLOAT3 position;
+		XMFLOAT2 texCoord;
+
+		Vertex2D()
+		{
+			position = XMFLOAT3(0, 0, 0);
+			texCoord = XMFLOAT2(0, 0);
+		}
+	};
+
 	Sprite();
 	~Sprite();
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "Screen.h"
 #include <vector>
+#include "Renderer.h"
 
 class ScreenManager
 {
