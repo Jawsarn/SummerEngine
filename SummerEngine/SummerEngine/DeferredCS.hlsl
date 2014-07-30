@@ -254,13 +254,18 @@ float CalcShadowFactor(PixelData p_Data)
 		t_ShadowPos.xyz /= t_ShadowPos.w;
 
 	float t_Depth = t_ShadowPos.z;
+	t_ShadowPos.x = t_ShadowPos.x * 0.5f + 0.5f;
+	t_ShadowPos.y = t_ShadowPos.y * 0.5f + 0.5f;
 
 	if (t_ShadowPos.x >= 0.0f && t_ShadowPos.x <= 1.0f && 
 		t_ShadowPos.y >= 0.0f && t_ShadowPos.y <= 1.0f)
 	{
-		uint x = asuint(t_ShadowPos.x);
+		t_ShadowPos.x = t_ShadowPos.x * 2048;
+		t_ShadowPos.y = t_ShadowPos.y * 2048;
+		uint x = asuint(t_ShadowPos.x); //lol dis is just making everything 0...
 		uint y = asuint(t_ShadowPos.y);
-		uint2 cordinates = uint2( x* Shadow_Width,  y* Shadow_Height);
+
+		uint2 cordinates = uint2( x,  y);
 		
 		float t_ShadowDepth = g_ShadowMap[cordinates];
 		if (t_ShadowDepth < t_Depth)
@@ -307,13 +312,22 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_Grou
 
 	float t_DepthFactor = CalcShadowFactor(t_Data);
 
-	finalColor *= t_DepthFactor;
+	finalColor *= max(t_DepthFactor, 0.2f);
 
 	//o_Output[p_ThreadID.xy] = g_DiffuseColor_Spec[p_ThreadID.xy];
 	o_Output[p_ThreadID.xy] = float4(finalColor, 1);
 	//o_Output[p_ThreadID.xy] = g_Normal_Depth[p_ThreadID.xy];
 	//o_Output[p_ThreadID.xy] = float4(g_MaxDepth, g_MaxDepth, g_MaxDepth, 1);
 	//o_Output[p_ThreadID.xy] = float4(t_Data.NormalView.x, t_Data.NormalView.y, t_Data.NormalView.z, 0);
-	/*float deepth = g_ShadowMap[p_ThreadID.xy];
-	o_Output[p_ThreadID.xy] = float4(deepth, deepth, deepth,1);*/
+	//uint2 cords = uint2(asuint(asfloat(p_ThreadID.x)* 1.0666666f), asuint(asfloat(p_ThreadID.y) * 1.89629629f));
+	//float deepth = g_ShadowMap[cords.xy];
+	//if (deepth > 1.0f ||deepth < 0.0f)
+	//{
+	//	o_Output[p_ThreadID.xy] = float4(1, 0, 0, 1);
+	//}
+	//else
+	//{
+	//	o_Output[p_ThreadID.xy] = float4(deepth, deepth, deepth, 1);
+	//}
+	
 }
