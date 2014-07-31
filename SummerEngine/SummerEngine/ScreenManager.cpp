@@ -27,22 +27,36 @@ void ScreenManager::Init()
 	Screen* t_NewScreen = new Screen(t_TextureName);
 	
 	m_Screens.push_back(t_NewScreen);
-	m_Screens[0]->SetPosition(XMFLOAT2(0.25f, 0.25f));
+	m_Screens[0]->SetPosition(XMFLOAT2(0.0f, 0.0f));
 
 	Renderer* t_Renderer = t_Renderer->GetInstance();
+	m_Screens[0]->SetScale(0.5f);
 
-	XMFLOAT3 t_Position; m_Screens[0]->GetPosition();
-	float t_Width = m_Screens[0]->GetTexture()->GetWidth();
-	float t_Height = m_Screens[0]->GetTexture()->GetHeight();
+	XMFLOAT2 t_Position = XMFLOAT2(0, 0);
+	float t_TextureWidth = m_Screens[0]->GetTexture()->GetWidth();
+	float t_TextureHeight = m_Screens[0]->GetTexture()->GetHeight();
 
-	XMFLOAT3 t_LeftUp = XMFLOAT3((t_Position.x - t_Width / 2), 
-		(t_Position.y + t_Height / 2), 0);
-	XMFLOAT3 t_LeftDown = XMFLOAT3((t_Position.x - t_Width / 2),
-		(t_Position.y - t_Height / 2), 0);
-	XMFLOAT3 t_RightUp = XMFLOAT3((t_Position.x + t_Width / 2), 
-		(t_Position.y + t_Height / 2), 0);
-	XMFLOAT3 t_RightDown = XMFLOAT3((t_Position.x + t_Width / 2), 
-		(t_Position.y - t_Height / 2), 0);
+	float t_Width = t_TextureWidth / 1920;
+	float t_Height = t_TextureHeight / 1080;
+
+// 	t_Width = 1;
+// 	t_Height = 1;
+	
+
+	XMFLOAT3 t_LeftUp = XMFLOAT3((t_Position.x - t_Width * 0.5), 
+			(t_Position.y + t_Height * 0.5), 0);
+
+
+	XMFLOAT3 t_LeftDown = XMFLOAT3((t_Position.x - t_Width * 0.5),
+			(t_Position.y - t_Height * 0.5), 0);
+
+
+	XMFLOAT3 t_RightUp = XMFLOAT3((t_Position.x + t_Width * 0.5), 
+			(t_Position.y + t_Height * 0.5), 0);
+
+
+	XMFLOAT3 t_RightDown = XMFLOAT3((t_Position.x + t_Width * 0.5), 
+			(t_Position.y - t_Height * 0.5), 0);
 
 	Sprite::Vertex2D* t_Rect = new Sprite::Vertex2D[4];
 
@@ -58,6 +72,7 @@ void ScreenManager::Init()
 	t_Rect[1].position = t_RightUp;
 	t_Rect[1].texCoord = XMFLOAT2(1, 0);
 	
+
 	//Set vertex description
 	D3D11_BUFFER_DESC t_BufferDesc;
 	memset(&t_BufferDesc, 0, sizeof(t_BufferDesc));
@@ -68,7 +83,7 @@ void ScreenManager::Init()
 	D3D11_SUBRESOURCE_DATA t_Data;
 	t_Data.pSysMem = t_Rect;
 
-	ID3D11Buffer* t_VertexBuffer;
+	ID3D11Buffer* t_VertexBuffer = nullptr;
 	t_Renderer->CreateBuffer(&t_BufferDesc, &t_Data, &t_VertexBuffer);
 	
 	//delete
@@ -77,6 +92,8 @@ void ScreenManager::Init()
 		delete(t_Rect);
 		t_Rect = nullptr;
 	}
+	m_VertexBuffer =  nullptr;
+	m_VertexBuffer = t_VertexBuffer;
 }
 
 
@@ -99,13 +116,13 @@ void ScreenManager::Update(int x, int y)
 	
 }
 
-void ScreenManager::Draw()
-{
-	
-}
-
 std::vector<Screen*>& ScreenManager::GetScreen()
 {
 	return m_Screens;
+}
+
+ID3D11Buffer* ScreenManager::GetVertexBuffer()
+{
+	return m_VertexBuffer;
 }
 

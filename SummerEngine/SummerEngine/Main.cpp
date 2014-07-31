@@ -73,6 +73,7 @@ void OnMouseMove(WPARAM btnStae, int x, int y)
 		m_Cam->RotateY(dx);
 	}
 	
+	//Might find a better way
 	ScreenManager* t_ScreenManager = t_ScreenManager->GetInstance();
 	t_ScreenManager->Update(x, y);
 
