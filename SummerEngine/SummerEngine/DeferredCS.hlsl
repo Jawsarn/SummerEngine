@@ -262,21 +262,22 @@ float CalcShadowFactor(PixelData p_Data)
 	if (t_ShadowPos.x >= 0.0f && t_ShadowPos.x <= 1.0f && 
 		t_ShadowPos.y >= 0.0f && t_ShadowPos.y <= 1.0f)
 	{
-		t_ShadowPos.x = t_ShadowPos.x * 2048;
-		t_ShadowPos.y = t_ShadowPos.y * 2048;
-		uint x = asuint(t_ShadowPos.x); //lol dis is just making everything 0...
-		uint y = asuint(t_ShadowPos.y);
+		t_ShadowPos.x = t_ShadowPos.x * 1024.0f;
+		t_ShadowPos.y = t_ShadowPos.y * 1024.0f;
+	
 
-		uint2 cordinates = uint2( x,  y);
 		
-		float t_ShadowDepth = g_ShadowMap[cordinates].x;
+		
+		float t_ShadowDepth = g_ShadowMap[t_ShadowPos.xy];
+
+		
 		if (t_ShadowDepth < t_Depth)
 		{
 			return t_ShadowDepth;
 		}
 		else
 		{
-			return 1.0f;
+			return 0.0f;
 		}
 	}
 	else

@@ -95,16 +95,16 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	m_DeviceContext->UpdateSubresource(m_PerComputeBuffer, 0, nullptr, &t_PerCompute, 0, 0);
 
-	m_ShadowMap = new ShadowMap(m_Device, 2048, 2048);
+	m_ShadowMap = new ShadowMap(m_Device, 1024, 1024);
 	CameraStruct t_Cam;
 	t_Cam.Position = XMFLOAT3(1, 0, 0);
 	
-	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(10, 25, 0));
-	XMVECTOR t_At = XMLoadFloat3(&XMFLOAT3(10, 1, 0));
+	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(0, 10, 0));
+	XMVECTOR t_At = XMLoadFloat3(&XMFLOAT3(0, -1, 0));
 	XMVECTOR t_Up = XMLoadFloat3(&XMFLOAT3(1, 0, 0));
 	//XMStoreFloat4x4(&t_Cam.Proj, XMMatrixOrthographicLH(2048, 2048, 0, 10000.0f));
-	XMStoreFloat4x4(&t_Cam.Proj, XMMatrixPerspectiveFovLH(XM_PIDIV4, 1.0, 0.5f, 100.0f));
-	XMStoreFloat4x4(&t_Cam.View, XMMatrixLookAtLH(t_Eye, t_At, t_Up));
+	XMStoreFloat4x4(&t_Cam.Proj, XMMatrixPerspectiveFovLH(XM_PIDIV4, 1.0, 0.5f, 100000.0f));
+	XMStoreFloat4x4(&t_Cam.View, XMMatrixLookToLH(t_Eye, t_At, t_Up));
 
 	m_ShadowMapMatrices.push_back(t_Cam);
 
