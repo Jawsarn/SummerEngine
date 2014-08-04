@@ -25,6 +25,7 @@ public:
 	Sprite(std::string p_TextureName);
 	Texture* GetTexture();
 	float GetSpeed();
+	float GetScale();
 	XMFLOAT2 GetDirection();
 	XMFLOAT2 GetOrigin();
 	XMFLOAT2 GetPosition();
@@ -43,6 +44,5 @@ protected:
 	XMFLOAT2 m_Direction;
 	bool m_IsRendered;
 	void LoadContent(std::string p_TextureName);
-	float GetScale();
 };
 

@@ -75,7 +75,7 @@ void OnMouseMove(WPARAM btnStae, int x, int y)
 	
 	//Might find a better way
 	ScreenManager* t_ScreenManager = t_ScreenManager->GetInstance();
-	t_ScreenManager->Update(x, y);
+	t_ScreenManager->MouseOver(0, x, y);
 
 	g_LastMousePos.x = x;
 	g_LastMousePos.y = y;

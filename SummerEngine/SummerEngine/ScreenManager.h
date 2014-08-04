@@ -8,12 +8,15 @@ class ScreenManager
 
 public:
 	static ScreenManager* GetInstance();
+	void Release();
 
 	void Init();
-	void Update(int x , int y);
+	void MouseOver(int p_Index, int x, int y);
 
-	std::vector<Screen*>& GetScreen();
-	ID3D11Buffer* GetVertexBuffer();
+	std::vector<Screen*>& GetScreens();
+	std::vector<ID3D11Buffer*> GetVertexBuffers();
+	void CreateSprite(std::string p_TextureName, XMFLOAT2 p_Position, float p_Width, float p_Height);
+	void Draw(ID3D11DeviceContext* p_DeviceContext);
 
 private:
 	ScreenManager();
@@ -21,7 +24,7 @@ private:
 	static ScreenManager* m_Singelton;
 
 	std::vector<Screen*> m_Screens;
-	ID3D11Buffer* m_VertexBuffer;
+	std::vector<ID3D11Buffer*> m_VertexBuffers;
 
 };
 
