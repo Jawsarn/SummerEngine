@@ -257,7 +257,7 @@ float CalcShadowFactor(PixelData p_Data)
 
 	float t_Depth = t_ShadowPos.z;
 	t_ShadowPos.x = t_ShadowPos.x * 0.5f + 0.5f;
-	t_ShadowPos.y = t_ShadowPos.y * 0.5f + 0.5f;
+	t_ShadowPos.y = t_ShadowPos.y * -0.5f + 0.5f;
 
 	if (t_ShadowPos.x >= 0.0f && t_ShadowPos.x <= 1.0f && 
 		t_ShadowPos.y >= 0.0f && t_ShadowPos.y <= 1.0f)
@@ -273,7 +273,7 @@ float CalcShadowFactor(PixelData p_Data)
 		
 		if (t_ShadowDepth < t_Depth)
 		{
-			return t_ShadowDepth;
+			return 1.0f;
 		}
 		else
 		{

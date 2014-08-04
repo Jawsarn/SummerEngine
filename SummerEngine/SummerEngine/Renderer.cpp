@@ -99,11 +99,11 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 	CameraStruct t_Cam;
 	t_Cam.Position = XMFLOAT3(1, 0, 0);
 	
-	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(0, 10, 0));
+	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(0, 15, 0));
 	XMVECTOR t_At = XMLoadFloat3(&XMFLOAT3(0, -1, 0));
-	XMVECTOR t_Up = XMLoadFloat3(&XMFLOAT3(1, 0, 0));
+	XMVECTOR t_Up = XMLoadFloat3(&XMFLOAT3(0, 0, 1));
 	//XMStoreFloat4x4(&t_Cam.Proj, XMMatrixOrthographicLH(2048, 2048, 0, 10000.0f));
-	XMStoreFloat4x4(&t_Cam.Proj, XMMatrixPerspectiveFovLH(XM_PIDIV4, 1.0, 0.5f, 100000.0f));
+	XMStoreFloat4x4(&t_Cam.Proj, XMMatrixPerspectiveFovLH(XM_PIDIV4, 1.0, 0.5f, 1000.0f));
 	XMStoreFloat4x4(&t_Cam.View, XMMatrixLookToLH(t_Eye, t_At, t_Up));
 
 	m_ShadowMapMatrices.push_back(t_Cam);
