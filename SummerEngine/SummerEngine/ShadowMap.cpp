@@ -72,6 +72,7 @@ void ShadowMap::PrepareDraw(ID3D11DeviceContext* p_DeviceContext)
 	p_DeviceContext->OMSetRenderTargets(1, &t_EmptyRenderTarget, m_ShadowMap);
 
 	p_DeviceContext->ClearDepthStencilView(m_ShadowMap, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
 }
 
 ID3D11ShaderResourceView* ShadowMap::GetResourceView()

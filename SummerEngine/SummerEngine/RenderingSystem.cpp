@@ -45,11 +45,7 @@ void RenderingSystem::Update()
 
 	m_Renderer->ComputeDeferred();
 
-	
-
 	//m_Renderer->RenderTransparent();
-
-	
 
 	m_Renderer->EndRender();
 }
