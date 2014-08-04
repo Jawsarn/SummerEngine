@@ -10,12 +10,10 @@ ScreenManager* ScreenManager::GetInstance()
 	return m_Singelton;
 }
 
-
 ScreenManager::ScreenManager()
 {
 	Init();
 }
-
 
 ScreenManager::~ScreenManager()
 {
@@ -57,9 +55,6 @@ void ScreenManager::Init()
 		m_Screens.push_back(t_NewScreen);
 
 		Renderer* t_Renderer = t_Renderer->GetInstance();
-
-
-		//NEED TO FIX SCALE
 
 		XMFLOAT2 t_Position = XMFLOAT2(i*-1*0.1f, 0);
 		float t_TextureWidth = m_Screens[i]->GetTexture()->GetWidth();
@@ -138,10 +133,6 @@ void ScreenManager::CreateSprite(std::string p_TextureName, XMFLOAT2 p_Position,
 	float t_Width = p_Width / 1920;
 	float t_Height = p_Height / 1080;
 
-	// 	t_Width = 1;
-	// 	t_Height = 1;
-
-
 	XMFLOAT3 t_LeftUp = XMFLOAT3((p_Position.x - t_Width * 0.5),
 		(p_Position.y + t_Height * 0.5), 0);
 
@@ -194,7 +185,6 @@ void ScreenManager::CreateSprite(std::string p_TextureName, XMFLOAT2 p_Position,
 	}
 
 }
-
 
 void ScreenManager::MouseOver(int p_Index, int x, int y)
 {
