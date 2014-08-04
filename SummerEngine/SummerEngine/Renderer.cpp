@@ -1166,7 +1166,6 @@ void Renderer::RenderTransparent(RenderObjects* p_RenderObjects)
 
 void Renderer::RenderSprites()
 {
-
 	SetPerFrameBuffers(&m_Cameras);
 
 	m_DeviceContext->RSSetViewports(m_Viewports.size(), &m_Viewports[0]);
@@ -1180,10 +1179,14 @@ void Renderer::RenderSprites()
 	SetShaders(m_SpriteShaderProgram);
 
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	ID3D11Buffer* t_Buffer = t_ScreenManager->GetVertexBuffer();
-	m_DeviceContext->IASetVertexBuffers(0, 1, &t_Buffer, &t_Stride, &t_Offset);
-	m_DeviceContext->Draw(4, 0);
 
+	int t_ScreenCount = t_ScreenManager->GetVertexBuffers().size();
+	for (int i = 0; i < t_ScreenCount; i++)
+	{
+		ID3D11Buffer* t_Buffer = t_ScreenManager->GetVertexBuffers()[i];
+		m_DeviceContext->IASetVertexBuffers(0, 1, &t_Buffer, &t_Stride, &t_Offset);
+		m_DeviceContext->Draw(4, 0);
+	}
 }
 
 void Renderer::EndRender()
