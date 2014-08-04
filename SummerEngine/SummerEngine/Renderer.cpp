@@ -103,7 +103,7 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 	XMVECTOR t_At = XMLoadFloat3(&XMFLOAT3(10, 1, 0));
 	XMVECTOR t_Up = XMLoadFloat3(&XMFLOAT3(1, 0, 0));
 	//XMStoreFloat4x4(&t_Cam.Proj, XMMatrixOrthographicLH(2048, 2048, 0, 10000.0f));
-	XMStoreFloat4x4(&t_Cam.Proj, XMMatrixPerspectiveFovLH(XM_PIDIV4, 1.0, 0, 10000.0f));
+	XMStoreFloat4x4(&t_Cam.Proj, XMMatrixPerspectiveFovLH(XM_PIDIV4, 1.0, 0.5f, 100.0f));
 	XMStoreFloat4x4(&t_Cam.View, XMMatrixLookAtLH(t_Eye, t_At, t_Up));
 
 	m_ShadowMapMatrices.push_back(t_Cam);
@@ -290,6 +290,13 @@ HRESULT Renderer::InitializeRasterizers()
 	desc.AntialiasedLineEnable = false;
 
 	hr = m_Device->CreateRasterizerState(&desc, &m_RasterizerStateNormal);
+	if (FAILED(hr))
+		return hr;
+
+	desc.DepthBias = 100000;
+	desc.DepthBiasClamp = 0.0f;
+	desc.SlopeScaledDepthBias = 1.0f;
+	hr = m_Device->CreateRasterizerState(&desc, &m_RasterizerStateShadowMap);
 	if (FAILED(hr))
 		return hr;
 
@@ -854,6 +861,7 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 {
 	SetPerFrameBuffers(&m_Cameras);
 
+	m_DeviceContext->RSSetState(m_RasterizerStateNormal);
 	m_DeviceContext->RSSetViewports(m_Viewports.size(), &m_Viewports[0]);
 
 	SetShaders(m_DeferredShaderProgram);
@@ -981,6 +989,8 @@ void Renderer::RenderOpaque(RenderObjects* p_RenderObjects) //should be already 
 
 void Renderer::RenderShadowmaps(RenderObjects* p_RenderObjects)
 {
+	
+	m_DeviceContext->RSSetState(m_RasterizerStateShadowMap);
 	SetPerFrameBuffers(&m_ShadowMapMatrices);
 	
 	SetShaders(m_ShadowMapShaderProgram);
@@ -1113,9 +1123,11 @@ void Renderer::ComputeDeferred()
 	XMMATRIX t_ShadowView = XMLoadFloat4x4(&m_ShadowMapMatrices[0].View);
 	XMMATRIX t_ShadowProj = XMLoadFloat4x4(&m_ShadowMapMatrices[0].Proj);
 
-	XMMATRIX t_Finish = XMMatrixMultiply(t_ViewInv, t_ShadowView);
-	t_Finish = XMMatrixMultiply(t_Finish, t_ShadowProj);
+	XMMATRIX t_Finish = XMMatrixMultiply(t_ShadowView, t_ShadowProj);
+	//t_Finish = XMMatrixMultiply(t_Finish, t_ShadowProj);
 
+
+	t_ShadowMapBuffer.ViewInvers = XMMatrixTranspose(t_ViewInv);
 	t_ShadowMapBuffer.WorldViewProj = XMMatrixTranspose( t_Finish);
 	t_ShadowMapBuffer.Shadow_Width = (FLOAT)m_ShadowMap->GetWidth();
 	t_ShadowMapBuffer.Shadow_Height = (FLOAT)m_ShadowMap->GetHeight();

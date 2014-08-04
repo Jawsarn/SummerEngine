@@ -18,6 +18,7 @@ cbuffer PerCompute : register(c1)
 
 cbuffer ShadowMapBuffer : register(c2)
 {
+	matrix ViewInvers;
 	matrix ShadowMatrix;
 	float Shadow_Width;
 	float Shadow_Height;
@@ -250,8 +251,9 @@ float3 CalculateLighting(uint2 p_ThreadID, PixelData p_Data)
 
 float CalcShadowFactor(PixelData p_Data)
 {
-	float4 t_ShadowPos = mul(float4(p_Data.PositionView, 1), ShadowMatrix);
-		t_ShadowPos.xyz /= t_ShadowPos.w;
+	float4 t_ShadowPos = mul(float4(p_Data.PositionView, 1), ViewInvers);
+	t_ShadowPos = mul(float4(t_ShadowPos.xyz, 1), ShadowMatrix);
+	t_ShadowPos.xyz /= t_ShadowPos.w;
 
 	float t_Depth = t_ShadowPos.z;
 	t_ShadowPos.x = t_ShadowPos.x * 0.5f + 0.5f;
@@ -267,10 +269,10 @@ float CalcShadowFactor(PixelData p_Data)
 
 		uint2 cordinates = uint2( x,  y);
 		
-		float t_ShadowDepth = g_ShadowMap[cordinates];
+		float t_ShadowDepth = g_ShadowMap[cordinates].x;
 		if (t_ShadowDepth < t_Depth)
 		{
-			return 0.0f;
+			return t_ShadowDepth;
 		}
 		else
 		{
@@ -319,9 +321,19 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_Grou
 	//o_Output[p_ThreadID.xy] = g_Normal_Depth[p_ThreadID.xy];
 	//o_Output[p_ThreadID.xy] = float4(g_MaxDepth, g_MaxDepth, g_MaxDepth, 1);
 	//o_Output[p_ThreadID.xy] = float4(t_Data.NormalView.x, t_Data.NormalView.y, t_Data.NormalView.z, 0);
-	//uint2 cords = uint2(asuint(asfloat(p_ThreadID.x)* 1.0666666f), asuint(asfloat(p_ThreadID.y) * 1.89629629f));
-	//float deepth = g_ShadowMap[cords.xy];
-	//if (deepth > 1.0f ||deepth < 0.0f)
+	/*uint2 cords = uint2(asuint(asfloat(p_ThreadID.x)* 1.0666666f), asuint(asfloat(p_ThreadID.y) * 1.89629629f));
+	float deepth = g_ShadowMap[cords.xy].x;
+	if (deepth > 1.0f ||deepth < 0.0f)
+	{
+		o_Output[p_ThreadID.xy] = float4(1, 0, 0, 1);
+	}
+	else
+	{
+		o_Output[p_ThreadID.xy] = float4(deepth, deepth, deepth, 1);
+	}*/
+
+	//float deepth = g_ShadowMap.Load(p_ThreadID.xyz);
+	//if (deepth !=  1.0f)
 	//{
 	//	o_Output[p_ThreadID.xy] = float4(1, 0, 0, 1);
 	//}
@@ -329,5 +341,4 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_Grou
 	//{
 	//	o_Output[p_ThreadID.xy] = float4(deepth, deepth, deepth, 1);
 	//}
-	
 }

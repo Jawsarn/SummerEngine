@@ -102,6 +102,7 @@ private:
 	ID3D11Texture2D*			m_DepthStencil;
 	ID3D11DepthStencilView*		m_DepthStencilView;
 	ID3D11RasterizerState*		m_RasterizerStateNormal;
+	ID3D11RasterizerState*		m_RasterizerStateShadowMap;
 	ID3D11RasterizerState*		m_RasterizerStateWireframe;
 	ID3D11BlendState*			m_BlendStateOn;
 	ID3D11BlendState*			m_BlendStateOff;
@@ -145,6 +146,7 @@ private:
 
 	struct ShadowMapBuffer
 	{
+		XMMATRIX ViewInvers;
 		XMMATRIX WorldViewProj;
 		float Shadow_Width;
 		float Shadow_Height;
