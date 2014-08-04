@@ -36,6 +36,8 @@ void RenderingSystem::Update()
 	//std::list<Entity*>* t_CulledEntities;
 
 	m_Renderer->BeginRender();
+	
+	m_Renderer->RenderSprites();
 
 	m_Renderer->RenderOpaque(&m_Opaque); //fix
 

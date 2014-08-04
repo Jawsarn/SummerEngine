@@ -6,9 +6,8 @@ struct VSIn
 
 struct PSIn
 {
-	float4 Pos : SV_POSITION;
-	float3 WorldPos : POSITION;
-	float2 TexCoord : TEX;
+	float4 Pos		: SV_POSITION;
+	float2 TexCoord : TEXCOORD;
 };
 
 PSIn VS(VSIn p_Input)

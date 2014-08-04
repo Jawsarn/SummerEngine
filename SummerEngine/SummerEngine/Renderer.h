@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "Component.h"
 #include "ShadowMap.h"
+#include "ScreenManager.h"
 
 using namespace DirectX;
 
@@ -43,6 +44,7 @@ public:
 	void BeginRender();
 	void RenderOpaque(RenderObjects* p_RenderObjects);
 	void RenderShadowmaps(RenderObjects* p_RenderObjects);
+	void RenderSprites();
 	void ComputeDeferred();
 	void RenderTransparent(RenderObjects* p_RenderObjects);
 	void EndRender();

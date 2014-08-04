@@ -11,9 +11,9 @@ public:
 
 	void Init();
 	void Update(int x , int y);
-	void Draw();
+
 	std::vector<Screen*>& GetScreen();
-	
+	ID3D11Buffer* GetVertexBuffer();
 
 private:
 	ScreenManager();
@@ -21,7 +21,7 @@ private:
 	static ScreenManager* m_Singelton;
 
 	std::vector<Screen*> m_Screens;
-	
+	ID3D11Buffer* m_VertexBuffer;
 
 };
 
