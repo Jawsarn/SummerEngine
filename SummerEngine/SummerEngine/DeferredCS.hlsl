@@ -18,7 +18,6 @@ cbuffer PerCompute : register(c1)
 
 cbuffer ShadowMapBuffer : register(c2)
 {
-	matrix ViewInvers;
 	matrix ShadowMatrix;
 	float Shadow_Width;
 	float Shadow_Height;
@@ -251,8 +250,8 @@ float3 CalculateLighting(uint2 p_ThreadID, PixelData p_Data)
 
 float CalcShadowFactor(PixelData p_Data)
 {
-	float4 t_ShadowPos = mul(float4(p_Data.PositionView, 1), ViewInvers);
-	t_ShadowPos = mul(float4(t_ShadowPos.xyz, 1), ShadowMatrix);
+	float4 t_ShadowPos = mul(float4(p_Data.PositionView, 1), ShadowMatrix);
+
 	t_ShadowPos.xyz /= t_ShadowPos.w;
 
 	float t_Depth = t_ShadowPos.z;
@@ -262,22 +261,22 @@ float CalcShadowFactor(PixelData p_Data)
 	if (t_ShadowPos.x >= 0.0f && t_ShadowPos.x <= 1.0f && 
 		t_ShadowPos.y >= 0.0f && t_ShadowPos.y <= 1.0f)
 	{
-		t_ShadowPos.x = t_ShadowPos.x * 1024.0f;
-		t_ShadowPos.y = t_ShadowPos.y * 1024.0f;
+		t_ShadowPos.x = t_ShadowPos.x * 2048.0f;
+		t_ShadowPos.y = t_ShadowPos.y * 2048.0f;
 	
+		
+		
+		
+		float t_ShadowDepth = g_ShadowMap[t_ShadowPos.xy] + 0.00001f;
 
 		
-		
-		float t_ShadowDepth = g_ShadowMap[t_ShadowPos.xy];
-
-		
-		if (t_ShadowDepth < t_Depth)
+		if (t_ShadowDepth <= t_Depth)
 		{
-			return 1.0f;
+			return 0.0f;
 		}
 		else
 		{
-			return 0.0f;
+			return 1.0f;
 		}
 	}
 	else
@@ -285,6 +284,7 @@ float CalcShadowFactor(PixelData p_Data)
 		return 1.0f;
 	}
 }
+
 
 [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)]
 void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_GroupThreadID, uint3 p_GroupID : SV_GroupID )
@@ -316,6 +316,8 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_Grou
 	float t_DepthFactor = CalcShadowFactor(t_Data);
 
 	finalColor *= max(t_DepthFactor, 0.2f);
+
+
 
 	//o_Output[p_ThreadID.xy] = g_DiffuseColor_Spec[p_ThreadID.xy];
 	o_Output[p_ThreadID.xy] = float4(finalColor, 1);
