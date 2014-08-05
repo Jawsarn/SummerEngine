@@ -60,7 +60,7 @@ void ScreenManager::Init()
 		float t_TextureWidth = m_Screens[i]->GetTexture()->GetWidth();
 		float t_TextureHeight = m_Screens[i]->GetTexture()->GetHeight();
 		
-		float t_Scale = 0.01f;
+		float t_Scale = 0.1f;
 		m_Screens[i]->SetScale(t_Scale);
 		float t_Width = t_TextureWidth / 1920 * m_Screens[i]->GetScale();
 		float t_Height = t_TextureHeight / 1080 * m_Screens[i]->GetScale();
@@ -193,6 +193,7 @@ void ScreenManager::MouseOver(int p_Index, int x, int y)
 	if (m_Screens[p_Index]->GetCollisionBox()->Contains(t_Point))
 	{
 		m_Screens[p_Index]->SetColor(XMFLOAT4(1, 0, 0, 0));
+		//m_Screens[p_Index]->SetPosition(XMFLOAT2(1,1));	//test
 	}
 
 	else
