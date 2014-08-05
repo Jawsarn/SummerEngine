@@ -284,7 +284,7 @@ float CalcShadowFactor(PixelData p_Data)
 		return 1.0f;
 	}
 }
-SamplerState sampl : register(s0);
+
 
 [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)]
 void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_GroupThreadID, uint3 p_GroupID : SV_GroupID )

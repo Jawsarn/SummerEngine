@@ -752,6 +752,7 @@ void Renderer::SetShaders(ShaderProgram* p_Program) //test
 		m_DeviceContext->CSSetShader(p_Program->ComputeShader,nullptr,0);
 		return;
 	}
+
 	if (p_Program->InputLayout != nullptr)
 	{
 		m_DeviceContext->IASetInputLayout(p_Program->InputLayout);
@@ -760,21 +761,41 @@ void Renderer::SetShaders(ShaderProgram* p_Program) //test
 	{
 		m_DeviceContext->VSSetShader(p_Program->VertexShader, nullptr, 0);
 	}
+
 	if (p_Program->GeometryShader != nullptr)
 	{
 		m_DeviceContext->GSSetShader(p_Program->GeometryShader, nullptr, 0);
 	}
+	else
+	{
+		m_DeviceContext->GSSetShader(nullptr, nullptr, 0);
+	}
+
 	if (p_Program->HullShader != nullptr)
 	{
 		m_DeviceContext->HSSetShader(p_Program->HullShader, nullptr, 0);
 	}
+	else
+	{
+		m_DeviceContext->HSSetShader(nullptr, nullptr, 0);
+	}
+
 	if (p_Program->DomainShader != nullptr)
 	{
 		m_DeviceContext->DSSetShader(p_Program->DomainShader, nullptr, 0);
 	}
+	else
+	{
+		m_DeviceContext->DSSetShader(nullptr, nullptr, 0);
+	}
+
 	if (p_Program->PixelShader != nullptr)
 	{
 		m_DeviceContext->PSSetShader(p_Program->PixelShader, nullptr, 0);
+	}
+	else
+	{
+		m_DeviceContext->PSSetShader(nullptr, nullptr, 0);
 	}
 }
 
