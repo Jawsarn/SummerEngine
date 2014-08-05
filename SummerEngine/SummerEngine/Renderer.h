@@ -204,6 +204,6 @@ private:
 
 	std::vector<CameraStruct> m_ShadowMapMatrices;
 
-	Font* m_Font;	//	test
+	//Font* m_Font;	//	test
 };
 
