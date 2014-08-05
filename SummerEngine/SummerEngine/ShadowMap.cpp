@@ -1,5 +1,5 @@
 #include "ShadowMap.h"
-
+#include <DirectXColors.h>
 
 ShadowMap::ShadowMap(ID3D11Device* p_Device, UINT p_Width, UINT p_Height)
 {
@@ -56,8 +56,54 @@ ShadowMap::ShadowMap(ID3D11Device* p_Device, UINT p_Width, UINT p_Height)
 		MessageBox(nullptr, L"ShadowMapTextuerCreationError", L"Error", MB_ICONERROR | MB_OK);
 	}
 	t_DepthMap->Release();
+	
+	CreateRenderTarget(p_Device, p_Width, p_Height);
 }
 
+void ShadowMap::CreateRenderTarget(ID3D11Device* p_Device, float p_Width, float p_Height)
+{
+	HRESULT hr = S_OK;
+
+	D3D11_TEXTURE2D_DESC desc;
+	desc.Width = p_Width;
+	desc.Height = p_Height;
+	desc.MipLevels = 1;
+	desc.ArraySize = 1;
+	desc.Format = DXGI_FORMAT_R32_FLOAT; //changed from format DXGI_FORMAT_R16G16B16A16_UNORM
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	desc.CPUAccessFlags = 0;
+	desc.MiscFlags = 0;
+
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC t_SrvDesc;
+	t_SrvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+	t_SrvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	t_SrvDesc.Texture2D.MostDetailedMip = 0;
+	t_SrvDesc.Texture2D.MipLevels = 1;
+
+
+
+	ID3D11Texture2D* t_Texture = 0;
+
+	hr = p_Device->CreateTexture2D(&desc, 0, &t_Texture);
+	if (FAILED(hr))
+		return;
+
+	hr = p_Device->CreateShaderResourceView(t_Texture, &t_SrvDesc, &m_ShadowRenderTargetSRV);
+	if (FAILED(hr))
+		return;
+
+
+	hr = p_Device->CreateRenderTargetView(t_Texture, nullptr, &m_DebugRenderTarget);
+	if (FAILED(hr))
+		return;
+
+
+	t_Texture->Release();
+}
 
 ShadowMap::~ShadowMap()
 {
@@ -68,16 +114,17 @@ void ShadowMap::PrepareDraw(ID3D11DeviceContext* p_DeviceContext)
 	p_DeviceContext->RSSetViewports(1, &m_Viewport);
 
 	//disable color write with null render target view
-	ID3D11RenderTargetView* t_EmptyRenderTarget = { 0 };
-	p_DeviceContext->OMSetRenderTargets(1, &t_EmptyRenderTarget, m_ShadowMap);
+	//ID3D11RenderTargetView* t_EmptyRenderTarget = { 0 };
+	p_DeviceContext->OMSetRenderTargets(1, &m_DebugRenderTarget, m_ShadowMap);
 
 	p_DeviceContext->ClearDepthStencilView(m_ShadowMap, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	p_DeviceContext->ClearRenderTargetView(m_DebugRenderTarget, DirectX::Colors::Black);
 
 }
 
 ID3D11ShaderResourceView* ShadowMap::GetResourceView()
 {
-	return m_ShadowMapSRV;
+	return m_ShadowRenderTargetSRV;
 }
 
 UINT ShadowMap::GetWidth()

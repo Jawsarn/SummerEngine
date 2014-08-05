@@ -148,8 +148,7 @@ private:
 
 	struct ShadowMapBuffer
 	{
-		XMMATRIX ViewInvers;
-		XMMATRIX WorldViewProj;
+		XMMATRIX ShadowMatrix;
 		float Shadow_Width;
 		float Shadow_Height;
 		XMFLOAT2 Fillers;

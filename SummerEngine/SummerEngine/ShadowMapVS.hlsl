@@ -10,6 +10,7 @@ struct VS_INPUT
 struct VS_OUTPUT
 {
 	float4 Position		: SV_POSITION;
+	float2 Depth		: DEPTH;
 };
 
 cbuffer ConstantBuffer : register(c0)
@@ -28,6 +29,8 @@ VS_OUTPUT VS(VS_INPUT p_Input)
 	o_Output.Position = mul(float4(p_Input.Position, 1), p_Input.World);
 	o_Output.Position = mul(o_Output.Position, View);
 	o_Output.Position = mul(o_Output.Position, Proj);
+
+	o_Output.Depth = o_Output.Position.zw;
 
 	return o_Output;
 }

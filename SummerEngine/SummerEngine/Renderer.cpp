@@ -81,9 +81,9 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	//test stuff
 	
-	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(1,6,2), 30, XMFLOAT3(1,1,1));
+	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(0, 20, 0), 99, XMFLOAT3(0, 0, 1));
 	m_AmountOfPointLights++;
-	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(4, 6, -3), 30, XMFLOAT3(1, 0, 0));
+	/*m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(4, 6, -3), 30, XMFLOAT3(1, 0, 0));*/
 
 	m_DeviceContext->UpdateSubresource(m_PointLightsBuffer, 0, nullptr, &m_PointLights[0], 0, 0);
 
@@ -95,13 +95,13 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	m_DeviceContext->UpdateSubresource(m_PerComputeBuffer, 0, nullptr, &t_PerCompute, 0, 0);
 
-	m_ShadowMap = new ShadowMap(m_Device, 1024, 1024);
+	m_ShadowMap = new ShadowMap(m_Device, 2048, 2048);
 	CameraStruct t_Cam;
 	t_Cam.Position = XMFLOAT3(1, 0, 0);
 	
-	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(0, 15, 0));
+	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(0, 70, 0));
 	XMVECTOR t_At = XMLoadFloat3(&XMFLOAT3(0, -1, 0));
-	XMVECTOR t_Up = XMLoadFloat3(&XMFLOAT3(0, 0, 1));
+	XMVECTOR t_Up = XMLoadFloat3(&XMFLOAT3(1, 0, 0));
 	//XMStoreFloat4x4(&t_Cam.Proj, XMMatrixOrthographicLH(2048, 2048, 0, 10000.0f));
 	XMStoreFloat4x4(&t_Cam.Proj, XMMatrixPerspectiveFovLH(XM_PIDIV4, 1.0, 0.5f, 1000.0f));
 	XMStoreFloat4x4(&t_Cam.View, XMMatrixLookToLH(t_Eye, t_At, t_Up));
@@ -1124,11 +1124,11 @@ void Renderer::ComputeDeferred()
 	XMMATRIX t_ShadowProj = XMLoadFloat4x4(&m_ShadowMapMatrices[0].Proj);
 
 	XMMATRIX t_Finish = XMMatrixMultiply(t_ShadowView, t_ShadowProj);
-	//t_Finish = XMMatrixMultiply(t_Finish, t_ShadowProj);
+	t_Finish = XMMatrixMultiply(t_ViewInv, t_Finish);
 
 
-	t_ShadowMapBuffer.ViewInvers = XMMatrixTranspose(t_ViewInv);
-	t_ShadowMapBuffer.WorldViewProj = XMMatrixTranspose( t_Finish);
+	t_ShadowMapBuffer.ShadowMatrix = XMMatrixTranspose(t_Finish);
+
 	t_ShadowMapBuffer.Shadow_Width = (FLOAT)m_ShadowMap->GetWidth();
 	t_ShadowMapBuffer.Shadow_Height = (FLOAT)m_ShadowMap->GetHeight();
 	t_ShadowMapBuffer.Fillers = XMFLOAT2(0, 0);
