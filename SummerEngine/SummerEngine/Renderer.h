@@ -5,6 +5,7 @@
 #include "Component.h"
 #include "ShadowMap.h"
 #include "ScreenManager.h"
+#include "Font.h"
 
 using namespace DirectX;
 
@@ -202,5 +203,7 @@ private:
 	std::vector<D3D11_VIEWPORT> m_Viewports;
 
 	std::vector<CameraStruct> m_ShadowMapMatrices;
+
+	Font* m_Font;	//	test
 };
 

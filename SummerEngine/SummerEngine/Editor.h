@@ -11,12 +11,11 @@ public:
 	void Release();
 	void InitEditor();
 	void Update();
-
 private:
 	Import* m_import;
 	ScreenManager* m_ScreenManager;
 
-	//test
+	//	test
 	std::vector<Entity*> m_TestEntities;
 
 	bool LoadTexture(std::string p_FileName,  Material* p_MaterialData);
