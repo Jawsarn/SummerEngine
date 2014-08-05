@@ -1192,7 +1192,7 @@ void Renderer::RenderSprites()
 	SetPerFrameBuffers(&m_Cameras);
 
 	m_DeviceContext->RSSetViewports(m_Viewports.size(), &m_Viewports[0]);
-	m_DeviceContext->OMSetRenderTargets(3, m_GbufferTargetViews, m_DepthStencilView);
+	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 
 	ScreenManager* t_ScreenManager = t_ScreenManager->GetInstance();
 
