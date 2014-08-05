@@ -284,6 +284,7 @@ float CalcShadowFactor(PixelData p_Data)
 		return 1.0f;
 	}
 }
+SamplerState sampl : register(s0);
 
 [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)]
 void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_GroupThreadID, uint3 p_GroupID : SV_GroupID )
@@ -315,6 +316,8 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_Grou
 	float t_DepthFactor = CalcShadowFactor(t_Data);
 
 	finalColor *= max(t_DepthFactor, 0.2f);
+
+
 
 	//o_Output[p_ThreadID.xy] = g_DiffuseColor_Spec[p_ThreadID.xy];
 	o_Output[p_ThreadID.xy] = float4(finalColor, 1);
