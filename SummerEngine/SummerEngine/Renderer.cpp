@@ -108,6 +108,8 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	m_ShadowMapMatrices.push_back(t_Cam);
 
+	m_Font = m_Font->GetInstance(m_Device);//	test
+
 	return true;
 }
 
@@ -1187,6 +1189,9 @@ void Renderer::RenderSprites()
 		m_DeviceContext->IASetVertexBuffers(0, 1, &t_Buffer, &t_Stride, &t_Offset);
 		m_DeviceContext->Draw(4, 0);
 	}
+
+	m_Font->Render(m_DeviceContext, L"Testar 1234");	//test
+
 }
 
 void Renderer::EndRender()
