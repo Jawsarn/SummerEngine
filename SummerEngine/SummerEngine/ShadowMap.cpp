@@ -124,7 +124,7 @@ void ShadowMap::PrepareDraw(ID3D11DeviceContext* p_DeviceContext)
 
 ID3D11ShaderResourceView* ShadowMap::GetResourceView()
 {
-	return m_ShadowRenderTargetSRV;
+	return m_ShadowMapSRV;
 }
 
 UINT ShadowMap::GetWidth()
