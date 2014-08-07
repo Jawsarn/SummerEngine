@@ -204,7 +204,7 @@
     <ClCompile Include="ShadowMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Font.cpp">
+    <ClCompile Include="FontEngine.cpp">
       <Filter>Source Files\Graphic\2D</Filter>
     </ClCompile>
   </ItemGroup>
@@ -323,7 +323,7 @@
     <ClInclude Include="ShadowMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Font.h">
+    <ClInclude Include="FontEngine.h">
       <Filter>Header Files\Graphic\2D</Filter>
     </ClInclude>
   </ItemGroup>
