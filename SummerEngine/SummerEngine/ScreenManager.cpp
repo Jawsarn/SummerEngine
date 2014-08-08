@@ -60,7 +60,7 @@ void ScreenManager::Init()
 		float t_TextureWidth = m_Screens[i]->GetTexture()->GetWidth();
 		float t_TextureHeight = m_Screens[i]->GetTexture()->GetHeight();
 		
-		float t_Scale = 0.1f;
+		float t_Scale = 0.01f;
 		m_Screens[i]->SetScale(t_Scale);
 		float t_Width = t_TextureWidth / 1920 * m_Screens[i]->GetScale();
 		float t_Height = t_TextureHeight / 1080 * m_Screens[i]->GetScale();

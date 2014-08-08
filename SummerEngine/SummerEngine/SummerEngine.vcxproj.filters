@@ -91,6 +91,12 @@
     <Filter Include="Shaders\Sprites">
       <UniqueIdentifier>{9c94b1d4-c936-4288-beae-d722e0197fc1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Fonts">
+      <UniqueIdentifier>{605eba06-e8a0-435f-a2d6-b0e56f0837c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Fonts">
+      <UniqueIdentifier>{7d5d5ae8-976f-403e-9d6d-a19e26ba09ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -392,6 +398,12 @@
     <FxCompile Include="SpritePS.hlsl">
       <Filter>Shaders\Sprites</Filter>
     </FxCompile>
+    <FxCompile Include="FontPS.hlsl">
+      <Filter>Shaders\Fonts</Filter>
+    </FxCompile>
+    <FxCompile Include="FontVS.hlsl">
+      <Filter>Shaders\Fonts</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Graphics\Textures\COL.dds">
@@ -399,6 +411,9 @@
     </Image>
     <Image Include="Graphics\Textures\NRM.dds">
       <Filter>Graphics\Textures</Filter>
+    </Image>
+    <Image Include="Graphics\Fonts\ArialFont.dds">
+      <Filter>Graphics\Fonts</Filter>
     </Image>
   </ItemGroup>
 </Project>
