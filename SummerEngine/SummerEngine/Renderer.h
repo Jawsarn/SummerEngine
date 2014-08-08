@@ -6,6 +6,7 @@
 #include "ShadowMap.h"
 #include "ScreenManager.h"
 
+
 using namespace DirectX;
 
 //#define _DEBUG
@@ -195,6 +196,7 @@ private:
 	ID3D11ShaderResourceView*	m_PointLightsBufferSRV;
 
 	ShaderProgram* m_SpriteShaderProgram;
+	ShaderProgram* m_FontShaderProgram;
 	ShaderProgram* m_DeferredShaderProgram;
 	ShaderProgram* m_ShadowMapShaderProgram;
 	ShadowMap* m_ShadowMap;
