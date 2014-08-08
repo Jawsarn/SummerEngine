@@ -1,3 +1,6 @@
+Texture2D spriteTexture : register(t0);
+SamplerState SampleType;
+
 struct VS_OUTPUT
 {
 	float4 position : SV_POSITION;

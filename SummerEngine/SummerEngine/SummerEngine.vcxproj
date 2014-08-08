@@ -241,6 +241,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Graphics\Fonts\ArialFont.dds" />
+    <Image Include="Graphics\Fonts\font.dds" />
     <Image Include="Graphics\Textures\COL.dds" />
     <Image Include="Graphics\Textures\NRM.dds" />
   </ItemGroup>

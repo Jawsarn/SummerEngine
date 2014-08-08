@@ -415,5 +415,8 @@
     <Image Include="Graphics\Fonts\ArialFont.dds">
       <Filter>Graphics\Fonts</Filter>
     </Image>
+    <Image Include="Graphics\Fonts\font.dds">
+      <Filter>Graphics\Fonts</Filter>
+    </Image>
   </ItemGroup>
 </Project>

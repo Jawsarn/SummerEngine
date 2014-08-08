@@ -1,17 +1,14 @@
 #pragma once
-#include "Math.h"
+//#include "stdafx.h"
 #include "Texture.h"
 #include <fstream>
 #include <sstream>
+//#include "Shader.h"//test
+#include "Math.h"
 
 class FontEngine
 {
 private:
-	struct FontType
-	{
-		float left, right;
-		int size;
-	};
 
 	struct VertexType
 	{
@@ -19,18 +16,24 @@ private:
 		XMFLOAT2 texture;
 	};
 
+	bool DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, float p_StartX, float p_StartY);
+
+	//Texture* m_Texture;
+	ID3D11Buffer* m_VertexBuffer;
+	ID3D11SamplerState* m_ColorMapSampler;
+
+	//Shader shader;//test
+
 public:
 	FontEngine();
 	~FontEngine();
 
-	bool Init(ID3D11Device* p_Device, char*, std::wstring p_TextureFileName);
-	bool LoadFontData(char* p_FontFileName);
+	bool LoadContent(ID3D11Device* p_Device);
 
+	void Update(float p_DeltaTime);
+	void Render(ID3D11DeviceContext* p_DeviceContext);
 	void Release();
-	void ReleaseFont();
-	void BuildVertexArray(void* vertices, char* sentence, float drawX, float drawY);
 
-	FontType* m_FontType;
-	Texture* m_Texture;
+
 };
 

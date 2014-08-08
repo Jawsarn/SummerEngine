@@ -3,8 +3,6 @@
 
 FontEngine::FontEngine()
 {
-	m_FontType = nullptr;
-	m_Texture = nullptr;
 }
 
 
@@ -14,138 +12,188 @@ FontEngine::~FontEngine()
 
 void FontEngine::Release()
 {
-	//m_Texture->Release();
-	if (m_Texture)
+	//if (m_Texture)
+	//{
+	//	delete m_Texture;
+	//	m_Texture = nullptr;
+	//}
+	if (m_VertexBuffer)
 	{
-		delete(m_Texture);
-		m_Texture = nullptr;
+		delete (m_VertexBuffer);
+		m_VertexBuffer = nullptr;
 	}
-	ReleaseFont();
+	if (m_ColorMapSampler)
+	{
+		delete(m_ColorMapSampler);
+		m_ColorMapSampler = nullptr;
+	}
 }
 
-void FontEngine::ReleaseFont()
-{
-	if (m_FontType)
-	{
-		delete[] m_FontType;
-		m_FontType = nullptr;
-	}
-}
 
-bool FontEngine::Init(ID3D11Device* p_Device, char* p_FontFileName, std::wstring p_TextureFileName)
+bool FontEngine::LoadContent(ID3D11Device* p_Device)
 {
-	bool t_Result;
+	//shaders
+	//shader = Shader(p_Device);//test
+	//shader.CreateShadersAndInputLayout2D("../Shaders/FontVS.hlsl", "VS_main", "../Shaders/FontPS.hlsl", "PS_main");//test
 
-	t_Result = LoadFontData(p_FontFileName);
-	if (!t_Result)
+	//Load Font-Texture
+	//m_Texture = nullptr;
+	//m_Texture = new Texture();
+	//m_Texture->LoadTexture(p_Device, L"../Shaders/Fonts/font.dds");
+
+	//Sampler
+	D3D11_SAMPLER_DESC T_ColorMapDesc;
+	ZeroMemory(&T_ColorMapDesc, sizeof(T_ColorMapDesc));
+	T_ColorMapDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	T_ColorMapDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	T_ColorMapDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	T_ColorMapDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	T_ColorMapDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	T_ColorMapDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	HRESULT t_HR = p_Device->CreateSamplerState(&T_ColorMapDesc, &m_ColorMapSampler);
+
+	if (FAILED(t_HR))
 	{
-		MessageBox(nullptr,L"Font could not be loaded",L"Error",MB_ICONERROR | MB_OK);
+		MessageBox(nullptr, L"Could not create sampler state", L"Error", MB_ICONERROR | MB_OK);
 		return false;
 	}
 
-	//Loading texture
-	/*if (m_Texture->LoadTexture(p_Device, p_TextureFileName) != true)
-		return false;*/
+
+	D3D11_BUFFER_DESC t_VertexDesc;
+	ZeroMemory(&t_VertexDesc, sizeof(t_VertexDesc));
+	t_VertexDesc.Usage = D3D11_USAGE_DYNAMIC;
+	t_VertexDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	t_VertexDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+	int t_AmountOfVerticesInRect = 6;
+	const int t_SpriteSize = sizeof(VertexType)* t_AmountOfVerticesInRect;
+	const int t_MaxLetters = 24;
+
+	t_VertexDesc.ByteWidth = t_SpriteSize * t_MaxLetters; //This many vertices is needed
+	//Creating the vertex buffer
+	t_HR = p_Device->CreateBuffer(&t_VertexDesc, 0, &m_VertexBuffer);
+
+	if (FAILED(t_HR))
+	{
+		MessageBox(nullptr, L"Could not Create vertex-buffer", L"Error", MB_ICONERROR | MB_OK);
+		return false;
+	}
+
 	return true;
 }
 
-bool FontEngine::LoadFontData(char* p_FileName)
+
+void FontEngine::Update(float p_DeltaTime)
 {
-	std::ifstream t_Read;
-	char t_Data;
-	//Font spacing buffer
-	m_FontType = new FontType[95];
-	if (!m_FontType)
-	{
-		return false;
-	}
-	t_Read.open(p_FileName);
-	if (t_Read.fail())
-		return false;
-
-	//Reading the 95 characters
-	for (int i = 0; i < 95; i++)
-	{
-		t_Read.get(t_Data);
-		while (t_Data != ' ')
-		{
-			t_Read.get(t_Data);
-		}
-		t_Read.get(t_Data);
-		while (t_Data != ' ')
-		{
-			t_Read.get(t_Data);
-		}
-
-		t_Read >> m_FontType[i].left;
-		t_Read >> m_FontType[i].right;
-		t_Read >> m_FontType[i].size;
-	}
-
-
-	t_Read.close();
-	return true;
+	//Update crap here :P
 }
 
-void FontEngine::BuildVertexArray(void* vertices, char* sentence, float drawX, float drawY)
+bool FontEngine::DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, float p_StartX, float p_StartY)
 {
-	VertexType* t_Vertex;
-	int t_NumLetters;
-	int t_Index; 
-	int t_Letter;
+	//Size of a sprite (one)
+	const int t_SizeOfSprite = sizeof(VertexType)* 6;
 
-	//vertextype-structure
-	t_Vertex = (VertexType*)vertices;
-	//number of letters in the current sentence
-	t_NumLetters = (int)strlen(sentence);
+	// Dynamic buffer
+	const int t_MaxLetters = 24;
 
-	t_Index = 0;
-	//Iterating through every letter -> to make a quad
+	int t_Length = strlen(p_Text);
 
-	for (int i = 0; i < t_NumLetters; i++)
+	// Make sure that strings are not too long.
+	if (t_Length > t_MaxLetters)
+		t_Length = t_MaxLetters;
+
+	float t_Width = 1920;
+	float t_Height = 1080;
+
+	float t_CharacterSize = 32.0f;
+
+	// A characters width on the screen
+	float charWidth = t_CharacterSize / t_Width;
+
+	// A characters height on the screen
+	float charHeight = t_CharacterSize / t_Height;
+
+	// cahracters texel width
+	float texelWidth = t_CharacterSize / 864.0f;//test
+
+	// Rect amount of vertices
+	const int t_VerticesPerLetter = 6;
+
+	D3D11_MAPPED_SUBRESOURCE t_MapResource;
+	HRESULT t_HR = p_DeviceContext->Map(m_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &t_MapResource);
+
+	if (FAILED(t_HR))
 	{
-		t_Letter = ((int)sentence[i]) - 32;
-		//make sure to move some pixels if this(letter) is just a space
+		MessageBox(nullptr, L"Could not map resource", L"Error", MB_ICONERROR | MB_OK);
+		return false;
+	}
 
-		if (t_Letter == 0)
+	// Pointing to internal data of vertex buffer
+	VertexType* t_Sprite = (VertexType*)t_MapResource.pData;
+
+	const int indexA = static_cast<char>('A');
+	const int indexZ = static_cast<char>('Z');
+
+	for (int i = 0; i < t_Length; ++i)
+	{
+		float t_CurrentStartX = p_StartX + (charWidth * static_cast<float>(i));
+		float t_CurrentEndX = t_CurrentStartX + charWidth;
+		float t_CurrentEndY = p_StartY + charHeight;
+
+		t_Sprite[0].position = XMFLOAT3(t_CurrentEndX, t_CurrentEndY, 1.0f);
+		t_Sprite[1].position = XMFLOAT3(t_CurrentEndX, p_StartY, 1.0f);
+		t_Sprite[2].position = XMFLOAT3(t_CurrentStartX, p_StartY, 1.0f);
+		t_Sprite[3].position = XMFLOAT3(t_CurrentStartX, p_StartY, 1.0f);
+		t_Sprite[4].position = XMFLOAT3(t_CurrentStartX, t_CurrentEndY, 1.0f);
+		t_Sprite[5].position = XMFLOAT3(t_CurrentEndX, t_CurrentEndY, 1.0f);
+
+		int t_Vault = 0;
+		int t_Letter = static_cast<char>(p_Text[i]);
+
+		if (t_Letter < indexA || t_Letter > indexZ)
 		{
-			drawX = drawX + 3.0f;
+			//Well this is awkward, putting an empty (space) char
+			t_Vault = (indexZ - indexA) + 1;
 		}
-
 		else
 		{
-			//QUAD
-
-				//Triangle 1
-			t_Vertex[t_Index].position = XMFLOAT3(drawX , drawY, 0.0f);//Top left
-			t_Vertex[t_Index].texture = XMFLOAT2(m_FontType[t_Letter].left, 0.0f);
-			t_Index += 1;
-
-			t_Vertex[t_Index].position = XMFLOAT3(drawX + m_FontType[t_Letter].size, (drawY-16), 0.0f);//Bottom left
-			t_Vertex[t_Index].texture = XMFLOAT2(m_FontType[t_Letter].right, 1.0f);
-			t_Index += 1;
-
-			t_Vertex[t_Index].position = XMFLOAT3(drawX, (drawY - 16), 0.0f);//Bottom left
-			t_Vertex[t_Index].texture = XMFLOAT2(m_FontType[t_Letter].left, 1.0f);
-			t_Index += 1;
-
-			/////////////
-				//Triangle2
-			t_Vertex[t_Index].position = XMFLOAT3(drawX, drawY, 0.0f);//Top left
-			t_Vertex[t_Index].texture = XMFLOAT2(m_FontType[t_Letter].left, 0.0f);
-			t_Index += 1;
-
-			t_Vertex[t_Index].position = XMFLOAT3(drawX + m_FontType[t_Letter].size, drawY, 0.0f);//Top right
-			t_Vertex[t_Index].texture = XMFLOAT2(m_FontType[t_Letter].right, 0.0f);
-			t_Index += 1;
-
-			t_Vertex[t_Index].position = XMFLOAT3(drawX + m_FontType[t_Letter].size, (drawY-16), 0.0f);//Bottom right
-			t_Vertex[t_Index].texture = XMFLOAT2(m_FontType[t_Letter].right, 1.0f);
-			t_Index += 1;
-
-			//Update the x position after each letter (by the size of the letter and one pixel)
-			drawX = drawX + m_FontType[t_Letter].size + 1.0f;
+			// A = 0, B = 1, Z = 25, and so on
+			t_Vault = (t_Letter - indexA);
 		}
+
+		float tuStart = 0.0f + (texelWidth * static_cast<float>(t_Vault));
+		float tuEnd = tuStart + texelWidth;
+
+		t_Sprite[0].texture = XMFLOAT2(tuEnd, 0.0f);
+		t_Sprite[1].texture = XMFLOAT2(tuEnd, 1.0f);
+		t_Sprite[2].texture = XMFLOAT2(tuStart, 1.0f);
+		t_Sprite[3].texture = XMFLOAT2(tuStart, 1.0f);
+		t_Sprite[4].texture = XMFLOAT2(tuStart, 0.0f);
+		t_Sprite[5].texture = XMFLOAT2(tuEnd, 0.0f);
+
+		t_Sprite += 6;
 	}
-	return;
+
+	p_DeviceContext->Unmap(m_VertexBuffer, 0);
+	p_DeviceContext->Draw(6 * t_Length, 0);
+
+	return true;
 }
+
+void FontEngine::Render(ID3D11DeviceContext* p_DeviceContext)
+{
+
+	//shader.Render2D(p_DeviceContext);
+	UINT32 t_Offset = 0;
+	UINT32 t_Stride = sizeof(VertexType);
+
+	p_DeviceContext->IASetVertexBuffers(0, 1, &m_VertexBuffer, &t_Stride, &t_Offset);
+	p_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	p_DeviceContext->PSSetSamplers(0, 1, &m_ColorMapSampler);
+	//m_Texture->Render(p_DeviceContext, 0);
+	DrawString(p_DeviceContext, "NOOBS", -0.2f, 0.0f);
+
+}
+
