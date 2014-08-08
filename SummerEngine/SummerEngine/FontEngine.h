@@ -22,8 +22,6 @@ private:
 	ID3D11Buffer* m_VertexBuffer;
 	ID3D11SamplerState* m_ColorMapSampler;
 
-	//Shader shader;//test
-
 public:
 	FontEngine();
 	~FontEngine();

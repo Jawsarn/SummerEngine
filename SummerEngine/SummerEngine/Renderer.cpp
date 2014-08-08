@@ -490,7 +490,7 @@ HRESULT Renderer::InitializeShaders()
 		};
 		UINT t_NumElements = ARRAYSIZE(t_Layout);
 
-		hr = t_ShaderLoader.CreateVertexShaderWithInputLayout(L"SpriteVS.hlsl", "VS", "vs_5_0", m_Device, &t_VertexShader, t_Layout, t_NumElements, &t_InputLayout);
+		hr = t_ShaderLoader.CreateVertexShaderWithInputLayout(L"FontVS.hlsl", "VS_main", "vs_5_0", m_Device, &t_VertexShader, t_Layout, t_NumElements, &t_InputLayout);
 		if (FAILED(hr))
 			return hr;
 
@@ -500,7 +500,7 @@ HRESULT Renderer::InitializeShaders()
 
 	{
 		ID3D11PixelShader* t_PixelShader;
-		hr = t_ShaderLoader.CreatePixelShader(L"SpritePS.hlsl", "PS", "ps_5_0", m_Device, &t_PixelShader);
+		hr = t_ShaderLoader.CreatePixelShader(L"FontPS.hlsl", "PS_main", "ps_5_0", m_Device, &t_PixelShader);
 		if (FAILED(hr))
 			return hr;
 		m_FontShaderProgram->PixelShader = t_PixelShader;
@@ -1248,7 +1248,7 @@ void Renderer::EndRender()
 {
 	if (!m_IsRendering)
 	{
-		MessageBox(nullptr, L"Rendering call End was called befor begin was called.", L"ErrorMessage", MB_OK);
+		MessageBox(nullptr, L"Rendering call End was called before begin was called.", L"ErrorMessage", MB_OK);
 		return;
 	}
 
