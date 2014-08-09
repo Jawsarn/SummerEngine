@@ -12,11 +12,12 @@ FontEngine::~FontEngine()
 
 void FontEngine::Release()
 {
-	//if (m_Texture)
-	//{
-	//	delete m_Texture;
-	//	m_Texture = nullptr;
-	//}
+	if (m_Texture)
+	{
+		m_Texture->Release();
+		delete m_Texture;
+		m_Texture = nullptr;
+	}
 	if (m_VertexBuffer)
 	{
 		delete (m_VertexBuffer);
@@ -47,25 +48,6 @@ bool FontEngine::LoadContent(ID3D11Device* p_Device)
 		t_Resource->Release();
 		t_Resource = nullptr;
 	}
-
-	//Sampler
-	D3D11_SAMPLER_DESC T_ColorMapDesc;
-	ZeroMemory(&T_ColorMapDesc, sizeof(T_ColorMapDesc));
-	T_ColorMapDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	T_ColorMapDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	T_ColorMapDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	T_ColorMapDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-	T_ColorMapDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	T_ColorMapDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-	t_HR = p_Device->CreateSamplerState(&T_ColorMapDesc, &m_ColorMapSampler);
-
-	if (FAILED(t_HR))
-	{
-		MessageBox(nullptr, L"Could not create sampler state", L"Error", MB_ICONERROR | MB_OK);
-		return false;
-	}
-
 
 	D3D11_BUFFER_DESC t_VertexDesc;
 	ZeroMemory(&t_VertexDesc, sizeof(t_VertexDesc));
@@ -194,15 +176,11 @@ void FontEngine::Render(ID3D11DeviceContext* p_DeviceContext)
 	UINT32 t_Offset = 0;
 	UINT32 t_Stride = sizeof(VertexType);
 
-	p_DeviceContext->PSSetSamplers(0, 1, &m_ColorMapSampler);
-
 	p_DeviceContext->IASetVertexBuffers(0, 1, &m_VertexBuffer, &t_Stride, &t_Offset);
 	p_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	
 	
 	DrawString(p_DeviceContext, "KEBABPIZZA", -0.2f, 0.0f);
-	//Render texture
+
 	p_DeviceContext->PSSetShaderResources(4, 1, &m_Texture);
 	
 }
