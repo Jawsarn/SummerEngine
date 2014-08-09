@@ -32,14 +32,21 @@ void FontEngine::Release()
 
 bool FontEngine::LoadContent(ID3D11Device* p_Device)
 {
-	//shaders
-	//shader = Shader(p_Device);//test
-	//shader.CreateShadersAndInputLayout2D("../Shaders/FontVS.hlsl", "VS_main", "../Shaders/FontPS.hlsl", "PS_main");//test
+	m_Texture = nullptr;
+	std::wstring t_FontFileName = L"../SummerEngine/Graphics/Fonts/font.dds";
 
-	//Load Font-Texture
-	//m_Texture = nullptr;
-	//m_Texture = new Texture();
-	//m_Texture->LoadTexture(p_Device, L"../Shaders/Fonts/font.dds");
+	ID3D11Resource* t_Resource;
+	HRESULT t_HR = CreateDDSTextureFromFile(p_Device, t_FontFileName.c_str(), &t_Resource, &m_Texture);
+	if (FAILED(t_HR))
+	{
+		MessageBox(nullptr, L"Could not load font-texture",L"Error",MB_ICONERROR | MB_OK);
+		return false;
+	}
+	if (t_Resource)
+	{
+		t_Resource->Release();
+		t_Resource = nullptr;
+	}
 
 	//Sampler
 	D3D11_SAMPLER_DESC T_ColorMapDesc;
@@ -51,7 +58,7 @@ bool FontEngine::LoadContent(ID3D11Device* p_Device)
 	T_ColorMapDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	T_ColorMapDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-	HRESULT t_HR = p_Device->CreateSamplerState(&T_ColorMapDesc, &m_ColorMapSampler);
+	t_HR = p_Device->CreateSamplerState(&T_ColorMapDesc, &m_ColorMapSampler);
 
 	if (FAILED(t_HR))
 	{
@@ -109,13 +116,13 @@ bool FontEngine::DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, 
 	float t_CharacterSize = 32.0f;
 
 	// A characters width on the screen
-	float charWidth = t_CharacterSize / t_Width;
+	float t_CharWidth = t_CharacterSize / t_Width;
 
 	// A characters height on the screen
-	float charHeight = t_CharacterSize / t_Height;
+	float t_CharHeight = t_CharacterSize / t_Height;
 
 	// cahracters texel width
-	float texelWidth = t_CharacterSize / 864.0f;//test
+	float t_TexelWidth = t_CharacterSize / 864.0f;//test
 
 	// Rect amount of vertices
 	const int t_VerticesPerLetter = 6;
@@ -137,16 +144,16 @@ bool FontEngine::DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, 
 
 	for (int i = 0; i < t_Length; ++i)
 	{
-		float t_CurrentStartX = p_StartX + (charWidth * static_cast<float>(i));
-		float t_CurrentEndX = t_CurrentStartX + charWidth;
-		float t_CurrentEndY = p_StartY + charHeight;
+		float t_CurrentStartX = p_StartX + (t_CharWidth * static_cast<float>(i));
+		float t_CurrentEndX = t_CurrentStartX + t_CharWidth;
+		float t_CurrentEndY = p_StartY + t_CharHeight;
 
-		t_Sprite[0].position = XMFLOAT3(t_CurrentEndX, t_CurrentEndY, 1.0f);
-		t_Sprite[1].position = XMFLOAT3(t_CurrentEndX, p_StartY, 1.0f);
-		t_Sprite[2].position = XMFLOAT3(t_CurrentStartX, p_StartY, 1.0f);
-		t_Sprite[3].position = XMFLOAT3(t_CurrentStartX, p_StartY, 1.0f);
-		t_Sprite[4].position = XMFLOAT3(t_CurrentStartX, t_CurrentEndY, 1.0f);
-		t_Sprite[5].position = XMFLOAT3(t_CurrentEndX, t_CurrentEndY, 1.0f);
+		t_Sprite[0].position = XMFLOAT3(t_CurrentEndX, t_CurrentEndY, 0.0f);
+		t_Sprite[1].position = XMFLOAT3(t_CurrentEndX, p_StartY, 0.0f);
+		t_Sprite[2].position = XMFLOAT3(t_CurrentStartX, p_StartY, 0.0f);
+		t_Sprite[3].position = XMFLOAT3(t_CurrentStartX, p_StartY, 0.0f);
+		t_Sprite[4].position = XMFLOAT3(t_CurrentStartX, t_CurrentEndY, 0.0f);
+		t_Sprite[5].position = XMFLOAT3(t_CurrentEndX, t_CurrentEndY, 0.0f);
 
 		int t_Vault = 0;
 		int t_Letter = static_cast<char>(p_Text[i]);
@@ -162,8 +169,8 @@ bool FontEngine::DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, 
 			t_Vault = (t_Letter - indexA);
 		}
 
-		float tuStart = 0.0f + (texelWidth * static_cast<float>(t_Vault));
-		float tuEnd = tuStart + texelWidth;
+		float tuStart = 0.0f + (t_TexelWidth * static_cast<float>(t_Vault));
+		float tuEnd = tuStart + t_TexelWidth;
 
 		t_Sprite[0].texture = XMFLOAT2(tuEnd, 0.0f);
 		t_Sprite[1].texture = XMFLOAT2(tuEnd, 1.0f);
@@ -178,13 +185,12 @@ bool FontEngine::DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, 
 	p_DeviceContext->Unmap(m_VertexBuffer, 0);
 	p_DeviceContext->Draw(6 * t_Length, 0);
 
+
 	return true;
 }
 
 void FontEngine::Render(ID3D11DeviceContext* p_DeviceContext)
 {
-
-	//shader.Render2D(p_DeviceContext);
 	UINT32 t_Offset = 0;
 	UINT32 t_Stride = sizeof(VertexType);
 
@@ -192,8 +198,10 @@ void FontEngine::Render(ID3D11DeviceContext* p_DeviceContext)
 	p_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	p_DeviceContext->PSSetSamplers(0, 1, &m_ColorMapSampler);
-	//m_Texture->Render(p_DeviceContext, 0);
-	DrawString(p_DeviceContext, "NOOBS", -0.2f, 0.0f);
-
+	
+	DrawString(p_DeviceContext, "NOOOBS", -0.2f, 0.0f);
+	//Render texture
+	p_DeviceContext->PSSetShaderResources(0, 1, &m_Texture);
+	
 }
 

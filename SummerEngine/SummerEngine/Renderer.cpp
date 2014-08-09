@@ -109,7 +109,10 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	m_ShadowMapMatrices.push_back(t_Cam);
 
-	//m_Font = m_Font->GetInstance(m_Device);//	test
+	m_FontRenderer = nullptr;
+	m_FontRenderer = new FontEngine();
+	m_FontRenderer->LoadContent(m_Device);
+
 
 	return true;
 }
@@ -1240,7 +1243,9 @@ void Renderer::RenderSprites()
 		m_DeviceContext->Draw(4, 0);
 	}
 
-	//m_Font->Render(m_DeviceContext, L"Testar 1234");	//test
+	//Fonts
+	SetShaders(m_FontShaderProgram);
+	m_FontRenderer->Render(m_DeviceContext);
 
 }
 

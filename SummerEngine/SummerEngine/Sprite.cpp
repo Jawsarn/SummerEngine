@@ -20,7 +20,6 @@ void Sprite::LoadContent(std::string p_TextureName)
 {
 	ResourceManager* t_Manager = t_Manager->GetInstance();
 	m_Texture = (Texture*) t_Manager->Create(p_TextureName);
-	 
 }
 
 float Sprite::GetScale()
