@@ -1,4 +1,6 @@
 #define BLOCK_SIZE 16
+#define SSAO_SAMPLE_AMOUNT 14
+//reason why I keep these in defines is so that I can define them from CPU then use a macro to get them in when compiling code
 
 cbuffer ConstantBuffer : register(c0)
 {
@@ -24,6 +26,16 @@ cbuffer ShadowMapBuffer : register(c2)
 	float2 fillers;
 };
 
+cbuffer ShadowMapBuffer : register(c2)
+{
+	float4 OffsetVectors[SSAO_SAMPLE_AMOUNT];
+
+	float OcclusionRadius;
+	float OcclusionFadeStart;
+	float OcclusionFadeEnd;
+	float SurfaceEpsilon;
+};
+
 struct PointLight
 {
 	float3 position;
@@ -46,6 +58,8 @@ struct SpotLight
 };
 
 
+
+
 //input textures
 Texture2D<float4> g_Normal_Depth			:register(t1);
 Texture2D<float4> g_DiffuseColor_Spec		:register(t2);
@@ -57,6 +71,14 @@ RWTexture2D<float4> o_Output				:register(u0);
 //lights
 StructuredBuffer<PointLight> g_PointLights	:register(t4);
 Texture2D<float> g_ShadowMap				:register(t5);
+Texture2D<float4> g_RamdomMap				:register(t6);
+
+SamplerState SamShadow : register(s0);
+SamplerState SamRandom : register(s1);
+
+static const float SHADOWMAP_SIZE = 1024.0f;
+static const float SHADOWMAP_DX = 1.0f / SHADOWMAP_SIZE;
+
 
 //groupshared
 groupshared uint g_MinDepth;
@@ -248,6 +270,31 @@ float3 CalculateLighting(uint2 p_ThreadID, PixelData p_Data)
 	return finalColor;
 }
 
+
+
+float PCFSample(float2 projTexC, float depth)
+{
+	float s0 = g_ShadowMap.SampleLevel(SamShadow, projTexC.xy, 0).r;
+	float s1 = g_ShadowMap.SampleLevel(SamShadow, projTexC.xy + float2(SHADOWMAP_DX, 0), 0).r;
+	float s2 = g_ShadowMap.SampleLevel(SamShadow, projTexC.xy + float2(0, SHADOWMAP_DX), 0).r;
+	float s3 = g_ShadowMap.SampleLevel(SamShadow, projTexC.xy + float2(SHADOWMAP_DX, SHADOWMAP_DX), 0).r;
+	
+	float result0 = depth < s0;
+	float result1 = depth < s1;
+	float result2 = depth < s2;
+	float result3 = depth < s3;
+
+	// Transform to texel space.
+	float2 texelPos = SHADOWMAP_SIZE*projTexC.xy;
+
+	// Determine the interpolation amounts.
+	float2 t = frac(texelPos);
+
+	// Interpolate results.
+	return lerp(lerp(result0, result1, t.x),lerp(result2, result3, t.x), t.y);
+	//return depth < s0;
+}
+
 float CalcShadowFactor(PixelData p_Data)
 {
 	float4 t_ShadowPos = mul(float4(p_Data.PositionView, 1), ShadowMatrix);
@@ -261,23 +308,40 @@ float CalcShadowFactor(PixelData p_Data)
 	if (t_ShadowPos.x >= 0.0f && t_ShadowPos.x <= 1.0f && 
 		t_ShadowPos.y >= 0.0f && t_ShadowPos.y <= 1.0f)
 	{
-		t_ShadowPos.x = t_ShadowPos.x * 2048.0f;
-		t_ShadowPos.y = t_ShadowPos.y * 2048.0f;
-	
+		/*t_ShadowPos.x = t_ShadowPos.x * 1024.0f;
+		t_ShadowPos.y = t_ShadowPos.y * 1024.0f;
+	*/
+		const float t_Dx = SHADOWMAP_DX;
+		float t_PercentLit = 0.0f;
 		
-		
-		
-		float t_ShadowDepth = g_ShadowMap[t_ShadowPos.xy] + 0.00001f;
+		//sample 9 samples to average 
+		const float2 offsets[9] =
+		{
+			float2(-t_Dx, -t_Dx), float2(0, -t_Dx), float2(t_Dx, -t_Dx),
+			float2(-t_Dx, 0), float2(0, 0), float2(t_Dx, 0),
+			float2(-t_Dx, t_Dx), float2(0, t_Dx), float2(t_Dx, t_Dx)
+		};
 
-		
-		if (t_ShadowDepth <= t_Depth)
+		[unroll]
+		for (int i = 0; i < 9; i++)
 		{
-			return 0.0f;
+			t_PercentLit += PCFSample(t_ShadowPos.xy + offsets[i], t_Depth);
+
 		}
-		else
-		{
-			return 1.0f;
-		}
+		t_PercentLit /= 9.0f;
+		return t_PercentLit;
+		//float t_ShadowDepth = g_ShadowMap[t_ShadowPos.xy] + 0.00001f;
+
+		//float t_ShadowDepth = g_ShadowMap[t_ShadowPos.xy];
+		////
+		//if (t_ShadowDepth <= t_Depth)
+		//{
+		//	return 0.0f;
+		//}
+		//else
+		//{
+		//	return 1.0f;
+		//}
 	}
 	else
 	{
@@ -285,6 +349,20 @@ float CalcShadowFactor(PixelData p_Data)
 	}
 }
 
+float OcclusionFunction(float distZ)
+{
+
+}
+
+float SSAO()
+{
+	float occlusionSum = 0.0f;
+	[unroll]
+	for (int i = 0; i < SSAO_SAMPLE_AMOUNT; i++)
+	{
+
+	}
+}
 
 [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)]
 void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_GroupThreadID, uint3 p_GroupID : SV_GroupID )

@@ -88,6 +88,8 @@ private:
 	void SetShaders(ShaderProgram *p_Program);
 	void SetTextures(RenderObject* p_Object);
 	void SetPerFrameBuffers(std::vector<CameraStruct>* p_Cameras);
+	HRESULT CreateRandomVectors();
+	HRESULT Renderer::CreateOffsets();
 
 	//initialize and handles
 	ID3D11Device*			m_Device;
@@ -114,6 +116,7 @@ private:
 	ID3D11DepthStencilState*	m_LessEqualDepthState;
 	ID3D11SamplerState*			m_SamplerStateWrap;
 	ID3D11SamplerState*			m_SamplerStateLinearClamp;
+	ID3D11SamplerState*			m_SamplerRandom;
 
 	ID3D11UnorderedAccessView*	m_BackBufferUAV;
 
@@ -153,6 +156,15 @@ private:
 		float Shadow_Height;
 		XMFLOAT2 Fillers;
 	};
+	struct SSAOBuffer
+	{
+		XMFLOAT4 OffsetVectors[14];
+
+		float OcclusionRadius;
+		float OcclusionFadeStart;
+		float OcclusionFadeEnd;
+		float SurfaceEpsilon;
+	};
 
 	struct PointLight
 	{
@@ -182,6 +194,8 @@ private:
 	ID3D11Buffer* m_TestPerFrameBuffer;
 	ID3D11Buffer* m_PerComputeBuffer;
 	ID3D11Buffer* m_ShadowMapBuffer;
+	ID3D11Buffer* m_SSAOBuffer;
+	ID3D11ShaderResourceView* m_SSAORandomTexture;
 
 	ID3D11Buffer* m_InstanceBuffer;
 	ID3D11ComputeShader* m_DeferredCS;

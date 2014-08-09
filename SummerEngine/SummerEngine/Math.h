@@ -15,5 +15,10 @@ public:
 
 	//XMMATRIX
 	static XMFLOAT4X4 MultiPlyXMFLOAT4X4XMMAATRIX(XMFLOAT4X4* a, XMMATRIX* b);
+
+	//random functions
+	static float RandF();
+	static float RandF(float a, float b);
+	
 };
 

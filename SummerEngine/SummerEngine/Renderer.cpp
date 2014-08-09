@@ -4,6 +4,7 @@
 #include "TransformComponent.h"
 #include "ShaderLoader.h"
 #include "DDSTextureLoader.h"
+#include "Math.h"
 
 Renderer* Renderer::m_Singleton = nullptr;
 
@@ -79,6 +80,13 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 	if (FAILED(hr))
 		return false;
 
+	hr = CreateRandomVectors();
+	if (FAILED(hr))
+		return false;
+
+	hr = CreateOffsets();
+	if (FAILED(hr))
+		return false;
 	//test stuff
 	
 	m_PointLights[m_AmountOfPointLights] = PointLight(XMFLOAT3(0, 20, 0), 99, XMFLOAT3(0, 0, 1));
@@ -95,15 +103,15 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	m_DeviceContext->UpdateSubresource(m_PerComputeBuffer, 0, nullptr, &t_PerCompute, 0, 0);
 
-	m_ShadowMap = new ShadowMap(m_Device, 2048, 2048);
+	m_ShadowMap = new ShadowMap(m_Device, 1024, 1024);
 	CameraStruct t_Cam;
 	t_Cam.Position = XMFLOAT3(1, 0, 0);
 	
-	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(0, 50, 0));
-	XMVECTOR t_At = XMLoadFloat3(&XMFLOAT3(0, -1, 0));
+	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(-25, 50, 0));
+	XMVECTOR t_At = XMLoadFloat3(&XMFLOAT3(0.5f, -1, 0));
 	XMVECTOR t_Up = XMLoadFloat3(&XMFLOAT3(1, 0, 0));
-	//XMStoreFloat4x4(&t_Cam.Proj, XMMatrixOrthographicLH(2048, 2048, 0, 10000.0f));
-	XMStoreFloat4x4(&t_Cam.Proj, XMMatrixPerspectiveFovLH(XM_PIDIV4, 1.0, 0.5f, 100.0f));
+	XMStoreFloat4x4(&t_Cam.Proj, XMMatrixOrthographicLH(30, 30, 0.0f, 1000.0f));
+	//XMStoreFloat4x4(&t_Cam.Proj, XMMatrixPerspectiveFovLH(XM_PIDIV4, 1.0, 0.5f, 100.0f));
 	XMStoreFloat4x4(&t_Cam.View, XMMatrixLookToLH(t_Eye, t_At, t_Up));
 
 	m_ShadowMapMatrices.push_back(t_Cam);
@@ -295,9 +303,9 @@ HRESULT Renderer::InitializeRasterizers()
 	if (FAILED(hr))
 		return hr;
 
-	desc.DepthBias = 0;
+	desc.DepthBias = 1000;
 	desc.DepthBiasClamp = 0.0f;
-	desc.SlopeScaledDepthBias = 0.5f;
+	desc.SlopeScaledDepthBias = 2.0f;
 	hr = m_Device->CreateRasterizerState(&desc, &m_RasterizerStateShadowMap);
 	if (FAILED(hr))
 		return hr;
@@ -733,12 +741,25 @@ HRESULT Renderer::InitializeSamplerState()
 	m_DeviceContext->PSSetSamplers(0, 1, &m_SamplerStateWrap);
 
 	//for compute shader
-	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-	hr = m_Device->CreateSamplerState(&sampDesc, &m_SamplerStateLinearClamp);
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+	sampDesc.ComparisonFunc = D3D11_COMPARISON_LESS;
 
+	sampDesc.BorderColor[0] = 1;
+	sampDesc.BorderColor[1] = 1;
+	sampDesc.BorderColor[2] = 1;
+	sampDesc.BorderColor[3] = 1e5f;
+
+	hr = m_Device->CreateSamplerState(&sampDesc, &m_SamplerStateLinearClamp);
+	
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	hr = m_Device->CreateSamplerState(&sampDesc, &m_SamplerRandom);
+
+	m_DeviceContext->CSSetSamplers(1, 1, &m_SamplerRandom);
 	m_DeviceContext->CSSetSamplers(0, 1, &m_SamplerStateLinearClamp);
 
 
@@ -1225,4 +1246,112 @@ void Renderer::EndRender()
 
 	m_SwapChain->Present(1, 0);
 	m_IsRendering = false;
+}
+
+HRESULT Renderer::CreateOffsets()
+{
+	HRESULT hr = S_OK;
+	SSAOBuffer t_Buffer;
+
+	//8 cube corners
+	t_Buffer.OffsetVectors[0] = XMFLOAT4(+1.0f, +1.0f, +1.0f, 0);
+	t_Buffer.OffsetVectors[1] = XMFLOAT4(-1.0f, -1.0f, -1.0f, 0);
+
+	t_Buffer.OffsetVectors[2] = XMFLOAT4(-1.0f, +1.0f, +1.0f, 0);
+	t_Buffer.OffsetVectors[3] = XMFLOAT4(+1.0f, -1.0f, -1.0f, 0);
+
+	t_Buffer.OffsetVectors[4] = XMFLOAT4(+1.0f, -1.0f, +1.0f, 0);
+	t_Buffer.OffsetVectors[5] = XMFLOAT4(-1.0f, +1.0f, -1.0f, 0);
+
+	t_Buffer.OffsetVectors[6] = XMFLOAT4(+1.0f, +1.0f, -1.0f, 0);
+	t_Buffer.OffsetVectors[7] = XMFLOAT4(-1.0f, -1.0f, +1.0f, 0);
+
+	//faces
+	t_Buffer.OffsetVectors[8] = XMFLOAT4(+1.0f, 0.0f, 0.0f, 0);
+	t_Buffer.OffsetVectors[9] = XMFLOAT4(-1.0f, 0.0f, 0.0f, 0);
+	t_Buffer.OffsetVectors[10] = XMFLOAT4(0.0f, +1.0f, 0.0f, 0);
+	t_Buffer.OffsetVectors[11] = XMFLOAT4(0.0f, -1.0f, 0.0f, 0);
+	t_Buffer.OffsetVectors[12] = XMFLOAT4(0.0f, 0.0f, +1.0f, 0);
+	t_Buffer.OffsetVectors[13] = XMFLOAT4(0.0f, 0.0f, -1.0f, 0);
+
+	for (int i = 0; i < 14; i++)
+	{
+		//create lenghts of 0.25-1.0 to the offsets
+		float t_Lenght = Math::RandF(0.25f, 1.0f);
+
+		XMVECTOR t_Vector = t_Lenght* XMVector4Normalize(XMLoadFloat4(&t_Buffer.OffsetVectors[i]));
+		XMStoreFloat4(&t_Buffer.OffsetVectors[i], t_Vector);
+	}
+
+	t_Buffer.OcclusionFadeEnd = 2.0f;
+	t_Buffer.OcclusionFadeStart = 0.2f;
+	t_Buffer.OcclusionRadius = 0.5f;
+	t_Buffer.SurfaceEpsilon = 0.05f;
+
+	D3D11_BUFFER_DESC t_BufferDesc;
+	t_BufferDesc.MiscFlags = 0;
+	t_BufferDesc.StructureByteStride = 0;
+	t_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	t_BufferDesc.ByteWidth = sizeof(SSAOBuffer);
+	t_BufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	t_BufferDesc.CPUAccessFlags = 0;
+
+	hr = m_Device->CreateBuffer(&t_BufferDesc, 0, &m_SSAOBuffer);
+	if (FAILED(hr))
+		return hr;
+	
+	m_DeviceContext->UpdateSubresource(m_SSAOBuffer, 0, nullptr, &t_Buffer, 0, 0);
+
+	return hr;
+}
+
+HRESULT Renderer::CreateRandomVectors()
+{
+	HRESULT hr = S_OK;
+	
+	XMFLOAT4 t_RandValues[1024];
+
+	for (int i = 0; i < 1024; ++i)
+	{
+		t_RandValues[i].x = Math::RandF(-1.0f, 1.0f);
+		t_RandValues[i].y = Math::RandF(-1.0f, 1.0f);
+		t_RandValues[i].z = Math::RandF(-1.0f, 1.0f);
+		t_RandValues[i].w = Math::RandF(-1.0f, 1.0f);
+	}
+
+	D3D11_SUBRESOURCE_DATA initData;
+	initData.pSysMem = &t_RandValues[0];
+	initData.SysMemPitch = 14*sizeof(XMFLOAT4);
+	initData.SysMemSlicePitch = 0;
+
+	// Create the texture.
+	D3D11_TEXTURE1D_DESC texDesc;
+	texDesc.Width = 1024;
+	texDesc.MipLevels = 1;
+	texDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	texDesc.Usage = D3D11_USAGE_IMMUTABLE;
+	texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	texDesc.CPUAccessFlags = 0;
+	texDesc.MiscFlags = 0;
+	texDesc.ArraySize = 1;
+
+
+	ID3D11Texture1D* randomTex = 0;
+	hr = m_Device->CreateTexture1D(&texDesc, &initData, &randomTex);
+	if (FAILED(hr))
+		return hr;
+
+	// Create the resource view.
+	D3D11_SHADER_RESOURCE_VIEW_DESC viewDesc;
+	viewDesc.Format = texDesc.Format;
+	viewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE1D;
+	viewDesc.Texture1D.MipLevels = texDesc.MipLevels;
+	viewDesc.Texture1D.MostDetailedMip = 0;
+
+	hr = m_Device->CreateShaderResourceView(randomTex, &viewDesc, &m_SSAORandomTexture);
+	if (FAILED(hr))
+		return hr;
+
+	randomTex->Release();
+	return hr;
 }

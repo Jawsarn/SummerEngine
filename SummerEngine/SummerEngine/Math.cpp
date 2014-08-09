@@ -40,3 +40,13 @@ XMFLOAT4X4 Math::MultiPlyXMFLOAT4X4XMMAATRIX(XMFLOAT4X4* a, XMMATRIX* b)
 
 	return result;
 }
+
+float Math::RandF()
+{
+	return (((float)rand())/(float)RAND_MAX);
+}
+
+float Math::RandF(float a, float b)
+{
+	return a + RandF()*(b-a);
+}
