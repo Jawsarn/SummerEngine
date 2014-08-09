@@ -1,4 +1,4 @@
-Texture2D fontTexture : register(t0);
+Texture2D fontTexture : register(t4);
 
 SamplerState SampleType;
 

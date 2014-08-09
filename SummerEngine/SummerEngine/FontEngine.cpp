@@ -110,8 +110,8 @@ bool FontEngine::DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, 
 	if (t_Length > t_MaxLetters)
 		t_Length = t_MaxLetters;
 
-	float t_Width = 1920;
-	float t_Height = 1080;
+	float t_Width = 1920/2;
+	float t_Height = 1080/2;
 
 	float t_CharacterSize = 32.0f;
 
@@ -148,12 +148,12 @@ bool FontEngine::DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, 
 		float t_CurrentEndX = t_CurrentStartX + t_CharWidth;
 		float t_CurrentEndY = p_StartY + t_CharHeight;
 
-		t_Sprite[0].position = XMFLOAT3(t_CurrentEndX, t_CurrentEndY, 0.0f);
-		t_Sprite[1].position = XMFLOAT3(t_CurrentEndX, p_StartY, 0.0f);
+		t_Sprite[0].position = XMFLOAT3(t_CurrentEndX,	 t_CurrentEndY, 0.0f);
+		t_Sprite[1].position = XMFLOAT3(t_CurrentEndX,	 p_StartY, 0.0f);
 		t_Sprite[2].position = XMFLOAT3(t_CurrentStartX, p_StartY, 0.0f);
 		t_Sprite[3].position = XMFLOAT3(t_CurrentStartX, p_StartY, 0.0f);
 		t_Sprite[4].position = XMFLOAT3(t_CurrentStartX, t_CurrentEndY, 0.0f);
-		t_Sprite[5].position = XMFLOAT3(t_CurrentEndX, t_CurrentEndY, 0.0f);
+		t_Sprite[5].position = XMFLOAT3(t_CurrentEndX,	 t_CurrentEndY, 0.0f);
 
 		int t_Vault = 0;
 		int t_Letter = static_cast<char>(p_Text[i]);
@@ -172,12 +172,12 @@ bool FontEngine::DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, 
 		float tuStart = 0.0f + (t_TexelWidth * static_cast<float>(t_Vault));
 		float tuEnd = tuStart + t_TexelWidth;
 
-		t_Sprite[0].texture = XMFLOAT2(tuEnd, 0.0f);
-		t_Sprite[1].texture = XMFLOAT2(tuEnd, 1.0f);
+		t_Sprite[0].texture = XMFLOAT2(tuEnd,   0.0f);
+		t_Sprite[1].texture = XMFLOAT2(tuEnd,   1.0f);
 		t_Sprite[2].texture = XMFLOAT2(tuStart, 1.0f);
 		t_Sprite[3].texture = XMFLOAT2(tuStart, 1.0f);
 		t_Sprite[4].texture = XMFLOAT2(tuStart, 0.0f);
-		t_Sprite[5].texture = XMFLOAT2(tuEnd, 0.0f);
+		t_Sprite[5].texture = XMFLOAT2(tuEnd,   0.0f);
 
 		t_Sprite += 6;
 	}
@@ -194,14 +194,16 @@ void FontEngine::Render(ID3D11DeviceContext* p_DeviceContext)
 	UINT32 t_Offset = 0;
 	UINT32 t_Stride = sizeof(VertexType);
 
+	p_DeviceContext->PSSetSamplers(0, 1, &m_ColorMapSampler);
+
 	p_DeviceContext->IASetVertexBuffers(0, 1, &m_VertexBuffer, &t_Stride, &t_Offset);
 	p_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	p_DeviceContext->PSSetSamplers(0, 1, &m_ColorMapSampler);
 	
-	DrawString(p_DeviceContext, "NOOOBS", -0.2f, 0.0f);
+	
+	DrawString(p_DeviceContext, "KEBABPIZZA", -0.2f, 0.0f);
 	//Render texture
-	p_DeviceContext->PSSetShaderResources(0, 1, &m_Texture);
+	p_DeviceContext->PSSetShaderResources(4, 1, &m_Texture);
 	
 }
 
