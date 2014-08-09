@@ -28,6 +28,7 @@ Renderer::Renderer()
 	m_SpriteShaderProgram = new ShaderProgram();
 	m_DeferredShaderProgram = new ShaderProgram();
 	m_ShadowMapShaderProgram = new ShaderProgram();
+	m_FontShaderProgram = new ShaderProgram();
 }
 
 
@@ -116,7 +117,10 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	m_ShadowMapMatrices.push_back(t_Cam);
 
-	//m_Font = m_Font->GetInstance(m_Device);//	test
+	m_FontRenderer = nullptr;
+	m_FontRenderer = new FontEngine();
+	m_FontRenderer->LoadContent(m_Device);
+
 
 	return true;
 }
@@ -484,6 +488,34 @@ HRESULT Renderer::InitializeShaders()
 		m_SpriteShaderProgram->PixelShader = t_PixelShader;
 	}
 
+	////FONT RENDERING
+	{
+		ID3D11VertexShader* t_VertexShader;
+		ID3D11InputLayout* t_InputLayout;
+
+		D3D11_INPUT_ELEMENT_DESC t_Layout[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+		};
+		UINT t_NumElements = ARRAYSIZE(t_Layout);
+
+		hr = t_ShaderLoader.CreateVertexShaderWithInputLayout(L"FontVS.hlsl", "VS_main", "vs_5_0", m_Device, &t_VertexShader, t_Layout, t_NumElements, &t_InputLayout);
+		if (FAILED(hr))
+			return hr;
+
+		m_FontShaderProgram->VertexShader = t_VertexShader;
+		m_FontShaderProgram->InputLayout = t_InputLayout;
+	}
+
+	{
+		ID3D11PixelShader* t_PixelShader;
+		hr = t_ShaderLoader.CreatePixelShader(L"FontPS.hlsl", "PS_main", "ps_5_0", m_Device, &t_PixelShader);
+		if (FAILED(hr))
+			return hr;
+		m_FontShaderProgram->PixelShader = t_PixelShader;
+	}
 
 	////DEFERRED RENDERING
 	{
@@ -1232,7 +1264,9 @@ void Renderer::RenderSprites()
 		m_DeviceContext->Draw(4, 0);
 	}
 
-	//m_Font->Render(m_DeviceContext, L"Testar 1234");	//test
+	//Fonts
+	SetShaders(m_FontShaderProgram);
+	m_FontRenderer->Render(m_DeviceContext);
 
 }
 
@@ -1240,7 +1274,7 @@ void Renderer::EndRender()
 {
 	if (!m_IsRendering)
 	{
-		MessageBox(nullptr, L"Rendering call End was called befor begin was called.", L"ErrorMessage", MB_OK);
+		MessageBox(nullptr, L"Rendering call End was called before begin was called.", L"ErrorMessage", MB_OK);
 		return;
 	}
 

@@ -5,6 +5,7 @@
 #include "Component.h"
 #include "ShadowMap.h"
 #include "ScreenManager.h"
+#include "FontEngine.h"
 
 using namespace DirectX;
 
@@ -209,11 +210,14 @@ private:
 	ID3D11ShaderResourceView*	m_PointLightsBufferSRV;
 
 	ShaderProgram* m_SpriteShaderProgram;
+	ShaderProgram* m_FontShaderProgram;
 	ShaderProgram* m_DeferredShaderProgram;
 	ShaderProgram* m_ShadowMapShaderProgram;
 	ShadowMap* m_ShadowMap;
 	std::vector<D3D11_VIEWPORT> m_Viewports;
 
 	std::vector<CameraStruct> m_ShadowMapMatrices;
+
+	FontEngine* m_FontRenderer;
 };
 

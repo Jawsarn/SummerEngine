@@ -1,13 +1,16 @@
-Texture2D spriteTexture : register(t0);
+Texture2D fontTexture : register(t0);
+
 SamplerState SampleType;
 
-struct VS_OUTPUT
+struct PSIn
 {
-	float4 position : SV_POSITION;
-	float3 texCoord : TEX;
+	float4 posH							: SV_POSITION;
+	float2 texCoord						: TEXCOORD;
 };
 
-float4 PS_main(VS_OUTPUT p_Input) : SV_TARGET
+float4 PS_main(PSIn input) : SV_TARGET
 {
-	return float4(1, 0, 0, 0);
+	//return float4(1.0f, 0.0f, 0.0f, 0.0f);
+	return float4(fontTexture.Sample(SampleType, input.texCoord));
+	
 }
