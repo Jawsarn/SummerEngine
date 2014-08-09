@@ -23,11 +23,6 @@ void FontEngine::Release()
 		delete (m_VertexBuffer);
 		m_VertexBuffer = nullptr;
 	}
-	if (m_ColorMapSampler)
-	{
-		delete(m_ColorMapSampler);
-		m_ColorMapSampler = nullptr;
-	}
 }
 
 
@@ -92,8 +87,8 @@ bool FontEngine::DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, 
 	if (t_Length > t_MaxLetters)
 		t_Length = t_MaxLetters;
 
-	float t_Width = 1920/2;
-	float t_Height = 1080/2;
+	float t_Width = 1920;
+	float t_Height = 1080;
 
 	float t_CharacterSize = 32.0f;
 
