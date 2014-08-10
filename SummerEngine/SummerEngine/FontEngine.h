@@ -1,10 +1,8 @@
 #pragma once
-//#include "stdafx.h"
 #include "Texture.h"
 #include "DDSTextureLoader.h"
 #include <fstream>
 #include <sstream>
-//#include "Shader.h"//test
 #include "Math.h"
 #include "ResourceManager.h"
 
@@ -20,10 +18,8 @@ private:
 
 	bool DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, float p_StartX, float p_StartY);
 
-	//Texture* m_Texture;
 	ID3D11ShaderResourceView* m_Texture;
 	ID3D11Buffer* m_VertexBuffer;
-	ID3D11SamplerState* m_ColorMapSampler;
 
 public:
 	FontEngine();
