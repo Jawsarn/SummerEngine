@@ -238,8 +238,6 @@ void CalculateTileAndLightCollision(uint p_MaxNumOfPointLights, uint p_GroupInde
 	GroupMemoryBarrierWithGroupSync();
 }
 
-
-
 float3 CalculateLighting(uint2 p_ThreadID, PixelData p_Data)
 {
 	uint numOfLights = g_VisibleLightCount;
@@ -269,8 +267,6 @@ float3 CalculateLighting(uint2 p_ThreadID, PixelData p_Data)
 
 	return finalColor;
 }
-
-
 
 float PCFSample(float2 projTexC, float depth)
 {
@@ -351,17 +347,57 @@ float CalcShadowFactor(PixelData p_Data)
 
 float OcclusionFunction(float distZ)
 {
+	float t_Occlusion = 0.0f;
 
+	if (distZ > SurfaceEpsilon)
+	{
+		float t_FadeLength = OcclusionFadeEnd - OcclusionFadeStart;
+
+		t_Occlusion = saturate((OcclusionFadeEnd - distZ)/t_FadeLength);
+	}
+	return t_Occlusion;
 }
 
-float SSAO()
+float SSAO(PixelData p_Data, float threadID)
 {
-	float occlusionSum = 0.0f;
+	float3 t_RandomVector = 2.0f*g_RamdomMap.SampleLevel( SamRandom, threadID*4.0f, 0).rgb - 1.0f;
+
+	float t_OcclusionSum = 0.0f;
 	[unroll]
 	for (int i = 0; i < SSAO_SAMPLE_AMOUNT; i++)
 	{
+		float3 t_Offset = reflect(OffsetVectors[i].xyz, t_RandomVector);
 
+			//sign returns -1 if less then zero, and 1 if more then zero, good way to see if facing same side as normal
+			float t_Flip = sign(dot(t_Offset, p_Data.NormalView));
+
+		//sample point near our position in the occlusion radius
+		float3 t_SampledPoint = p_Data.PositionView + t_Flip* OcclusionRadius * t_Offset;
+
+		//now we project the sampled point to texture space, I think this means only using the projection matrix due to its already in view space and then devide by w
+		float4 t_ProjSamplePoint = mul(float4(t_SampledPoint, 1), Projection);
+		t_ProjSamplePoint /= t_ProjSamplePoint.w;
+
+		//now sample from our depth map
+		float t_TestDepth = g_Normal_Depth.SampleLevel(SamShadow, t_ProjSamplePoint.xy, 0.0f).w;
+
+		float3 t_Occluder = (t_TestDepth / t_SampledPoint.z) * t_SampledPoint;
+
+		float distZ = p_Data.PositionView.z - t_Occluder.z;
+		
+		float distanceToPlane = max(dot(p_Data.NormalView, normalize(t_Occluder - p_Data.PositionView)), 0.0f);
+		float t_Occlusion = distanceToPlane* OcclusionFunction(distZ);
+
+		t_OcclusionSum += t_Occlusion;
 	}
+
+	float t_Amount = SSAO_SAMPLE_AMOUNT; //if not work with ints do this y
+	t_OcclusionSum /= t_Amount;
+
+
+	float t_Access = 1.0f - t_OcclusionSum;
+	//sharpen
+	return saturate(pow(t_Access, 4.0f));
 }
 
 [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)]

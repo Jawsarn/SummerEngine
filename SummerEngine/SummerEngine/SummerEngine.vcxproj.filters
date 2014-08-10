@@ -97,6 +97,9 @@
     <Filter Include="Shaders\Fonts">
       <UniqueIdentifier>{7d5d5ae8-976f-403e-9d6d-a19e26ba09ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\SSAO">
+      <UniqueIdentifier>{6184919d-7c43-4dc7-8cc7-b300604dceb9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -403,6 +406,15 @@
     </FxCompile>
     <FxCompile Include="FontVS.hlsl">
       <Filter>Shaders\Fonts</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Shaders\SSAO</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader1.hlsl">
+      <Filter>Shaders\SSAO</Filter>
+    </FxCompile>
+    <FxCompile Include="ComputeShader.hlsl">
+      <Filter>Shaders\SSAO</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
