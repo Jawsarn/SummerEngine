@@ -1193,7 +1193,7 @@ void Renderer::ComputeDeferred()
 {
 	SetPerFrameBuffers(&m_Cameras);
 	
-	//set the shadowmap
+	//update the shadowmap
 	ShadowMapBuffer t_ShadowMapBuffer;
 	XMMATRIX t_ViewInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_Cameras[0].View));
 	XMMATRIX t_ShadowView = XMLoadFloat4x4(&m_ShadowMapMatrices[0].View);
@@ -1210,6 +1210,9 @@ void Renderer::ComputeDeferred()
 	t_ShadowMapBuffer.Fillers = XMFLOAT2(0, 0);
 
 	m_DeviceContext->UpdateSubresource(m_ShadowMapBuffer, 0, nullptr, &t_ShadowMapBuffer, 0, 0);
+
+
+
 
 	m_DeviceContext->CSSetShader(m_DeferredCS, nullptr, 0);
 
