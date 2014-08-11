@@ -13,7 +13,7 @@ public:
 
 	void SetPosition(XMFLOAT2 p_Position);
 	void SetScale(float p_Scale);
-	void SetColor(XMFLOAT4 p_Color);
+	void SetColor(XMFLOAT3 p_Color);
 	void SetDirection(XMFLOAT2 p_Direction);
 	void SetSpeed(float p_Speed);
 	void IsRendered(bool p_IsRendered);

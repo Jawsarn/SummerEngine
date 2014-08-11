@@ -15,7 +15,7 @@ public:
 
 	std::vector<Screen*>& GetScreens();
 	std::vector<ID3D11Buffer*> GetVertexBuffers();
-	void CreateSprite(std::string p_TextureName, XMFLOAT2 p_Position, float p_Width, float p_Height);
+	void CreateSprite(std::string p_TextureName, XMFLOAT2 p_Position, float p_Width, float p_Height, XMFLOAT3 p_Color);
 	void Draw(ID3D11DeviceContext* p_DeviceContext);
 
 private:

@@ -174,7 +174,7 @@ void FontEngine::Render(ID3D11DeviceContext* p_DeviceContext)
 	p_DeviceContext->IASetVertexBuffers(0, 1, &m_VertexBuffer, &t_Stride, &t_Offset);
 	p_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	
-	DrawString(p_DeviceContext, "KEBABPIZZA", -0.2f, 0.0f);
+	DrawString(p_DeviceContext, "PROPERTIES", 0.72f, 0.93f);
 
 	p_DeviceContext->PSSetShaderResources(4, 1, &m_Texture);
 	

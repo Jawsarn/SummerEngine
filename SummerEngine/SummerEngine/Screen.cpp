@@ -8,7 +8,7 @@ Screen::Screen()
 Screen::Screen(std::string p_TextureName)
 {
 	this->m_Scale = 1.0;
-	this->m_Color = XMFLOAT4(0,0,0,0);
+	this->m_Color = XMFLOAT3(0,0,0);
 	this->m_Direction = XMFLOAT2(0, -1);
 	this->m_Speed = 0.0f;
 	this->m_Position = XMFLOAT2(0.5f,0.5f);
@@ -41,7 +41,7 @@ void Screen::SetScale(float p_Scale)
 	m_Scale = p_Scale;
 }
 
-void Screen::SetColor(XMFLOAT4 p_Color)
+void Screen::SetColor(XMFLOAT3 p_Color)
 {
 	m_Color = p_Color;
 }

@@ -11,11 +11,12 @@ public:
 	{
 		XMFLOAT3 position;
 		XMFLOAT2 texCoord;
-
+		XMFLOAT3 color;
 		Vertex2D()
 		{
 			position = XMFLOAT3(0, 0, 0);
 			texCoord = XMFLOAT2(0, 0);
+			color = XMFLOAT3(0,0,0);
 		}
 	};
 
@@ -40,7 +41,7 @@ protected:
 	float m_Speed;
 	XMFLOAT2 m_Position;
 	float m_Scale;
-	XMFLOAT4 m_Color;
+	XMFLOAT3 m_Color;
 	XMFLOAT2 m_Direction;
 	bool m_IsRendered;
 	void LoadContent(std::string p_TextureName);
