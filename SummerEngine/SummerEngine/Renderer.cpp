@@ -557,6 +557,8 @@ HRESULT Renderer::InitializeShaders()
 			return hr;
 	}
 
+
+
 	////SHADOW MAPS
 	{
 		ID3D11VertexShader* t_VertexShader;
@@ -589,6 +591,24 @@ HRESULT Renderer::InitializeShaders()
 		if (FAILED(hr))
 			return hr;
 		m_ShadowMapShaderProgram->PixelShader = t_PixelShader;
+	}
+
+	{
+		hr = t_ShaderLoader.CreateComputeShader(L"BlurrHorrCS.hlsl", "CS", "cs_5_0", m_Device, &m_BlurrHorrCS);
+		if (FAILED(hr))
+			return hr;
+	}
+
+	{
+		hr = t_ShaderLoader.CreateComputeShader(L"BlurrVertCS.hlsl", "CS", "cs_5_0", m_Device, &m_BlurrVertCS);
+		if (FAILED(hr))
+			return hr;
+	}
+
+	{
+		hr = t_ShaderLoader.CreateComputeShader(L"SSAOCS.hlsl", "CS", "cs_5_0", m_Device, &m_SSAOCS);
+		if (FAILED(hr))
+			return hr;
 	}
 
 	return hr;
@@ -742,6 +762,40 @@ HRESULT Renderer::InitializeGBuffers()
 		t_Texture->Release();
 
 	}
+
+	ID3D11Texture2D* t_Texture = 0;
+
+	desc.Format = DXGI_FORMAT_R32_FLOAT;
+	desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
+	t_SrvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+
+	hr = m_Device->CreateTexture2D(&desc, 0, &t_Texture);
+	if (FAILED(hr))
+		return hr;
+
+	hr = m_Device->CreateShaderResourceView(t_Texture, &t_SrvDesc, &m_SSAOSRV);
+	if (FAILED(hr))
+		return hr;
+
+	hr = m_Device->CreateUnorderedAccessView(t_Texture, nullptr, &m_SSAOUAV);
+	if (FAILED(hr))
+		return hr;
+
+	t_Texture->Release();
+
+	hr = m_Device->CreateTexture2D(&desc, 0, &t_Texture);
+	if (FAILED(hr))
+		return hr;
+
+	hr = m_Device->CreateShaderResourceView(t_Texture, &t_SrvDesc, &m_BlurrSRV);
+	if (FAILED(hr))
+		return hr;
+
+	hr = m_Device->CreateUnorderedAccessView(t_Texture, nullptr, &m_BlurrUAV);
+	if (FAILED(hr))
+		return hr;
+
+	t_Texture->Release();
 
 
 	return hr;
@@ -927,8 +981,9 @@ void Renderer::BeginRender()
 	{
 		m_DeviceContext->ClearRenderTargetView(m_GbufferTargetViews[i], Colors::Black);
 	}
-
 	
+	m_DeviceContext->ClearUnorderedAccessViewFloat(m_SSAOUAV, Colors::Black);
+	m_DeviceContext->ClearUnorderedAccessViewFloat(m_BlurrUAV, Colors::Black);
 	
 	m_IsRendering = true;
 }
@@ -1213,6 +1268,48 @@ void Renderer::ComputeDeferred()
 
 
 
+	//////////////////////////////////NEW STUFF HERE//////////////////////////
+	//SSAO here do fix
+	m_DeviceContext->CSSetConstantBuffers(2, 1, &m_SSAOBuffer);
+
+	m_DeviceContext->CSSetShader(m_SSAOCS, nullptr, 0);
+	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &m_SSAOUAV, nullptr);
+	m_DeviceContext->CSSetShaderResources(1, 1, &m_GbufferShaderResource[0]);
+	m_DeviceContext->CSSetShaderResources(2, 1, &m_SSAORandomTexture);
+
+	UINT x = ceil(*m_Width / (FLOAT)THREAD_BLOCK_DIMENSIONS);
+	UINT y = ceil(*m_Height / (FLOAT)THREAD_BLOCK_DIMENSIONS);
+
+	m_DeviceContext->Dispatch(x, y, 1);
+
+	//now perform first vertical blurr
+	m_DeviceContext->CSSetUnorderedAccessViews(0, 1 , &m_BlurrUAV, nullptr);
+	m_DeviceContext->CSSetShaderResources(1, 1, &m_SSAOSRV);
+
+
+	ID3D11Buffer* t_DeleteBuffer[] = { 0, 0, 0 };
+	m_DeviceContext->CSSetConstantBuffers(0, 3, t_DeleteBuffer);
+
+
+	x = *m_Width;
+	y = ceil(*m_Height / (FLOAT)THREAD_BLURR_DIMENSION);
+	//draw first blurr
+
+	ID3D11UnorderedAccessView* t_DeleteUAV = {0};
+	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &t_DeleteUAV, nullptr);
+	m_DeviceContext->CSSetShaderResources(1, 1, &m_BlurrSRV);
+	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &m_SSAOUAV, nullptr);
+
+	x = ceil(*m_Width / (FLOAT)THREAD_BLURR_DIMENSION);
+	y = *m_Height;
+	//draw second blur to texture here
+
+	//add cbs again
+	m_DeviceContext->CSSetConstantBuffers(0, 1, &m_TestPerFrameBuffer);
+	m_DeviceContext->CSSetConstantBuffers(1, 2, &m_PerComputeBuffer);
+	m_DeviceContext->CSSetConstantBuffers(2, 1, &m_ShadowMapBuffer);
+
+	/////////////////////////////NEW STUFF ENDS/////////////////////////////
 
 	m_DeviceContext->CSSetShader(m_DeferredCS, nullptr, 0);
 
@@ -1223,8 +1320,8 @@ void Renderer::ComputeDeferred()
 	ID3D11ShaderResourceView* t_View = m_ShadowMap->GetResourceView();
 	m_DeviceContext->CSSetShaderResources(5, 1, &t_View);
 
-	UINT x = ceil(*m_Width / (FLOAT)THREAD_BLOCK_DIMENSIONS);
-	UINT y = ceil(*m_Height / (FLOAT)THREAD_BLOCK_DIMENSIONS);
+	x = ceil(*m_Width / (FLOAT)THREAD_BLOCK_DIMENSIONS);
+	y = ceil(*m_Height / (FLOAT)THREAD_BLOCK_DIMENSIONS);
 
 	m_DeviceContext->Dispatch(x, y, 1);
 

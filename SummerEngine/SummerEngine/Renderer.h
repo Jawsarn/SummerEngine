@@ -13,6 +13,7 @@ using namespace DirectX;
 
 #define MAX_INSTANCEBUFFER_SIZE 1000
 #define THREAD_BLOCK_DIMENSIONS 16
+#define THREAD_BLURR_DIMENSION 256
 #define MAX_NUM_OF_LIGHTS 1024
 
 class Renderer
@@ -198,9 +199,17 @@ private:
 	ID3D11Buffer* m_SSAOBuffer;
 	ID3D11ShaderResourceView* m_SSAORandomTexture;
 
+	ID3D11UnorderedAccessView* m_SSAOUAV;
+	ID3D11ShaderResourceView* m_SSAOSRV;
+
+	ID3D11UnorderedAccessView* m_BlurrUAV;
+	ID3D11ShaderResourceView* m_BlurrSRV;
+
 	ID3D11Buffer* m_InstanceBuffer;
 	ID3D11ComputeShader* m_DeferredCS;
-
+	ID3D11ComputeShader* m_SSAOCS;
+	ID3D11ComputeShader* m_BlurrHorrCS;
+	ID3D11ComputeShader* m_BlurrVertCS;
 
 	std::vector<CameraStruct> m_Cameras;
 

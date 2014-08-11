@@ -34,7 +34,7 @@ Texture2D<float4> g_Normal_Depth			:register(t1);
 //output texture
 RWTexture2D<float> o_Output				:register(u0);
 
-Texture2D<float4> g_RamdomMap				:register(t2);
+Texture1D<float4> g_RamdomMap				:register(t2);
 
 SamplerState SamShadow : register(s0);
 SamplerState SamRandom : register(s1);
