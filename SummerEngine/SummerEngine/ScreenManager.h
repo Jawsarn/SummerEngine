@@ -22,13 +22,12 @@ public:
 	};
 
 	void Init();
-	void Update(ID3D11DeviceContext* p_DeviceContext);
 	void MouseOver(int p_Index, int x, int y);
 
 	std::vector<Screen*>& GetScreens();
 	std::vector<ID3D11Buffer*> GetVertexBuffers();
 	void CreateSprite(RenderSprites* p_Sprite);
-	void Draw(ID3D11DeviceContext* p_DeviceContext);
+	void Update(ID3D11DeviceContext* p_DeviceContext);
 	
 	
 
@@ -40,5 +39,12 @@ private:
 	std::vector<Screen*> m_Screens;
 	std::vector<ID3D11Buffer*> m_VertexBuffers;
 	//Texture* m_Texture;
+
+	struct ScreenColorBufferStruct
+	{
+		XMFLOAT3 color;
+		float pad1;
+	}cbScreenColor;
+	ID3D11Buffer* m_CColorBuffer;
 };
 

@@ -46,9 +46,9 @@ void ScreenManager::Release()
 
 void ScreenManager::Init()
 {
-	float t_Width = 1920.0f;
-	float t_Height = 1080.0f;
-	
+	//float t_Width = 1920.0f;
+	//float t_Height = 1080.0f;
+	//
 	//RenderSprites* t_Sprite = nullptr;
 	//t_Sprite = new RenderSprites();
 	//t_Sprite->textureName = "";
@@ -56,7 +56,7 @@ void ScreenManager::Init()
 	//t_Sprite->width = t_Width * 0.5f;
 	//t_Sprite->height = t_Height * 2;
 	//t_Sprite->color = XMFLOAT3(1.0f, 0.0f, 0.0f);
-
+	//
 	//CreateSprite(t_Sprite);
 	
 
@@ -137,6 +137,22 @@ void ScreenManager::CreateSprite(RenderSprites* p_Sprite )
 	t_Renderer->CreateBuffer(&t_BufferDesc, &t_Data, &t_VertexBuffer);
 	m_VertexBuffers.push_back(t_VertexBuffer);
 
+
+	//Constant Buffer
+	m_CColorBuffer = nullptr;
+	D3D11_BUFFER_DESC cbbd;
+	ZeroMemory(&cbbd, sizeof(D3D11_BUFFER_DESC));
+
+	cbbd.Usage = D3D11_USAGE_DEFAULT;
+	cbbd.ByteWidth = sizeof(ScreenColorBufferStruct);
+	cbbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbbd.CPUAccessFlags = 0;
+	cbbd.MiscFlags = 0;
+	cbbd.StructureByteStride = 0;
+
+	t_Renderer->CreateBuffer(&cbbd, nullptr, &m_CColorBuffer);
+
+
 	//delete the rectangle ( vertices )
 	if (t_Rect)
 	{
@@ -155,27 +171,37 @@ void ScreenManager::MouseOver(int p_Index, int x, int y)
 {
 	XMFLOAT2 t_Point = XMFLOAT2(x,y);
 	int t_Size =  m_Screens.size();
+
+
 	if (t_Size > 0)
 	{
-		t_Point.x /= 1920;
-		t_Point.y /= 1080;
+		//t_Point.x /= 1920;
+		//t_Point.y /= 1080;
+		
 		if (m_Screens[p_Index]->GetCollisionBox()->Contains(t_Point))
 		{
+			cbScreenColor.color = XMFLOAT3(0, 1, 0);
 			m_Screens[p_Index]->SetColor(XMFLOAT3(0, 1, 0));
+			
 			//m_Screens[p_Index]->SetPosition(XMFLOAT2(1,1));	//test
 		}
 
 		else
 		{
 			m_Screens[p_Index]->SetColor(XMFLOAT3(0, 0, 0));
+			cbScreenColor.color = XMFLOAT3(0, 0, 0);
 		}
 	}
 }
 
-void ScreenManager::Draw(ID3D11DeviceContext* p_DeviceContext)
+void ScreenManager::Update(ID3D11DeviceContext* p_DeviceContext)
 {
+
 	//ID3D11ShaderResourceView* t_View = m_Texture->GetTextureView();
 	//p_DeviceContext->PSSetShaderResources(10, 1, &t_View);
+	//p_DeviceContext->UpdateSubresource(m_CColorBuffer, 0, nullptr, &cbScreenColor, 0, 0);
+	//p_DeviceContext->PSSetConstantBuffers(3, 1, &m_CColorBuffer);
+
 }
 
 
