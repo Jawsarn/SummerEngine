@@ -49,8 +49,8 @@ void ScreenManager::Init()
 	float t_Width = 1920.0f;
 	float t_Height = 1080.0f;
 
-	CreateSprite("", XMFLOAT2(0.8f, 0), t_Width * 0.5f, t_Height*2,XMFLOAT3(0.5f,0.5f,0.5f));
-	CreateSprite("COL.dds", XMFLOAT2(0, 0.99f), t_Width * 2, 50, XMFLOAT3(0.5f,0.5f,0.5f));
+	//CreateSprite("", XMFLOAT2(0.8f, 0), t_Width * 0.5f, t_Height*2,XMFLOAT3(0.5f,0.5f,0.5f));
+	//CreateSprite("COL.dds", XMFLOAT2(0, 0.99f), t_Width * 2, 50, XMFLOAT3(0.5f,0.5f,0.5f));
 
 }
 
