@@ -29,7 +29,7 @@ void FontEngine::Release()
 bool FontEngine::LoadContent(ID3D11Device* p_Device)
 {
 	m_Texture = nullptr;
-	std::wstring t_FontFileName = L"../SummerEngine/Graphics/Fonts/font.dds";
+	std::wstring t_FontFileName = L"../SummerEngine/Graphics/Fonts/EasyFont.dds";
 
 	ID3D11Resource* t_Resource;
 	HRESULT t_HR = CreateDDSTextureFromFile(p_Device, t_FontFileName.c_str(), &t_Resource, &m_Texture);
@@ -175,7 +175,6 @@ void FontEngine::Render(ID3D11DeviceContext* p_DeviceContext)
 	p_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	
 	DrawString(p_DeviceContext, "PROPERTIES", 0.72f, 0.93f);
-
 	p_DeviceContext->PSSetShaderResources(4, 1, &m_Texture);
 	
 }
