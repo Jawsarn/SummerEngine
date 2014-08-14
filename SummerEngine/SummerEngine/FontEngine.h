@@ -5,6 +5,7 @@
 #include <sstream>
 #include "Math.h"
 #include "ResourceManager.h"
+#include "Renderer.h"
 
 class FontEngine
 {

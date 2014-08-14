@@ -117,9 +117,9 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	m_ShadowMapMatrices.push_back(t_Cam);
 
-	m_FontRenderer = nullptr;
-	m_FontRenderer = new FontEngine();
-	m_FontRenderer->LoadContent(m_Device);
+	//m_FontRenderer = nullptr;
+	//m_FontRenderer = new FontEngine();
+	//m_FontRenderer->LoadContent(m_Device);
 
 
 	return true;
@@ -1368,7 +1368,7 @@ void Renderer::RenderSprites()
 	//Fonts
 	SetShaders(m_FontShaderProgram);
 
-	m_FontRenderer->Render(m_DeviceContext);
+	//m_FontRenderer->Render(m_DeviceContext);
 
 	//Screens
 	ScreenManager* t_ScreenManager = t_ScreenManager->GetInstance();

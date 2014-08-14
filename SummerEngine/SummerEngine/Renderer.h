@@ -5,7 +5,7 @@
 #include "Component.h"
 #include "ShadowMap.h"
 #include "ScreenManager.h"
-#include "FontEngine.h"
+//#include "FontEngine.h"
 
 using namespace DirectX;
 
@@ -228,6 +228,6 @@ private:
 
 	std::vector<CameraStruct> m_ShadowMapMatrices;
 
-	FontEngine* m_FontRenderer;
+	//FontEngine* m_FontRenderer;
 };
 

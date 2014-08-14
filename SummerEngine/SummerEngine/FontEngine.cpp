@@ -56,13 +56,17 @@ bool FontEngine::LoadContent(ID3D11Device* p_Device)
 
 	t_VertexDesc.ByteWidth = t_SpriteSize * t_MaxLetters; //This many vertices is needed
 	//Creating the vertex buffer
-	t_HR = p_Device->CreateBuffer(&t_VertexDesc, 0, &m_VertexBuffer);
 
+	Renderer* t_Renderer = t_Renderer->GetInstance();
+	t_Renderer->CreateBuffer(&t_VertexDesc, 0, &m_VertexBuffer);
+	//t_HR = p_Device->CreateBuffer(&t_VertexDesc, 0, &m_VertexBuffer);
+	/*
 	if (FAILED(t_HR))
 	{
 		MessageBox(nullptr, L"Could not Create vertex-buffer", L"Error", MB_ICONERROR | MB_OK);
 		return false;
 	}
+	*/
 
 	return true;
 }

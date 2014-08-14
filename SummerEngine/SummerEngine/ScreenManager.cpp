@@ -48,7 +48,7 @@ void ScreenManager::Init()
 {
 	float t_Width = 1920.0f;
 	float t_Height = 1080.0f;
-	/*
+	
 	RenderSprites* t_Sprite = nullptr;
 	t_Sprite = new RenderSprites();
 	t_Sprite->textureName = "";
@@ -58,7 +58,7 @@ void ScreenManager::Init()
 	t_Sprite->color = XMFLOAT3(1.0f, 0.0f, 0.0f);
 
 	CreateSprite(t_Sprite);
-	*/
+	
 
 
 	//CreateSprite("", XMFLOAT2(0.8f, 0), t_Width * 0.5f, t_Height * 2,XMFLOAT3(0.5f,0.5f,0.5f));
@@ -157,9 +157,11 @@ void ScreenManager::MouseOver(int p_Index, int x, int y)
 	int t_Size =  m_Screens.size();
 	if (t_Size > 0)
 	{
+		t_Point.x /= 1920;
+		t_Point.y /= 1080;
 		if (m_Screens[p_Index]->GetCollisionBox()->Contains(t_Point))
 		{
-			m_Screens[p_Index]->SetColor(XMFLOAT3(1, 0, 0));
+			m_Screens[p_Index]->SetColor(XMFLOAT3(0, 1, 0));
 			//m_Screens[p_Index]->SetPosition(XMFLOAT2(1,1));	//test
 		}
 
