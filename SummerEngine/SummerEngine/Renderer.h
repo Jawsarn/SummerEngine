@@ -118,6 +118,7 @@ private:
 	ID3D11DepthStencilState*	m_LessEqualDepthState;
 	ID3D11SamplerState*			m_SamplerStateWrap;
 	ID3D11SamplerState*			m_SamplerStateLinearClamp;
+	ID3D11SamplerState*			m_SamplerStateLinearBorder;
 	ID3D11SamplerState*			m_SamplerRandom;
 
 	ID3D11UnorderedAccessView*	m_BackBufferUAV;

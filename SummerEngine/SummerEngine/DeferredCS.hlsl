@@ -63,10 +63,11 @@ RWTexture2D<float4> o_Output				:register(u0);
 //lights
 StructuredBuffer<PointLight> g_PointLights	:register(t4);
 Texture2D<float> g_ShadowMap				:register(t5);
+Texture2D<float> g_SSAOMap					:register(t6);
 
-
-SamplerState SamShadow : register(s0);
-
+SamplerState SamShadow : register(s2);
+SamplerState SamRandom : register(s1);
+SamplerState SamNormal : register(s0);
 
 static const float SHADOWMAP_SIZE = 1024.0f;
 static const float SHADOWMAP_DX = 1.0f / SHADOWMAP_SIZE;
@@ -236,7 +237,8 @@ float3 CalculateLighting(uint2 p_ThreadID, PixelData p_Data)
 
 
 	float3 matColor = g_DiffuseColor_Spec[p_ThreadID].xyz;
-	float3 finalColor = matColor*AmbientLight.xyz + ColorOverlay.xyz;
+	float t_SSAO = g_SSAOMap[p_ThreadID.xy];
+	float3 finalColor = t_SSAO*matColor/**AmbientLight.xyz*/ + ColorOverlay.xyz;
 
 	float inSpec = g_DiffuseColor_Spec[p_ThreadID].w;
 
@@ -364,9 +366,9 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_Grou
 
 	float3 finalColor = CalculateLighting(p_ThreadID.xy, t_Data);
 
-	float t_DepthFactor = CalcShadowFactor(t_Data);
+	/*float t_DepthFactor = CalcShadowFactor(t_Data);
 
-	finalColor *= max(t_DepthFactor, 0.2f);
+	finalColor *= max(t_DepthFactor, 0.2f);*/
 
 
 

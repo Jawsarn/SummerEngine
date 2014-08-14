@@ -27,17 +27,19 @@ cbuffer SSAOBuffer : register(c2)
 	float SurfaceEpsilon;
 };
 
-//input textures
-Texture2D<float4> g_Normal_Depth			:register(t1);
+
+
 
 
 //output texture
 RWTexture2D<float> o_Output				:register(u0);
 
+Texture2D<float4> g_Normal_Depth			:register(t1);
 Texture1D<float4> g_RamdomMap				:register(t2);
 
-SamplerState SamShadow : register(s0);
+SamplerState SamShadow : register(s2);
 SamplerState SamRandom : register(s1);
+SamplerState SamNormal : register(s0);
 
 struct PixelData
 {
@@ -84,6 +86,12 @@ float OcclusionFunction(float distZ)
 	}
 	return t_Occlusion;
 }
+float2 rand_2_0004(in float2 uv)
+{
+	float noiseX = (frac(sin(dot(uv, float2(12.9898, 78.233))) * 43758.5453));
+	float noiseY = (frac(sin(dot(uv, float2(12.9898, 78.233) * 2.0)) * 43758.5453));
+	return float2(noiseX, noiseY) * 0.004;
+}
 
 [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)]
 void CS( uint3 p_ThreadID : SV_DispatchThreadID )
@@ -93,16 +101,19 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID )
 	uint2 t_GlobalCord = p_ThreadID.xy;
 
 	PixelData t_Data = GetPixelData(t_GlobalCord);
-	float p_Value = p_ThreadID.x*p_ThreadID.y*p_ThreadID.z;
 	
-	float3 t_RandomVector = 2.0f*g_RamdomMap.SampleLevel(SamRandom, p_Value*4.0f, 0).rgb - 1.0f;
+	float p_Value = rand_2_0004(p_ThreadID.xy / float2(1920.0f, 1080.0f));
+	
+	float3 t_RandomVector = 2.0f*g_RamdomMap.SampleLevel(SamRandom, p_Value*1.0f, 0).rgb - 1.0f;
 
 	float t_OcclusionSum = 0.0f;
+
 
 	[unroll]
 	for (int i = 0; i < SSAO_SAMPLE_AMOUNT; i++)
 	{
 		float3 t_Offset = reflect(OffsetVectors[i].xyz, t_RandomVector);
+		//float3 t_Offset = OffsetVectors[i].xyz; //test
 
 		//sign returns -1 if less then zero, and 1 if more then zero, good way to see if facing same side as normal
 		float t_Flip = sign(dot(t_Offset, t_Data.NormalView));
@@ -114,14 +125,19 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID )
 		float4 t_ProjSamplePoint = mul(float4(t_SampledPoint, 1), Projection);
 		t_ProjSamplePoint /= t_ProjSamplePoint.w;
 
+		//get to texture cords
+		t_ProjSamplePoint.x = t_ProjSamplePoint.x * 0.5f + 0.5f;
+		t_ProjSamplePoint.y = t_ProjSamplePoint.y * -0.5f + 0.5f;
+
 		//now sample from our depth map
 		float t_TestDepth = g_Normal_Depth.SampleLevel(SamShadow, t_ProjSamplePoint.xy, 0.0f).w;
 
-		float3 t_Occluder = (t_TestDepth / t_SampledPoint.z) * t_SampledPoint;
+
+		float3 t_Occluder = (t_TestDepth / t_ProjSamplePoint.z) * t_SampledPoint;
 
 		float distZ = t_Data.PositionView.z - t_Occluder.z;
 
-		float distanceToPlane = max(dot(t_Data.NormalView, normalize(t_Occluder - t_Data.PositionView)), 0.0f);
+		float distanceToPlane = max(dot(t_Data.NormalView, normalize(t_Occluder - t_Data.PositionView)), 0.0f); //this should be a 0-1 thing as normalized 2 things dot can highest be 1
 		float t_Occlusion = distanceToPlane* OcclusionFunction(distZ);
 
 		t_OcclusionSum += t_Occlusion;
@@ -132,6 +148,9 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID )
 
 
 	float t_Access = 1.0f - t_OcclusionSum;
+
 	//sharpen
-	o_Output[p_ThreadID.xy] = saturate(pow(t_Access, 4.0f));
+	float result = saturate(pow(t_Access, 4.0f));
+
+	o_Output[p_ThreadID.xy] = result;
 }

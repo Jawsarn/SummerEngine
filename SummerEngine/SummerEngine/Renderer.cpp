@@ -827,6 +827,14 @@ HRESULT Renderer::InitializeSamplerState()
 	m_DeviceContext->GSSetSamplers(0, 1, &m_SamplerStateWrap);
 	m_DeviceContext->PSSetSamplers(0, 1, &m_SamplerStateWrap);
 
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	hr = m_Device->CreateSamplerState(&sampDesc, &m_SamplerStateLinearClamp);
+	if (FAILED(hr))
+		return hr;
+
 	//for compute shader
 	sampDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
 	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
@@ -839,13 +847,14 @@ HRESULT Renderer::InitializeSamplerState()
 	sampDesc.BorderColor[2] = 1;
 	sampDesc.BorderColor[3] = 1e5f;
 
-	hr = m_Device->CreateSamplerState(&sampDesc, &m_SamplerStateLinearClamp);
+	hr = m_Device->CreateSamplerState(&sampDesc, &m_SamplerStateLinearBorder);
 	
 	sampDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
 	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	hr = m_Device->CreateSamplerState(&sampDesc, &m_SamplerRandom);
 
+	m_DeviceContext->CSSetSamplers(2, 1, &m_SamplerStateLinearBorder);
 	m_DeviceContext->CSSetSamplers(1, 1, &m_SamplerRandom);
 	m_DeviceContext->CSSetSamplers(0, 1, &m_SamplerStateLinearClamp);
 
@@ -1284,9 +1293,10 @@ void Renderer::ComputeDeferred()
 	m_DeviceContext->Dispatch(x, y, 1);
 
 	//now perform first vertical blurr
+	m_DeviceContext->CSSetShader(m_BlurrVertCS, nullptr, 0);
 	m_DeviceContext->CSSetUnorderedAccessViews(0, 1 , &m_BlurrUAV, nullptr);
 	m_DeviceContext->CSSetShaderResources(1, 1, &m_SSAOSRV);
-
+	m_DeviceContext->CSSetShaderResources(2, 1, &m_GbufferShaderResource[0]);
 
 	ID3D11Buffer* t_DeleteBuffer[] = { 0, 0, 0 };
 	m_DeviceContext->CSSetConstantBuffers(0, 3, t_DeleteBuffer);
@@ -1295,7 +1305,10 @@ void Renderer::ComputeDeferred()
 	x = *m_Width;
 	y = ceil(*m_Height / (FLOAT)THREAD_BLURR_DIMENSION);
 	//draw first blurr
+	m_DeviceContext->Dispatch(x, y, 1);
 
+	//second blurr
+	m_DeviceContext->CSSetShader(m_BlurrHorrCS, nullptr, 0);
 	ID3D11UnorderedAccessView* t_DeleteUAV = {0};
 	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &t_DeleteUAV, nullptr);
 	m_DeviceContext->CSSetShaderResources(1, 1, &m_BlurrSRV);
@@ -1304,6 +1317,7 @@ void Renderer::ComputeDeferred()
 	x = ceil(*m_Width / (FLOAT)THREAD_BLURR_DIMENSION);
 	y = *m_Height;
 	//draw second blur to texture here
+	m_DeviceContext->Dispatch(x, y, 1);
 
 	//add cbs again
 	m_DeviceContext->CSSetConstantBuffers(0, 1, &m_TestPerFrameBuffer);
@@ -1318,6 +1332,9 @@ void Renderer::ComputeDeferred()
 	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &m_BackBufferUAV, nullptr);
 	m_DeviceContext->CSSetShaderResources(1, 3, m_GbufferShaderResource);
 	m_DeviceContext->CSSetShaderResources(4, 1, &m_PointLightsBufferSRV);
+	///also new
+	m_DeviceContext->CSSetShaderResources(6, 1, &m_SSAOSRV);
+	//ends
 	ID3D11ShaderResourceView* t_View = m_ShadowMap->GetResourceView();
 	m_DeviceContext->CSSetShaderResources(5, 1, &t_View);
 
@@ -1332,8 +1349,8 @@ void Renderer::ComputeDeferred()
 	ID3D11UnorderedAccessView* t_TempDelete2 = { 0 };
 	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &t_TempDelete2, nullptr);
 
-	ID3D11ShaderResourceView* t_TempDelete3[1] = { 0 };
-	m_DeviceContext->CSSetShaderResources(5, 1, t_TempDelete3);
+	ID3D11ShaderResourceView* t_TempDelete3[2] = { 0,0 };
+	m_DeviceContext->CSSetShaderResources(5, 2, t_TempDelete3);
 }
 
 void Renderer::RenderTransparent(RenderObjects* p_RenderObjects)
@@ -1448,15 +1465,15 @@ HRESULT Renderer::CreateRandomVectors()
 
 	for (int i = 0; i < 1024; ++i)
 	{
-		t_RandValues[i].x = Math::RandF(-1.0f, 1.0f);
-		t_RandValues[i].y = Math::RandF(-1.0f, 1.0f);
-		t_RandValues[i].z = Math::RandF(-1.0f, 1.0f);
-		t_RandValues[i].w = Math::RandF(-1.0f, 1.0f);
+		t_RandValues[i].x = Math::RandF(0, 1.0f);
+		t_RandValues[i].y = Math::RandF(0, 1.0f);
+		t_RandValues[i].z = Math::RandF(0, 1.0f);
+		t_RandValues[i].w = Math::RandF(0, 1.0f);
 	}
 
 	D3D11_SUBRESOURCE_DATA initData;
 	initData.pSysMem = &t_RandValues[0];
-	initData.SysMemPitch = 14*sizeof(XMFLOAT4);
+	initData.SysMemPitch = 1024 * sizeof(XMFLOAT4);
 	initData.SysMemSlicePitch = 0;
 
 	// Create the texture.
