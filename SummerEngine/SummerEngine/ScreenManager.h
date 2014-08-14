@@ -22,6 +22,7 @@ public:
 	};
 
 	void Init();
+	void Update(ID3D11DeviceContext* p_DeviceContext);
 	void MouseOver(int p_Index, int x, int y);
 
 	std::vector<Screen*>& GetScreens();

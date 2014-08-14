@@ -49,15 +49,15 @@ void ScreenManager::Init()
 	float t_Width = 1920.0f;
 	float t_Height = 1080.0f;
 	
-	RenderSprites* t_Sprite = nullptr;
-	t_Sprite = new RenderSprites();
-	t_Sprite->textureName = "";
-	t_Sprite->position = XMFLOAT2(0.8f,0);
-	t_Sprite->width = t_Width * 0.5f;
-	t_Sprite->height = t_Height * 2;
-	t_Sprite->color = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	//RenderSprites* t_Sprite = nullptr;
+	//t_Sprite = new RenderSprites();
+	//t_Sprite->textureName = "";
+	//t_Sprite->position = XMFLOAT2(0.8f,0);
+	//t_Sprite->width = t_Width * 0.5f;
+	//t_Sprite->height = t_Height * 2;
+	//t_Sprite->color = XMFLOAT3(1.0f, 0.0f, 0.0f);
 
-	CreateSprite(t_Sprite);
+	//CreateSprite(t_Sprite);
 	
 
 
