@@ -1367,6 +1367,7 @@ void Renderer::RenderSprites()
 
 	//Fonts
 	SetShaders(m_FontShaderProgram);
+
 	m_FontRenderer->Render(m_DeviceContext);
 
 	//Screens
