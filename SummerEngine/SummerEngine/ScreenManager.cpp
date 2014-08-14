@@ -48,16 +48,31 @@ void ScreenManager::Init()
 {
 	float t_Width = 1920.0f;
 	float t_Height = 1080.0f;
+	/*
+	RenderSprites* t_Sprite = nullptr;
+	t_Sprite = new RenderSprites();
+	t_Sprite->textureName = "";
+	t_Sprite->position = XMFLOAT2(0.8f,0);
+	t_Sprite->width = t_Width * 0.5f;
+	t_Sprite->height = t_Height * 2;
+	t_Sprite->color = XMFLOAT3(1.0f, 0.0f, 0.0f);
 
-	//CreateSprite("", XMFLOAT2(0.8f, 0), t_Width * 0.5f, t_Height*2,XMFLOAT3(0.5f,0.5f,0.5f));
+	CreateSprite(t_Sprite);
+	*/
+
+
+	//CreateSprite("", XMFLOAT2(0.8f, 0), t_Width * 0.5f, t_Height * 2,XMFLOAT3(0.5f,0.5f,0.5f));
 	//CreateSprite("COL.dds", XMFLOAT2(0, 0.99f), t_Width * 2, 50, XMFLOAT3(0.5f,0.5f,0.5f));
+	//CreateSprite("COL.dds", XMFLOAT2(0.0f, 0.0f), t_Width , t_Height, XMFLOAT3(1.0f, 0.5f, 0.5f));
 
+	//ResourceManager* t_ResourceManager = t_ResourceManager->GetInstance();
+	//m_Texture = (Texture*)t_ResourceManager->Create("COL.dds");
 }
 
-void ScreenManager::CreateSprite(std::string p_TextureName, XMFLOAT2 p_Position, float p_Width, float p_Height, XMFLOAT3 p_Color)
+void ScreenManager::CreateSprite(RenderSprites* p_Sprite )
 {
 	std::string t_DefaultTexture = "default.dds";
-	if (p_TextureName.compare("") == 0)
+	if (p_Sprite->textureName.compare("") == 0)
 	{
 		Screen* t_NewScreen = new Screen(t_DefaultTexture);
 		m_Screens.push_back(t_NewScreen);
@@ -65,48 +80,48 @@ void ScreenManager::CreateSprite(std::string p_TextureName, XMFLOAT2 p_Position,
 
 	else
 	{
-		Screen* t_NewScreen = new Screen(p_TextureName);
+		Screen* t_NewScreen = new Screen(p_Sprite->textureName);
 		m_Screens.push_back(t_NewScreen);
 	}
 	
 
 	Renderer* t_Renderer = t_Renderer->GetInstance();
 
-	float t_Width = p_Width / 1920.0f;
-	float t_Height = p_Height / 1080.0f;
+	float t_Width = p_Sprite->width / 1920.0f;
+	float t_Height = p_Sprite->height / 1080.0f;
 
-	XMFLOAT3 t_LeftUp = XMFLOAT3((p_Position.x - t_Width * 0.5),
-		(p_Position.y + t_Height * 0.5), 0);
-
-
-	XMFLOAT3 t_LeftDown = XMFLOAT3((p_Position.x - t_Width * 0.5),
-		(p_Position.y - t_Height * 0.5), 0);
+	XMFLOAT3 t_LeftUp = XMFLOAT3((p_Sprite->position.x - t_Width * 0.5),
+		(p_Sprite->position.y + t_Height * 0.5), 0);
 
 
-	XMFLOAT3 t_RightUp = XMFLOAT3((p_Position.x + t_Width * 0.5),
-		(p_Position.y + t_Height * 0.5), 0);
+	XMFLOAT3 t_LeftDown = XMFLOAT3((p_Sprite->position.x - t_Width * 0.5),
+		(p_Sprite->position.y - t_Height * 0.5), 0);
 
 
-	XMFLOAT3 t_RightDown = XMFLOAT3((p_Position.x + t_Width * 0.5),
-		(p_Position.y - t_Height * 0.5), 0);
+	XMFLOAT3 t_RightUp = XMFLOAT3((p_Sprite->position.x + t_Width * 0.5),
+		(p_Sprite->position.y + t_Height * 0.5), 0);
+
+
+	XMFLOAT3 t_RightDown = XMFLOAT3((p_Sprite->position.x + t_Width * 0.5),
+		(p_Sprite->position.y - t_Height * 0.5), 0);
 
 	Sprite::Vertex2D* t_Rect = new Sprite::Vertex2D[4];
 
 	t_Rect[2].position = t_LeftDown;
 	t_Rect[2].texCoord = XMFLOAT2(0, 1);
-	t_Rect[2].color = p_Color;
+	t_Rect[2].color = p_Sprite->color;
 
 	t_Rect[0].position = t_LeftUp;
 	t_Rect[0].texCoord = XMFLOAT2(0, 0);
-	t_Rect[0].color = p_Color;
+	t_Rect[0].color = p_Sprite->color;
 
 	t_Rect[3].position = t_RightDown;
 	t_Rect[3].texCoord = XMFLOAT2(1, 1);
-	t_Rect[3].color = p_Color;
+	t_Rect[3].color = p_Sprite->color;
 
 	t_Rect[1].position = t_RightUp;
 	t_Rect[1].texCoord = XMFLOAT2(1, 0);
-	t_Rect[1].color = p_Color;
+	t_Rect[1].color = p_Sprite->color;
 
 	//Set vertex description
 	D3D11_BUFFER_DESC t_BufferDesc;
@@ -122,13 +137,18 @@ void ScreenManager::CreateSprite(std::string p_TextureName, XMFLOAT2 p_Position,
 	t_Renderer->CreateBuffer(&t_BufferDesc, &t_Data, &t_VertexBuffer);
 	m_VertexBuffers.push_back(t_VertexBuffer);
 
-	//delete
+	//delete the rectangle ( vertices )
 	if (t_Rect)
 	{
 		delete(t_Rect);
 		t_Rect = nullptr;
 	}
-
+	//delete the sprite (name, pos,width,height,color)
+	if (p_Sprite)
+	{
+		delete(p_Sprite);
+		p_Sprite = nullptr;
+	}
 }
 
 void ScreenManager::MouseOver(int p_Index, int x, int y)
@@ -150,6 +170,13 @@ void ScreenManager::MouseOver(int p_Index, int x, int y)
 	}
 }
 
+void ScreenManager::Draw(ID3D11DeviceContext* p_DeviceContext)
+{
+	//ID3D11ShaderResourceView* t_View = m_Texture->GetTextureView();
+	//p_DeviceContext->PSSetShaderResources(10, 1, &t_View);
+}
+
+
 std::vector<Screen*>& ScreenManager::GetScreens()
 {
 	return m_Screens;
@@ -160,7 +187,3 @@ std::vector<ID3D11Buffer*> ScreenManager::GetVertexBuffers()
 	return m_VertexBuffers;
 }
 
-void ScreenManager::Draw(ID3D11DeviceContext* p_DeviceContext)
-{
-
-}

@@ -1387,6 +1387,7 @@ void Renderer::RenderSprites()
 		m_DeviceContext->IASetVertexBuffers(0, 1, &t_Buffer, &t_Stride, &t_Offset);
 		m_DeviceContext->Draw(4, 0);
 	}
+	//t_ScreenManager->Draw(m_DeviceContext);
 }
 
 void Renderer::EndRender()
