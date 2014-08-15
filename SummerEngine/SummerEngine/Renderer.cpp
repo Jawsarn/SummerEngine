@@ -1461,7 +1461,7 @@ HRESULT Renderer::CreateOffsets()
 
 HRESULT Renderer::CreateRandomVectors()
 {
-	HRESULT hr = S_OK;
+	HRESULT t_Hr = S_OK;
 	
 	XMFLOAT4 t_RandValues[1024];
 
@@ -1473,39 +1473,58 @@ HRESULT Renderer::CreateRandomVectors()
 		t_RandValues[i].w = Math::RandF(0, 1.0f);
 	}
 
-	D3D11_SUBRESOURCE_DATA initData;
-	initData.pSysMem = &t_RandValues[0];
-	initData.SysMemPitch = 1024 * sizeof(XMFLOAT4);
-	initData.SysMemSlicePitch = 0;
+	D3D11_SUBRESOURCE_DATA t_InitData;
+	t_InitData.pSysMem = &t_RandValues[0];
+	t_InitData.SysMemPitch = 1024 * sizeof(XMFLOAT4);
+	t_InitData.SysMemSlicePitch = 0;
 
-	// Create the texture.
-	D3D11_TEXTURE1D_DESC texDesc;
-	texDesc.Width = 1024;
-	texDesc.MipLevels = 1;
-	texDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	texDesc.Usage = D3D11_USAGE_IMMUTABLE;
-	texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	texDesc.CPUAccessFlags = 0;
-	texDesc.MiscFlags = 0;
-	texDesc.ArraySize = 1;
+	ID3D11Texture2D* t_RandomTex = 0;
+	// Create depth stencil texture
+	D3D11_TEXTURE2D_DESC t_TexDesc;
+	t_TexDesc.Height = 1024;
+	t_TexDesc.Width = 1024;
+	t_TexDesc.Usage = D3D11_USAGE_DYNAMIC;
+	t_TexDesc.MipLevels = 1;
+	t_TexDesc.ArraySize = 1;
+	t_TexDesc.SampleDesc.Count = 1;
+	t_TexDesc.SampleDesc.Quality = 0;
+	t_TexDesc.Format = DXGI_FORMAT_R8_UINT;
+	t_TexDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	t_TexDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	t_TexDesc.MiscFlags = 0;
+	t_Hr = m_Device->CreateTexture2D(&t_TexDesc, nullptr, &t_RandomTex);
+	if (FAILED(t_Hr))
+	{
+		MessageBox(nullptr, L"Could not create random texture2D", L"Error", MB_ICONERROR | MB_OK);
+		return t_Hr;
+	}
 
+	D3D11_MAPPED_SUBRESOURCE t_Resource;
+	m_DeviceContext->Map(t_RandomTex, 0, D3D11_MAP_WRITE_DISCARD, 0, &t_Resource);
+	if (FAILED(t_Hr))
+		return t_Hr;
 
-	ID3D11Texture1D* randomTex = 0;
-	hr = m_Device->CreateTexture1D(&texDesc, &initData, &randomTex);
-	if (FAILED(hr))
-		return hr;
+	XMFLOAT4* t_Values = (XMFLOAT4 *)t_Resource.pData;
+	t_Values = t_RandValues;
+
+	//t_Values += 1024;
+
+	m_DeviceContext->Unmap(t_RandomTex, 0);	
 
 	// Create the resource view.
-	D3D11_SHADER_RESOURCE_VIEW_DESC viewDesc;
-	viewDesc.Format = texDesc.Format;
-	viewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE1D;
-	viewDesc.Texture1D.MipLevels = texDesc.MipLevels;
-	viewDesc.Texture1D.MostDetailedMip = 0;
+	D3D11_SHADER_RESOURCE_VIEW_DESC t_ViewDesc;
+	t_ViewDesc.Format = t_TexDesc.Format;
+	t_ViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	t_ViewDesc.Texture2D.MipLevels = t_TexDesc.MipLevels;
+	t_ViewDesc.Texture2D.MostDetailedMip = 0;
 
-	hr = m_Device->CreateShaderResourceView(randomTex, &viewDesc, &m_SSAORandomTexture);
-	if (FAILED(hr))
-		return hr;
-
-	randomTex->Release();
-	return hr;
+	t_Hr = m_Device->CreateShaderResourceView(t_RandomTex, &t_ViewDesc, &m_SSAORandomTexture);
+	if (FAILED(t_Hr))
+	{
+		MessageBox(nullptr, L"Could not create shader resource for random texture", L"Error", MB_ICONERROR | MB_OK);
+		return t_Hr;
+	}
+		
+	t_RandomTex->Release();
+	return t_Hr;
 }

@@ -35,7 +35,7 @@ cbuffer SSAOBuffer : register(c2)
 RWTexture2D<float> o_Output				:register(u0);
 
 Texture2D<float4> g_Normal_Depth			:register(t1);
-Texture1D<float4> g_RamdomMap				:register(t2);
+Texture2D<float4> g_RamdomMap				:register(t2); // musse
 
 SamplerState SamShadow : register(s2);
 SamplerState SamRandom : register(s1);
