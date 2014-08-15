@@ -12,7 +12,7 @@ public:
 	static ScreenManager* GetInstance();
 	void Release();
 
-	struct RenderSprites
+	struct UISprites
 	{
 		std::string textureName;
 		XMFLOAT2 position;
@@ -27,7 +27,7 @@ public:
 	std::vector<Screen*>& GetScreens();
 	Screen* GetScreen(int p_Index);
 	std::vector<ID3D11Buffer*> GetVertexBuffers();
-	void CreateSprite(RenderSprites* p_Sprite);
+	void CreateSprite(UISprites* p_Sprite);
 	void Update(ID3D11DeviceContext* p_DeviceContext);
 	
 	

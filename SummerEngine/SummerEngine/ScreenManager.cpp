@@ -49,15 +49,37 @@ void ScreenManager::Init()
 	float t_Width = 1920.0f;
 	float t_Height = 1080.0f;
 	
-	RenderSprites* t_Sprite = nullptr;
-	t_Sprite = new RenderSprites();
-	t_Sprite->textureName = "";
-	t_Sprite->position = XMFLOAT2(0.8f,0);
-	t_Sprite->width = t_Width * 0.5f;
-	t_Sprite->height = t_Height * 2;
-	t_Sprite->color = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	//Outliner
+	UISprites* t_OutLiner = nullptr;
+	t_OutLiner = new UISprites();
+	t_OutLiner->textureName = "";
+	t_OutLiner->position = XMFLOAT2(0.8f,0.55f);
+	t_OutLiner->width = t_Width * 0.5f;
+	t_OutLiner->height = t_Height * 0.8f;
+	t_OutLiner->color = XMFLOAT3(0.15f, 0.15f, 0.15f);
 	
-	CreateSprite(t_Sprite);
+	//properties
+	UISprites* t_Properties = new UISprites(*t_OutLiner);;
+	t_Properties->textureName = "";
+	t_Properties->position = XMFLOAT2(0.8f, -0.25f);
+	t_Properties->width = t_Width * 0.5f;
+	t_Properties->height = t_Height * 1.5f;
+	t_Properties->color = XMFLOAT3(0.2f, 0.2f, 0.2f);
+
+	//Info
+	UISprites* t_Info = new UISprites(*t_OutLiner);
+	t_Info->width = t_Width * 6;
+	t_Info->height = t_Height * 0.1f;
+	t_Info->position = XMFLOAT2(0, 0.99f);
+	t_Info->color = XMFLOAT3(0.2f, 0.2f, 0.2f);
+
+	CreateSprite(t_Info);
+	CreateSprite(t_OutLiner);
+	CreateSprite(t_Properties);
+	
+	
+	int xD = 0;
+
 
 	//CreateSprite("", XMFLOAT2(0.8f, 0), t_Width * 0.5f, t_Height * 2,XMFLOAT3(0.5f,0.5f,0.5f));
 	//CreateSprite("COL.dds", XMFLOAT2(0, 0.99f), t_Width * 2, 50, XMFLOAT3(0.5f,0.5f,0.5f));
@@ -67,7 +89,7 @@ void ScreenManager::Init()
 	//m_Texture = (Texture*)t_ResourceManager->Create("COL.dds");
 }
 
-void ScreenManager::CreateSprite(RenderSprites* p_Sprite )
+void ScreenManager::CreateSprite(UISprites* p_Sprite )
 {
 	std::string t_DefaultTexture = "default.dds";
 	if (p_Sprite->textureName.compare("") == 0)

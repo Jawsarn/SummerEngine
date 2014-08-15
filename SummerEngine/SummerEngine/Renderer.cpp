@@ -1469,7 +1469,7 @@ HRESULT Renderer::CreateOffsets()
 
 HRESULT Renderer::CreateRandomVectors()
 {
-	//return S_OK;	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//return S_OK;	//////////////Uncomment if need to work with project - needs fixing
 	HRESULT t_Hr = S_OK;
 	
 	XMFLOAT4 t_RandValues[1024];
