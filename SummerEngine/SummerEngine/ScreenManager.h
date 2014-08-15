@@ -25,6 +25,7 @@ public:
 	void MouseOver(int p_Index, int x, int y);
 
 	std::vector<Screen*>& GetScreens();
+	Screen* GetScreen(int p_Index);
 	std::vector<ID3D11Buffer*> GetVertexBuffers();
 	void CreateSprite(RenderSprites* p_Sprite);
 	void Update(ID3D11DeviceContext* p_DeviceContext);
@@ -44,7 +45,7 @@ private:
 	{
 		XMFLOAT3 color;
 		float pad1;
-	}cbScreenColor;
+	}m_CbScreenColor;
 	ID3D11Buffer* m_CColorBuffer;
 };
 

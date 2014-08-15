@@ -56,7 +56,7 @@ void Screen::SetSpeed(float p_Speed)
 	m_Speed = p_Speed;
 }
 
-void Screen::IsRendered(bool p_IsRendered)
+void Screen::SetIsRendered(bool p_IsRendered)
 {
 	m_IsRendered = p_IsRendered;
 }

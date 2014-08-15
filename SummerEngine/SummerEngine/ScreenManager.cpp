@@ -46,20 +46,18 @@ void ScreenManager::Release()
 
 void ScreenManager::Init()
 {
-	//float t_Width = 1920.0f;
-	//float t_Height = 1080.0f;
-	//
-	//RenderSprites* t_Sprite = nullptr;
-	//t_Sprite = new RenderSprites();
-	//t_Sprite->textureName = "";
-	//t_Sprite->position = XMFLOAT2(0.8f,0);
-	//t_Sprite->width = t_Width * 0.5f;
-	//t_Sprite->height = t_Height * 2;
-	//t_Sprite->color = XMFLOAT3(1.0f, 0.0f, 0.0f);
-	//
-	//CreateSprite(t_Sprite);
+	float t_Width = 1920.0f;
+	float t_Height = 1080.0f;
 	
-
+	RenderSprites* t_Sprite = nullptr;
+	t_Sprite = new RenderSprites();
+	t_Sprite->textureName = "";
+	t_Sprite->position = XMFLOAT2(0.8f,0);
+	t_Sprite->width = t_Width * 0.5f;
+	t_Sprite->height = t_Height * 2;
+	t_Sprite->color = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	
+	CreateSprite(t_Sprite);
 
 	//CreateSprite("", XMFLOAT2(0.8f, 0), t_Width * 0.5f, t_Height * 2,XMFLOAT3(0.5f,0.5f,0.5f));
 	//CreateSprite("COL.dds", XMFLOAT2(0, 0.99f), t_Width * 2, 50, XMFLOAT3(0.5f,0.5f,0.5f));
@@ -160,11 +158,13 @@ void ScreenManager::CreateSprite(RenderSprites* p_Sprite )
 		t_Rect = nullptr;
 	}
 	//delete the sprite (name, pos,width,height,color)
+	
 	if (p_Sprite)
 	{
 		delete(p_Sprite);
 		p_Sprite = nullptr;
 	}
+	
 }
 
 void ScreenManager::MouseOver(int p_Index, int x, int y)
@@ -180,7 +180,7 @@ void ScreenManager::MouseOver(int p_Index, int x, int y)
 		
 		if (m_Screens[p_Index]->GetCollisionBox()->Contains(t_Point))
 		{
-			cbScreenColor.color = XMFLOAT3(0, 1, 0);
+			m_CbScreenColor.color = XMFLOAT3(0, 1, 0);
 			m_Screens[p_Index]->SetColor(XMFLOAT3(0, 1, 0));
 			
 			//m_Screens[p_Index]->SetPosition(XMFLOAT2(1,1));	//test
@@ -189,19 +189,35 @@ void ScreenManager::MouseOver(int p_Index, int x, int y)
 		else
 		{
 			m_Screens[p_Index]->SetColor(XMFLOAT3(0, 0, 0));
-			cbScreenColor.color = XMFLOAT3(0, 0, 0);
+			m_CbScreenColor.color = XMFLOAT3(0, 0, 0);
 		}
 	}
 }
 
 void ScreenManager::Update(ID3D11DeviceContext* p_DeviceContext)
 {
+	int t_ScreenSize = m_Screens.size();
+	if (GetAsyncKeyState(VK_SPACE) & 0x80000)
+	{
+		for (int i = 0; i < t_ScreenSize; i++)
+		{
+			m_Screens[i]->SetIsRendered(false);
+		}
+	}
 
+	else if (GetAsyncKeyState('1') & 0x80000)
+	{
+		for (int i = 0; i < t_ScreenSize; i++)
+		{
+			m_Screens[i]->SetIsRendered(true);
+		}
+	}
+
+	
 	//ID3D11ShaderResourceView* t_View = m_Texture->GetTextureView();
 	//p_DeviceContext->PSSetShaderResources(10, 1, &t_View);
 	//p_DeviceContext->UpdateSubresource(m_CColorBuffer, 0, nullptr, &cbScreenColor, 0, 0);
 	//p_DeviceContext->PSSetConstantBuffers(3, 1, &m_CColorBuffer);
-
 }
 
 
@@ -213,5 +229,10 @@ std::vector<Screen*>& ScreenManager::GetScreens()
 std::vector<ID3D11Buffer*> ScreenManager::GetVertexBuffers()
 {
 	return m_VertexBuffers;
+}
+
+Screen* ScreenManager::GetScreen(int p_Index)
+{
+	return m_Screens[p_Index];
 }
 

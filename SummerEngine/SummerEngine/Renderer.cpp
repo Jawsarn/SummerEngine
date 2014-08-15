@@ -1380,14 +1380,22 @@ void Renderer::RenderSprites()
 
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
+
+	//UPDATE
+	t_ScreenManager->Update(m_DeviceContext);
+
 	int t_ScreenCount = t_ScreenManager->GetVertexBuffers().size();
 	for (int i = 0; i < t_ScreenCount; i++)
 	{
-		ID3D11Buffer* t_Buffer = t_ScreenManager->GetVertexBuffers()[i];
-		m_DeviceContext->IASetVertexBuffers(0, 1, &t_Buffer, &t_Stride, &t_Offset);
-		m_DeviceContext->Draw(4, 0);
+		bool t_IsRender = t_ScreenManager->GetScreen(i)->GetIsRender();
+		if (t_IsRender == true)
+		{
+			ID3D11Buffer* t_Buffer = t_ScreenManager->GetVertexBuffers()[i];
+			m_DeviceContext->IASetVertexBuffers(0, 1, &t_Buffer, &t_Stride, &t_Offset);
+			m_DeviceContext->Draw(4, 0);
+		}
 	}
-	t_ScreenManager->Update(m_DeviceContext);
+	
 }
 
 void Renderer::EndRender()
@@ -1461,6 +1469,7 @@ HRESULT Renderer::CreateOffsets()
 
 HRESULT Renderer::CreateRandomVectors()
 {
+	return S_OK;	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	HRESULT t_Hr = S_OK;
 	
 	XMFLOAT4 t_RandValues[1024];
@@ -1505,6 +1514,8 @@ HRESULT Renderer::CreateRandomVectors()
 		return t_Hr;
 
 	XMFLOAT4* t_Values = (XMFLOAT4 *)t_Resource.pData;
+	//t_Resource.RowPitch = 1024;
+	//t_Resource.DepthPitch = 1;
 	t_Values = t_RandValues;
 
 	//t_Values += 1024;

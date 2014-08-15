@@ -16,6 +16,6 @@ public:
 	void SetColor(XMFLOAT3 p_Color);
 	void SetDirection(XMFLOAT2 p_Direction);
 	void SetSpeed(float p_Speed);
-	void IsRendered(bool p_IsRendered);
+	void SetIsRendered(bool p_IsRendered);
 };
 
