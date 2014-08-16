@@ -58,27 +58,28 @@ void CS(int3 groupThreadID : SV_GroupThreadID, int3 threadID : SV_DispatchThread
 	//
 	// Now blur each pixel.
 	//
-	float blurColor = 0.0f;
-	float t_TotalWeight = 0.0f;
+	float blurColor = g_Weights[g_BlurRadius] * g_Cache[groupThreadID.y + g_BlurRadius];
+	float t_TotalWeight = g_Weights[g_BlurRadius];
 	float4 t_Normal_Depth = g_Normal_Depth.SampleLevel(SamNormal, threadID.xy / float2(1920, 1080), 0.0f);
 
 
 	[unroll]
 	for (int i = -g_BlurRadius; i <= g_BlurRadius; ++i)
 	{
-
-		float2 texCords = ((threadID.xy + uint2(0, i)) / float2(1920.0f, 1080.0f));
-
-		float4 t_Test_Normal_Depth = g_Normal_Depth.SampleLevel(SamNormal, texCords, 0.0f);
-
 		
-		if (dot(t_Test_Normal_Depth.xyz, t_Normal_Depth.xyz) >= 0.8f &&
-			abs(t_Test_Normal_Depth.w - t_Normal_Depth.w) <= 0.2f)
-		{
-			int k = groupThreadID.y + g_BlurRadius + i;
-			blurColor += g_Weights[i + g_BlurRadius] * g_Cache[k];
-			t_TotalWeight += g_Weights[i + g_BlurRadius];
-		}
+			float2 texCords = ((threadID.xy + uint2(0, i)) / float2(1920.0f, 1080.0f));
+
+				float4 t_Test_Normal_Depth = g_Normal_Depth.SampleLevel(SamNormal, texCords, 0.0f);
+
+
+			if (dot(t_Test_Normal_Depth.xyz, t_Normal_Depth.xyz) >= 0.8f &&
+				abs(t_Test_Normal_Depth.w - t_Normal_Depth.w) <= 0.2f)
+			{
+				int k = groupThreadID.y + g_BlurRadius + i;
+				blurColor += g_Weights[i + g_BlurRadius] * g_Cache[k];
+				t_TotalWeight += g_Weights[i + g_BlurRadius];
+			}
+		
 	}
 
 	g_Output[threadID.xy] = blurColor / t_TotalWeight;

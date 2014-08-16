@@ -1292,32 +1292,42 @@ void Renderer::ComputeDeferred()
 
 	m_DeviceContext->Dispatch(x, y, 1);
 
-	//now perform first vertical blurr
-	m_DeviceContext->CSSetShader(m_BlurrVertCS, nullptr, 0);
-	m_DeviceContext->CSSetUnorderedAccessViews(0, 1 , &m_BlurrUAV, nullptr);
-	m_DeviceContext->CSSetShaderResources(1, 1, &m_SSAOSRV);
-	m_DeviceContext->CSSetShaderResources(2, 1, &m_GbufferShaderResource[0]);
 
+	m_DeviceContext->CSSetShaderResources(2, 1, &m_GbufferShaderResource[0]);
 	ID3D11Buffer* t_DeleteBuffer[] = { 0, 0, 0 };
 	m_DeviceContext->CSSetConstantBuffers(0, 3, t_DeleteBuffer);
 
+	for (int i = 0; i < 3; i++)
+	{
+		ID3D11UnorderedAccessView* t_Delete = { 0 };
+		m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &t_Delete, nullptr);
+		//now perform first vertical blurr
+		m_DeviceContext->CSSetShader(m_BlurrVertCS, nullptr, 0);
+		m_DeviceContext->CSSetShaderResources(1, 1, &m_SSAOSRV);
+		m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &m_BlurrUAV, nullptr);
+		
 
-	x = *m_Width;
-	y = ceil(*m_Height / (FLOAT)THREAD_BLURR_DIMENSION);
-	//draw first blurr
-	m_DeviceContext->Dispatch(x, y, 1);
+		x = *m_Width;
+		y = ceil(*m_Height / (FLOAT)THREAD_BLURR_DIMENSION);
+		//draw first blurr
+		m_DeviceContext->Dispatch(x, y, 1);
 
-	//second blurr
-	m_DeviceContext->CSSetShader(m_BlurrHorrCS, nullptr, 0);
-	ID3D11UnorderedAccessView* t_DeleteUAV = {0};
-	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &t_DeleteUAV, nullptr);
-	m_DeviceContext->CSSetShaderResources(1, 1, &m_BlurrSRV);
-	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &m_SSAOUAV, nullptr);
+		//second blurr
+		m_DeviceContext->CSSetShader(m_BlurrHorrCS, nullptr, 0);
+		ID3D11UnorderedAccessView* t_DeleteUAV = { 0 };
+		m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &t_DeleteUAV, nullptr);
+		m_DeviceContext->CSSetShaderResources(1, 1, &m_BlurrSRV);
+		m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &m_SSAOUAV, nullptr);
 
-	x = ceil(*m_Width / (FLOAT)THREAD_BLURR_DIMENSION);
-	y = *m_Height;
-	//draw second blur to texture here
-	m_DeviceContext->Dispatch(x, y, 1);
+		x = ceil(*m_Width / (FLOAT)THREAD_BLURR_DIMENSION);
+		y = *m_Height;
+		//draw second blur to texture here
+		m_DeviceContext->Dispatch(x, y, 1);
+	}
+
+	
+	
+	
 
 	//add cbs again
 	m_DeviceContext->CSSetConstantBuffers(0, 1, &m_TestPerFrameBuffer);
@@ -1472,32 +1482,33 @@ HRESULT Renderer::CreateRandomVectors()
 	//return S_OK;	//////////////Uncomment if need to work with project - needs fixing
 	HRESULT t_Hr = S_OK;
 	
-	XMFLOAT4 t_RandValues[1024];
+	XMFLOAT4* t_RandValues[4096];
 
-	for (int i = 0; i < 1024; ++i)
+	for (int i = 0; i < 4096; ++i)
 	{
-		t_RandValues[i].x = Math::RandF(0, 1.0f);
-		t_RandValues[i].y = Math::RandF(0, 1.0f);
-		t_RandValues[i].z = Math::RandF(0, 1.0f);
-		t_RandValues[i].w = Math::RandF(0, 1.0f);
+		t_RandValues[i] = new XMFLOAT4();
+		t_RandValues[i]->x = Math::RandF(0, 1.0f);
+		t_RandValues[i]->y = Math::RandF(0, 1.0f);
+		t_RandValues[i]->z = Math::RandF(0, 1.0f);
+		t_RandValues[i]->w = Math::RandF(0, 1.0f);
 	}
 
-	D3D11_SUBRESOURCE_DATA t_InitData;
+	/*D3D11_SUBRESOURCE_DATA t_InitData;
 	t_InitData.pSysMem = &t_RandValues[0];
 	t_InitData.SysMemPitch = 1024 * sizeof(XMFLOAT4);
-	t_InitData.SysMemSlicePitch = 0;
+	t_InitData.SysMemSlicePitch = 0;*/
 
 	ID3D11Texture2D* t_RandomTex = 0;
 	// Create depth stencil texture
 	D3D11_TEXTURE2D_DESC t_TexDesc;
-	t_TexDesc.Height = 1024;
-	t_TexDesc.Width = 1024;
+	t_TexDesc.Height = 64;
+	t_TexDesc.Width = 64;
 	t_TexDesc.Usage = D3D11_USAGE_DYNAMIC;
 	t_TexDesc.MipLevels = 1;
 	t_TexDesc.ArraySize = 1;
 	t_TexDesc.SampleDesc.Count = 1;
 	t_TexDesc.SampleDesc.Quality = 0;
-	t_TexDesc.Format = DXGI_FORMAT_R8_UINT;
+	t_TexDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	t_TexDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	t_TexDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 	t_TexDesc.MiscFlags = 0;
@@ -1513,10 +1524,13 @@ HRESULT Renderer::CreateRandomVectors()
 	if (FAILED(t_Hr))
 		return t_Hr;
 
-	XMFLOAT4* t_Values = (XMFLOAT4 *)t_Resource.pData;
+	XMFLOAT4* t_Values = reinterpret_cast<XMFLOAT4*>(t_Resource.pData);
 	//t_Resource.RowPitch = 1024;
 	//t_Resource.DepthPitch = 1;
-	t_Values = t_RandValues;
+	for (int i = 0; i < 4096; i++)
+	{
+		t_Values[i] = *t_RandValues[i];
+	}
 
 	//t_Values += 1024;
 
@@ -1537,5 +1551,12 @@ HRESULT Renderer::CreateRandomVectors()
 	}
 		
 	t_RandomTex->Release();
+
+
+	for (int i = 0; i < 4096; i++)
+	{
+		delete t_RandValues[i];
+		t_RandValues[i] = nullptr;
+	}
 	return t_Hr;
 }

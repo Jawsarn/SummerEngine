@@ -102,15 +102,15 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID )
 
 	PixelData t_Data = GetPixelData(t_GlobalCord);
 	
-	float p_Value = rand_2_0004(p_ThreadID.xy / float2(1920.0f, 1080.0f));
+	float2 p_Value = (p_ThreadID.xy / float2(1920.0f, 1080.0f));
 	
-	float3 t_RandomVector = 2.0f*g_RamdomMap.SampleLevel(SamRandom, p_Value*1.0f, 0).rgb - 1.0f;
+	float3 t_RandomVector = 2.0f*g_RamdomMap.SampleLevel(SamRandom, p_Value*30.0f, 0).rgb - 1.0f;
 
 	float t_OcclusionSum = 0.0f;
 
 
 	[unroll]
-	for (int i = 0; i < SSAO_SAMPLE_AMOUNT; i++)
+	for (int i = 0; i < SSAO_SAMPLE_AMOUNT; ++i)
 	{
 		float3 t_Offset = reflect(OffsetVectors[i].xyz, t_RandomVector);
 		//float3 t_Offset = OffsetVectors[i].xyz; //test
@@ -132,8 +132,9 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID )
 		//now sample from our depth map
 		float t_TestDepth = g_Normal_Depth.SampleLevel(SamShadow, t_ProjSamplePoint.xy, 0.0f).w;
 
+		float t_ViewDepth = Projection._43 / (t_TestDepth - Projection._33);
 
-		float3 t_Occluder = (t_TestDepth / t_ProjSamplePoint.z) * t_SampledPoint;
+		float3 t_Occluder = (t_ViewDepth / t_SampledPoint.z) * t_SampledPoint;
 
 		float distZ = t_Data.PositionView.z - t_Occluder.z;
 
