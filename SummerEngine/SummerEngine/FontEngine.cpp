@@ -12,12 +12,14 @@ FontEngine::~FontEngine()
 
 void FontEngine::Release()
 {
+	/*
 	if (m_Texture)
 	{
 		m_Texture->Release();
 		delete m_Texture;
 		m_Texture = nullptr;
 	}
+	*/
 	if (m_VertexBuffer)
 	{
 		delete (m_VertexBuffer);
@@ -26,12 +28,11 @@ void FontEngine::Release()
 }
 
 
-bool FontEngine::LoadContent(ID3D11Device* p_Device)
+bool FontEngine::LoadContent()
 {
-	m_Texture = nullptr;
-	std::wstring t_FontFileName = L"../SummerEngine/Graphics/Fonts/EasyFont.dds";
+	//std::wstring t_FontFileName = L"../SummerEngine/Graphics/Fonts/EasyFont.dds";
 
-	ID3D11Resource* t_Resource;
+	/*ID3D11Resource* t_Resource;
 	HRESULT t_HR = CreateDDSTextureFromFile(p_Device, t_FontFileName.c_str(), &t_Resource, &m_Texture);
 	if (FAILED(t_HR))
 	{
@@ -42,8 +43,14 @@ bool FontEngine::LoadContent(ID3D11Device* p_Device)
 	{
 		t_Resource->Release();
 		t_Resource = nullptr;
-	}
+	}*/
 
+	m_Texture = nullptr;
+	std::string t_FontFileName = "Fonts/EasyFont.dds";
+	ResourceManager* t_Resource = t_Resource->GetInstance();
+	m_Texture = (Texture*)t_Resource->Create(t_FontFileName);
+
+	
 	D3D11_BUFFER_DESC t_VertexDesc;
 	ZeroMemory(&t_VertexDesc, sizeof(t_VertexDesc));
 	t_VertexDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -68,6 +75,13 @@ bool FontEngine::LoadContent(ID3D11Device* p_Device)
 	}
 	*/
 
+	return true;
+}
+
+
+bool FontEngine::CreateText(DrawText* p_Text)
+{
+	m_TextInEngine.push_back(*p_Text);
 	return true;
 }
 
@@ -120,8 +134,8 @@ bool FontEngine::DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, 
 	// Pointing to internal data of vertex buffer
 	VertexType* t_Sprite = (VertexType*)t_MapResource.pData;
 
-	const int indexA = static_cast<char>('A');
-	const int indexZ = static_cast<char>('Z');
+	const int t_IndexA = static_cast<char>('A');
+	const int t_IndexZ = static_cast<char>('Z');
 
 	for (int i = 0; i < t_Length; ++i)
 	{
@@ -139,26 +153,26 @@ bool FontEngine::DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, 
 		int t_Vault = 0;
 		int t_Letter = static_cast<char>(p_Text[i]);
 
-		if (t_Letter < indexA || t_Letter > indexZ)
+		if (t_Letter < t_IndexA || t_Letter > t_IndexZ)
 		{
 			//Well this is awkward, putting an empty (space) char
-			t_Vault = (indexZ - indexA) + 1;
+			t_Vault = (t_IndexZ - t_IndexA) + 1;
 		}
 		else
 		{
 			// A = 0, B = 1, Z = 25, and so on
-			t_Vault = (t_Letter - indexA);
+			t_Vault = (t_Letter - t_IndexA);
 		}
 
-		float tuStart = 0.0f + (t_TexelWidth * static_cast<float>(t_Vault));
-		float tuEnd = tuStart + t_TexelWidth;
+		float t_TuStart = 0.0f + (t_TexelWidth * static_cast<float>(t_Vault));
+		float t_TuEnd = t_TuStart + t_TexelWidth;
 
-		t_Sprite[0].texture = XMFLOAT2(tuEnd,   0.0f);
-		t_Sprite[1].texture = XMFLOAT2(tuEnd,   1.0f);
-		t_Sprite[2].texture = XMFLOAT2(tuStart, 1.0f);
-		t_Sprite[3].texture = XMFLOAT2(tuStart, 1.0f);
-		t_Sprite[4].texture = XMFLOAT2(tuStart, 0.0f);
-		t_Sprite[5].texture = XMFLOAT2(tuEnd,   0.0f);
+		t_Sprite[0].texture = XMFLOAT2(t_TuEnd,   0.0f);
+		t_Sprite[1].texture = XMFLOAT2(t_TuEnd,   1.0f);
+		t_Sprite[2].texture = XMFLOAT2(t_TuStart, 1.0f);
+		t_Sprite[3].texture = XMFLOAT2(t_TuStart, 1.0f);
+		t_Sprite[4].texture = XMFLOAT2(t_TuStart, 0.0f);
+		t_Sprite[5].texture = XMFLOAT2(t_TuEnd,   0.0f);
 
 		t_Sprite += 6;
 	}
@@ -178,9 +192,15 @@ void FontEngine::Render(ID3D11DeviceContext* p_DeviceContext)
 	p_DeviceContext->IASetVertexBuffers(0, 1, &m_VertexBuffer, &t_Stride, &t_Offset);
 	p_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	
-	DrawString(p_DeviceContext, "PROPERTIES", 0.72f, 0.93f);
+	int t_TextSize = m_TextInEngine.size();
+	for (int i = 0; i < t_TextSize; i++)
+	{
+		DrawString(p_DeviceContext, m_TextInEngine[i].text, m_TextInEngine[i].startX, m_TextInEngine[i].startY);
+	}
 
-	p_DeviceContext->PSSetShaderResources(4, 1, &m_Texture);
+	//DrawString(p_DeviceContext, "PROPERTIES", 0.72f, 0.93f);
+
+	ID3D11ShaderResourceView* t_FontView = m_Texture->GetTextureView();
+	p_DeviceContext->PSSetShaderResources(4, 1, &t_FontView);
 	
 }
-

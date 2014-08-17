@@ -8,7 +8,10 @@ Sprite::Sprite()
 Sprite::Sprite(std::string p_TextureName)
 {
 	LoadContent(p_TextureName);
-	m_Origin = XMFLOAT2(m_Texture->GetWidth()/2,m_Texture->GetHeight()/2);
+	m_TextureWidth = m_Texture->GetWidth();
+	m_TextureHeight = m_Texture->GetHeight();
+	m_Origin = XMFLOAT2(m_TextureWidth / 2, m_TextureHeight / 2);
+	
 }
 
 
@@ -70,5 +73,5 @@ void Sprite::Draw()
 Rect* Sprite::GetCollisionBox()
 {
 	return new Rect(m_Position.x - m_Origin.x, m_Position.y - m_Origin.y, 
-		(int) m_Texture->GetWidth(), (int)m_Texture->GetHeight());
+		(int) m_TextureWidth, m_TextureHeight);
 }

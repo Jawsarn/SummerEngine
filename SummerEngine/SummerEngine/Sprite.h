@@ -37,6 +37,8 @@ public:
 
 protected:
 	Texture* m_Texture;
+	float m_TextureWidth;
+	float m_TextureHeight;
 	XMFLOAT2 m_Origin;
 	float m_Speed;
 	XMFLOAT2 m_Position;

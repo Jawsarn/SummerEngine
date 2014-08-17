@@ -46,6 +46,24 @@ void ScreenManager::Release()
 
 void ScreenManager::Init()
 {
+	m_FontRenderer = nullptr;
+	m_FontRenderer = new FontEngine();
+	m_FontRenderer->LoadContent();
+	
+	
+	FontEngine::DrawTextW* t_Text = new FontEngine::DrawTextW();
+	t_Text->text = "PROPERTIES";
+	t_Text->startX = 0.72f;
+	t_Text->startY = 0.1f;
+	m_FontRenderer->CreateText(t_Text);
+
+
+	FontEngine::DrawTextW* t_Text2 = new FontEngine::DrawTextW();
+	t_Text2->text = "OUTLINER";
+	t_Text2->startX = 0.72f;
+	t_Text2->startY = 0.9f;
+	m_FontRenderer->CreateText(t_Text2);
+
 	float t_Width = 1920.0f;
 	float t_Height = 1080.0f;
 	
@@ -77,9 +95,6 @@ void ScreenManager::Init()
 	CreateSprite(t_OutLiner);
 	CreateSprite(t_Properties);
 	
-	
-	int xD = 0;
-
 
 	//CreateSprite("", XMFLOAT2(0.8f, 0), t_Width * 0.5f, t_Height * 2,XMFLOAT3(0.5f,0.5f,0.5f));
 	//CreateSprite("COL.dds", XMFLOAT2(0, 0.99f), t_Width * 2, 50, XMFLOAT3(0.5f,0.5f,0.5f));
@@ -109,6 +124,10 @@ void ScreenManager::CreateSprite(UISprites* p_Sprite )
 
 	float t_Width = p_Sprite->width / 1920.0f;
 	float t_Height = p_Sprite->height / 1080.0f;
+
+	int t_ScreenSize = m_Screens.size();
+	//m_Screens[t_ScreenSize - 1]->SetWidth(t_Width);
+	//m_Screens[t_ScreenSize - 1]->SetHeight(t_Height);
 
 	XMFLOAT3 t_LeftUp = XMFLOAT3((p_Sprite->position.x - t_Width * 0.5),
 		(p_Sprite->position.y + t_Height * 0.5), 0);
@@ -202,6 +221,10 @@ void ScreenManager::MouseOver(int p_Index, int x, int y)
 		
 		if (m_Screens[p_Index]->GetCollisionBox()->Contains(t_Point))
 		{
+
+			//t_Width * 0.5f;
+			//t_OutLiner->height = t_Height * 0.8f;	//PROPERTIES
+
 			m_CbScreenColor.color = XMFLOAT3(0, 1, 0);
 			m_Screens[p_Index]->SetColor(XMFLOAT3(0, 1, 0));
 			
@@ -223,7 +246,8 @@ void ScreenManager::Update(ID3D11DeviceContext* p_DeviceContext)
 	{
 		for (int i = 0; i < t_ScreenSize; i++)
 		{
-			m_Screens[i]->SetIsRendered(false);
+			if (i != 0)
+				m_Screens[i]->SetIsRendered(false);
 		}
 	}
 
@@ -234,7 +258,7 @@ void ScreenManager::Update(ID3D11DeviceContext* p_DeviceContext)
 			m_Screens[i]->SetIsRendered(true);
 		}
 	}
-
+	//m_FontRenderer->Render(p_DeviceContext);
 	
 	//ID3D11ShaderResourceView* t_View = m_Texture->GetTextureView();
 	//p_DeviceContext->PSSetShaderResources(10, 1, &t_View);
@@ -256,5 +280,10 @@ std::vector<ID3D11Buffer*> ScreenManager::GetVertexBuffers()
 Screen* ScreenManager::GetScreen(int p_Index)
 {
 	return m_Screens[p_Index];
+}
+
+void ScreenManager::RenderFont(ID3D11DeviceContext* p_DeviceContext)
+{
+	m_FontRenderer->Render(p_DeviceContext);
 }
 

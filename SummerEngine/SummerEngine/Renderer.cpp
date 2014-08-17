@@ -117,11 +117,6 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	m_ShadowMapMatrices.push_back(t_Cam);
 
-	//m_FontRenderer = nullptr;
-	//m_FontRenderer = new FontEngine();
-	//m_FontRenderer->LoadContent(m_Device);
-
-
 	return true;
 }
 
@@ -1375,14 +1370,17 @@ void Renderer::RenderSprites()
 	m_DeviceContext->RSSetViewports(m_Viewports.size(), &m_Viewports[0]);
 	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 
+	
+	ScreenManager* t_ScreenManager = t_ScreenManager->GetInstance();
+
 	//Fonts
 	SetShaders(m_FontShaderProgram);
 
 	//m_FontRenderer->Render(m_DeviceContext);
+	t_ScreenManager->RenderFont(m_DeviceContext);
+
 
 	//Screens
-	ScreenManager* t_ScreenManager = t_ScreenManager->GetInstance();
-
 	UINT t_Offset = 0;
 	UINT t_Stride = sizeof(Sprite::Vertex2D);
 
@@ -1499,7 +1497,7 @@ HRESULT Renderer::CreateRandomVectors()
 	t_InitData.SysMemSlicePitch = 0;*/
 
 	ID3D11Texture2D* t_RandomTex = 0;
-	// Create depth stencil texture
+
 	D3D11_TEXTURE2D_DESC t_TexDesc;
 	t_TexDesc.Height = 64;
 	t_TexDesc.Width = 64;

@@ -1,7 +1,6 @@
 #pragma once
 #include "Import.h"
 #include "Entity.h"
-#include "ScreenManager.h"
 
 class Editor
 {
@@ -13,7 +12,6 @@ public:
 	void Update();
 private:
 	Import* m_import;
-	ScreenManager* m_ScreenManager;
 
 	//	test
 	std::vector<Entity*> m_TestEntities;

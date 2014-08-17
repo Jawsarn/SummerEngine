@@ -9,7 +9,26 @@
 
 class FontEngine
 {
+public:
+	FontEngine();
+	~FontEngine();
+
+	struct DrawText
+	{
+		char* text;
+		float startX;
+		float startY;
+	};
+	typedef std::vector<DrawText> TextInEngine;
+
+	bool LoadContent();
+	bool CreateText(DrawText* p_Text);
+	void Update(float p_DeltaTime);
+	void Render(ID3D11DeviceContext* p_DeviceContext);
+	void Release();
+
 private:
+	
 
 	struct VertexType
 	{
@@ -19,19 +38,10 @@ private:
 
 	bool DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, float p_StartX, float p_StartY);
 
-	ID3D11ShaderResourceView* m_Texture;
+	Texture* m_Texture;
 	ID3D11Buffer* m_VertexBuffer;
+	TextInEngine m_TextInEngine;
 
-public:
-	FontEngine();
-	~FontEngine();
-
-	bool LoadContent(ID3D11Device* p_Device);
-
-	void Update(float p_DeltaTime);
-	void Render(ID3D11DeviceContext* p_DeviceContext);
-	void Release();
-
-
+	
 };
 

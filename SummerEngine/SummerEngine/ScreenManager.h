@@ -3,7 +3,10 @@
 #include <vector>
 #include "Renderer.h"
 #include "ResourceManager.h"
-//#include "Texture.h"
+#include "Texture.h"
+#include "FontEngine.h"
+
+class FontEngine;
 
 class ScreenManager
 {
@@ -29,7 +32,7 @@ public:
 	std::vector<ID3D11Buffer*> GetVertexBuffers();
 	void CreateSprite(UISprites* p_Sprite);
 	void Update(ID3D11DeviceContext* p_DeviceContext);
-	
+	void RenderFont(ID3D11DeviceContext* p_DeviceContext);
 	
 
 private:
@@ -47,5 +50,8 @@ private:
 		float pad1;
 	}m_CbScreenColor;
 	ID3D11Buffer* m_CColorBuffer;
+
+	FontEngine* m_FontRenderer;
+
 };
 

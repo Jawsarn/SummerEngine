@@ -46,6 +46,16 @@ void Screen::SetColor(XMFLOAT3 p_Color)
 	m_Color = p_Color;
 }
 
+void Screen::SetWidth(float p_Width)
+{
+	m_TextureWidth = p_Width;
+}
+
+void Screen::SetHeight(float p_Height)
+{
+	m_TextureHeight = p_Height;
+}
+
 void Screen::SetDirection(XMFLOAT2 p_Direction)
 {
 	m_Direction = p_Direction;
