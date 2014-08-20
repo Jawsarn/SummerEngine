@@ -218,8 +218,11 @@ void FontEngine::Render(ID3D11DeviceContext* p_DeviceContext)
 	int t_TextSize = m_TextInEngine.size();
 	for (int i = 0; i < t_TextSize; i++)
 	{
-		DrawString(p_DeviceContext, m_TextInEngine[i]->text, m_TextInEngine[i]->startX, m_TextInEngine[i]->startY);
-		//DrawString(p_DeviceContext, m_TextInEngine[i], m_TextInEngine[i]->startX, m_TextInEngine[i].startY);
+		if (m_TextInEngine[i]->isRender == true)
+		{
+			DrawString(p_DeviceContext, m_TextInEngine[i]->text, m_TextInEngine[i]->startX, m_TextInEngine[i]->startY);
+			//DrawString(p_DeviceContext, m_TextInEngine[i], m_TextInEngine[i]->startX, m_TextInEngine[i].startY);
+		}
 	}
 
 	//DrawString(p_DeviceContext, "PROPERTIES", 0.72f, 0.93f);
@@ -227,4 +230,14 @@ void FontEngine::Render(ID3D11DeviceContext* p_DeviceContext)
 	ID3D11ShaderResourceView* t_FontView = m_Texture->GetTextureView();
 	p_DeviceContext->PSSetShaderResources(4, 1, &t_FontView);
 	
+}
+
+FontEngine::TextInEngine* FontEngine::GetFontList()
+{
+	return &m_TextInEngine;
+}
+
+FontEngine::DrawText* FontEngine::GetFont(int p_Index)
+{
+	return m_TextInEngine[p_Index];
 }

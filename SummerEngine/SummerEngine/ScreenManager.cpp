@@ -50,21 +50,10 @@ void ScreenManager::Init()
 	m_FontRenderer = new FontEngine();
 	m_FontRenderer->LoadContent();
 	
-	//FontEngine::DrawTextW* t_Text = new FontEngine::DrawTextW();
-	//t_Text->text = "PROPERTIES";
-	//t_Text->startX = 0.72f;
-	//t_Text->startY = 0.1f;
-	//m_FontRenderer->CreateText(t_Text);
+	//Fonts
 	m_FontRenderer->CreateText("PROPERTIES", 0.72f, 0.1f);
-
-
-	/*FontEngine::DrawTextW* t_Text2 = new FontEngine::DrawTextW();
-	t_Text2->text = "OUTLINER";
-	t_Text2->startX = 0.72f;
-	t_Text2->startY = 0.9f;
-	m_FontRenderer->CreateText(t_Text2);*/
 	m_FontRenderer->CreateText("OUTLINER", 0.72f, 0.9f);
-
+	
 	float t_Width = 1920.0f;
 	float t_Height = 1080.0f;
 	

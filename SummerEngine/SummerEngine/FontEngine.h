@@ -30,6 +30,9 @@ public:
 	void Render(ID3D11DeviceContext* p_DeviceContext);
 	void Release();
 
+	TextInEngine* GetFontList();
+	DrawText* GetFont(int p_Index);
+
 private:
 	
 
