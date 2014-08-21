@@ -67,7 +67,7 @@ void ScreenManager::Init()
 	t_OutLiner->color = XMFLOAT3(0.15f, 0.15f, 0.15f);
 	
 	//properties
-	UISprites* t_Properties = new UISprites(*t_OutLiner);;
+	UISprites* t_Properties = new UISprites();
 	t_Properties->textureName = "";
 	t_Properties->position = XMFLOAT2(0.8f, -0.25f);
 	t_Properties->width = t_Width * 0.5f;
@@ -84,9 +84,9 @@ void ScreenManager::Init()
 	CreateSprite(t_Info);
 	CreateSprite(t_OutLiner);
 	CreateSprite(t_Properties);
-	
+	//CreateSprite("", XMFLOAT2(0.8f, 0), t_Width , t_Height * 2,XMFLOAT3(0.5f,0.0f,0.0f));
 
-	//CreateSprite("", XMFLOAT2(0.8f, 0), t_Width * 0.5f, t_Height * 2,XMFLOAT3(0.5f,0.5f,0.5f));
+	
 	//CreateSprite("COL.dds", XMFLOAT2(0, 0.99f), t_Width * 2, 50, XMFLOAT3(0.5f,0.5f,0.5f));
 	//CreateSprite("COL.dds", XMFLOAT2(0.0f, 0.0f), t_Width , t_Height, XMFLOAT3(1.0f, 0.5f, 0.5f));
 
@@ -94,7 +94,20 @@ void ScreenManager::Init()
 	//m_Texture = (Texture*)t_ResourceManager->Create("COL.dds");
 }
 
-void ScreenManager::CreateSprite(UISprites* p_Sprite )
+void ScreenManager::CreateSprite(std::string p_TextureName, XMFLOAT2 p_Position, float p_Width, float p_Height, XMFLOAT3 p_Color)
+{
+	UISprites* t_Sprite = nullptr;
+	t_Sprite = new UISprites();
+	t_Sprite->textureName = p_TextureName;
+	t_Sprite->position =p_Position;
+	t_Sprite->width = p_Width;
+	t_Sprite->height = p_Height;
+	t_Sprite->color = p_Color;
+
+	CreateSprite(t_Sprite);
+}
+
+void ScreenManager::CreateSprite(UISprites* p_Sprite)
 {
 	std::string t_DefaultTexture = "default.dds";
 	if (p_Sprite->textureName.compare("") == 0)
@@ -108,7 +121,7 @@ void ScreenManager::CreateSprite(UISprites* p_Sprite )
 		Screen* t_NewScreen = new Screen(p_Sprite->textureName);
 		m_Screens.push_back(t_NewScreen);
 	}
-	
+
 
 	Renderer* t_Renderer = t_Renderer->GetInstance();
 
@@ -189,13 +202,13 @@ void ScreenManager::CreateSprite(UISprites* p_Sprite )
 		t_Rect = nullptr;
 	}
 	//delete the sprite (name, pos,width,height,color)
-	
+
 	if (p_Sprite)
 	{
 		delete(p_Sprite);
 		p_Sprite = nullptr;
 	}
-	
+
 }
 
 void ScreenManager::MouseOver(int p_Index, int x, int y)
@@ -235,18 +248,36 @@ void ScreenManager::Update(ID3D11DeviceContext* p_DeviceContext)
 	//if (GetAsyncKeyState(VK_SPACE) & 0x80000)
 	if (GetAsyncKeyState('N') & 0x80000)
 	{
-		for (int i = 0; i < t_ScreenSize; i++)
+		//SCREEN
+		//Jumping over the first screen because it's always going to be ther (info)
+		for (int i = 1; i < t_ScreenSize; i++)
 		{
-			if (i != 0)
-				m_Screens[i]->SetIsRendered(false);
+			m_Screens[i]->SetIsRendered(false);
 		}
+
+		//FONT
+		int t_FontCount = m_FontRenderer->GetFontList()->size();
+		for (int i = 0; i < t_FontCount; i++)
+		{
+			m_FontRenderer->GetFont(i)->isRender = false;
+		}
+		
 	}
 
 	else if (GetAsyncKeyState('1') & 0x80000)
 	{
-		for (int i = 0; i < t_ScreenSize; i++)
+		//SCREEN
+		//Jumping over the first screen because it's always going to be ther (info)
+		for (int i = 1; i < t_ScreenSize; i++)
 		{
 			m_Screens[i]->SetIsRendered(true);
+		}
+
+		//FONT
+		int t_FontCount = m_FontRenderer->GetFontList()->size();
+		for (int i = 0; i < t_FontCount; i++)
+		{
+			m_FontRenderer->GetFont(i)->isRender = true;
 		}
 	}
 	//m_FontRenderer->Render(p_DeviceContext);

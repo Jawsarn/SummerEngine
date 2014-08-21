@@ -31,6 +31,7 @@ public:
 	Screen* GetScreen(int p_Index);
 	std::vector<ID3D11Buffer*> GetVertexBuffers();
 	void CreateSprite(UISprites* p_Sprite);
+	void CreateSprite(std::string p_TextureName, XMFLOAT2 p_Position, float p_Width, float p_Height, XMFLOAT3 p_Color);
 	void Update(ID3D11DeviceContext* p_DeviceContext);
 	void RenderFont(ID3D11DeviceContext* p_DeviceContext);
 	
