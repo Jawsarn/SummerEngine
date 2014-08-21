@@ -51,6 +51,10 @@ void ScreenManager::Init()
 	m_FontRenderer->LoadContent();
 	
 	//Fonts
+		//Visible
+	m_FontRenderer->CreateText("FILE", -0.99f, 0.965f);
+
+		
 	m_FontRenderer->CreateText("PROPERTIES", 0.72f, 0.1f);
 	m_FontRenderer->CreateText("OUTLINER", 0.72f, 0.9f);
 	
@@ -63,7 +67,7 @@ void ScreenManager::Init()
 	t_OutLiner->textureName = "";
 	t_OutLiner->position = XMFLOAT2(0.8f,0.55f);
 	t_OutLiner->width = t_Width * 0.5f;
-	t_OutLiner->height = t_Height * 0.8f;
+	t_OutLiner->height = t_Height * 0.82f;
 	t_OutLiner->color = XMFLOAT3(0.15f, 0.15f, 0.15f);
 	
 	//properties
@@ -77,11 +81,14 @@ void ScreenManager::Init()
 	//Info
 	UISprites* t_Info = new UISprites(*t_OutLiner);
 	t_Info->width = t_Width * 6;
-	t_Info->height = t_Height * 0.1f;
+	t_Info->height = t_Height * 0.06f;
 	t_Info->position = XMFLOAT2(0, 0.99f);
 	t_Info->color = XMFLOAT3(0.2f, 0.2f, 0.2f);
 
+		//Visible
 	CreateSprite(t_Info);
+
+
 	CreateSprite(t_OutLiner);
 	CreateSprite(t_Properties);
 	//CreateSprite("", XMFLOAT2(0.8f, 0), t_Width , t_Height * 2,XMFLOAT3(0.5f,0.0f,0.0f));
@@ -257,7 +264,7 @@ void ScreenManager::Update(ID3D11DeviceContext* p_DeviceContext)
 
 		//FONT
 		int t_FontCount = m_FontRenderer->GetFontList()->size();
-		for (int i = 0; i < t_FontCount; i++)
+		for (int i = 1; i < t_FontCount; i++)
 		{
 			m_FontRenderer->GetFont(i)->isRender = false;
 		}
@@ -275,7 +282,7 @@ void ScreenManager::Update(ID3D11DeviceContext* p_DeviceContext)
 
 		//FONT
 		int t_FontCount = m_FontRenderer->GetFontList()->size();
-		for (int i = 0; i < t_FontCount; i++)
+		for (int i = 1; i < t_FontCount; i++)
 		{
 			m_FontRenderer->GetFont(i)->isRender = true;
 		}
