@@ -46,24 +46,27 @@ void ScreenManager::Release()
 
 void ScreenManager::Init()
 {
-	m_FontRenderer = nullptr;
-	m_FontRenderer = new FontEngine();
-	m_FontRenderer->LoadContent();
-	
-	//Fonts
-		//Visible
-	m_FontRenderer->CreateText("FILE", -0.99f, 0.965f);
 
-		
-	m_FontRenderer->CreateText("PROPERTIES", 0.72f, 0.1f);
-	m_FontRenderer->CreateText("OUTLINER", 0.72f, 0.9f);
-	
 	float t_Width = 1920.0f;
 	float t_Height = 1080.0f;
+
+	{
+		m_FontRenderer = nullptr;
+		m_FontRenderer = new FontEngine();
+		m_FontRenderer->LoadContent();
+
+		//Fonts
+			//Visible All the Time
+		m_FontRenderer->CreateText("FILE", -0.99f, 0.965f);
+
+
+		m_FontRenderer->CreateText("PROPERTIES", 0.72f, 0.1f);
+		m_FontRenderer->CreateText("OUTLINER", 0.72f, 0.91f);
+	}
+	
 	
 	//Outliner
-	UISprites* t_OutLiner = nullptr;
-	t_OutLiner = new UISprites();
+	UISprites* t_OutLiner = new UISprites();
 	t_OutLiner->textureName = "";
 	t_OutLiner->position = XMFLOAT2(0.8f,0.55f);
 	t_OutLiner->width = t_Width * 0.5f;
@@ -79,7 +82,8 @@ void ScreenManager::Init()
 	t_Properties->color = XMFLOAT3(0.2f, 0.2f, 0.2f);
 
 	//Info
-	UISprites* t_Info = new UISprites(*t_OutLiner);
+	UISprites* t_Info = new UISprites();
+	t_Properties->textureName = "";
 	t_Info->width = t_Width * 6;
 	t_Info->height = t_Height * 0.06f;
 	t_Info->position = XMFLOAT2(0, 0.99f);
@@ -255,8 +259,8 @@ void ScreenManager::Update(ID3D11DeviceContext* p_DeviceContext)
 	//if (GetAsyncKeyState(VK_SPACE) & 0x80000)
 	if (GetAsyncKeyState('N') & 0x80000)
 	{
-		//SCREEN
-		//Jumping over the first screen because it's always going to be ther (info)
+		//SCREENS
+		//Jumping over the first screen because it's always going to be there (info)
 		for (int i = 1; i < t_ScreenSize; i++)
 		{
 			m_Screens[i]->SetIsRendered(false);
@@ -273,8 +277,8 @@ void ScreenManager::Update(ID3D11DeviceContext* p_DeviceContext)
 
 	else if (GetAsyncKeyState('1') & 0x80000)
 	{
-		//SCREEN
-		//Jumping over the first screen because it's always going to be ther (info)
+		//SCREENS
+		//Jumping over the first screen because it's always going to be there (info)
 		for (int i = 1; i < t_ScreenSize; i++)
 		{
 			m_Screens[i]->SetIsRendered(true);

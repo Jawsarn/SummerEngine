@@ -16,8 +16,8 @@ public:
 	struct DrawText
 	{
 		char* text;
-		float startX;
-		float startY;
+		float startX;//posX
+		float startY;//posY
 		bool isRender;
 	};
 	typedef std::vector<DrawText*> TextInEngine;
