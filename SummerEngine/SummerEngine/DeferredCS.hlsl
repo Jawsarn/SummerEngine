@@ -366,9 +366,9 @@ void CS( uint3 p_ThreadID : SV_DispatchThreadID, uint3 p_GroupThreadID : SV_Grou
 
 	float3 finalColor = CalculateLighting(p_ThreadID.xy, t_Data);
 
-	/*float t_DepthFactor = CalcShadowFactor(t_Data);
+	float t_DepthFactor = CalcShadowFactor(t_Data);
 
-	finalColor *= max(t_DepthFactor, 0.2f);*/
+	finalColor *= max(t_DepthFactor, 0.2f);
 
 
 
