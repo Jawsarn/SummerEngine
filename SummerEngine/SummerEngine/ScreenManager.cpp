@@ -46,38 +46,35 @@ void ScreenManager::Release()
 
 void ScreenManager::Init()
 {
-	m_FontRenderer = nullptr;
-	m_FontRenderer = new FontEngine();
-	m_FontRenderer->LoadContent();
-	
-	
-	FontEngine::DrawTextW* t_Text = new FontEngine::DrawTextW();
-	t_Text->text = "PROPERTIES";
-	t_Text->startX = 0.72f;
-	t_Text->startY = 0.1f;
-	m_FontRenderer->CreateText(t_Text);
-
-
-	FontEngine::DrawTextW* t_Text2 = new FontEngine::DrawTextW();
-	t_Text2->text = "OUTLINER";
-	t_Text2->startX = 0.72f;
-	t_Text2->startY = 0.9f;
-	m_FontRenderer->CreateText(t_Text2);
 
 	float t_Width = 1920.0f;
 	float t_Height = 1080.0f;
+
+	{
+		m_FontRenderer = nullptr;
+		m_FontRenderer = new FontEngine();
+		m_FontRenderer->LoadContent();
+
+		//Fonts
+			//Visible All the Time
+		m_FontRenderer->CreateText("FILE", -0.99f, 0.965f);
+
+
+		m_FontRenderer->CreateText("PROPERTIES", 0.72f, 0.1f);
+		m_FontRenderer->CreateText("OUTLINER", 0.72f, 0.91f);
+	}
+	
 	
 	//Outliner
-	UISprites* t_OutLiner = nullptr;
-	t_OutLiner = new UISprites();
+	UISprites* t_OutLiner = new UISprites();
 	t_OutLiner->textureName = "";
 	t_OutLiner->position = XMFLOAT2(0.8f,0.55f);
 	t_OutLiner->width = t_Width * 0.5f;
-	t_OutLiner->height = t_Height * 0.8f;
+	t_OutLiner->height = t_Height * 0.82f;
 	t_OutLiner->color = XMFLOAT3(0.15f, 0.15f, 0.15f);
 	
 	//properties
-	UISprites* t_Properties = new UISprites(*t_OutLiner);;
+	UISprites* t_Properties = new UISprites();
 	t_Properties->textureName = "";
 	t_Properties->position = XMFLOAT2(0.8f, -0.25f);
 	t_Properties->width = t_Width * 0.5f;
@@ -85,18 +82,22 @@ void ScreenManager::Init()
 	t_Properties->color = XMFLOAT3(0.2f, 0.2f, 0.2f);
 
 	//Info
-	UISprites* t_Info = new UISprites(*t_OutLiner);
+	UISprites* t_Info = new UISprites();
+	t_Properties->textureName = "";
 	t_Info->width = t_Width * 6;
-	t_Info->height = t_Height * 0.1f;
+	t_Info->height = t_Height * 0.06f;
 	t_Info->position = XMFLOAT2(0, 0.99f);
 	t_Info->color = XMFLOAT3(0.2f, 0.2f, 0.2f);
 
+		//Visible
 	CreateSprite(t_Info);
+
+
 	CreateSprite(t_OutLiner);
 	CreateSprite(t_Properties);
-	
+	//CreateSprite("", XMFLOAT2(0.8f, 0), t_Width , t_Height * 2,XMFLOAT3(0.5f,0.0f,0.0f));
 
-	//CreateSprite("", XMFLOAT2(0.8f, 0), t_Width * 0.5f, t_Height * 2,XMFLOAT3(0.5f,0.5f,0.5f));
+	
 	//CreateSprite("COL.dds", XMFLOAT2(0, 0.99f), t_Width * 2, 50, XMFLOAT3(0.5f,0.5f,0.5f));
 	//CreateSprite("COL.dds", XMFLOAT2(0.0f, 0.0f), t_Width , t_Height, XMFLOAT3(1.0f, 0.5f, 0.5f));
 
@@ -104,7 +105,20 @@ void ScreenManager::Init()
 	//m_Texture = (Texture*)t_ResourceManager->Create("COL.dds");
 }
 
-void ScreenManager::CreateSprite(UISprites* p_Sprite )
+void ScreenManager::CreateSprite(std::string p_TextureName, XMFLOAT2 p_Position, float p_Width, float p_Height, XMFLOAT3 p_Color)
+{
+	UISprites* t_Sprite = nullptr;
+	t_Sprite = new UISprites();
+	t_Sprite->textureName = p_TextureName;
+	t_Sprite->position =p_Position;
+	t_Sprite->width = p_Width;
+	t_Sprite->height = p_Height;
+	t_Sprite->color = p_Color;
+
+	CreateSprite(t_Sprite);
+}
+
+void ScreenManager::CreateSprite(UISprites* p_Sprite)
 {
 	std::string t_DefaultTexture = "default.dds";
 	if (p_Sprite->textureName.compare("") == 0)
@@ -118,7 +132,7 @@ void ScreenManager::CreateSprite(UISprites* p_Sprite )
 		Screen* t_NewScreen = new Screen(p_Sprite->textureName);
 		m_Screens.push_back(t_NewScreen);
 	}
-	
+
 
 	Renderer* t_Renderer = t_Renderer->GetInstance();
 
@@ -199,13 +213,13 @@ void ScreenManager::CreateSprite(UISprites* p_Sprite )
 		t_Rect = nullptr;
 	}
 	//delete the sprite (name, pos,width,height,color)
-	
+
 	if (p_Sprite)
 	{
 		delete(p_Sprite);
 		p_Sprite = nullptr;
 	}
-	
+
 }
 
 void ScreenManager::MouseOver(int p_Index, int x, int y)
@@ -242,20 +256,39 @@ void ScreenManager::MouseOver(int p_Index, int x, int y)
 void ScreenManager::Update(ID3D11DeviceContext* p_DeviceContext)
 {
 	int t_ScreenSize = m_Screens.size();
-	if (GetAsyncKeyState(VK_SPACE) & 0x80000)
+	//if (GetAsyncKeyState(VK_SPACE) & 0x80000)
+	if (GetAsyncKeyState('N') & 0x80000)
 	{
-		for (int i = 0; i < t_ScreenSize; i++)
+		//SCREENS
+		//Jumping over the first screen because it's always going to be there (info)
+		for (int i = 1; i < t_ScreenSize; i++)
 		{
-			if (i != 0)
-				m_Screens[i]->SetIsRendered(false);
+			m_Screens[i]->SetIsRendered(false);
 		}
+
+		//FONT
+		int t_FontCount = m_FontRenderer->GetFontList()->size();
+		for (int i = 1; i < t_FontCount; i++)
+		{
+			m_FontRenderer->GetFont(i)->isRender = false;
+		}
+		
 	}
 
 	else if (GetAsyncKeyState('1') & 0x80000)
 	{
-		for (int i = 0; i < t_ScreenSize; i++)
+		//SCREENS
+		//Jumping over the first screen because it's always going to be there (info)
+		for (int i = 1; i < t_ScreenSize; i++)
 		{
 			m_Screens[i]->SetIsRendered(true);
+		}
+
+		//FONT
+		int t_FontCount = m_FontRenderer->GetFontList()->size();
+		for (int i = 1; i < t_FontCount; i++)
+		{
+			m_FontRenderer->GetFont(i)->isRender = true;
 		}
 	}
 	//m_FontRenderer->Render(p_DeviceContext);

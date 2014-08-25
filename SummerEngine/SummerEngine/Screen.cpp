@@ -70,3 +70,8 @@ void Screen::SetIsRendered(bool p_IsRendered)
 {
 	m_IsRendered = p_IsRendered;
 }
+
+void Screen::SetOrigin(float p_Width, float p_Height)
+{
+	m_Origin = XMFLOAT2(p_Width / 2, p_Height / 2);
+}
