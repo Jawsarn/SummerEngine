@@ -1,6 +1,8 @@
 #pragma once
 #include "ResourceLoadSave.h"
 
+/*Loads and Saves textures ,atm only DDS*/
+
 class TextureResourceLoadSave : public ResourceLoadSave
 {
 public:

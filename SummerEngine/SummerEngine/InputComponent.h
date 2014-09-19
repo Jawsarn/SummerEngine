@@ -3,6 +3,8 @@
 #include "InputSystem.h"
 #include <functional>
 
+/*Idéa on wait, should be used to tell an entitie that it's effected by an input, however this idéa may be brought upon the scripting*/
+
 class InputComponent: public Component
 {
 public:

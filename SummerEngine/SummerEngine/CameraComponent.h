@@ -5,6 +5,7 @@
 
 using namespace DirectX;
 
+/*Used to mark that the entitiy has a camera that can be used, including viewport and projection matrix, the view matrix is brought from the Transform Component*/
 class CameraComponent: public Component
 {
 public:

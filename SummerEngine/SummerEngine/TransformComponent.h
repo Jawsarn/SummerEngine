@@ -1,6 +1,9 @@
 #pragma once
 #include "Component.h"
 #include "Math.h"
+
+/*Component for all entities, used for world matrix with basic moving functions*/
+
 class TransformComponent:public Component
 {
 public:

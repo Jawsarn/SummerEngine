@@ -3,7 +3,8 @@
 #include "Entity.h"
 #include <map>
 
-
+/*factory where we can easely register and create new Entities and Component, we can register a set of an "orc" and then use this to create duplicates of that orc
+NOTE: Entity is not fixed yet maybe. Depends on if the "saved" entity should be held in some place where the user can't destroy it, so the outcome of create wont differ and wont be removed*/
 
 class ExtensibleGameFactory
 {

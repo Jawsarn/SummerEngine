@@ -1,6 +1,8 @@
 #pragma once
 #include "Stream.h"
 
+/* Abstract class marking the target is used for binary IO*/
+
 class Serializable
 {
 public:

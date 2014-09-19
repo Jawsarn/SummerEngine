@@ -3,6 +3,8 @@
 #include "Component.h"
 #include <vector>
 
+/*Basic entity with parent children, and components*/
+
 class Entity:Serializable
 {
 public:

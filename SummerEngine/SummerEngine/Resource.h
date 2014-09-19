@@ -2,6 +2,8 @@
 //#include "ResourceManager.h"
 #include <string>
 
+/*virtual type to mark the object as an Resource, Load and Save should be in the LoadSaver of Resource type*/
+
 class ResourceManager;
 
 class Resource

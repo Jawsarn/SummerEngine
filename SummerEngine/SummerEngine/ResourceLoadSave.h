@@ -1,6 +1,8 @@
 #pragma once
 #include "Resource.h"
 
+/*abstract type for LoadSavers, this so that they all can be saved in a ResourceManager*/
+
 class ResourceLoadSave
 {
 public:

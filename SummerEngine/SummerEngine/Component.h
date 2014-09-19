@@ -4,6 +4,8 @@
 
 class Entity;
 
+/*Basic virtual class for Components, the basic name is "Component" and is by default enabled */
+
 class Component:Serializable
 {
 public:

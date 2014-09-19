@@ -3,6 +3,8 @@
 #include <map>
 #include <DirectXMath.h>
 
+/*Not used yet, saved for later. Due to the fact that this might be solved with scripting check the InputComponent.h for more notes*/
+
 using namespace DirectX;
 
 class InputSystem: public System

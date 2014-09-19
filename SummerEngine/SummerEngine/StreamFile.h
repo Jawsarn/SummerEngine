@@ -2,6 +2,7 @@
 #include "Stream.h"
 #include <assert.h>
 
+/*Class used to stream data to a file can read and write all basic types and string*/
 
 class StreamFile: public Stream
 {

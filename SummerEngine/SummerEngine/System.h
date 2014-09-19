@@ -2,6 +2,8 @@
 #include <list>
 #include "Entity.h"
 
+/*virtual system, used for the backbone of the system*/
+
 class System
 {
 public:

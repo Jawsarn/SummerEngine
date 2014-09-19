@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+/*IO class, can be used for files or maybe network in future*/
+
 class Stream
 {
 public:

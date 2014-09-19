@@ -1,6 +1,8 @@
 #pragma once
 #include "ResourceLoadSave.h"
 
+/*Loads and Saves materials, see notes in MeshResourceLoadSave.h*/
+
 class MaterialResourceLoadSave : public ResourceLoadSave
 {
 public:

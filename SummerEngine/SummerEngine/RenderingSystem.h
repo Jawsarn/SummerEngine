@@ -2,6 +2,8 @@
 #include "System.h"
 #include "Renderer.h"
 
+/*Handles the rendering components, with different queues for types of objects as opqaue and transparent*/
+
 class RenderingSystem: public System
 {
 public:

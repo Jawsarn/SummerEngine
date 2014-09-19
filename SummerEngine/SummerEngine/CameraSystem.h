@@ -2,7 +2,7 @@
 #include "System.h"
 #include <d3d11_1.h>
 
-
+/*Camera system that should handle all the Camera components, checking if they're enabled or changed*/
 
 class CameraSystem: public System
 {

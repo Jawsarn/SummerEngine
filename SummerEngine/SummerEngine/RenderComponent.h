@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "Material.h"
 
+/*Rendercomponent for drawing purposes, contains draw data as mesh and materials(textures included)*/
 class RenderComponent:public Component
 {
 public:

@@ -3,6 +3,9 @@
 #include <string>
 #include <map>
 
+/*Manager for all resource types, this is the public class to be 
+used for all Resource IO exception for OBJ loader that the editor handles*/
+
 class ResourceManager
 {
 public:
