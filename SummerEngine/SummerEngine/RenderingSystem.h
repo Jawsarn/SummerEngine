@@ -38,5 +38,8 @@ private:
 	
 	//only for creating shadow textures
 	std::vector<Renderer::RenderObject*> m_ShadowGiving;
+
+	//test
+	bool first;
 };
 

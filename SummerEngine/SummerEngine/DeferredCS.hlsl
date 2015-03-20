@@ -65,11 +65,15 @@ StructuredBuffer<PointLight> g_PointLights	:register(t4);
 Texture2D<float> g_ShadowMap				:register(t5);
 Texture2D<float> g_SSAOMap					:register(t6);
 
-SamplerState SamShadow : register(s2);
-SamplerState SamRandom : register(s1);
-SamplerState SamNormal : register(s0);
 
-static const float SHADOWMAP_SIZE = 1024.0f;
+
+SamplerState SamNormal : register(s0);
+SamplerState SamRandom : register(s1);
+SamplerState SamShadow : register(s2);
+
+
+
+static const float SHADOWMAP_SIZE = 2048.0f;
 static const float SHADOWMAP_DX = 1.0f / SHADOWMAP_SIZE;
 
 
@@ -264,10 +268,12 @@ float3 CalculateLighting(uint2 p_ThreadID, PixelData p_Data)
 
 float PCFSample(float2 projTexC, float depth)
 {
+	const float t_Dx = SHADOWMAP_DX;
+
 	float s0 = g_ShadowMap.SampleLevel(SamShadow, projTexC.xy, 0).r;
-	float s1 = g_ShadowMap.SampleLevel(SamShadow, projTexC.xy + float2(SHADOWMAP_DX, 0), 0).r;
-	float s2 = g_ShadowMap.SampleLevel(SamShadow, projTexC.xy + float2(0, SHADOWMAP_DX), 0).r;
-	float s3 = g_ShadowMap.SampleLevel(SamShadow, projTexC.xy + float2(SHADOWMAP_DX, SHADOWMAP_DX), 0).r;
+	float s1 = g_ShadowMap.SampleLevel(SamShadow, projTexC.xy + float2(t_Dx, 0), 0).r;
+	float s2 = g_ShadowMap.SampleLevel(SamShadow, projTexC.xy + float2(0, t_Dx), 0).r;
+	float s3 = g_ShadowMap.SampleLevel(SamShadow, projTexC.xy + float2(t_Dx, t_Dx), 0).r;
 	
 	float result0 = depth < s0;
 	float result1 = depth < s1;
@@ -316,7 +322,6 @@ float CalcShadowFactor(PixelData p_Data)
 		for (int i = 0; i < 9; i++)
 		{
 			t_PercentLit += PCFSample(t_ShadowPos.xy + offsets[i], t_Depth);
-
 		}
 		t_PercentLit /= 9.0f;
 		return t_PercentLit;
