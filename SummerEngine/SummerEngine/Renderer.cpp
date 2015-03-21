@@ -304,7 +304,7 @@ HRESULT Renderer::InitializeRasterizers()
 
 	desc.DepthBias = 500;
 	desc.DepthBiasClamp = 0.0f;
-	desc.SlopeScaledDepthBias = 1.5f;
+	desc.SlopeScaledDepthBias = 1.55f;
 	hr = m_Device->CreateRasterizerState(&desc, &m_RasterizerStateShadowMap);
 	if (FAILED(hr))
 		return hr;
