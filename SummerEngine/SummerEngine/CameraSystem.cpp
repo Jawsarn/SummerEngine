@@ -103,7 +103,7 @@ void CameraSystem::Walk(int p_Amount)
 	{
 		Time* t_Time = t_Time->GetInstace();
 
-		((TransformComponent*)(*it)->GetEntity()->GetTransformComponent())->Walk(t_Time->GetDeltaTime() * 200 * p_Amount);
+		((TransformComponent*)(*it)->GetEntity()->GetTransformComponent())->Walk((float)t_Time->GetDeltaTime() * 200.0f * p_Amount);
 	}
 }
 
@@ -113,7 +113,7 @@ void CameraSystem::Strafe(int p_Amount)
 	{
 		Time* t_Time = t_Time->GetInstace();
 
-		((TransformComponent*)(*it)->GetEntity()->GetTransformComponent())->Strafe(t_Time->GetDeltaTime() * 200 * p_Amount);
+		((TransformComponent*)(*it)->GetEntity()->GetTransformComponent())->Strafe((float)t_Time->GetDeltaTime() * 200.0f * p_Amount);
 	}
 }
 
@@ -123,7 +123,7 @@ void CameraSystem::HoverY(int p_Amount)
 	{
 		Time* t_Time = t_Time->GetInstace();
 
-		((TransformComponent*)(*it)->GetEntity()->GetTransformComponent())->HoverY(t_Time->GetDeltaTime() * 200 * p_Amount);
+		((TransformComponent*)(*it)->GetEntity()->GetTransformComponent())->HoverY((float)t_Time->GetDeltaTime() * 200.0f * p_Amount);
 	}
 }
 

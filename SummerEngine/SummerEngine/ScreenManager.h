@@ -25,7 +25,7 @@ public:
 	};
 
 	void Init();
-	void MouseOver(int p_Index, int x, int y);
+	void MouseOver(int p_Index, const float x, const float y);
 
 	std::vector<Screen*>& GetScreens();
 	Screen* GetScreen(int p_Index);

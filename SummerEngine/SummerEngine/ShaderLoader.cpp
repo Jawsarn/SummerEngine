@@ -139,8 +139,9 @@ HRESULT ShaderLoader::CreateGeometryShaderWithOutputDeclaration(WCHAR* p_FileNam
 		numElements, NULL, 0, D3D11_SO_NO_RASTERIZED_STREAM, NULL, o_ShaderOut);
 
 	p_PSBlob->Release();
-	if (FAILED(hr))
-		return hr;
+	//if (FAILED(hr))
+	return hr;
+
 }
 HRESULT ShaderLoader::CreatePixelShader(WCHAR* p_FileName, LPCSTR p_EntryPoint, LPCSTR p_ShaderModel, ID3D11Device* p_Device, ID3D11PixelShader** o_ShaderOut)
 {

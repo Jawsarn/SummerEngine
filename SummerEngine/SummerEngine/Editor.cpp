@@ -56,7 +56,7 @@ void Editor::InitEditor()
 
 			RenderComponent* t_RenderingComponent = new RenderComponent();
 			
-			int t_NumOfBuffers = t_Meshes[i]->GetNumOfBuffers();
+			unsigned int t_NumOfBuffers = static_cast<unsigned int>( t_Meshes[i]->GetNumOfBuffers() );
 			//std::vector<Material*> t_NewMaterials;
 			
 			//All material information for the current mesh
@@ -64,9 +64,9 @@ void Editor::InitEditor()
 			t_NewMaterialData = m_import->GetAllMaterialsFromAMesh(i);
 
 
-			for (size_t i = 0; i < t_NumOfBuffers; i++)
+			for (size_t x = 0; x < t_NumOfBuffers; x++)
 			{
-				t_NewMaterialData[i]->LoadTextures();
+				t_NewMaterialData[x]->LoadTextures();
 			}
 			t_RenderingComponent->SetObject(t_Meshes[i], t_NewMaterialData);
 

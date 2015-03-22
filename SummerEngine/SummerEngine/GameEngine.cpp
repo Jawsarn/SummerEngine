@@ -69,7 +69,7 @@ bool GameEngine::Start(UINT p_Width, UINT p_Height, HWND p_HandleWindow)
 	m_Systems.push_back(t_RenderingSystem);
 
 	//startup everything
-	for (int i = 0; i < m_Systems.size(); i++)
+	for (unsigned int i = 0; i < m_Systems.size(); i++)
 	{
 		m_Systems[i]->Start();
 	}
@@ -178,7 +178,7 @@ void GameEngine::Update()
 	Time* t_Time = t_Time->GetInstace();
 	t_Time->Update();
 
-	for (int i = 0; i < m_Systems.size(); i++)
+	for (unsigned int i = 0; i < m_Systems.size(); i++)
 	{
 		m_Systems[i]->Update();
 	}

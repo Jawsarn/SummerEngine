@@ -1282,8 +1282,8 @@ void Renderer::ComputeDeferred()
 	m_DeviceContext->CSSetShaderResources(1, 1, &m_GbufferShaderResource[0]);
 	m_DeviceContext->CSSetShaderResources(2, 1, &m_SSAORandomTexture);
 
-	UINT x = ceil(*m_Width / (FLOAT)THREAD_BLOCK_DIMENSIONS);
-	UINT y = ceil(*m_Height / (FLOAT)THREAD_BLOCK_DIMENSIONS);
+	UINT x = (UINT)ceil(*m_Width / (FLOAT)THREAD_BLOCK_DIMENSIONS);
+	UINT y = (UINT)ceil(*m_Height / (FLOAT)THREAD_BLOCK_DIMENSIONS);
 
 	m_DeviceContext->Dispatch(x, y, 1);
 
@@ -1303,7 +1303,7 @@ void Renderer::ComputeDeferred()
 		
 
 		x = *m_Width;
-		y = ceil(*m_Height / (FLOAT)THREAD_BLURR_DIMENSION);
+		y = static_cast<UINT>( ceil(*m_Height / (FLOAT)THREAD_BLURR_DIMENSION) );
 		//draw first blurr
 		m_DeviceContext->Dispatch(x, y, 1);
 
@@ -1314,7 +1314,7 @@ void Renderer::ComputeDeferred()
 		m_DeviceContext->CSSetShaderResources(1, 1, &m_BlurrSRV);
 		m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &m_SSAOUAV, nullptr);
 
-		x = ceil(*m_Width / (FLOAT)THREAD_BLURR_DIMENSION);
+		x = (UINT)ceil(*m_Width / (FLOAT)THREAD_BLURR_DIMENSION);
 		y = *m_Height;
 		//draw second blur to texture here
 		m_DeviceContext->Dispatch(x, y, 1);
@@ -1343,8 +1343,8 @@ void Renderer::ComputeDeferred()
 	ID3D11ShaderResourceView* t_View = m_ShadowMap->GetResourceView();
 	m_DeviceContext->CSSetShaderResources(5, 1, &t_View);
 
-	x = ceil(*m_Width / (FLOAT)THREAD_BLOCK_DIMENSIONS);
-	y = ceil(*m_Height / (FLOAT)THREAD_BLOCK_DIMENSIONS);
+	x = static_cast<UINT>( ceil(*m_Width / (FLOAT)THREAD_BLOCK_DIMENSIONS) );
+	y = static_cast<UINT>( ceil(*m_Height / (FLOAT)THREAD_BLOCK_DIMENSIONS) );
 
 	m_DeviceContext->Dispatch(x, y, 1);
 

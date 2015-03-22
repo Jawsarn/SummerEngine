@@ -28,7 +28,7 @@ void ScreenManager::Release()
 		if (m_Screens[i])
 		{
 			delete m_Screens[i];
-			m_Screens[i] == nullptr;
+			m_Screens[i] = nullptr;
 		}
 	}
 
@@ -143,20 +143,20 @@ void ScreenManager::CreateSprite(UISprites* p_Sprite)
 	//m_Screens[t_ScreenSize - 1]->SetWidth(t_Width);
 	//m_Screens[t_ScreenSize - 1]->SetHeight(t_Height);
 
-	XMFLOAT3 t_LeftUp = XMFLOAT3((p_Sprite->position.x - t_Width * 0.5),
-		(p_Sprite->position.y + t_Height * 0.5), 0);
+	XMFLOAT3 t_LeftUp = XMFLOAT3((p_Sprite->position.x - t_Width * 0.5f),
+		(p_Sprite->position.y + t_Height * 0.5f), 0);
 
 
-	XMFLOAT3 t_LeftDown = XMFLOAT3((p_Sprite->position.x - t_Width * 0.5),
-		(p_Sprite->position.y - t_Height * 0.5), 0);
+	XMFLOAT3 t_LeftDown = XMFLOAT3((p_Sprite->position.x - t_Width * 0.5f),
+		(p_Sprite->position.y - t_Height * 0.5f), 0);
 
 
-	XMFLOAT3 t_RightUp = XMFLOAT3((p_Sprite->position.x + t_Width * 0.5),
-		(p_Sprite->position.y + t_Height * 0.5), 0);
+	XMFLOAT3 t_RightUp = XMFLOAT3((p_Sprite->position.x + t_Width * 0.5f),
+		(p_Sprite->position.y + t_Height * 0.5f), 0);
 
 
-	XMFLOAT3 t_RightDown = XMFLOAT3((p_Sprite->position.x + t_Width * 0.5),
-		(p_Sprite->position.y - t_Height * 0.5), 0);
+	XMFLOAT3 t_RightDown = XMFLOAT3((p_Sprite->position.x + t_Width * 0.5f),
+		(p_Sprite->position.y - t_Height * 0.5f), 0);
 
 	Sprite::Vertex2D* t_Rect = new Sprite::Vertex2D[4];
 
@@ -222,7 +222,7 @@ void ScreenManager::CreateSprite(UISprites* p_Sprite)
 
 }
 
-void ScreenManager::MouseOver(int p_Index, int x, int y)
+void ScreenManager::MouseOver(int p_Index, const float x, const float y)
 {
 	XMFLOAT2 t_Point = XMFLOAT2(x,y);
 	int t_Size =  m_Screens.size();

@@ -8,8 +8,8 @@ ShadowMap::ShadowMap(ID3D11Device* p_Device, UINT p_Width, UINT p_Height)
 
 	m_Viewport.TopLeftX = 0.0f;
 	m_Viewport.TopLeftY = 0.0f;
-	m_Viewport.Width = m_Width;
-	m_Viewport.Height = m_Height;
+	m_Viewport.Width = static_cast<FLOAT>( m_Width );
+	m_Viewport.Height = static_cast<FLOAT>( m_Height );
 	m_Viewport.MinDepth = 0.0f;
 	m_Viewport.MaxDepth = 1.0f;
 
@@ -57,7 +57,7 @@ ShadowMap::ShadowMap(ID3D11Device* p_Device, UINT p_Width, UINT p_Height)
 	}
 	t_DepthMap->Release();
 	
-	CreateRenderTarget(p_Device, p_Width, p_Height);
+	CreateRenderTarget(p_Device, (float)p_Width, (float)p_Height);
 }
 
 void ShadowMap::CreateRenderTarget(ID3D11Device* p_Device, float p_Width, float p_Height)
@@ -65,8 +65,8 @@ void ShadowMap::CreateRenderTarget(ID3D11Device* p_Device, float p_Width, float 
 	HRESULT hr = S_OK;
 
 	D3D11_TEXTURE2D_DESC desc;
-	desc.Width = p_Width;
-	desc.Height = p_Height;
+	desc.Width = static_cast<UINT> ( p_Width );
+	desc.Height = static_cast<UINT> ( p_Height );
 	desc.MipLevels = 1;
 	desc.ArraySize = 1;
 	desc.Format = DXGI_FORMAT_R32_FLOAT; //changed from format DXGI_FORMAT_R16G16B16A16_UNORM

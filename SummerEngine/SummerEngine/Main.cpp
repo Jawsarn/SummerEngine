@@ -17,8 +17,24 @@ GameEngine* m_GameEngine;
 #include "CameraSystem.h"
 XMFLOAT2 g_LastMousePos;
 
+void CheckForMemoryLeaks()
+{
+	// This will check for memory leaks
+	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+
+
+}
+void BreakAtMemoryLeak( long value )
+{
+	//Insert allocation numbers here to invoke a break at that point
+	_CrtSetBreakAlloc( value );
+}
+
 int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstance, _In_ LPWSTR p_LpCmdLine, _In_ int p_NCmdShow)
 {
+	CheckForMemoryLeaks();
+	//BreakAtMemoryLeak( 4347 );
+
 	UNREFERENCED_PARAMETER(p_HPrevInstance);
 	UNREFERENCED_PARAMETER(p_LpCmdLine);
 
@@ -60,11 +76,11 @@ void UpdateScene()
 	}
 }
 
-void OnMouseMove(WPARAM btnStae, int x, int y)
+void OnMouseMove(WPARAM btnStae, float x, float y)
 {
 	CameraSystem* m_Cam = m_Cam->GetInstance();
 
-	if (btnStae & MK_LBUTTON != 0)
+	if (btnStae && MK_LBUTTON != 0)
 	{
 		float dx = XMConvertToRadians(0.25f*static_cast<float>(x - g_LastMousePos.x));
 		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - g_LastMousePos.y));
@@ -107,7 +123,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_MOUSEMOVE:
-		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		OnMouseMove(wParam, (float)GET_X_LPARAM(lParam), (float)GET_Y_LPARAM(lParam));
 		break;
 
 	default:
