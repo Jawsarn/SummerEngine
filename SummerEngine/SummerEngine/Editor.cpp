@@ -29,12 +29,6 @@ void Editor::Release()
 
 void Editor::InitEditor()
 {
-	//test--------------------------------------
-	//Shader Class
-	//shader = Shader(p_Device);
-	//shader.CreateShadersAndInputLayout3D("../Shaders/DrawMeshVS.hlsl", "VS_main", "../Shaders/DrawMeshPS.hlsl", "PS_main");
-	//------------------------------------------
-
 	/*ResourceManager* t_Manager = t_Manager->GetInstance();
 	Resource* t_Test = t_Manager->Create("Sphere_Sphere.001.mesh");*/
 
@@ -77,10 +71,6 @@ void Editor::InitEditor()
 			t_NewEntity->AddComponent(t_NewTransform);
 
 			m_TestEntities.push_back(t_NewEntity);
-
-
-			
-
 
 		}
 

@@ -100,6 +100,12 @@
     <Filter Include="Shaders\SSAO">
       <UniqueIdentifier>{6184919d-7c43-4dc7-8cc7-b300604dceb9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{66157655-861f-4942-be58-89ff4a881189}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{9a525a2b-616d-45b9-82de-424041acf328}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -215,6 +221,9 @@
     </ClCompile>
     <ClCompile Include="FontEngine.cpp">
       <Filter>Source Files\Graphic\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -334,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="FontEngine.h">
       <Filter>Header Files\Graphic\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

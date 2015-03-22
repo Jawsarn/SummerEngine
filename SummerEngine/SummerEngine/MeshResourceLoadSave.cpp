@@ -1,6 +1,7 @@
 #include "MeshResourceLoadSave.h"
 #include "Mesh.h"
 #include "StreamFile.h"
+#include "Logger.h"
 
 Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 {
@@ -25,9 +26,9 @@ Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 		int t_BytesRead = t_File.Read(sizeof(Mesh::MeshVertex)*t_NumOfVertices, &t_VertexGroup[0]);
 		if (t_BytesToRead != t_BytesRead)
 		{
-			std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
-			std::wstring t_Message = L"Error loading Mesh Vertexdata " + t_LoadTextString;
-			MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+			std::string t_Message = "Error loading Mesh Vertexdata " + p_FileName;
+			//MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+			Logger::Log( t_Message, "ResourceLoadSave", LoggerType::MSG_ERROR );
 		}
 		t_Groups.push_back(t_VertexGroup);
 	}
@@ -48,9 +49,11 @@ Resource* MeshResourceLoadSave::Load(std::string p_FileName)
 		int t_BytesRead = t_File.Read(sizeof(int)*t_NumOfIndecies, &t_IndexGroup[0]);
 		if (t_BytesToRead != t_BytesRead)
 		{
-			std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
-			std::wstring t_Message = L"Error loading Mesh Indexdata " + t_LoadTextString;
-			MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+			//std::wstring t_LoadTextString = std::wstring( p_FileName.begin(), p_FileName.end() );
+			//std::wstring t_Message = L"Error loading Mesh Indexdata " + t_LoadTextString;
+			//MessageBox( nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK );
+
+			Logger::Log( "Error loading Mesh Indexdata " + p_FileName , "ResourceLoadSave", LoggerType::MSG_ERROR );
 		}
 		t_IndexGroups.push_back(t_IndexGroup);
 	}
@@ -88,9 +91,10 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 		if (t_BytesToWrite != t_SizeOfWrittenData)
 		{
 			std::string p_FileName = p_File->GetName();
-			std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
-			std::wstring t_Message = L"Error saving Mesh Vertexdata " + t_LoadTextString;
-			MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+			//std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
+			//std::wstring t_Message = L"Error saving Mesh Vertexdata " + t_LoadTextString;
+			//MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+			Logger::Log( "Error saving Mesh Vertexdata " + p_FileName, "ResourceLoadSave", LoggerType::MSG_ERROR );
 		}
 	}
 
@@ -110,9 +114,10 @@ void MeshResourceLoadSave::Save(Resource* p_File)
 		if (t_BytesToWrite != t_SizeOfWrittenData)
 		{
 			std::string p_FileName = p_File->GetName();
-			std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
-			std::wstring t_Message = L"Error saving Mesh Indexdata " + t_LoadTextString;
-			MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+			//std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
+			//std::wstring t_Message = L"Error saving Mesh Indexdata " + t_LoadTextString;
+			//MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+			Logger::Log( "Error saving Mesh Indexdata " + p_FileName, "ResourceLoadSave", LoggerType::MSG_ERROR );
 		}
 	}
 

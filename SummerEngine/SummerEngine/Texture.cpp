@@ -37,19 +37,19 @@ const Texture::ResourceType Texture::GetType() const
 
 float Texture::GetHeight()
 {
-	return (float)GetDesc2D()->Height;
+	return (float)GetDesc2D().Height;
 }
 
 float Texture::GetWidth()
 {
-	return (float)GetDesc2D()->Width;
+	return (float)GetDesc2D().Width;
 }
 
-D3D11_TEXTURE2D_DESC* Texture::GetDesc2D()
+D3D11_TEXTURE2D_DESC Texture::GetDesc2D()
 {
 	D3D11_TEXTURE2D_DESC t_Desc;
 	ID3D11Resource* t_Resource;
 	GetTextureView()->GetResource(&t_Resource);
 	reinterpret_cast<ID3D11Texture2D*>(t_Resource)->GetDesc(&t_Desc);
-	return &t_Desc; // TODO  this is a temp var? 
+	return t_Desc;
 }

@@ -2,6 +2,7 @@
 #include <windowsx.h>
 #include "GameEngine.h"
 #include "Renderer.h"
+#include "Logger.h"
 
 //global game variables
 HINSTANCE	handleInstance;
@@ -30,10 +31,35 @@ void BreakAtMemoryLeak( long value )
 	_CrtSetBreakAlloc( value );
 }
 
+void RegisterLoggers()
+{
+	Logger::Initialize();
+
+	struct
+	{
+		std::string name;
+		std::string parent;
+	} loggerRegisters[] =
+	{
+		// NAME						PARENT
+		{ "ObjectImporter", "" },
+		{ "RenderSystem", "" }, // Split shader compiler and renderer?
+		{ "TextureCreator", "" },
+		{ "FontSystem", "" },
+		{ "ResourceLoadSave", "" },
+		{ "TextureResourceLoadSave", "" },
+	};
+
+	for( auto& entry : loggerRegisters )
+		Logger::RegisterLoggerType( entry.name, entry.parent );
+}
+
 int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstance, _In_ LPWSTR p_LpCmdLine, _In_ int p_NCmdShow)
 {
 	CheckForMemoryLeaks();
 	//BreakAtMemoryLeak( 4347 );
+
+	RegisterLoggers();
 
 	UNREFERENCED_PARAMETER(p_HPrevInstance);
 	UNREFERENCED_PARAMETER(p_LpCmdLine);
@@ -76,7 +102,7 @@ void UpdateScene()
 	}
 }
 
-void OnMouseMove(WPARAM btnStae, float x, float y)
+void OnMouseMove(WPARAM btnStae, int x, int y)
 {
 	CameraSystem* m_Cam = m_Cam->GetInstance();
 
@@ -94,8 +120,8 @@ void OnMouseMove(WPARAM btnStae, float x, float y)
 		t_ScreenManager->MouseOver(0, x, y);
 	}
 
-	g_LastMousePos.x = x;
-	g_LastMousePos.y = y;
+	g_LastMousePos.x = static_cast< float >( x );
+	g_LastMousePos.y = static_cast< float >( y );
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -123,7 +149,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_MOUSEMOVE:
-		OnMouseMove(wParam, (float)GET_X_LPARAM(lParam), (float)GET_Y_LPARAM(lParam));
+		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		break;
 
 	default:

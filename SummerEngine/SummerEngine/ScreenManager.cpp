@@ -222,9 +222,9 @@ void ScreenManager::CreateSprite(UISprites* p_Sprite)
 
 }
 
-void ScreenManager::MouseOver(int p_Index, const float x, const float y)
+void ScreenManager::MouseOver(int p_Index, const int x, const int y)
 {
-	XMFLOAT2 t_Point = XMFLOAT2(x,y);
+	XMFLOAT2 t_Point = XMFLOAT2( static_cast< float >( x ), static_cast< float >( y ) );
 	int t_Size =  m_Screens.size();
 
 

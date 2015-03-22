@@ -1,5 +1,5 @@
 #include "FontEngine.h"
-
+#include "Logger.h"
 
 FontEngine::FontEngine()
 {
@@ -150,7 +150,8 @@ bool FontEngine::DrawString(ID3D11DeviceContext* p_DeviceContext, char* p_Text, 
 
 	if (FAILED(t_HR))
 	{
-		MessageBox(nullptr, L"Could not map resource", L"Error", MB_ICONERROR | MB_OK);
+		//MessageBox(nullptr, L"Could not map resource", L"Error", MB_ICONERROR | MB_OK);
+		Logger::Log( "Could not map resource", "FontSystem", LoggerType::MSG_ERROR);
 		return false;
 	}
 

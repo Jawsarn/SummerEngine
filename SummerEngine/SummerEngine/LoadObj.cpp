@@ -1,4 +1,5 @@
 #include "LoadObj.h"
+#include "Logger.h"
 
 LoadObj::LoadObj()
 {
@@ -27,8 +28,7 @@ bool LoadObj::Load(std::string p_fileName)
 	if (!t_file.is_open())
 	{
 		std::string t_ErrorMessage = "Mesh: " + p_fileName + " could not be loaded";
-		std::wstring t_covnvertText(t_ErrorMessage.begin(), t_ErrorMessage.end());
-		MessageBox(nullptr, t_covnvertText.c_str(), L"Error-LoadObj", MB_ICONERROR | MB_OK);
+		Logger::Log( t_ErrorMessage, "ObjectImporter", LoggerType::MSG_ERROR );
 		return false;
 	}
 
@@ -201,8 +201,10 @@ bool LoadObj::ParseMaterialFile(std::string p_MaterialName)
 	if (!t_file.is_open())
 	{
 		std::string t_ErrorMessage = "Material: " + p_MaterialName + " could not be loaded";
-		std::wstring t_covnvertText(t_ErrorMessage.begin(), t_ErrorMessage.end());
-		MessageBox(nullptr, t_covnvertText.c_str(), L"Error", MB_ICONERROR | MB_OK);
+		//std::wstring t_covnvertText(t_ErrorMessage.begin(), t_ErrorMessage.end());
+		//MessageBox(nullptr, t_covnvertText.c_str(), L"Error", MB_ICONERROR | MB_OK);
+
+		Logger::Log( t_ErrorMessage, "ObjectImporter", LoggerType::MSG_ERROR );
 		return false;
 	}
 
@@ -349,7 +351,7 @@ void LoadObj::LoadTexCoord(std::stringstream& f)
 	XMFLOAT2 t_texCoord;
 	f >> t_texCoord.x >> t_texCoord.y;
 
-	t_texCoord.y = 1.0 - t_texCoord.y;
+	t_texCoord.y = 1.0f - t_texCoord.y;
 	m_Obj[m_CurrentObj].m_TexCoord.push_back(t_texCoord);
 }
 

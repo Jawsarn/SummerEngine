@@ -1,5 +1,6 @@
 #include "TextureResourceLoadSave.h"
 #include "Renderer.h"
+#include "Logger.h"
 
 Resource* TextureResourceLoadSave::Load(std::string p_FileName)
 {
@@ -13,8 +14,9 @@ Resource* TextureResourceLoadSave::Load(std::string p_FileName)
 
 	if (!t_Success)
 	{
-		std::wstring t_Message = L"Couldn't load Texture " + t_LoadTextString;
-		MessageBox(nullptr,  t_Message.c_str() , L"ErrorMessage", MB_OK);
+		std::string t_Message = "Couldn't load Texture " + t_FilePath;
+		//MessageBox(nullptr,  t_Message.c_str() , L"ErrorMessage", MB_OK);
+		Logger::Log( t_Message, "TextureResourceLoadSave", LoggerType::MSG_ERROR );
 		return nullptr;
 	}
 	else
@@ -29,9 +31,10 @@ Resource* TextureResourceLoadSave::Load(std::string p_FileName)
 void TextureResourceLoadSave::Save(Resource* p_File)
 {
 	std::string p_FileName = p_File->GetName();
-	std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
-	std::wstring t_Message = L"Can't save textures, regarding " + t_LoadTextString;
-	MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+	//std::wstring t_LoadTextString = std::wstring(p_FileName.begin(), p_FileName.end());
+	//std::wstring t_Message = L"Can't save textures, regarding " + t_LoadTextString;
+	//MessageBox(nullptr, t_Message.c_str(), L"ErrorMessage", MB_OK);
+	Logger::Log( "Can't save textures, regarding " + p_FileName, "TextureResourceLoadSave", LoggerType::MSG_ERROR );
 }
 
 const char* TextureResourceLoadSave::GetExtension()

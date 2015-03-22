@@ -5,6 +5,7 @@
 #include "ShaderLoader.h"
 #include "DDSTextureLoader.h"
 #include "Math.h"
+#include "Logger.h"
 
 Renderer* Renderer::m_Singleton = nullptr;
 
@@ -125,7 +126,8 @@ void Renderer::CreateBuffer(D3D11_BUFFER_DESC* p_Desc, D3D11_SUBRESOURCE_DATA* p
 	HRESULT hr = m_Device->CreateBuffer(p_Desc, p_Data, o_Buffer);
 	if (FAILED(hr))
 	{
-		MessageBox(nullptr, L"Buffer could not be created", L"Error", MB_ICONERROR | MB_OK);
+		//MessageBox(nullptr, L"Buffer could not be created", L"Error", MB_ICONERROR | MB_OK);
+		Logger::Log( "Buffer could not be created", "RenderSystem", LoggerType::MSG_ERROR );
 	}
 }
 
@@ -938,7 +940,8 @@ void Renderer::SetTextures(RenderObject* p_Object)
 	}
 	else
 	{
-		MessageBox(nullptr, L"Well.. SetTexture function failed not enought textures...", L"ErrorMessage", MB_OK);
+		//MessageBox(nullptr, L"Well.. SetTexture function failed not enought textures...", L"ErrorMessage", MB_OK);
+		Logger::Log( "Well.. SetTexture function failed not enough textures...", "RenderSystem", LoggerType::MSG_ERROR );
 	}
 }
 
@@ -974,7 +977,8 @@ void Renderer::BeginRender()
 {
 	if (m_IsRendering)
 	{
-		MessageBox(nullptr, L"Rendering call Begin was called befor end was called.", L"ErrorMessage", MB_OK);
+		//MessageBox(nullptr, L"Rendering call Begin was called befor end was called.", L"ErrorMessage", MB_OK);
+		Logger::Log( "Rendering call Begin was called before end was called", "RenderSystem", LoggerType::MSG_ERROR );
 		return;
 	}
 	
@@ -1410,7 +1414,8 @@ void Renderer::EndRender()
 {
 	if (!m_IsRendering)
 	{
-		MessageBox(nullptr, L"Rendering call End was called before begin was called.", L"ErrorMessage", MB_OK);
+		//MessageBox(nullptr, L".", L"ErrorMessage", MB_OK);
+		Logger::Log( "Rendering call End was called before begin was called", "RenderSystem", LoggerType::MSG_ERROR );
 		return;
 	}
 
@@ -1513,7 +1518,8 @@ HRESULT Renderer::CreateRandomVectors()
 	t_Hr = m_Device->CreateTexture2D(&t_TexDesc, nullptr, &t_RandomTex);
 	if (FAILED(t_Hr))
 	{
-		MessageBox(nullptr, L"Could not create random texture2D", L"Error", MB_ICONERROR | MB_OK);
+		//MessageBox(nullptr, L"Could not create random texture2D", L"Error", MB_ICONERROR | MB_OK);
+		Logger::Log( "Could not create random texture2D", "TextureCreator", LoggerType::MSG_ERROR );
 		return t_Hr;
 	}
 
@@ -1544,7 +1550,8 @@ HRESULT Renderer::CreateRandomVectors()
 	t_Hr = m_Device->CreateShaderResourceView(t_RandomTex, &t_ViewDesc, &m_SSAORandomTexture);
 	if (FAILED(t_Hr))
 	{
-		MessageBox(nullptr, L"Could not create shader resource for random texture", L"Error", MB_ICONERROR | MB_OK);
+		//MessageBox(nullptr, L"Could not create shader resource for random texture", L"Error", MB_ICONERROR | MB_OK);
+		Logger::Log( "Could not create shader resource for random texture", "TextureCreator", LoggerType::MSG_ERROR );
 		return t_Hr;
 	}
 		

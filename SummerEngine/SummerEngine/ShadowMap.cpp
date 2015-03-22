@@ -1,5 +1,6 @@
 #include "ShadowMap.h"
 #include <DirectXColors.h>
+#include "Logger.h"
 
 ShadowMap::ShadowMap(ID3D11Device* p_Device, UINT p_Width, UINT p_Height)
 {
@@ -31,7 +32,8 @@ ShadowMap::ShadowMap(ID3D11Device* p_Device, UINT p_Width, UINT p_Height)
 	hr = p_Device->CreateTexture2D(&t_Desc, 0, &t_DepthMap);
 	if (FAILED(hr))
 	{
-		MessageBox(nullptr, L"ShadowMapTextuerCreationError", L"Error", MB_ICONERROR | MB_OK);
+		//MessageBox(nullptr, L"ShadowMapTextuerCreationError", L"Error", MB_ICONERROR | MB_OK);
+		Logger::Log( "ShadowMapTextuerCreationError", "RenderSystem", LoggerType::MSG_ERROR );
 	}
 
 	D3D11_DEPTH_STENCIL_VIEW_DESC t_DepthDesc;
@@ -42,7 +44,8 @@ ShadowMap::ShadowMap(ID3D11Device* p_Device, UINT p_Width, UINT p_Height)
 	hr = p_Device->CreateDepthStencilView(t_DepthMap, &t_DepthDesc, &m_ShadowMap);
 	if (FAILED(hr))
 	{
-		MessageBox(nullptr, L"ShadowMapTextuerCreationError", L"Error", MB_ICONERROR | MB_OK);
+		//MessageBox(nullptr, L"ShadowMapTextuerCreationError", L"Error", MB_ICONERROR | MB_OK);
+		Logger::Log( "ShadowMapTextuerCreationError", "RenderSystem", LoggerType::MSG_ERROR );
 	}
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC t_SRVDesc;
@@ -53,7 +56,8 @@ ShadowMap::ShadowMap(ID3D11Device* p_Device, UINT p_Width, UINT p_Height)
 	hr = p_Device->CreateShaderResourceView(t_DepthMap, &t_SRVDesc, &m_ShadowMapSRV);
 	if (FAILED(hr))
 	{
-		MessageBox(nullptr, L"ShadowMapTextuerCreationError", L"Error", MB_ICONERROR | MB_OK);
+		//MessageBox(nullptr, L"ShadowMapTextuerCreationError", L"Error", MB_ICONERROR | MB_OK);
+		Logger::Log( "ShadowMapTextuerCreationError", "RenderSystem", LoggerType::MSG_ERROR );
 	}
 	t_DepthMap->Release();
 	

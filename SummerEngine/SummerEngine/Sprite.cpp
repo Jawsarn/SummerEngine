@@ -72,6 +72,8 @@ void Sprite::Draw()
 
 Rect* Sprite::GetCollisionBox()
 {
-	return new Rect((int)m_Position.x - m_Origin.x, (int)m_Position.y - m_Origin.y,
-		(int) m_TextureWidth, (int) m_TextureHeight);
+	return new Rect((int) (m_Position.x - m_Origin.x), 
+		(int) (m_Position.y - m_Origin.y),
+		static_cast<int>( m_TextureWidth) ,
+		static_cast<int>( m_TextureHeight ));
 }
