@@ -104,7 +104,7 @@ bool Renderer::Initialize(UINT p_Width, UINT p_Height, HWND p_HandleWindow) //fi
 
 	m_DeviceContext->UpdateSubresource(m_PerComputeBuffer, 0, nullptr, &t_PerCompute, 0, 0);
 
-	m_ShadowMap = new ShadowMap(m_Device, 1024, 1024);
+	m_ShadowMap = new ShadowMap(m_Device, 2048, 2048);
 	CameraStruct t_Cam;
 	t_Cam.Position = XMFLOAT3(1, 0, 0);
 	
@@ -302,9 +302,9 @@ HRESULT Renderer::InitializeRasterizers()
 	if (FAILED(hr))
 		return hr;
 
-	desc.DepthBias = 1000;
+	desc.DepthBias = 500;
 	desc.DepthBiasClamp = 0.0f;
-	desc.SlopeScaledDepthBias = 2.0f;
+	desc.SlopeScaledDepthBias = 1.55f;
 	hr = m_Device->CreateRasterizerState(&desc, &m_RasterizerStateShadowMap);
 	if (FAILED(hr))
 		return hr;
@@ -831,7 +831,7 @@ HRESULT Renderer::InitializeSamplerState()
 		return hr;
 
 	//for compute shader
-	sampDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
 	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
 	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
 	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;

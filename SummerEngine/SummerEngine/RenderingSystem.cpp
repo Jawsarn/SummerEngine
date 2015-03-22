@@ -15,6 +15,7 @@ RenderingSystem* RenderingSystem::GetInstance()
 RenderingSystem::RenderingSystem()
 {
 	m_Renderer = m_Renderer->GetInstance();
+	first = true;
 }
 
 RenderingSystem::~RenderingSystem()
@@ -39,7 +40,12 @@ void RenderingSystem::Update()
 
 	m_Renderer->RenderOpaque(&m_Opaque); //fix
 
-	m_Renderer->RenderShadowmaps(&m_Opaque);
+	if (first == true)
+	{
+		m_Renderer->RenderShadowmaps(&m_Opaque);
+		first = false;
+	}
+	
 
 	m_Renderer->ComputeDeferred();
 
