@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{4d368854-0731-4a80-89c0-068c62035c41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Systems">
+      <UniqueIdentifier>{c0859998-2d62-4e48-a38d-f9141e38dc34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Components">
+      <UniqueIdentifier>{268e3b6f-ed0b-48f5-a7f6-c470f47802a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\IO">
+      <UniqueIdentifier>{c8d5480f-3edd-473b-98af-dba0ac121e94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Components\Headers">
+      <UniqueIdentifier>{6cfe6eb3-dbda-4ba6-b98a-37efa7fda32f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Components\Source Files">
+      <UniqueIdentifier>{ead07a20-873c-4310-93d0-43ca327a9283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\IO\Headers">
+      <UniqueIdentifier>{63cae051-2cf2-4c92-8d37-98ac31591ebb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\IO\Source Files">
+      <UniqueIdentifier>{c812bc78-c33e-4b9d-8912-e9c7a38c4ecf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Systems\Headers">
+      <UniqueIdentifier>{17447fa8-7329-4aec-8b5e-af157e3224c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Systems\Source Files">
+      <UniqueIdentifier>{24222093-b366-420e-8649-ae5d65523b84}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Entity.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Serializable.h">
+      <Filter>Engine\IO\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Stream.h">
+      <Filter>Engine\IO\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="StreamFile.h">
+      <Filter>Engine\IO\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>Engine\Systems\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Engine\Components\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingComponent.h">
+      <Filter>Engine\Components\Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Engine\Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Stream.cpp">
+      <Filter>Engine\IO\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StreamFile.cpp">
+      <Filter>Engine\IO\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>Engine\Systems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingComponent.cpp">
+      <Filter>Engine\Components\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Debug\TestIcon2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
