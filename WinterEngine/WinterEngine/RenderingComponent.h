@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "GraphicEngineInterface.h"
+#include "GraphicToolbox.h"
 
 using namespace SGEngine;
 

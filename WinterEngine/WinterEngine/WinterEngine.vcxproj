@@ -69,6 +69,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GraphicEngineInterface.h" />
+    <ClInclude Include="GraphicToolbox.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="RenderingComponent.h" />
     <ClInclude Include="Serializable.h" />

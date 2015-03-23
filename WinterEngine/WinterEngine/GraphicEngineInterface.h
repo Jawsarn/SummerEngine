@@ -1,30 +1,9 @@
 #pragma once
 
 #include <Windows.h>
+#include "GraphicToolbox.h"
 
 
-namespace SGEngine
-{
-	
-
-	typedef unsigned int MeshHandle;
-	typedef unsigned int MaterialHandle;
-	//typedef unsigned int UINT;
-
-	struct RenderObject
-	{
-		MeshHandle meshHandle;
-		MaterialHandle materialHandle;
-		unsigned int startIndex, endIndex;
-	};
-	struct Vertex
-	{
-		float x;
-		float y;
-		float z;
-	};
-	typedef unsigned int Index;
-}
 
 using namespace SGEngine;
 //question: should we have indexbuffers and vertexbuffers from the Game side, or have it as one object, 
