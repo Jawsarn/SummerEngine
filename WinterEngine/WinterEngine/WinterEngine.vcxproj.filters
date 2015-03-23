@@ -116,6 +116,9 @@
     <ClCompile Include="DirectXGraphicEngine.cpp">
       <Filter>Engine\Graphics\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXInitialize.cpp">
+      <Filter>Engine\Graphics\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Debug\TestIcon2.bmp">

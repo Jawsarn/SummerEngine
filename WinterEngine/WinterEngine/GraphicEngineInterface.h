@@ -1,18 +1,21 @@
 #pragma once
 
+#include <Windows.h>
+
+
 namespace SGEngine
 {
 	
 
 	typedef unsigned int MeshHandle;
 	typedef unsigned int MaterialHandle;
-	typedef unsigned int UINT;
+	//typedef unsigned int UINT;
 
 	struct RenderObject
 	{
 		MeshHandle meshHandle;
 		MaterialHandle materialHandle;
-		UINT startIndex, endIndex;
+		unsigned int startIndex, endIndex;
 	};
 	struct Vertex
 	{
@@ -34,6 +37,11 @@ class GraphicEngineInterface
 public:
 	GraphicEngineInterface();
 	~GraphicEngineInterface();
+
+	//Getinstance of the engine, this will return the current selected type of engine directx/openGL
+	static GraphicEngineInterface* GetInstance();
+
+
 
 
 	//========================================\\
@@ -58,15 +66,30 @@ public:
 	//========================================\\
 	///////==Create Resource Functions===\\\\\\\
 	/////////=========================\\\\\\\\\\
-
+	
 	//Creates a handle to a mesh resource in the eingine
 	MeshHandle CreateMesh(std::vector<Vertex>* p_Vertices, std::vector<Index*> p_Indicies);
 
 	//Creates a handle to a material resource in the engine
 	MaterialHandle CreateMaterial();
-	
-	
-	
+
+
+	//========================================\\
+	///////=========Initialization=======\\\\\\\
+	/////////=========================\\\\\\\\\\
+
+	//the parameter is for windows only
+	virtual bool Initialize(HWND p_Handle) = 0;
+
+	//========================================\\
+	///////======Engine Functionality====\\\\\\\
+	/////////=========================\\\\\\\\\\
+
+	//Changes the resolution of a texture, 0 is the windowtexture
+	void ChangeResolution(float p_Width, float p_Height, unsigned int p_Texture);
+
+protected:
+	static GraphicEngineInterface* m_GraphicEngine;
 /*functionality
 //utility
 add error-box / error-texture on resources that couldn't be loaded instead of crashing.
@@ -78,6 +101,7 @@ add error-box / error-texture on resources that couldn't be loaded instead of cr
 	Light
 	ParticleSystem
 	Terrain
+	Shadows
 	
 
 */

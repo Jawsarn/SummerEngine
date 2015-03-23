@@ -14,7 +14,7 @@ public:
 private:
 	bool m_IsTransparent;
 	MeshHandle* m_MeshHandle;
-	UINT m_StartIndex, m_EndIndex;
+	unsigned int m_StartIndex, m_EndIndex;
 	MaterialHandle m_MaterialID;
 };
 
