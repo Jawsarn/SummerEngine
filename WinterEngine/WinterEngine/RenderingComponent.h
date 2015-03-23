@@ -13,9 +13,8 @@ public:
 
 private:
 	bool m_IsTransparent;
-	VertexHandle m_VertexBufferID;
-	IndexHandle m_IndexBufferID;
-	UINT m_StartVertex, m_EndVertex, m_StartIndex, m_EndIndex;
+	MeshHandle* m_MeshHandle;
+	UINT m_StartIndex, m_EndIndex;
 	MaterialHandle m_MaterialID;
 };
 

@@ -69,9 +69,6 @@
     <ClInclude Include="System.h">
       <Filter>Engine\Systems\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="InputSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Engine\Components\Headers</Filter>
     </ClInclude>
@@ -79,6 +76,12 @@
       <Filter>Engine\Components\Headers</Filter>
     </ClInclude>
     <ClInclude Include="GraphicEngineInterface.h">
+      <Filter>Engine\Graphics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>Engine\Systems\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGraphicEngine.h">
       <Filter>Engine\Graphics\Headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -101,13 +104,16 @@
     <ClCompile Include="System.cpp">
       <Filter>Engine\Systems\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RenderingComponent.cpp">
       <Filter>Engine\Components\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GraphicEngineInterface.cpp">
+      <Filter>Engine\Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Engine\Systems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGraphicEngine.cpp">
       <Filter>Engine\Graphics\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
