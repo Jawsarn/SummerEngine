@@ -13,42 +13,18 @@ public:
 	DirectXGraphicEngine();
 	~DirectXGraphicEngine();
 
-	bool Initialize(HWND p_Handle);
+	bool Initialize(HWND p_Handle, UINT p_Width, UINT p_Height);
 
 private:
-	//mesh info chunk that a handle is given of to the game
+	
+	//Grouping of mesh info
 	struct MeshInfo
 	{
 		ID3D11Buffer* vertexBuffer;
 		ID3D11Buffer* indexBuffer;
 	};
-	std::map<SGEngine::MeshHandle, MeshInfo> m_MeshKeys;
 
-	//material buffer that a handle is given of to the game
-	std::map<SGEngine::MaterialHandle, ID3D11Buffer*> m_MaterialKeys;
-
-	//initialize and handles
-	ID3D11Device*			m_Device;
-	ID3D11DeviceContext*	m_DeviceContext;
-	ID3D11Device1*			m_Device1;
-	ID3D11DeviceContext1*	m_DeviceContext1;
-	IDXGISwapChain*			m_SwapChain;
-	D3D_DRIVER_TYPE			m_DriverType;
-	D3D_FEATURE_LEVEL		m_FeatureLevel;
-
-	ID3D11RenderTargetView*		m_RenderTargetView;
-	ID3D11UnorderedAccessView*	m_UnorderedAccessView;
-
-	UINT* m_Width;
-	UINT* m_Height;
-
-	
-	HRESULT InitializeDriverAndVersion(HWND p_HandleWindow);
-	HRESULT InitializeRenderTargetView();
-
-
-
-	/*
+	//Shaderprogram, used to simply group drawmethods, used by functionality as DrawOpaque/Transparent/
 	struct ShaderProgram
 	{
 		ID3D11InputLayout* InputLayout;
@@ -70,8 +46,54 @@ private:
 		}
 	};
 
-	//void InitializeViewports();
+	//========================================\\
+	///////===========Variables==========\\\\\\\
+	/////////=========================\\\\\\\\\\
+
+	//mesh info chunk that a handle is given of to the game
+	std::map<SGEngine::MeshHandle, MeshInfo> m_MeshKeys;
+
+	//material buffer that a handle is given of to the game
+	std::map<SGEngine::MaterialHandle, ID3D11Buffer*> m_MaterialKeys;
+
+	//initialize and handles
+	ID3D11Device*			m_Device;
+	ID3D11DeviceContext*	m_DeviceContext;
+	ID3D11Device1*			m_Device1;
+	ID3D11DeviceContext1*	m_DeviceContext1;
+	IDXGISwapChain*			m_SwapChain;
+	D3D_DRIVER_TYPE			m_DriverType;
+	D3D_FEATURE_LEVEL		m_FeatureLevel;
+
+	//Rendertarget resources
+	ID3D11RenderTargetView*		m_RenderTargetView;
+	ID3D11UnorderedAccessView*	m_UnorderedAccessView;
+
+	//width height resolution
+	UINT m_Width;
+	UINT m_Height;
+
+	
+	//========================================\\
+	///////===========Functions==========\\\\\\\
+	/////////=========================\\\\\\\\\\
+
+	//initialize directx D11.1 is newest we can use
+	HRESULT InitializeDriverAndVersion(HWND p_HandleWindow);
+
+	//create the rendertarget/unorderd from backbuffer
+	HRESULT InitializeRenderTargetView();
+
+	void InitializeViewports();
+
 	HRESULT InitializeRasterizers();
+
+
+	/*
+	
+
+
+
 	HRESULT InitializeDeptpAndStates();
 	HRESULT InitializeBlendAndStates();
 	HRESULT InitializeShaders();

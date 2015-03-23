@@ -1,9 +1,11 @@
 #include "DirectXGraphicEngine.h"
 
 
-bool DirectXGraphicEngine::Initialize(HWND p_Handle)
+bool DirectXGraphicEngine::Initialize(HWND p_Handle, UINT p_Width, UINT p_Height)
 {
 	//convert here because we dont want windows outside engine if not windows :P
+	m_Width = p_Width;
+	m_Height = p_Height;
 
 	HRESULT hr = S_OK;
 
@@ -48,8 +50,8 @@ HRESULT DirectXGraphicEngine::InitializeDriverAndVersion(HWND p_HandleWindow)
 	DXGI_SWAP_CHAIN_DESC sd;
 	ZeroMemory(&sd, sizeof(sd));
 	sd.BufferCount = 1;
-	sd.BufferDesc.Width = 0;
-	sd.BufferDesc.Height = 0;
+	sd.BufferDesc.Width = m_Width;
+	sd.BufferDesc.Height = m_Height;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	sd.BufferDesc.RefreshRate.Numerator = 60;
 	sd.BufferDesc.RefreshRate.Denominator = 1;

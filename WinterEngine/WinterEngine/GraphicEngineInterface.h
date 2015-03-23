@@ -58,7 +58,7 @@ public:
 	/////////=========================\\\\\\\\\\
 
 	//the parameter is for windows only
-	virtual bool Initialize(HWND p_Handle) = 0;
+	virtual bool Initialize(HWND p_Handle, UINT p_Width, UINT p_Height) = 0;
 
 	//========================================\\
 	///////======Engine Functionality====\\\\\\\
