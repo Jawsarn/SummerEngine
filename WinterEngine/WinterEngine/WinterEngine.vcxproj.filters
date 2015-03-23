@@ -43,6 +43,15 @@
     <Filter Include="Engine\Systems\Source Files">
       <UniqueIdentifier>{24222093-b366-420e-8649-ae5d65523b84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Graphics">
+      <UniqueIdentifier>{8926a473-8c64-41fc-be63-9c42ec359739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Graphics\Headers">
+      <UniqueIdentifier>{a2906662-adf3-438a-9812-4bfa4f65fbd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Graphics\Source Files">
+      <UniqueIdentifier>{2d66d1d2-e177-49b7-80ea-dc3215343f36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -69,6 +78,9 @@
     <ClInclude Include="RenderingComponent.h">
       <Filter>Engine\Components\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicEngineInterface.h">
+      <Filter>Engine\Graphics\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">
@@ -94,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="RenderingComponent.cpp">
       <Filter>Engine\Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicEngineInterface.cpp">
+      <Filter>Engine\Graphics\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

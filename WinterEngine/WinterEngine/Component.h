@@ -1,9 +1,10 @@
 #pragma once
 
+#include "Serializable.h"
 #include <string>
 
 
-class Component
+class Component : Serializable
 {
 public:
 	Component();
