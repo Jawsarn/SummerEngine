@@ -1,5 +1,5 @@
 #include <Windows.h>
-#include "GraphicEngineInterface.h"
+#include "Graphics/GraphicEngineInterface.h"
 
 // this is just test at the moment, to get things started, will be sorting this when it comes important.
 //global game variables

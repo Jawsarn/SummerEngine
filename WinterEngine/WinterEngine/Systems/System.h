@@ -1,4 +1,4 @@
-#include "Component.h"
+#include "../Components/Component.h"
 #include <list>
 
 //systems are used as subparts of the engine that executes things, contains all the components they are working with and should
