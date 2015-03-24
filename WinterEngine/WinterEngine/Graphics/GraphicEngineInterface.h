@@ -47,10 +47,10 @@ public:
 	/////////=========================\\\\\\\\\\
 	
 	//Creates a handle to a mesh resource in the eingine
-	MeshHandle CreateMesh(std::vector<Vertex>* p_Vertices, std::vector<Index*> p_Indicies);
+	virtual MeshHandle CreateMesh(std::vector<Vertex>* p_Vertices, std::vector<Index>* p_Indicies) = 0;
 
 	//Creates a handle to a material resource in the engine
-	MaterialHandle CreateMaterial();
+	virtual MaterialHandle CreateMaterial(Material* p_Mat) = 0;
 
 
 	//========================================\\

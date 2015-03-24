@@ -35,11 +35,13 @@ bool DirectXGraphicEngine::Initialize(HWND p_Handle, UINT p_Width, UINT p_Height
 	if (FAILED(hr))
 		return false;
 
-	/*
+	
 	hr = InitializeShaders();
 	if (FAILED(hr))
-	return false;
+		return false;
 
+
+	/*
 	hr = InitializeConstantBuffers();
 	if (FAILED(hr))
 		return false;
@@ -430,14 +432,14 @@ HRESULT DirectXGraphicEngine::InitializeShaders()
 		};
 		UINT t_NumElements = ARRAYSIZE(t_Layout);
 
-		hr = t_ShaderLoader.CreateVertexShaderWithInputLayout(L"DeferredVS.hlsl", "VS", "vs_5_0", m_Device, &t_VertexShader, t_Layout, t_NumElements, &t_InputLayout);
+		hr = t_ShaderLoader.CreateVertexShaderWithInputLayout(L"Shaders/OpaqueVS.hlsl", "VS", "vs_5_0", m_Device, &t_VertexShader, t_Layout, t_NumElements, &t_InputLayout);
 		if (FAILED(hr))
 			return hr;
 
 		
 
 		ID3D11PixelShader* t_PixelShader;
-		hr = t_ShaderLoader.CreatePixelShader(L"DeferredPS.hlsl", "PS", "ps_5_0", m_Device, &t_PixelShader);
+		hr = t_ShaderLoader.CreatePixelShader(L"Shaders/OpaquePS.hlsl", "PS", "ps_5_0", m_Device, &t_PixelShader);
 		if (FAILED(hr))
 			return hr;
 

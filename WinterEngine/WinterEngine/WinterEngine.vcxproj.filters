@@ -52,6 +52,9 @@
     <Filter Include="Engine\Graphics\Source Files">
       <UniqueIdentifier>{2d66d1d2-e177-49b7-80ea-dc3215343f36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Shaders">
+      <UniqueIdentifier>{41799d41-301e-4ad7-9072-f099d94575b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -128,10 +131,21 @@
     <ClCompile Include="Systems\System.cpp">
       <Filter>Engine\Systems\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\DirectXResourceCreation.cpp">
+      <Filter>Engine\Graphics\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Debug\TestIcon2.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\OpaqueVS.hlsl">
+      <Filter>Engine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\OpaquePS.hlsl">
+      <Filter>Engine\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
