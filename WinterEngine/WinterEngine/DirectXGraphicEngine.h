@@ -13,7 +13,11 @@ public:
 	DirectXGraphicEngine();
 	~DirectXGraphicEngine();
 
+	//initialize directX with shaders, samplers, etc
 	bool Initialize(HWND p_Handle, UINT p_Width, UINT p_Height);
+
+	//after initialization, load a engine preset from file
+	bool LoadPresetFromFile();
 
 private:
 	
@@ -46,110 +50,16 @@ private:
 		}
 	};
 
-	//========================================\\
-	///////===========Variables==========\\\\\\\
-	/////////=========================\\\\\\\\\\
-
-	//mesh info chunk that a handle is given of to the game
-	std::map<SGEngine::MeshHandle, MeshInfo> m_MeshKeys;
-
-	//material buffer that a handle is given of to the game
-	std::map<SGEngine::MaterialHandle, ID3D11Buffer*> m_MaterialKeys;
-
-	//initialize and handles
-	ID3D11Device*			m_Device;
-	ID3D11DeviceContext*	m_DeviceContext;
-	ID3D11Device1*			m_Device1;
-	ID3D11DeviceContext1*	m_DeviceContext1;
-	IDXGISwapChain*			m_SwapChain;
-	D3D_DRIVER_TYPE			m_DriverType;
-	D3D_FEATURE_LEVEL		m_FeatureLevel;
-
-	//Rendertarget resources
-	ID3D11RenderTargetView*		m_RenderTargetView;
-	ID3D11UnorderedAccessView*	m_UnorderedAccessView;
-
-	//width height resolution
-	UINT m_Width;
-	UINT m_Height;
-
-	
-	//========================================\\
-	///////===========Functions==========\\\\\\\
-	/////////=========================\\\\\\\\\\
-
-	//initialize directx D11.1 is newest we can use
-	HRESULT InitializeDriverAndVersion(HWND p_HandleWindow);
-
-	//create the rendertarget/unorderd from backbuffer
-	HRESULT InitializeRenderTargetView();
-
-	void InitializeViewports();
-
-	HRESULT InitializeRasterizers();
-
-
-	/*
-	
-
-
-
-	HRESULT InitializeDeptpAndStates();
-	HRESULT InitializeBlendAndStates();
-	HRESULT InitializeShaders();
-	HRESULT InitializeConstantBuffers();
-	HRESULT InitializeGBuffers();
-	HRESULT InitializeSamplerState();
-
-	void SetShaders(ShaderProgram *p_Program);
-	void SetTextures(RenderObject* p_Object);
-	void SetPerFrameBuffers(std::vector<CameraStruct>* p_Cameras);
-	HRESULT CreateRandomVectors();
-	HRESULT Renderer::CreateOffsets();
-
-	
-
-
-	//basic rendering stuff
-	ID3D11RenderTargetView*		m_RenderTargetView;
-	ID3D11Texture2D*			m_DepthStencil;
-	ID3D11DepthStencilView*		m_DepthStencilView;
-	ID3D11RasterizerState*		m_RasterizerStateNormal;
-	ID3D11RasterizerState*		m_RasterizerStateShadowMap;
-	ID3D11RasterizerState*		m_RasterizerStateWireframe;
-	ID3D11BlendState*			m_BlendStateOn;
-	ID3D11BlendState*			m_BlendStateOff;
-	ID3D11DepthStencilState*	m_DepthStateOn;
-	ID3D11DepthStencilState*	m_DepthStateOff;
-	ID3D11DepthStencilState*	m_DepthStateNoWrite;
-	ID3D11DepthStencilState*	m_LessEqualDepthState;
-	ID3D11SamplerState*			m_SamplerStateWrap;
-	ID3D11SamplerState*			m_SamplerStateLinearClamp;
-	ID3D11SamplerState*			m_SamplerStateLinearBorder;
-	ID3D11SamplerState*			m_SamplerRandom;
-
-	ID3D11UnorderedAccessView*	m_BackBufferUAV;
-
-	ID3D11ShaderResourceView*	m_GbufferShaderResource[3];
-	ID3D11RenderTargetView*		m_GbufferTargetViews[3];
-
-	
-
-	
-
-	static Renderer* m_Singleton;
-	BOOL m_IsRendering;
-
-	//test thigns
-	struct PerFrameTestBuffer
+	//shaderbuffers
+	struct PerFrameCBuffer
 	{
 		XMMATRIX View;
 		XMMATRIX Proj;
 		XMFLOAT4 EyePosition;
 		//XMMATRIX ViewProj;
 	};
-	
-	struct PerComputeBuffer
+
+	struct DeferredComputeCBuffer
 	{
 		XMFLOAT2 ScreenDimensions;
 		XMFLOAT2 CamNearFar;
@@ -158,81 +68,120 @@ private:
 		XMFLOAT4 ColorOverlay;
 	};
 
-	struct ShadowMapBuffer
-	{
-		XMMATRIX ShadowMatrix;
-		float Shadow_Width;
-		float Shadow_Height;
-		XMFLOAT2 Fillers;
-	};
-	struct SSAOBuffer
-	{
-		XMFLOAT4 OffsetVectors[14];
+	//========================================\\
+	///////===========Variables==========\\\\\\\
+	/////////=========================\\\\\\\\\\
 
-		float OcclusionRadius;
-		float OcclusionFadeStart;
-		float OcclusionFadeEnd;
-		float SurfaceEpsilon;
-	};
+	//mesh info chunk that a handle is given of to the game
+	std::map<SGEngine::MeshHandle, MeshInfo>			m_MeshKeys;
 
-	struct PointLight
-	{
-		
-		XMFLOAT3 Position;
-		float Radius;
+	//material buffer that a handle is given of to the game
+	std::map<SGEngine::MaterialHandle, ID3D11Buffer*>	m_MaterialKeys;
 
-		XMFLOAT3 Color;
-		float Filler;
-		PointLight()
-		{
-			Position = XMFLOAT3(0,0,0);
-			Radius = 0;
-			Color = XMFLOAT3(0, 0, 0);
-			Filler = 0;
-		}
-		PointLight(XMFLOAT3 p_Pos, float p_rad, XMFLOAT3 p_Col)
-		{
-			Position = p_Pos;
-			Radius = p_rad;
-			Color = p_Col;
-			Filler = 0;
-		}
-	};
+	//initialize and handles
+	ID3D11Device*				m_Device;
+	ID3D11DeviceContext*		m_DeviceContext;
+	ID3D11Device1*				m_Device1;
+	ID3D11DeviceContext1*		m_DeviceContext1;
+	IDXGISwapChain*				m_SwapChain;
+	D3D_DRIVER_TYPE				m_DriverType;
+	D3D_FEATURE_LEVEL			m_FeatureLevel;
 
+	//Rendertarget resources
+	ID3D11RenderTargetView*		m_RenderTargetView;
+	ID3D11UnorderedAccessView*	m_UnorderedAccessView;
+	ID3D11RenderTargetView*		m_GBufferRTV[3];
+	ID3D11ShaderResourceView*	m_GBufferSRV[3];
+
+	//width height resolution
+	UINT						m_Width;
+	UINT						m_Height;
+
+	//max number of instances, update this dynamically when we ovrrides one size, to beomce 1.5 the size?
+	UINT						m_MaxNumOfInstances;
+	ID3D11Buffer*				m_InstanceBuffer; //TODO Check if we want to split this into many buffers for each vertex group?
+
+
+	//rasterizers
+	ID3D11RasterizerState*		m_RasterizerNormal;
+	ID3D11RasterizerState*		m_RasterizerWireframe;
 	
-	ID3D11Buffer* m_TestPerFrameBuffer;
-	ID3D11Buffer* m_PerComputeBuffer;
-	ID3D11Buffer* m_ShadowMapBuffer;
-	ID3D11Buffer* m_SSAOBuffer;
-	ID3D11ShaderResourceView* m_SSAORandomTexture;
+	//depthstencil buffer
+	ID3D11Texture2D*			m_DepthStencil;
+	ID3D11DepthStencilView*		m_DepthStencilView;
 
-	ID3D11UnorderedAccessView* m_SSAOUAV;
-	ID3D11ShaderResourceView* m_SSAOSRV;
+	//depthstencilstates
+	ID3D11DepthStencilState*	m_DepthStencilStateOn;
+	ID3D11DepthStencilState*	m_DepthStencilStateOff;
 
-	ID3D11UnorderedAccessView* m_BlurrUAV;
-	ID3D11ShaderResourceView* m_BlurrSRV;
+	//blendstates
+	ID3D11BlendState*			m_BlendStateOn;
+	ID3D11BlendState*			m_BlendStateOff;
 
-	ID3D11Buffer* m_InstanceBuffer;
-	ID3D11ComputeShader* m_DeferredCS;
-	ID3D11ComputeShader* m_SSAOCS;
-	ID3D11ComputeShader* m_BlurrHorrCS;
-	ID3D11ComputeShader* m_BlurrVertCS;
+	//sampelrs
+	ID3D11SamplerState*			m_SamplerWrap;
+	ID3D11SamplerState*			m_SamplerClamp;
+	ID3D11SamplerState*			m_SamplerBorder;
+	ID3D11SamplerState*			m_SamplerWrapRandom;
 
-	std::vector<CameraStruct> m_Cameras;
+	//shaderprograms
+	ShaderProgram*				m_OpaqueShaders;
+	ShaderProgram*				m_DeferredComputeShader;
 
-	std::vector<PointLight>		m_PointLights;
-	int m_AmountOfPointLights;
-	ID3D11Buffer*				m_PointLightsBuffer;
-	ID3D11ShaderResourceView*	m_PointLightsBufferSRV;
+	//constantbuffers
+	ID3D11Buffer*				m_PerFrameCBuffer;
+	ID3D11Buffer*				m_DeferredComputeCBuffer;
 
-	ShaderProgram* m_SpriteShaderProgram;
-	ShaderProgram* m_FontShaderProgram;
-	ShaderProgram* m_DeferredShaderProgram;
-	ShaderProgram* m_ShadowMapShaderProgram;
-	ShadowMap* m_ShadowMap;
-	std::vector<D3D11_VIEWPORT> m_Viewports;
 
-	std::vector<CameraStruct> m_ShadowMapMatrices;
+
+	//========================================\\
+	///////===========Functions==========\\\\\\\
+	/////////=========================\\\\\\\\\\
+	
+	//===========INITIALIZATION================\\
+
+	//initialize directx D11.1 is newest we can use
+	HRESULT InitializeDriverAndVersion(HWND p_HandleWindow);
+
+	//create the rendertarget/unorderd from backbuffer
+	HRESULT InitializeRenderTargetView();
+
+	//creates the sceenviewport sized to the window
+	void InitializeViewport();
+
+	//creates normal,wireframe rasterizers
+	HRESULT InitializeRasterizers();
+
+	//creates depthbuffer and state for on/off
+	HRESULT InitializeDeptpAndStates();
+
+	//creates blendstate for on/off - TODO add more states for different particle systems
+	HRESULT InitializeBlendAndStates();
+
+	//creates all the default samplers used for shaders
+	HRESULT InitializeSamplers();
+
+	//Compiles shaders from file
+	HRESULT InitializeShaders();
+
+	//Creats CBuffers + instance buffer atm TODO::check if we move isntancebuffe
+	HRESULT InitializeConstantBuffers();
+
+	//creates GBuffers : (normal/Depth),(diffuse/spec),(notused)
+	HRESULT InitializeGBuffers();
+
+
+
+
+	/*
+	void SetShaders(ShaderProgram *p_Program);
+	void SetTextures(RenderObject* p_Object);
+	void SetPerFrameBuffers(std::vector<CameraStruct>* p_Cameras);
+	HRESULT CreateRandomVectors();
+	HRESULT Renderer::CreateOffsets();
+
+	BOOL m_IsRendering;
+	
 	
 	*/
 };

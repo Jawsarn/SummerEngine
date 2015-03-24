@@ -87,6 +87,9 @@
     <ClInclude Include="GraphicToolbox.h">
       <Filter>Engine\Graphics\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">
@@ -121,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="DirectXInitialize.cpp">
       <Filter>Engine\Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLoader.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

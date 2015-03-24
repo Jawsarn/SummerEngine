@@ -19,8 +19,12 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	if (FAILED(hr))
 		return 0;
 
+	//testshit
 	GraphicEngineInterface* m_Engine = m_Engine->GetInstance();
-	m_Engine->Initialize(m_HandleWindow,1024,1024);
+
+	bool t_InitializeOK = m_Engine->Initialize(m_HandleWindow,1024,1024);
+	if (!t_InitializeOK)
+		return 0;
 
 	MSG msg = { 0 };
 	while (WM_QUIT != msg.message)

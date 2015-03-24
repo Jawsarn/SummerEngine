@@ -73,6 +73,7 @@
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="RenderingComponent.h" />
     <ClInclude Include="Serializable.h" />
+    <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="Stream.h" />
     <ClInclude Include="StreamFile.h" />
     <ClInclude Include="System.h" />
@@ -86,6 +87,7 @@
     <ClCompile Include="GraphicEngineInterface.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="RenderingComponent.cpp" />
+    <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="Stream.cpp" />
     <ClCompile Include="StreamFile.cpp" />
     <ClCompile Include="System.cpp" />

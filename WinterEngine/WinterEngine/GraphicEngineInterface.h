@@ -60,6 +60,9 @@ public:
 	//the parameter is for windows only
 	virtual bool Initialize(HWND p_Handle, UINT p_Width, UINT p_Height) = 0;
 
+	//after initialization, load a engine preset from file
+	virtual bool LoadPresetFromFile() = 0;
+
 	//========================================\\
 	///////======Engine Functionality====\\\\\\\
 	/////////=========================\\\\\\\\\\
