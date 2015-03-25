@@ -592,8 +592,8 @@ HRESULT DirectXGraphicEngine::CreateErrorTexture()
 
 	ID3D11ShaderResourceView* t_NewResourceView;
 	
-	std::string t_Name = "ERROR_TEXTURE.dds";
-	std::string t_FilePath = "Textures/" + t_Name;
+	std::string t_Name = "errorImg.dds";
+	std::string t_FilePath = "Assets/Texture/" + t_Name;
 	std::wstring t_LoadTextString = std::wstring(t_FilePath.begin(), t_FilePath.end());
 
 	hr = CreateDDSTextureFromFile(m_Device, t_LoadTextString.c_str(), nullptr, &t_NewResourceView);
