@@ -93,6 +93,9 @@
     <ClInclude Include="Systems\System.h">
       <Filter>Engine\Systems\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\TextureLoaderDDS.h">
+      <Filter>Engine\Graphics\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">
@@ -132,6 +135,9 @@
       <Filter>Engine\Systems\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\DirectXResourceCreation.cpp">
+      <Filter>Engine\Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\TextureLoaderDDS.cpp">
       <Filter>Engine\Graphics\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

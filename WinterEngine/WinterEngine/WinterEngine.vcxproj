@@ -72,6 +72,7 @@
     <ClInclude Include="Graphics\GraphicEngineInterface.h" />
     <ClInclude Include="Graphics\GraphicToolbox.h" />
     <ClInclude Include="Graphics\ShaderLoader.h" />
+    <ClInclude Include="Graphics\TextureLoaderDDS.h" />
     <ClInclude Include="IO\Serializable.h" />
     <ClInclude Include="IO\Stream.h" />
     <ClInclude Include="IO\StreamFile.h" />
@@ -88,6 +89,7 @@
     <ClCompile Include="Graphics\DirectXResourceCreation.cpp" />
     <ClCompile Include="Graphics\GraphicEngineInterface.cpp" />
     <ClCompile Include="Graphics\ShaderLoader.cpp" />
+    <ClCompile Include="Graphics\TextureLoaderDDS.cpp" />
     <ClCompile Include="IO\Stream.cpp" />
     <ClCompile Include="IO\StreamFile.cpp" />
     <ClCompile Include="Systems\InputSystem.cpp" />

@@ -1,5 +1,6 @@
 #include "DirectXGraphicEngine.h"
 #include "ShaderLoader.h"
+#include "TextureLoaderDDS.h"
 
 bool DirectXGraphicEngine::Initialize(HWND p_Handle, UINT p_Width, UINT p_Height)
 {
@@ -40,6 +41,9 @@ bool DirectXGraphicEngine::Initialize(HWND p_Handle, UINT p_Width, UINT p_Height
 	if (FAILED(hr))
 		return false;
 
+	hr = CreateErrorTexture();
+	if (FAILED(hr))
+		return false;
 
 	/*
 	hr = InitializeConstantBuffers();
@@ -580,4 +584,28 @@ HRESULT DirectXGraphicEngine::InitializeGBuffers()
 bool DirectXGraphicEngine::LoadPresetFromFile()
 {
 	return true;
+}
+
+HRESULT DirectXGraphicEngine::CreateErrorTexture()
+{
+	HRESULT hr = S_OK;
+
+	ID3D11ShaderResourceView* t_NewResourceView;
+	
+	std::string t_Name = "ERROR_TEXTURE.dds";
+	std::string t_FilePath = "Textures/" + t_Name;
+	std::wstring t_LoadTextString = std::wstring(t_FilePath.begin(), t_FilePath.end());
+
+	hr = CreateDDSTextureFromFile(m_Device, t_LoadTextString.c_str(), nullptr, &t_NewResourceView);
+	if (SUCCEEDED(hr))
+	{
+		std::hash<ID3D11ShaderResourceView*> t_Hasher;
+		UINT t_Value = t_Hasher(t_NewResourceView);
+
+		m_TextureMap[t_NewResourceView] = t_Value;
+		m_TextureIDMap[t_Name] = t_Value;
+		m_ErrorTextureID = t_Value;
+	}
+
+	return hr;
 }

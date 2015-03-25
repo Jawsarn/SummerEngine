@@ -4,7 +4,10 @@
 #include <map>
 #include <d3d11_2.h>
 #include <DirectXMath.h>
+#include <string>
 
+
+//TODO::change all hashes to not be returning UINT but the t_size instead, for 32-64 bit compability
 using namespace DirectX;
 
 class DirectXGraphicEngine: public GraphicEngineInterface
@@ -28,6 +31,7 @@ public:
 
 	//Creates a handle to a material resource in the engine
 	MaterialHandle CreateMaterial(Material* p_Mat);
+
 
 private:
 	
@@ -149,11 +153,25 @@ private:
 	///////===========Variables==========\\\\\\\
 	/////////=========================\\\\\\\\\\
 
+	//hashfunctionsfor keys
+	std::hash<MaterialInfo*>	t_MaterialHash;
+	std::hash<MeshInfo*>		t_MeshHash;
+
 	//mesh info chunk that a handle is given of to the game
-	std::map<SGEngine::MeshHandle, MeshInfo>			m_MeshKeys;
+	std::map<SGEngine::MeshHandle, MeshInfo*>			m_MeshKeys;
 
 	//material buffer that a handle is given of to the game
-	std::map<SGEngine::MaterialHandle, ID3D11Buffer*>	m_MaterialKeys;
+	std::map<SGEngine::MaterialHandle, MaterialInfo*>	m_MaterialKeys;
+
+	//texture map, int-SRV used for drawing efficiently, string-int, to get new handles easy, could swap the latter to string-srv
+
+	typedef std::map<std::string, UINT> TextureIDMap;
+	typedef std::map<ID3D11ShaderResourceView*, UINT > TextureMap;
+	TextureIDMap m_TextureIDMap;
+	TextureMap m_TextureMap;
+
+	//error tools
+	UINT						m_ErrorTextureID;
 
 	//initialize and handles
 	ID3D11Device*				m_Device;
@@ -247,9 +265,13 @@ private:
 	//creates GBuffers : (normal/Depth),(diffuse/spec),(notused)
 	HRESULT InitializeGBuffers();
 
+	//Create
+	HRESULT CreateErrorTexture();
 
 
+	//===============RESOURCES================\\
 
+	UINT LoadTexture(std::string p_Name);
 	/*
 	void SetShaders(ShaderProgram *p_Program);
 	void SetTextures(RenderObject* p_Object);
