@@ -96,6 +96,18 @@
     <ClInclude Include="Graphics\TextureLoaderDDS.h">
       <Filter>Engine\Graphics\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Systems\RenderingSystem.h">
+      <Filter>Engine\Systems\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\TransformComponent.h">
+      <Filter>Engine\Components\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTransformLibrary.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformLibraryInterface.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">
@@ -142,6 +154,18 @@
     </ClCompile>
     <ClCompile Include="Graphics\DirectXDrawing.cpp">
       <Filter>Engine\Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\RenderingSystem.cpp">
+      <Filter>Engine\Systems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\TransformComponent.cpp">
+      <Filter>Engine\Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXTransformLibrary.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformLibraryInterface.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

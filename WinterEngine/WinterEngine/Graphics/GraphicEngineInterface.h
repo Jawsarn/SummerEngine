@@ -14,7 +14,7 @@ using namespace SGEngine;
 class GraphicEngineInterface
 {
 public:
-	GraphicEngineInterface();
+	
 	~GraphicEngineInterface();
 
 	//Getinstance of the engine, this will return the current selected type of engine directx/openGL
@@ -71,6 +71,7 @@ public:
 	void ChangeResolution(float p_Width, float p_Height, unsigned int p_Texture);
 
 protected:
+	GraphicEngineInterface();
 	static GraphicEngineInterface* m_GraphicEngine;
 /*functionality
 //utility

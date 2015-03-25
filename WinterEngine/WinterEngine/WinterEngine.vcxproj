@@ -67,6 +67,7 @@
   <ItemGroup>
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\RenderingComponent.h" />
+    <ClInclude Include="Components\TransformComponent.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Graphics\DirectXGraphicEngine.h" />
     <ClInclude Include="Graphics\GraphicEngineInterface.h" />
@@ -77,11 +78,16 @@
     <ClInclude Include="IO\Stream.h" />
     <ClInclude Include="IO\StreamFile.h" />
     <ClInclude Include="Systems\InputSystem.h" />
+    <ClInclude Include="Systems\RenderingSystem.h" />
     <ClInclude Include="Systems\System.h" />
+    <ClInclude Include="DirectXTransformLibrary.h" />
+    <ClInclude Include="TransformLibraryInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Components\RenderingComponent.cpp" />
+    <ClCompile Include="Components\TransformComponent.cpp" />
+    <ClCompile Include="DirectXTransformLibrary.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Graphics\DirectXDrawing.cpp" />
@@ -94,7 +100,9 @@
     <ClCompile Include="IO\Stream.cpp" />
     <ClCompile Include="IO\StreamFile.cpp" />
     <ClCompile Include="Systems\InputSystem.cpp" />
+    <ClCompile Include="Systems\RenderingSystem.cpp" />
     <ClCompile Include="Systems\System.cpp" />
+    <ClCompile Include="TransformLibraryInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Debug\TestIcon2.bmp" />
