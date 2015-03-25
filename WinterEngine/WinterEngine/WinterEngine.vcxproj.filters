@@ -140,6 +140,9 @@
     <ClCompile Include="Graphics\TextureLoaderDDS.cpp">
       <Filter>Engine\Graphics\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\DirectXDrawing.cpp">
+      <Filter>Engine\Graphics\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Debug\TestIcon2.bmp">

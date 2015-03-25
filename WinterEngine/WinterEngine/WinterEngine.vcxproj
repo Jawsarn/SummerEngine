@@ -84,6 +84,7 @@
     <ClCompile Include="Components\RenderingComponent.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Graphics\DirectXDrawing.cpp" />
     <ClCompile Include="Graphics\DirectXGraphicEngine.cpp" />
     <ClCompile Include="Graphics\DirectXInitialize.cpp" />
     <ClCompile Include="Graphics\DirectXResourceCreation.cpp" />

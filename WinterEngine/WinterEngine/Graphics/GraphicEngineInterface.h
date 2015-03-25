@@ -28,19 +28,19 @@ public:
 	/////////=========================\\\\\\\\\\
 
 	//Needs to be called befor all other drawcalls, and ended with "EndDraw()"
-	void BeginDraw();
+	virtual void BeginDraw() = 0;
 
 	//Call "BeginDraw()" befor, draws nontransparent, call "ComputeDeferred()" after
-	void DrawOpaque(std::vector<RenderObject> p_RenderObects);
+	virtual void DrawOpaque(std::vector<RenderObject> p_RenderObects) = 0;
 
 	//Computes deferrred rendering, call befor "DrawTransparent"
-	void ComputeDeferred();
+	virtual void ComputeDeferred() = 0;
 
 	//Call after "ComputerDeferred()", draws transparent objects
-	void DrawTransparent(std::vector<RenderObject> p_RenderObects);
+	virtual void DrawTransparent(std::vector<RenderObject> p_RenderObects) = 0;
 
 	//Call when done drawing, needs to be started with "BeginDraw()"
-	void EndDraw();
+	virtual void EndDraw() = 0;
 
 	//========================================\\
 	///////==Create Resource Functions===\\\\\\\

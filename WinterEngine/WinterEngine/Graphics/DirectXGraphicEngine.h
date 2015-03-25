@@ -32,6 +32,25 @@ public:
 	//Creates a handle to a material resource in the engine
 	MaterialHandle CreateMaterial(Material* p_Mat);
 
+	//========================================\\
+	///////=========Draw Functions=======\\\\\\\
+	/////////=========================\\\\\\\\\\
+
+	//Needs to be called befor all other drawcalls, and ended with "EndDraw()"
+	void BeginDraw();
+
+	//Call "BeginDraw()" befor, draws nontransparent, call "ComputeDeferred()" after
+	void DrawOpaque(std::vector<RenderObject> p_RenderObects);
+
+	//Computes deferrred rendering, call befor "DrawTransparent"
+	void ComputeDeferred();
+
+	//Call after "ComputerDeferred()", draws transparent objects
+	void DrawTransparent(std::vector<RenderObject> p_RenderObects);
+
+	//Call when done drawing, needs to be started with "BeginDraw()"
+	void EndDraw();
+
 
 private:
 	
@@ -164,11 +183,14 @@ private:
 	std::map<SGEngine::MaterialHandle, MaterialInfo*>	m_MaterialKeys;
 
 	//texture map, int-SRV used for drawing efficiently, string-int, to get new handles easy, could swap the latter to string-srv
-
 	typedef std::map<std::string, UINT> TextureIDMap;
 	typedef std::map<ID3D11ShaderResourceView*, UINT > TextureMap;
 	TextureIDMap m_TextureIDMap;
 	TextureMap m_TextureMap;
+
+	//functions checking, if we've begon drawing or not
+	BOOL						m_IsDrawing;
+	UINT						m_VsyncCode;
 
 	//error tools
 	UINT						m_ErrorTextureID;
