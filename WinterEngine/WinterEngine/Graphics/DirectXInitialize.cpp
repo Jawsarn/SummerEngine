@@ -453,17 +453,17 @@ HRESULT DirectXGraphicEngine::InitializeShaders()
 		m_OpaqueShaders->PixelShader = t_PixelShader;
 	}
 
-	////DEFERRED COMPUTE SHADER
-	{
-		m_DeferredComputeShader = new ShaderProgram();
+	////DEFERRED COMPUTE SHADER TODO::add compute shader =D
+	//{
+	//	m_DeferredComputeShader = new ShaderProgram();
 
-		ID3D11ComputeShader* t_ComputeShader;
-		hr = t_ShaderLoader.CreateComputeShader(L"DeferredCS.hlsl", "CS", "cs_5_0", m_Device, &t_ComputeShader);
-		if (FAILED(hr))
-			return hr;
+	//	ID3D11ComputeShader* t_ComputeShader;
+	//	hr = t_ShaderLoader.CreateComputeShader(L"DeferredCS.hlsl", "CS", "cs_5_0", m_Device, &t_ComputeShader);
+	//	if (FAILED(hr))
+	//		return hr;
 
-		m_DeferredComputeShader->ComputeShader = t_ComputeShader;
-	}
+	//	m_DeferredComputeShader->ComputeShader = t_ComputeShader;
+	//}
 
 	return hr;
 }
