@@ -30,9 +30,9 @@ void System::Sleep()
 }
 
 //updating the system, called from gameloop
-void System::Update()
+bool System::Update()
 {
-
+	return true;
 }
 
 //dealloc the system

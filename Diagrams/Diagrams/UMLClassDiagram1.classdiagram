@@ -11,7 +11,7 @@
           </dependency>
         </suppliersInternal>
         <targetEnds>
-          <association Id="f0642f84-8ef9-4f81-8def-d9857ec565e0" isDerived="false" sourceEndRoleName=" " targetEndRoleName="is build of " isLeaf="false" isAbstract="false">
+          <association Id="f0642f84-8ef9-4f81-8def-d9857ec565e0" isDerived="false" sourceEndRoleName=" " targetEndRoleName="contains" isLeaf="false" isAbstract="false">
             <classMoniker Id="e67a3f52-4670-47b7-9d53-30791081d02b" LastKnownName="Component" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
@@ -30,7 +30,7 @@
                 </memberEnd>
               </associationHasOwnedEnds>
               <associationHasOwnedEnds>
-                <memberEnd Id="5ba66e38-584b-4c3b-b8c1-02024834c916" name="is build of " isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                <memberEnd Id="5ba66e38-584b-4c3b-b8c1-02024834c916" name="contains" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
                   <lowerValueInternal>
                     <literalString Id="95399689-db35-4b53-9d4f-7ba97976083b" name="Lower">
                       <elementDefinition Id="7568da6e-1273-40ea-a3c2-db2e22378b1f" />
@@ -321,11 +321,11 @@
           </dependency>
         </suppliersInternal>
         <targetEnds>
-          <association Id="ac315e37-e9df-4326-8395-fb3ce01f2997" isDerived="false" sourceEndRoleName=" " targetEndRoleName=" " isLeaf="false" isAbstract="false">
+          <association Id="ac315e37-e9df-4326-8395-fb3ce01f2997" isDerived="false" sourceEndRoleName="uses" targetEndRoleName=" " isLeaf="false" isAbstract="false">
             <classMoniker Id="c5a68e75-ee1e-4de8-8bc6-fc959f08e186" LastKnownName="GraphicToolbox" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
-                <memberEnd Id="2b1fa95a-98de-4eda-9df1-995c84aa164e" name=" " isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                <memberEnd Id="2b1fa95a-98de-4eda-9df1-995c84aa164e" name="uses" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
                   <lowerValueInternal>
                     <literalString Id="23ea271b-e529-4304-918a-e8b96beb9f3a" name="Lower">
                       <elementDefinition Id="8a8ad689-dd8b-4019-9aaf-f5ce1e4cc3ed" />
@@ -412,6 +412,44 @@
             <elementDefinition Id="213f871e-3b49-45f4-af01-93e209360239" />
           </dependency>
         </suppliersInternal>
+        <targetEnds>
+          <association Id="188e1700-ac1e-4877-ac48-4147f7de7a95" isDerived="false" sourceEndRoleName="uses" targetEndRoleName=" " isLeaf="false" isAbstract="false">
+            <classMoniker Id="4bfce140-d044-48bf-9e2f-7fb12927f15b" LastKnownName="InputComponent" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="d0b1fa7f-7c87-4f23-ae62-cb881bd69ab8" name="uses" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <lowerValueInternal>
+                    <literalString Id="2a3f4a08-9616-4dcc-9b6a-7fde4c39a31c" name="Lower">
+                      <elementDefinition Id="2de0a7e2-e233-4646-b9dc-e70afd9a9b66" />
+                    </literalString>
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString Id="d6c1ae79-a115-4ee8-b0c9-e96cab8858be" name="Upper">
+                      <elementDefinition Id="4f2319c9-3fbd-4a66-a530-ae2e5dfc4431" />
+                    </literalString>
+                  </upperValueInternal>
+                  <elementDefinition Id="7721b105-a5c4-49a5-a915-47af3dbd492c" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="9a31b9db-db85-4000-afe1-1d54c3661700" name=" " isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <lowerValueInternal>
+                    <literalString Id="582d3a6c-bdbd-4f92-8d80-afa7fa05452c" name="Lower">
+                      <elementDefinition Id="86673021-fdff-45f3-ae12-e9344ea5a805" />
+                    </literalString>
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString Id="68faa319-150d-4844-9a3f-e48b0c20018a" name="Upper">
+                      <elementDefinition Id="fd896f40-c9c4-40bf-ab3a-036d65749f86" />
+                    </literalString>
+                  </upperValueInternal>
+                  <elementDefinition Id="7728e18d-8abd-428a-b517-8b12cba23df3" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="4d77f8b5-8859-4a73-8113-ac9c58fcd364" />
+          </association>
+        </targetEnds>
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
@@ -430,12 +468,12 @@
               <associationHasOwnedEnds>
                 <memberEnd Id="94027c1f-6390-492d-b392-5a1328e349e1" name=" " isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
                   <lowerValueInternal>
-                    <literalString Id="2d608a7f-71b7-4350-b611-25f6a2947d84" name="Lower">
+                    <literalString Id="2d608a7f-71b7-4350-b611-25f6a2947d84" name="Lower" value="uses">
                       <elementDefinition Id="d2a40633-a632-40fc-8080-3d94ec577e22" />
                     </literalString>
                   </lowerValueInternal>
                   <upperValueInternal>
-                    <literalString Id="f76a6948-6e4b-4f73-bdbc-61b8cc5043ca" name="Upper">
+                    <literalString Id="f76a6948-6e4b-4f73-bdbc-61b8cc5043ca" name="Upper" value="uses">
                       <elementDefinition Id="9677f671-b57c-4ea3-b653-ccd51eb00856" />
                     </literalString>
                   </upperValueInternal>
@@ -460,11 +498,11 @@
             </relationshipOwnedElementsInternal>
             <elementDefinition Id="3ec75ff5-afd4-40ba-8b17-fbb0a12c57da" />
           </association>
-          <association Id="962c5891-4fdb-4e3b-a540-baa946686c74" isDerived="false" sourceEndRoleName=" " targetEndRoleName=" " isLeaf="false" isAbstract="false">
+          <association Id="962c5891-4fdb-4e3b-a540-baa946686c74" isDerived="false" sourceEndRoleName="sends stuff to draw to" targetEndRoleName=" " isLeaf="false" isAbstract="false">
             <interfaceMoniker Id="0f3e2f5f-498f-4502-bc03-e04db30d69a2" LastKnownName="GraphicEngineInterface" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
-                <memberEnd Id="f8a63055-cc89-4d38-88b1-10e080dfc62b" name=" " isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                <memberEnd Id="f8a63055-cc89-4d38-88b1-10e080dfc62b" name="sends stuff to draw to" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
                   <lowerValueInternal>
                     <literalString Id="df5b720b-47a3-4e28-a905-fd57a9efec4c" name="Lower">
                       <elementDefinition Id="5cf9abb5-997d-4e8d-b4fa-5d78647fab0c" />
@@ -497,6 +535,11 @@
             <elementDefinition Id="f19075e8-c25a-41fa-9073-cf8e5d2f43cd" />
           </association>
         </targetEnds>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="4bfce140-d044-48bf-9e2f-7fb12927f15b" name="InputComponent" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="5af7b342-112c-4cb0-9624-131f05fc10b9" />
       </class>
     </logicalClassDesignerModelHasTypes>
   </packagedElements>

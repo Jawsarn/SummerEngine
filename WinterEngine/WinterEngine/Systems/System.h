@@ -1,5 +1,6 @@
 #include "../Components/Component.h"
 #include <list>
+#include <vector>
 
 //systems are used as subparts of the engine that executes things, contains all the components they are working with and should
 //have their memory aligned that way as well, fixed later with memory pools
@@ -21,7 +22,7 @@ public:
 	virtual void Sleep();
 
 	//updating the system, called from gameloop
-	virtual void Update();
+	virtual bool Update();
 
 	//dealloc the system
 	virtual void Destroy();
@@ -32,7 +33,7 @@ public:
 	virtual void EnableComponent(Component* p_Component);
 	virtual void DisableComponent(Component* p_Component);
 
-private:
+protected:
 	std::list<Component*> m_ActiveComponents;
 	std::list<Component*> m_InactiveComponents;
 };

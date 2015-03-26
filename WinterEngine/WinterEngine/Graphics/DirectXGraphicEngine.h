@@ -23,14 +23,20 @@ public:
 	bool LoadPresetFromFile();
 
 	//========================================\\
-	///////==Create Resource Functions===\\\\\\\
+	///////Create/Load Resource Functions\\\\\\\
 	/////////=========================\\\\\\\\\\
 		
 	//Creates a handle to a mesh resource in the eingine
-	MeshHandle CreateMesh(std::vector<Vertex>* p_Vertices, std::vector<Index>* p_Indicies);
+	MeshHandle CreateMesh(std::vector<Vertex>* p_Vertices, std::vector<Index>* p_Indicies) ;
 
 	//Creates a handle to a material resource in the engine
 	MaterialHandle CreateMaterial(Material* p_Mat);
+
+	//Loads a mesh resource from file into the engine and returns a handle to it TODO::set full virtual
+	MeshHandle LoadMeshFromFile(std::vector<Vertex>* p_Vertices, std::vector<Index>* p_Indicies);
+
+	//Loads a material resource from file into the engine and returns a handle to it TODO::set full virtual
+	MaterialHandle LoadMaterialFromFile(Material* p_Mat);
 
 	//========================================\\
 	///////=========Draw Functions=======\\\\\\\
@@ -40,13 +46,13 @@ public:
 	void BeginDraw();
 
 	//Call "BeginDraw()" befor, draws nontransparent, call "ComputeDeferred()" after
-	void DrawOpaque(std::vector<RenderObject> p_RenderObects);
+	void DrawOpaque(std::vector<RenderObject>* p_RenderObects);
 
 	//Computes deferrred rendering, call befor "DrawTransparent"
 	void ComputeDeferred();
 
 	//Call after "ComputerDeferred()", draws transparent objects
-	void DrawTransparent(std::vector<RenderObject> p_RenderObects);
+	void DrawTransparent(std::vector<RenderObject>* p_RenderObects);
 
 	//Call when done drawing, needs to be started with "BeginDraw()"
 	void EndDraw();

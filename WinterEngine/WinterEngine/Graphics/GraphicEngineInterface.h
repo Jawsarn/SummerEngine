@@ -31,13 +31,13 @@ public:
 	virtual void BeginDraw() = 0;
 
 	//Call "BeginDraw()" befor, draws nontransparent, call "ComputeDeferred()" after
-	virtual void DrawOpaque(std::vector<RenderObject> p_RenderObects) = 0;
+	virtual void DrawOpaque(std::vector<RenderObject>* p_RenderObects) = 0;
 
 	//Computes deferrred rendering, call befor "DrawTransparent"
 	virtual void ComputeDeferred() = 0;
 
 	//Call after "ComputerDeferred()", draws transparent objects
-	virtual void DrawTransparent(std::vector<RenderObject> p_RenderObects) = 0;
+	virtual void DrawTransparent(std::vector<RenderObject>* p_RenderObects) = 0;
 
 	//Call when done drawing, needs to be started with "BeginDraw()"
 	virtual void EndDraw() = 0;
@@ -51,6 +51,12 @@ public:
 
 	//Creates a handle to a material resource in the engine
 	virtual MaterialHandle CreateMaterial(Material* p_Mat) = 0;
+
+	//Loads a mesh resource from file into the engine and returns a handle to it TODO::set full virtual
+	MeshHandle LoadMeshFromFile(std::vector<Vertex>* p_Vertices, std::vector<Index>* p_Indicies);
+
+	//Loads a material resource from file into the engine and returns a handle to it TODO::set full virtual
+	MaterialHandle LoadMaterialFromFile(Material* p_Mat);
 
 
 	//========================================\\

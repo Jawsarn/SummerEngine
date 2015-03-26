@@ -12,7 +12,11 @@ namespace SGEngine
 		MeshHandle meshHandle;
 		MaterialHandle materialHandle;
 		unsigned int startIndex, endIndex;
+
+		
 	};
+
+
 	struct Vertex
 	{
 		float x;

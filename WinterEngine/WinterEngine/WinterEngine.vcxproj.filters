@@ -108,6 +108,9 @@
     <ClInclude Include="TransformLibraryInterface.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Systems\TransformSystem.h">
+      <Filter>Engine\Systems\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">
@@ -166,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="TransformLibraryInterface.cpp">
       <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\TransformSystem.cpp">
+      <Filter>Engine\Systems\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

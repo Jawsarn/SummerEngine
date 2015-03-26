@@ -35,7 +35,7 @@ void SetMat()
 }
 
 //Call "BeginDraw()" befor, draws nontransparent, call "ComputeDeferred()" after
-void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> p_RenderObects)
+void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 {
 	if (m_IsDrawing)
 	{
@@ -44,7 +44,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> p_RenderObects)
 	}
 
 	//check if any objects
-	UINT t_Size = p_RenderObects.size();
+	UINT t_Size = p_RenderObects->size();
 	if (t_Size == 0)
 		return;
 
@@ -53,10 +53,10 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> p_RenderObects)
 	UINT t_NumOfMatrices = 0;
 
 	//set first mesh, current renderobject
-	UINT t_CurrMeshID = p_RenderObects[0].meshHandle;
-	UINT t_CurrMatID = p_RenderObects[0].materialHandle;
-	UINT t_CurStart = p_RenderObects[0].startIndex;
-	UINT t_CurEnd = p_RenderObects[0].endIndex;
+	UINT t_CurrMeshID = p_RenderObects->at(0).meshHandle;
+	UINT t_CurrMatID = p_RenderObects->at(0).materialHandle;
+	UINT t_CurStart = p_RenderObects->at(0).startIndex;
+	UINT t_CurEnd = p_RenderObects->at(0).endIndex;
 
 	//the new renderobject
 	UINT t_NewMeshID;
@@ -70,14 +70,14 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> p_RenderObects)
 	for (UINT i = 0; i < t_Size; i++)
 	{
 		//check if same mesh
-		t_NewMeshID = p_RenderObects[i].meshHandle;
-		t_NewMatID = p_RenderObects[i].materialHandle;
-		t_NewStart = p_RenderObects[i].startIndex;
-		t_NewEnd = p_RenderObects[i].endIndex;
+		t_NewMeshID = p_RenderObects->at(i).meshHandle;
+		t_NewMatID = p_RenderObects->at(i).materialHandle;
+		t_NewStart = p_RenderObects->at(i).startIndex;
+		t_NewEnd = p_RenderObects->at(i).endIndex;
 
 		if (t_CurrMeshID == t_NewMeshID)
 		{
-			if (t_CurrMeshID == t_NewMeshID)
+			if (t_CurrMatID == t_NewMatID)
 			{
 				if (t_CurStart == t_NewStart && t_CurEnd == t_NewEnd)
 				{
@@ -123,7 +123,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> p_RenderObects)
 		HRESULT hr = m_DeviceContext->Map(m_InstanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &t_MappedData);
 		XMMATRIX* dataView = reinterpret_cast<XMMATRIX*>(t_MappedData.pData);
 
-		//use memcopy instead
+		//TODO:: use memcopy instead
 		int t_NumOfMatrices = t_Matrices.size();
 		for (int i = 0; i < t_NumOfMatrices; i++)
 		{
@@ -153,7 +153,7 @@ void DirectXGraphicEngine::ComputeDeferred()
 }
 
 //Call after "ComputerDeferred()", draws transparent objects
-void DirectXGraphicEngine::DrawTransparent(std::vector<RenderObject> p_RenderObects)
+void DirectXGraphicEngine::DrawTransparent(std::vector<RenderObject>* p_RenderObects)
 {
 	if (!m_IsDrawing)
 	{

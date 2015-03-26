@@ -81,6 +81,7 @@
     <ClInclude Include="Systems\RenderingSystem.h" />
     <ClInclude Include="Systems\System.h" />
     <ClInclude Include="DirectXTransformLibrary.h" />
+    <ClInclude Include="Systems\TransformSystem.h" />
     <ClInclude Include="TransformLibraryInterface.h" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +103,7 @@
     <ClCompile Include="Systems\InputSystem.cpp" />
     <ClCompile Include="Systems\RenderingSystem.cpp" />
     <ClCompile Include="Systems\System.cpp" />
+    <ClCompile Include="Systems\TransformSystem.cpp" />
     <ClCompile Include="TransformLibraryInterface.cpp" />
   </ItemGroup>
   <ItemGroup>

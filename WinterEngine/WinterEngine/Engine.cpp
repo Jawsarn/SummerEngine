@@ -1,15 +1,36 @@
 #include <Windows.h>
+#include <list>
 #include "Graphics/GraphicEngineInterface.h"
+#include "Systems/RenderingSystem.h"
+#include "Systems/InputSystem.h"
+#include "Systems/TransformSystem.h"
+
+
 
 // this is just test at the moment, to get things started, will be sorting this when it comes important.
 //global game variables
 HINSTANCE	handleInstance;
 HWND	m_HandleWindow;
 
+//list with our systemss
+std::list<System*> m_Systems;
+
+//this will allow us to chose what systems we want, TODO:: solve dependencies? Renderer always need matrices.. so can't live without transform etc :)
+#define SYS_RENDER
+#define SYS_INPUT
+#define SYS_TRANSF
+
+//we have a define if we want to play editor or game, TODO::make this to a option in the top menu later
+#define EDITOR
+
+
+//functions
 HRESULT InitializeWindow(_In_ HINSTANCE p_HInstance, _In_ int p_NCmdShow);
-#define OEMRESOURCE
+void RunEditor();
+bool RunEditorFrame();
 
 
+//main function, where the engine starts
 int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstance, _In_ LPWSTR p_LpCmdLine, _In_ int p_NCmdShow)
 {
 	UNREFERENCED_PARAMETER(p_HPrevInstance);
@@ -19,27 +40,37 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	if (FAILED(hr))
 		return 0;
 
-	//testshit
-	GraphicEngineInterface* m_Engine = m_Engine->GetInstance();
-
-	bool t_InitializeOK = m_Engine->Initialize(m_HandleWindow,1024,1024);
-	if (!t_InitializeOK)
-		return 0;
-
-	MSG msg = { 0 };
-	while (WM_QUIT != msg.message)
+	//add systems we want from define
+#ifdef SYS_RENDER
 	{
-		//windows peek and gives us messages from the message queue, if not used sends them forward
-		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
+		m_Systems.push_back(new RenderingSystem());
+		//TODO:we need to initialize graphicengine here atm, because I haven't found a good solution to sending the instance stuff as a voidpointer and then later check if it's directX or not
+		GraphicEngineInterface* m_Engine = m_Engine->GetInstance();
+		bool t_InitializeOK = m_Engine->Initialize(m_HandleWindow, 1024, 1024);
+		if (!t_InitializeOK)
+			return 0;
 	}
+#endif
+#ifdef SYS_INPUT
+	m_Systems.push_back(new InputSystem());
+#endif
+#ifdef SYS_TRANSF
+	m_Systems.push_back(new TransformSystem());
+#endif
+
+	
+
+	
+	
+	//add another function for game
+#ifdef EDITOR
+	RunEditor();
+#endif
 
 	return 0;
 }
 
+//windows callback function for messages to the windo, TODO:: atm we will take inputs from here, we might change this ?? Rawinput maybe
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
@@ -113,4 +144,47 @@ HRESULT InitializeWindow(_In_ HINSTANCE p_HInstance, _In_ int p_NCmdShow)
 	//ChangeDisplaySettingsA(NULL, CDS_FULLSCREEN);
 
 	return S_OK;
+}
+
+//run the editor mode
+void RunEditor()
+{
+	//initialize
+	for each (System* t_Sys in m_Systems)
+	{
+		t_Sys->Start();
+	}
+	
+	//run gameloop
+	MSG msg = { 0 };
+	while (WM_QUIT != msg.message)
+	{
+		/*bool t_EditorContinue = RunEditorFrame();
+		if (!t_EditorContinue)
+			break;*/
+
+		//windows peek and gives us messages from the message queue, if not used sends them forward
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
+
+	//destroy systems
+	for each (System* t_Sys in m_Systems)
+	{
+		t_Sys->Destroy();
+	}
+}
+
+bool RunEditorFrame()
+{
+	for each (System* t_Sys in m_Systems)
+	{
+		bool t_Continue = t_Sys->Update();
+		if (!t_Continue)
+			return false;
+	}
+	return true;
 }
