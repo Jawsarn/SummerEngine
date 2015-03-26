@@ -84,7 +84,7 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	CheckForMemoryLeaks();
 	//BreakAtMemoryLeak( 346 );
 
-	//RegisterLoggers();
+	RegisterLoggers();
 
 	UNREFERENCED_PARAMETER(p_HPrevInstance);
 	UNREFERENCED_PARAMETER(p_LpCmdLine);
