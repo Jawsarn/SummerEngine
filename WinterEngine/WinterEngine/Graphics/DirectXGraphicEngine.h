@@ -28,13 +28,13 @@ public:
 	/////////=========================\\\\\\\\\\
 		
 	//Creates a handle to a mesh resource in the eingine
-	MeshHandle CreateMesh( const std::string& p_Name, std::vector<Vertex>* p_Vertices, std::vector<Index>* p_Indicies);
+	MeshHandle CreateModel( const std::string& p_Name, std::vector<VertexPosNormalTexTangent>* p_Vertices, std::vector<Index>* p_Indicies );
 
 	//Creates a handle to a material resource in the engine
 	MaterialHandle CreateMaterial( const std::string& p_Name, Material* p_Mat);
 
 	//Loads a mesh resource from file into the engine and returns a handle to it TODO::set full virtual
-	MeshHandle LoadMeshFromFile(std::vector<Vertex>* p_Vertices, std::vector<Index>* p_Indicies);
+	MeshHandle LoadModelFromFile( std::vector<VertexPosNormalTexTangent>* p_Vertices, std::vector<Index>* p_Indicies );
 
 	//Loads a material resource from file into the engine and returns a handle to it TODO::set full virtual
 	MaterialHandle LoadMaterialFromFile(Material* p_Mat);

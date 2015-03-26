@@ -3,7 +3,7 @@
 
 
 //Creates a handle to a mesh resource in the eingine
-MeshHandle DirectXGraphicEngine::CreateMesh(const std::string& p_Name, std::vector<Vertex>* p_Vertices, std::vector<Index>* p_Indicies)
+MeshHandle DirectXGraphicEngine::CreateModel( const std::string& p_Name, std::vector<VertexPosNormalTexTangent>* p_Vertices, std::vector<Index>* p_Indicies )
 {
 	return 1;
 }

@@ -77,5 +77,3 @@ void DirectXGraphicEngine::Release()
 	//m_PerFrameCBuffer->Release();
 	//m_DeferredComputeCBuffer->Release();
 }
-
-
