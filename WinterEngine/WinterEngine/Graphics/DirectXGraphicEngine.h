@@ -1,11 +1,10 @@
-#pragma once
+ #pragma once
 #include "GraphicEngineInterface.h"
 #include <vector>
 #include <map>
 #include <d3d11_2.h>
 #include <DirectXMath.h>
 #include <string>
-
 
 //TODO::change all hashes to not be returning UINT but the t_size instead, for 32-64 bit compability
 using namespace DirectX;
@@ -29,10 +28,10 @@ public:
 	/////////=========================\\\\\\\\\\
 		
 	//Creates a handle to a mesh resource in the eingine
-	MeshHandle CreateMesh(std::vector<Vertex>* p_Vertices, std::vector<Index>* p_Indicies) ;
+	MeshHandle CreateMesh( const std::string& p_Name, std::vector<Vertex>* p_Vertices, std::vector<Index>* p_Indicies);
 
 	//Creates a handle to a material resource in the engine
-	MaterialHandle CreateMaterial(Material* p_Mat);
+	MaterialHandle CreateMaterial( const std::string& p_Name, Material* p_Mat);
 
 	//Loads a mesh resource from file into the engine and returns a handle to it TODO::set full virtual
 	MeshHandle LoadMeshFromFile(std::vector<Vertex>* p_Vertices, std::vector<Index>* p_Indicies);
