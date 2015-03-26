@@ -19,17 +19,14 @@ void DirectXGraphicEngine::Release()
 	//t_MeshHash;
 	//m_MeshKeys;
 	//m_MaterialKeys
-	unsigned int index = 0;
+
 	for( std::map<ID3D11ShaderResourceView*, UINT >::const_iterator it = m_TextureMap.begin(); it != m_TextureMap.end(); it++ )
 	{
 		ID3D11ShaderResourceView* t_Texture = it->first;
 		t_Texture->Release();
 		t_Texture = nullptr;
-		m_TextureMap.erase( m_TextureMap.begin(), m_TextureMap.end() );
-		
-		if( m_TextureMap.size() == 0 )
-			break;
 	}
+	m_TextureMap.erase( m_TextureMap.begin( ), m_TextureMap.end( ) );
 
 	m_Device->Release();
 	m_DeviceContext->Release();
