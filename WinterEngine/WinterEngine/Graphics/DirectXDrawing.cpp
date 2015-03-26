@@ -1,4 +1,5 @@
 #include "DirectXGraphicEngine.h"
+#include "../Utility/Logger.h"
 
 //Needs to be called befor all other drawcalls, and ended with "EndDraw()"
 void DirectXGraphicEngine::BeginDraw()
@@ -6,6 +7,7 @@ void DirectXGraphicEngine::BeginDraw()
 	if (m_IsDrawing)
 	{
 		//TODO::ERROR MESSAGE
+		Logger::Log( "Rendering call Begin was called before end was called", "DirectXRenderSystem", LoggerType::MSG_ERROR );
 		return;
 	}
 
@@ -147,7 +149,7 @@ void DirectXGraphicEngine::ComputeDeferred()
 {
 	if (!m_IsDrawing)
 	{
-		//TODO::ERROR MESSAGE
+		Logger::Log( "Rendering call ComputeDeferred was called before begin was called", "DirectXRenderSystem", LoggerType::MSG_ERROR );
 		return;
 	}
 }
@@ -157,7 +159,7 @@ void DirectXGraphicEngine::DrawTransparent(std::vector<RenderObject>* p_RenderOb
 {
 	if (!m_IsDrawing)
 	{
-		//TODO::ERROR MESSAGE
+		Logger::Log( "Rendering call DrawTransparent was called before begin was called", "DirectXRenderSystem", LoggerType::MSG_ERROR );
 		return;
 	}
 }
@@ -167,7 +169,7 @@ void DirectXGraphicEngine::EndDraw()
 {
 	if (!m_IsDrawing)
 	{
-		//TODO::ERROR MESSAGE
+		Logger::Log( "Rendering call End was called before begin was called", "DirectXRenderSystem", LoggerType::MSG_ERROR );
 		return;
 	}
 

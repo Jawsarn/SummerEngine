@@ -55,6 +55,9 @@
     <Filter Include="Engine\Shaders">
       <UniqueIdentifier>{41799d41-301e-4ad7-9072-f099d94575b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Utility">
+      <UniqueIdentifier>{1fe7398f-18b3-475a-ae43-1a3db8d01bc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -110,6 +113,9 @@
     </ClInclude>
     <ClInclude Include="Systems\TransformSystem.h">
       <Filter>Engine\Systems\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Logger.h">
+      <Filter>Engine\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="Systems\TransformSystem.cpp">
       <Filter>Engine\Systems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Logger.cpp">
+      <Filter>Engine\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 #include "Systems/RenderingSystem.h"
 #include "Systems/InputSystem.h"
 #include "Systems/TransformSystem.h"
+#include "Utility/Logger.h"
 
 // this is just test at the moment, to get things started, will be sorting this when it comes important.
 //global game variables
@@ -28,6 +29,43 @@ void RunEditor();
 bool RunEditorFrame();
 void ShutdownSystem();
 
+void RegisterLoggers()
+{
+	Logger::Initialize();
+
+	struct
+	{
+		std::string name;
+		std::string parent;
+	} loggerRegisters[] =
+	{
+		// NAME						PARENT
+		{ "ModelImporter",			"" },
+		{ "MaterialImporter",		"" },
+		{ "SceneImporter",			"" },
+		{ "GUIEngine",				"" },
+		{ "ShaderProgram",			"" },
+		{ "Texture",				"" },
+		{ "Input",					"" },
+		{ "Audio",					"" },
+		{ "Camera",					"" },
+		{ "Console",				"" },
+		{ "Utility",				"" },
+		{ "Serializeable",			"" },
+		{ "Stream",					"" },
+		{ "EntityFactory",			"" },
+
+
+		{ "Debug", "" },
+		{ "DirectXRenderSystem", "" },
+		{ "OpenGLRenderSystem", "" },
+
+	};
+
+	for( auto& entry : loggerRegisters )
+		Logger::RegisterLoggerType( entry.name, entry.parent );
+}
+
 void CheckForMemoryLeaks()
 {
 	// This will check for memory leaks
@@ -44,8 +82,9 @@ void BreakAtMemoryLeak( long value )
 int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstance, _In_ LPWSTR p_LpCmdLine, _In_ int p_NCmdShow)
 {
 	CheckForMemoryLeaks();
-	//BreakAtMemoryLeak( 218 );
+	//BreakAtMemoryLeak( 346 );
 
+	//RegisterLoggers();
 
 	UNREFERENCED_PARAMETER(p_HPrevInstance);
 	UNREFERENCED_PARAMETER(p_LpCmdLine);
