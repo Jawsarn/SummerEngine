@@ -38,7 +38,21 @@ bool System::Update()
 //dealloc the system
 void System::Destroy()
 {
+	/*
+	for( std::list<Component*>::iterator it = m_ActiveComponents.begin(); it != m_ActiveComponents.end(); ++it )
+	{
+		Component* component = *it;
+		component->Destroy();
+		delete component;
+	}
 
+	for( std::list<Component*>::iterator it = m_InactiveComponents.begin( ); it != m_InactiveComponents.end( ); ++it )
+	{
+		Component* component = *it;
+		component->Destroy();
+		delete component;
+	}
+	*/
 }
 
 //enable/disable components, and register to the system

@@ -5,12 +5,10 @@
 #include "Systems/InputSystem.h"
 #include "Systems/TransformSystem.h"
 
-
-
 // this is just test at the moment, to get things started, will be sorting this when it comes important.
 //global game variables
 HINSTANCE	handleInstance;
-HWND	m_HandleWindow;
+HWND		m_HandleWindow;
 
 //list with our systemss
 std::list<System*> m_Systems;
@@ -28,11 +26,27 @@ std::list<System*> m_Systems;
 HRESULT InitializeWindow(_In_ HINSTANCE p_HInstance, _In_ int p_NCmdShow);
 void RunEditor();
 bool RunEditorFrame();
+void ShutdownSystem();
 
+void CheckForMemoryLeaks()
+{
+	// This will check for memory leaks
+	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+}
+
+void BreakAtMemoryLeak( long value )
+{
+	//Insert allocation numbers here to invoke a break at that point
+	_CrtSetBreakAlloc( value );
+}
 
 //main function, where the engine starts
 int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstance, _In_ LPWSTR p_LpCmdLine, _In_ int p_NCmdShow)
 {
+	CheckForMemoryLeaks();
+	//BreakAtMemoryLeak( 218 );
+
+
 	UNREFERENCED_PARAMETER(p_HPrevInstance);
 	UNREFERENCED_PARAMETER(p_LpCmdLine);
 	
@@ -171,11 +185,12 @@ void RunEditor()
 		}
 	}
 
+	ShutdownSystem( );
 	//destroy systems
-	for each (System* t_Sys in m_Systems)
-	{
-		t_Sys->Destroy();
-	}
+// 	for each (System* t_Sys in m_Systems)
+// 	{
+// 		t_Sys->Destroy();
+// 	}
 }
 
 bool RunEditorFrame()
@@ -187,4 +202,23 @@ bool RunEditorFrame()
 			return false;
 	}
 	return true;
+}
+
+// TODO:: Check if using directx or opengl
+#ifdef _WIN32
+#include "Graphics/DirectXGraphicEngine.h"
+#endif
+
+void ShutdownSystem()
+{
+	for each ( System* t_Sys in m_Systems )
+	{
+		t_Sys->Destroy();
+		delete t_Sys;
+	}
+	
+	GraphicEngineInterface* m_Engine = m_Engine->GetInstance();
+	DirectXGraphicEngine* t_DirectXEngine = ( DirectXGraphicEngine* ) m_Engine;
+	t_DirectXEngine->Release();
+	delete m_Engine;
 }

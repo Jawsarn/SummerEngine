@@ -16,6 +16,8 @@ public:
 	DirectXGraphicEngine();
 	~DirectXGraphicEngine();
 
+	void Release();
+
 	//initialize directX with shaders, samplers, etc
 	bool Initialize(HWND p_Handle, UINT p_Width, UINT p_Height);
 
@@ -153,6 +155,17 @@ private:
 			DomainShader = nullptr;
 			PixelShader = nullptr;
 			ComputeShader = nullptr;
+		}
+
+		void Release()
+		{
+			if( InputLayout	  )	InputLayout->Release();
+			if( VertexShader  )	VertexShader->Release();
+			if( GeometryShader) GeometryShader->Release();
+			if( HullShader	  )	HullShader->Release();
+			if( DomainShader  )	DomainShader->Release();
+			if( PixelShader	  )	PixelShader->Release();
+			if( ComputeShader ) ComputeShader->Release();
 		}
 	};
 
