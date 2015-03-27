@@ -81,16 +81,15 @@
     <ClInclude Include="Systems\InputSystem.h" />
     <ClInclude Include="Systems\RenderingSystem.h" />
     <ClInclude Include="Systems\System.h" />
-    <ClInclude Include="DirectXTransformLibrary.h" />
     <ClInclude Include="Systems\TransformSystem.h" />
-    <ClInclude Include="TransformLibraryInterface.h" />
+    <ClInclude Include="Transform\DirectXTransformLibrary.h" />
+    <ClInclude Include="Transform\TransformLibraryInterface.h" />
     <ClInclude Include="Utility\Logger.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Components\RenderingComponent.cpp" />
     <ClCompile Include="Components\TransformComponent.cpp" />
-    <ClCompile Include="DirectXTransformLibrary.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Graphics\DirectXDrawing.cpp" />
@@ -106,7 +105,8 @@
     <ClCompile Include="Systems\RenderingSystem.cpp" />
     <ClCompile Include="Systems\System.cpp" />
     <ClCompile Include="Systems\TransformSystem.cpp" />
-    <ClCompile Include="TransformLibraryInterface.cpp" />
+    <ClCompile Include="Transform\DirectXTransformLibrary.cpp" />
+    <ClCompile Include="Transform\TransformLibraryInterface.cpp" />
     <ClCompile Include="Utility\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,8 @@ namespace SGEngine
 	typedef unsigned int MeshHandle;
 	typedef unsigned int MaterialHandle;
 	typedef unsigned int TextureHandle;
+	typedef unsigned int MatrixHandle;
+	typedef unsigned int Index;
 
 	//typedef unsigned int UINT;
 
@@ -13,8 +15,8 @@ namespace SGEngine
 	{
 		MeshHandle meshHandle;
 		MaterialHandle materialHandle;
-		unsigned int startIndex, endIndex;
-
+		Index startIndex, endIndex;
+		MatrixHandle matrixHandle;
 		
 	};
 
@@ -187,5 +189,5 @@ namespace SGEngine
 		std::string m_Occulsion;	//diffuse blackmap
 	};
 
-	typedef unsigned int Index;
+	
 }

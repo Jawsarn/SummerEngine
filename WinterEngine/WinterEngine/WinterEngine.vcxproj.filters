@@ -58,6 +58,15 @@
     <Filter Include="Engine\Utility">
       <UniqueIdentifier>{1fe7398f-18b3-475a-ae43-1a3db8d01bc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Transform">
+      <UniqueIdentifier>{04d95ffa-97f5-40eb-8e1f-36e26c01c822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Transform\Header">
+      <UniqueIdentifier>{09cba0d4-0c6c-4af9-a51d-260c4d8b6178}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Transform\Source Files">
+      <UniqueIdentifier>{d3ac171e-9813-4488-b261-c843a4a40225}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -105,17 +114,17 @@
     <ClInclude Include="Components\TransformComponent.h">
       <Filter>Engine\Components\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXTransformLibrary.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformLibraryInterface.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Systems\TransformSystem.h">
       <Filter>Engine\Systems\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Utility\Logger.h">
       <Filter>Engine\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform\DirectXTransformLibrary.h">
+      <Filter>Engine\Transform\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform\TransformLibraryInterface.h">
+      <Filter>Engine\Transform\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,17 +179,17 @@
     <ClCompile Include="Components\TransformComponent.cpp">
       <Filter>Engine\Components\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXTransformLibrary.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="TransformLibraryInterface.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Systems\TransformSystem.cpp">
       <Filter>Engine\Systems\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utility\Logger.cpp">
       <Filter>Engine\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform\DirectXTransformLibrary.cpp">
+      <Filter>Engine\Transform\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform\TransformLibraryInterface.cpp">
+      <Filter>Engine\Transform\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
