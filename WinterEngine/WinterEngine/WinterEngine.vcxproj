@@ -84,6 +84,7 @@
     <ClInclude Include="Systems\TransformSystem.h" />
     <ClInclude Include="Transform\DirectXTransformLibrary.h" />
     <ClInclude Include="Transform\TransformLibraryInterface.h" />
+    <ClInclude Include="Transform\TransformToolbox.h" />
     <ClInclude Include="Utility\Logger.h" />
   </ItemGroup>
   <ItemGroup>

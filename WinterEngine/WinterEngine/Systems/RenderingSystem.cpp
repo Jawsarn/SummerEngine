@@ -56,7 +56,7 @@ void RenderingSystem::SortComponents()
 				{
 					if (m_Opaque[k].startIndex == m_Opaque[k - 1].startIndex) 
 					{
-						if (m_Opaque[k].endIndex < m_Opaque[k - 1].endIndex) //if same mesh, material, startindex, but higher endindex on left swap
+						if (m_Opaque[k].IndexAmount < m_Opaque[k - 1].IndexAmount) //if same mesh, material, startindex, but higher endindex on left swap
 						{
 							//swap
 							std::swap(m_Opaque[k], m_Opaque[k - 1]);

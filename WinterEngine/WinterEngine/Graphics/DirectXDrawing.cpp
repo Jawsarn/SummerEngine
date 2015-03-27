@@ -59,16 +59,16 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 	UINT t_NumOfIndicies = 0;
 
 	//set first mesh, current renderobject
-	UINT t_CurrMeshID = p_RenderObects->at(0).meshHandle;
-	UINT t_CurrMatID = p_RenderObects->at(0).materialHandle;
+	UINT t_CurMeshID = p_RenderObects->at(0).meshHandle;
+	UINT t_CurMatID = p_RenderObects->at(0).materialHandle;
 	UINT t_CurStart = p_RenderObects->at(0).startIndex;
-	UINT t_CurEnd = p_RenderObects->at(0).endIndex;
+	UINT t_CurIndexAmount = p_RenderObects->at(0).IndexAmount;
 
 	//the new renderobject
 	UINT t_NewMeshID;
 	UINT t_NewMatID;
 	UINT t_NewStart;
-	UINT t_NewEnd;
+	UINT t_NewIndexAmount;
 
 	void SetMesh();
 	void SetMat();
@@ -79,13 +79,13 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 		t_NewMeshID = p_RenderObects->at(i).meshHandle;
 		t_NewMatID = p_RenderObects->at(i).materialHandle;
 		t_NewStart = p_RenderObects->at(i).startIndex;
-		t_NewEnd = p_RenderObects->at(i).endIndex;
+		t_NewIndexAmount = p_RenderObects->at(i).IndexAmount;
 
-		if (t_CurrMeshID == t_NewMeshID)
+		if (t_CurMeshID == t_NewMeshID)
 		{
-			if (t_CurrMatID == t_NewMatID)
+			if (t_CurMatID == t_NewMatID)
 			{
-				if (t_CurStart == t_NewStart && t_CurEnd == t_NewEnd)
+				if (t_CurStart == t_NewStart && t_CurIndexAmount == t_NewIndexAmount)
 				{
 					//everything is same, except the world matrix
 					//TODO::add matrix here
@@ -104,28 +104,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 					
 					continue;
 				}
-				else
-				{
-					//start and stop is wrong
-					t_CurStart = t_NewStart;
-					t_CurEnd = t_NewEnd;
-				}
 			}
-			else
-			{
-				//Material, is wrong, so we set new mat,start,stop for next drawitem
-				t_CurrMatID = t_NewMatID;
-				t_CurStart = t_NewStart;
-				t_CurEnd = t_NewEnd;
-			}
-		}
-		else
-		{
-			//mesh is wrong, we set new mesh,mat,start,end for next, TODO:: Material might not be wrong , so is it wrong to add it again? Maybe...
-			t_CurrMeshID = t_NewMeshID;
-			t_CurrMatID = t_NewMatID;
-			t_CurStart = t_NewStart;
-			t_CurEnd = t_NewEnd;
 		}
 
 		//draw here
@@ -143,11 +122,24 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 		m_DeviceContext->Unmap(m_InstanceBuffer, 0);
 
 		//draw instances
-		m_DeviceContext->DrawIndexedInstanced(t_NumOfIndicies, t_NumOfMatrices, 0, 0, 0);
+		m_DeviceContext->DrawIndexedInstanced(t_CurIndexAmount, t_NumOfMatrices, t_CurStart, 0, 0);
 
 		//set stuff
-		void SetMesh();
-		void SetMat();
+		if (t_CurMeshID == t_NewMeshID)
+		{
+			//change if new mesh
+			void SetMesh();
+		}
+		if (t_CurMatID == t_NewMatID)
+		{
+			//change if new material
+			void SetMat();
+		}
+		t_CurMeshID = t_NewMeshID;
+		t_CurMatID = t_NewMatID;
+		t_CurStart = t_NewStart;
+		t_CurIndexAmount = t_NewIndexAmount;
+
 		memcpy(&m_MatriceList[t_NumOfMatrices], t_TransformLib->GetMatrix(0), sizeof(XMFLOAT4X4));
 		t_NumOfMatrices = 1;
 	}

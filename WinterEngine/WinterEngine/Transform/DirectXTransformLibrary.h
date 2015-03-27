@@ -14,12 +14,14 @@ class DirectXTransformLibrary : public TransformLibraryInterface
 public:
 	DirectXTransformLibrary();
 	~DirectXTransformLibrary();
-	MatrixHandle CreateMatrix(Matrix p_Matrix);
+	void Initialize();
+
+	MatrixHandle CreateMatrix(Matrix* p_Matrix);
 	XMFLOAT4X4* GetMatrix(MatrixHandle p_Handle);
 
 private:
 	
 	typedef std::map<MatrixHandle, DirectX::XMFLOAT4X4*> TransformMap;
 	TransformMap m_TransformMatrixes;
-
+	UINT m_ErrorMatrixHandle;
 };

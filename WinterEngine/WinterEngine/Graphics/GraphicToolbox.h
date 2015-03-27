@@ -1,12 +1,12 @@
 #pragma once
 #include <string>
+#include "../Transform/TransformToolbox.h"
 
 namespace SGEngine
 {
 	typedef unsigned int MeshHandle;
 	typedef unsigned int MaterialHandle;
 	typedef unsigned int TextureHandle;
-	typedef unsigned int MatrixHandle;
 	typedef unsigned int Index;
 
 	//typedef unsigned int UINT;
@@ -15,7 +15,7 @@ namespace SGEngine
 	{
 		MeshHandle meshHandle;
 		MaterialHandle materialHandle;
-		Index startIndex, endIndex;
+		Index startIndex, IndexAmount;
 		MatrixHandle matrixHandle;
 		
 	};
