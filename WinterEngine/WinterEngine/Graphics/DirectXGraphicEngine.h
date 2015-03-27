@@ -194,17 +194,25 @@ private:
 	std::hash<MaterialInfo*>	t_MaterialHash;
 	std::hash<MeshInfo*>		t_MeshHash;
 
-	//mesh info chunk that a handle is given of to the game
-	std::map<SGEngine::MeshHandle, MeshInfo*>			m_MeshKeys;
-
-	//material buffer that a handle is given of to the game
-	std::map<SGEngine::MaterialHandle, MaterialInfo*>	m_MaterialKeys;
-
-	//texture map, int-SRV used for drawing efficiently, string-int, to get new handles easy, could swap the latter to string-srv
+	//Maps from Handles to strings
+	typedef std::map<std::string, UINT> MeshIDMap;
+	typedef std::map<std::string, UINT> MaterialIDMap;
 	typedef std::map<std::string, UINT> TextureIDMap;
-	typedef std::map<ID3D11ShaderResourceView*, UINT > TextureMap;
-	TextureIDMap m_TextureIDMap;
-	TextureMap m_TextureMap;
+
+	//
+	typedef std::map<SGEngine::MeshHandle,		MeshInfo*>					MeshMap;
+	typedef std::map<SGEngine::MaterialHandle,	MaterialInfo*>				MaterialMap;
+	typedef std::map<SGEngine::TextureHandle,	ID3D11ShaderResourceView* > TextureMap;
+
+	//maps from string -> ID
+	MeshIDMap					m_MeshIDMap;
+	MaterialIDMap				m_MaterialIDMap;
+	TextureIDMap				m_TextureIDMap;
+
+	//maps from ID -> resource
+	MeshMap						m_MeshKeys;
+	MaterialMap					m_MaterialKeys;
+	TextureMap					m_TextureMap;
 
 	//functions checking, if we've begon drawing or not
 	BOOL						m_IsDrawing;

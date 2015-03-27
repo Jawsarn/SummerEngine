@@ -5,6 +5,8 @@ namespace SGEngine
 {
 	typedef unsigned int MeshHandle;
 	typedef unsigned int MaterialHandle;
+	typedef unsigned int TextureHandle;
+
 	//typedef unsigned int UINT;
 
 	struct RenderObject

@@ -4,7 +4,7 @@
 #include <string>
 
 
-class Component : Serializable
+class Component : IO::Serializable
 {
 public:
 	Component();

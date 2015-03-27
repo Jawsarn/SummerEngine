@@ -1,6 +1,6 @@
 #include "DirectXGraphicEngine.h"
 #include "TextureLoaderDDS.h"
-
+#include "../IO/StreamFile.h"
 
 //Creates a handle to a mesh resource in the eingine TODO::Save mesh into a binary file
 MeshHandle DirectXGraphicEngine::CreateModel( const std::string& p_Name, std::vector<VertexPosNormalTexTangent>* p_Vertices, std::vector<Index>* p_Indicies )
@@ -113,7 +113,7 @@ MaterialHandle DirectXGraphicEngine::CreateMaterial(const std::string& p_Name, M
 }
 
 //check if we have texture, else load it from approtpirate loader from extention, if error we use error image
-UINT DirectXGraphicEngine::LoadTexture(std::string p_Name)
+TextureHandle DirectXGraphicEngine::LoadTexture(std::string p_Name)
 {
 	TextureIDMap::iterator t_TexIDMapIt = m_TextureIDMap.find(p_Name);
 
@@ -164,7 +164,7 @@ UINT DirectXGraphicEngine::LoadTexture(std::string p_Name)
 		std::hash<ID3D11ShaderResourceView*> t_Hasher;
 		UINT t_Value = t_Hasher(t_NewResourceView);
 
-		m_TextureMap[t_NewResourceView] = t_Value;
+		m_TextureMap[t_Value] = t_NewResourceView;
 		m_TextureIDMap[p_Name] = t_Value;
 		o_ID = t_Value;
 	}
@@ -180,11 +180,45 @@ UINT DirectXGraphicEngine::LoadTexture(std::string p_Name)
 //Loads a mesh resource from file into the engine and returns a handle to it 
 MeshHandle DirectXGraphicEngine::LoadModelFromFile(const std::string& p_Name)
 {
-	return 0;
+	MeshIDMap::iterator t_MeshIDMap = m_MeshIDMap.find(p_Name);
+
+	//if we got the mesh saved, return the ID to it
+	if (t_MeshIDMap != m_MeshIDMap.end())
+	{
+		return t_MeshIDMap->second;
+	}
+
+	//else we load it
+	IO::StreamFile *t_StreamFile = new IO::StreamFile();
+	t_StreamFile->OpenFileRead(p_Name);
+
+	//load vertices
+	UINT t_NumOfVertice = IO::ReadUnsigned(*t_StreamFile);
+	std::vector<VertexPosNormalTexTangent> t_Vertices;
+	t_Vertices.resize(t_NumOfVertice);
+	t_StreamFile->Read(t_NumOfVertice* sizeof(VertexPosNormalTexTangent), &t_Vertices[0]);
+
+	//load indices
+	UINT t_NumOfIndicies = IO::ReadUnsigned(*t_StreamFile);
+	std::vector<UINT> t_Indicies;
+	t_Indicies.resize(t_NumOfIndicies);
+	t_StreamFile->Read(t_NumOfIndicies*sizeof(UINT), &t_Indicies[0]);
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////NOT DONE HEEEEEEEEEEEEEEREEEEEEEEEEEEEEE
+
+	return m_ErrorMeshID;
 }
 
 //Loads a material resource from file into the engine and returns a handle to it
 MaterialHandle DirectXGraphicEngine::LoadMaterialFromFile(const std::string& p_Name)
 {
-	return 0;
+	MaterialIDMap::iterator t_MatIDMap = m_MaterialIDMap.find(p_Name);
+
+	//if we got the material saved, return the ID to it
+	if (t_MatIDMap != m_MeshIDMap.end())
+	{
+		return t_MatIDMap->second;
+	}
+
+	return m_ErrorMaterialID;
 }

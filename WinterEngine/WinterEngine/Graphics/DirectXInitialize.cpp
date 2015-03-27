@@ -602,7 +602,7 @@ HRESULT DirectXGraphicEngine::CreateErrorTexture()
 		std::hash<ID3D11ShaderResourceView*> t_Hasher;
 		UINT t_Value = t_Hasher(t_NewResourceView);
 
-		m_TextureMap[t_NewResourceView] = t_Value;
+		m_TextureMap[t_Value] = t_NewResourceView;
 		m_TextureIDMap[t_Name] = t_Value;
 		m_ErrorTextureID = t_Value;
 	}

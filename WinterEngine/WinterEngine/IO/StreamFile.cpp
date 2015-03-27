@@ -1,5 +1,6 @@
 #include "StreamFile.h"
 
+using namespace IO;
 
 StreamFile::StreamFile()
 {

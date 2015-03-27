@@ -20,9 +20,9 @@ void DirectXGraphicEngine::Release()
 	//m_MeshKeys;
 	//m_MaterialKeys
 
-	for( std::map<ID3D11ShaderResourceView*, UINT >::const_iterator it = m_TextureMap.begin(); it != m_TextureMap.end(); it++ )
+	for( TextureMap::const_iterator it = m_TextureMap.begin(); it != m_TextureMap.end(); it++ )
 	{
-		ID3D11ShaderResourceView* t_Texture = it->first;
+		ID3D11ShaderResourceView* t_Texture = it->second;
 		t_Texture->Release();
 		t_Texture = nullptr;
 	}
