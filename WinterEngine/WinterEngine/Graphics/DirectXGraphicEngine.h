@@ -34,10 +34,10 @@ public:
 	MaterialHandle CreateMaterial( const std::string& p_Name, Material* p_Mat);
 
 	//Loads a mesh resource from file into the engine and returns a handle to it TODO::set full virtual
-	MeshHandle LoadModelFromFile( std::vector<VertexPosNormalTexTangent>* p_Vertices, std::vector<Index>* p_Indicies );
+	MeshHandle LoadModelFromFile(const std::string& p_Name);
 
 	//Loads a material resource from file into the engine and returns a handle to it TODO::set full virtual
-	MaterialHandle LoadMaterialFromFile(Material* p_Mat);
+	MaterialHandle LoadMaterialFromFile(const std::string& p_Name);
 
 	//========================================\\
 	///////=========Draw Functions=======\\\\\\\
@@ -212,6 +212,8 @@ private:
 
 	//error tools
 	UINT						m_ErrorTextureID;
+	UINT						m_ErrorMeshID;
+	UINT						m_ErrorMaterialID;
 
 	//initialize and handles
 	ID3D11Device*				m_Device;

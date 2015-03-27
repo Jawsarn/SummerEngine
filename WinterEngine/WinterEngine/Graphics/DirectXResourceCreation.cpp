@@ -2,13 +2,72 @@
 #include "TextureLoaderDDS.h"
 
 
-//Creates a handle to a mesh resource in the eingine
+//Creates a handle to a mesh resource in the eingine TODO::Save mesh into a binary file
 MeshHandle DirectXGraphicEngine::CreateModel( const std::string& p_Name, std::vector<VertexPosNormalTexTangent>* p_Vertices, std::vector<Index>* p_Indicies )
 {
-	return 1;
+	MeshInfo* t_NewMeshInfo = new MeshInfo();
+
+	//Create the Vertex Buffer
+
+	//description for vertex buffer
+	D3D11_BUFFER_DESC t_BufferDesc;
+	memset(&t_BufferDesc, 0, sizeof(D3D11_BUFFER_DESC));
+
+	t_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	t_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	t_BufferDesc.CPUAccessFlags = 0;
+	t_BufferDesc.MiscFlags = 0;
+	t_BufferDesc.StructureByteStride = 0;
+	t_BufferDesc.ByteWidth = sizeof(VertexPosNormalTexTangent)* p_Vertices->size();
+
+	//add the data when creating
+	D3D11_SUBRESOURCE_DATA t_Data;
+	t_Data.pSysMem = &p_Vertices[0];
+	t_Data.SysMemPitch = 0;
+	t_Data.SysMemSlicePitch = 0;
+
+	//create it
+	HRESULT hr = m_Device->CreateBuffer(&t_BufferDesc, &t_Data, &t_NewMeshInfo->vertexBuffer);
+	if (FAILED(hr))
+	{
+		//if failed return errormesh
+		delete t_NewMeshInfo;
+		return m_ErrorMeshID;
+	}
+		
+	
+
+	////Create the Index Buffer
+
+	//change description to index
+	t_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	t_BufferDesc.ByteWidth = sizeof(UINT)* p_Indicies->size();
+
+	//change data to index
+	t_Data.pSysMem = &p_Indicies[0];
+	
+	// create it
+	hr = m_Device->CreateBuffer(&t_BufferDesc, &t_Data, &t_NewMeshInfo->indexBuffer);
+	if (FAILED(hr))
+	{
+		//if failed return errormesh
+		delete t_NewMeshInfo;
+		return m_ErrorMeshID;
+	}
+		
+
+	//else we add it
+	std::hash<MeshInfo*> t_Hasher;
+	UINT t_Handle = t_Hasher(t_NewMeshInfo);
+
+	//put it in our memory
+	m_MeshKeys[t_Handle] = t_NewMeshInfo;
+
+	//return handle
+	return t_Handle;
 }
 
-//Creates a handle to a material resource in the engine TODO::change that we also check if there exist a material of this type
+//Creates a handle to a material resource in the engine TODO::change that we also check if there exist a material of this type TODO::Save material into a binary file
 MaterialHandle DirectXGraphicEngine::CreateMaterial(const std::string& p_Name, Material* p_Mat)
 {
 	//copy over info to our directX material
@@ -24,6 +83,26 @@ MaterialHandle DirectXGraphicEngine::CreateMaterial(const std::string& p_Name, M
 	t_NewMaterial->m_Bump = LoadTexture(p_Mat->m_Bump);
 	t_NewMaterial->m_Disp = LoadTexture(p_Mat->m_Disp);
 	t_NewMaterial->m_Occulsion = LoadTexture(p_Mat->m_Occulsion);
+
+	//create buffer of the values
+	D3D11_BUFFER_DESC t_BufferDesc;
+	memset(&t_BufferDesc, 0, sizeof(D3D11_BUFFER_DESC));
+
+	t_BufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	t_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	t_BufferDesc.CPUAccessFlags = 0;
+	t_BufferDesc.MiscFlags = 0;
+	t_BufferDesc.StructureByteStride = 0;
+	t_BufferDesc.ByteWidth = sizeof(MaterialInfo::MaterialValues);
+
+	HRESULT hr = m_Device->CreateBuffer(&t_BufferDesc, 0, &t_NewMaterial->m_MatBuffer);
+	if (FAILED(hr))
+	{
+		//Failed, returning error material
+		delete t_NewMaterial;
+		return m_ErrorMaterialID;
+	}
+
 
 	//hash material to a key
 	UINT key = t_MaterialHash(t_NewMaterial);
@@ -96,4 +175,16 @@ UINT DirectXGraphicEngine::LoadTexture(std::string p_Name)
 	}
 
 	return o_ID;
+}
+
+//Loads a mesh resource from file into the engine and returns a handle to it 
+MeshHandle DirectXGraphicEngine::LoadModelFromFile(const std::string& p_Name)
+{
+	return 0;
+}
+
+//Loads a material resource from file into the engine and returns a handle to it
+MaterialHandle DirectXGraphicEngine::LoadMaterialFromFile(const std::string& p_Name)
+{
+	return 0;
 }
