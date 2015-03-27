@@ -488,6 +488,9 @@ HRESULT DirectXGraphicEngine::InitializeConstantBuffers()
 			return hr;
 	}
 
+	//we also create the array that hold the matrices when we take them to buffer here
+	m_MatriceList = new XMFLOAT4X4[m_MaxNumOfInstances];
+
 	//Shader Constant buffers
 	{
 		D3D11_BUFFER_DESC t_BufferDesc;

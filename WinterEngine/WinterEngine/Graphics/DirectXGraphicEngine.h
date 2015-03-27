@@ -245,7 +245,7 @@ private:
 	//max number of instances, update this dynamically when we ovrrides one size, to beomce 1.5 the size?
 	UINT						m_MaxNumOfInstances;
 	ID3D11Buffer*				m_InstanceBuffer; //TODO Check if we want to split this into many buffers for each vertex group?
-
+	XMFLOAT4X4*					m_MatriceList;
 
 	//rasterizers
 	ID3D11RasterizerState*		m_RasterizerNormal;

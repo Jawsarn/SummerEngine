@@ -1,5 +1,6 @@
 #include "DirectXGraphicEngine.h"
 #include "../Utility/Logger.h"
+#include "../Transform/DirectXTransformLibrary.h"
 
 //Needs to be called befor all other drawcalls, and ended with "EndDraw()"
 void DirectXGraphicEngine::BeginDraw()
@@ -28,7 +29,7 @@ void DirectXGraphicEngine::BeginDraw()
 //test shit
 void SetMesh()
 {
-
+	
 }
 
 void SetMat()
@@ -36,7 +37,7 @@ void SetMat()
 
 }
 
-//Call "BeginDraw()" befor, draws nontransparent, call "ComputeDeferred()" after
+//Call "BeginDraw()" befor, draws nontransparent, call "ComputeDeferred()" after TODO:: test to wrap the update of matrix buffer around the creation, so we dont copy memory 2 times
 void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 {
 	if (m_IsDrawing)
@@ -45,14 +46,17 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 		return;
 	}
 
+	//get our transform
+	DirectXTransformLibrary* t_TransformLib = (DirectXTransformLibrary*)t_TransformLib->GetInstance();
+
 	//check if any objects
 	UINT t_Size = p_RenderObects->size();
 	if (t_Size == 0)
 		return;
 
-	//the matrix vector I want to upgrade my buffer with
-	std::vector<XMMATRIX> t_Matrices;
+	//keep track how many new matrices we have
 	UINT t_NumOfMatrices = 0;
+	UINT t_NumOfIndicies = 0;
 
 	//set first mesh, current renderobject
 	UINT t_CurrMeshID = p_RenderObects->at(0).meshHandle;
@@ -84,10 +88,20 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 				if (t_CurStart == t_NewStart && t_CurEnd == t_NewEnd)
 				{
 					//everything is same, except the world matrix
-					//add matrix here
+					//TODO::add matrix here
+					if (t_NumOfMatrices < m_MaxNumOfInstances)
+					{
+						//copy memory from matrix in the library to our list
+						memcpy(&m_MatriceList[t_NumOfMatrices], t_TransformLib->GetMatrix(0), sizeof(XMFLOAT4X4));
+
+						//t_Matrices[t_NumOfMatrices] = p_RenderObects[i].
+						t_NumOfMatrices++;
+					}
+					else
+					{
+						//TODO:: increase the size of the buffer oh no...
+					}
 					
-					//t_Matrices[t_NumOfMatrices] = p_RenderObects[i].
-					t_NumOfMatrices++;
 					continue;
 				}
 				else
@@ -112,35 +126,48 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 			t_CurrMatID = t_NewMatID;
 			t_CurStart = t_NewStart;
 			t_CurEnd = t_NewEnd;
-
-
-			//add matrix here
-			t_NumOfMatrices = 1;
 		}
 
 		//draw here
 		D3D11_MAPPED_SUBRESOURCE t_MappedData;
 		ZeroMemory(&t_MappedData, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
+		//get pointer to graphic memory
 		HRESULT hr = m_DeviceContext->Map(m_InstanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &t_MappedData);
 		XMMATRIX* dataView = reinterpret_cast<XMMATRIX*>(t_MappedData.pData);
 
-		//TODO:: use memcopy instead
-		int t_NumOfMatrices = t_Matrices.size();
-		for (int i = 0; i < t_NumOfMatrices; i++)
-		{
-			dataView[i] = t_Matrices[i];
-		}
-
+		//copy memory to the pointer
+		memcpy(&dataView[0], &m_MatriceList[0], t_NumOfMatrices* sizeof(XMFLOAT4X4));
+		
+		//save it
 		m_DeviceContext->Unmap(m_InstanceBuffer, 0);
 
+		//draw instances
+		m_DeviceContext->DrawIndexedInstanced(t_NumOfIndicies, t_NumOfMatrices, 0, 0, 0);
 
-
+		//set stuff
+		void SetMesh();
+		void SetMat();
+		memcpy(&m_MatriceList[t_NumOfMatrices], t_TransformLib->GetMatrix(0), sizeof(XMFLOAT4X4));
+		t_NumOfMatrices = 1;
 	}
 
+	//draw last
+	D3D11_MAPPED_SUBRESOURCE t_MappedData;
+	ZeroMemory(&t_MappedData, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
-	//set mesh for current
+	//get pointer to graphic memory
+	HRESULT hr = m_DeviceContext->Map(m_InstanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &t_MappedData);
+	XMMATRIX* dataView = reinterpret_cast<XMMATRIX*>(t_MappedData.pData);
 
+	//copy memory to the pointer
+	memcpy(&dataView[0], &m_MatriceList[0], t_NumOfMatrices* sizeof(XMFLOAT4X4));
+
+	//save it
+	m_DeviceContext->Unmap(m_InstanceBuffer, 0);
+
+	//draw instances
+	m_DeviceContext->DrawIndexedInstanced(t_NumOfIndicies, t_NumOfMatrices, 0, 0, 0);
 }
 
 

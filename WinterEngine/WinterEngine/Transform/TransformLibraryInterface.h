@@ -4,12 +4,23 @@
 //the graphic and physics(?) engine can work around to get the directx values directly. This because the directX values can compute on the graphics drive in a nice way, and we can upload matrixes to
 //graphic card diretly for drawing.
 
+typedef unsigned int MatrixHandle;
+
 class TransformLibraryInterface
 {
 public:
+	struct Matrix
+	{
+		float Position[3];
+		float Direction[3];
+		float Up[3];
+	};
 	static TransformLibraryInterface* GetInstance();
 	~TransformLibraryInterface();
 
+	
+	virtual MatrixHandle CreateMatrix(Matrix p_Matrix) = 0;
+	
 protected:
 	TransformLibraryInterface();
 
