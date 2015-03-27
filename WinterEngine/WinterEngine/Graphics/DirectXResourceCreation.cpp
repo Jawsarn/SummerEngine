@@ -178,7 +178,7 @@ TextureHandle DirectXGraphicEngine::LoadTexture(std::string p_Name)
 }
 
 //Loads a mesh resource from file into the engine and returns a handle to it 
-MeshHandle DirectXGraphicEngine::LoadModelFromFile(const std::string& p_Name)
+MeshHandle DirectXGraphicEngine::LoadModel(const std::string& p_Name)
 {
 	MeshIDMap::iterator t_MeshIDMap = m_MeshIDMap.find(p_Name);
 
@@ -203,14 +203,22 @@ MeshHandle DirectXGraphicEngine::LoadModelFromFile(const std::string& p_Name)
 	std::vector<UINT> t_Indicies;
 	t_Indicies.resize(t_NumOfIndicies);
 	t_StreamFile->Read(t_NumOfIndicies*sizeof(UINT), &t_Indicies[0]);
+	
+	//close file
+	t_StreamFile->Close();
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////NOT DONE HEEEEEEEEEEEEEEREEEEEEEEEEEEEEE
+	//create model
+	UINT o_ID = CreateModel(p_Name, &t_Vertices, &t_Indicies);
 
-	return m_ErrorMeshID;
+	//clear list, dont think I need to do this but its good :)
+	t_Vertices.clear();
+	t_Indicies.clear();
+
+	return o_ID;
 }
 
 //Loads a material resource from file into the engine and returns a handle to it
-MaterialHandle DirectXGraphicEngine::LoadMaterialFromFile(const std::string& p_Name)
+MaterialHandle DirectXGraphicEngine::LoadMaterial(const std::string& p_Name)
 {
 	MaterialIDMap::iterator t_MatIDMap = m_MaterialIDMap.find(p_Name);
 
@@ -220,5 +228,56 @@ MaterialHandle DirectXGraphicEngine::LoadMaterialFromFile(const std::string& p_N
 		return t_MatIDMap->second;
 	}
 
-	return m_ErrorMaterialID;
+	//else we load it
+	IO::StreamFile *t_StreamFile = new IO::StreamFile();
+	t_StreamFile->OpenFileRead(p_Name);
+
+	//load material
+	UINT t_NumOfVertice = IO::ReadUnsigned(*t_StreamFile);
+	SGEngine::Material* t_Material = new SGEngine::Material();
+	
+
+	//because of it including strings, we can't just read the material right of, we type our load instread TODO:: change niceer without including IO in the toolbox?
+	t_Material->Ns = IO::ReadFloat(*t_StreamFile);
+	t_Material->Ka[0] = IO::ReadFloat(*t_StreamFile);
+	t_Material->Ka[1] = IO::ReadFloat(*t_StreamFile);
+	t_Material->Ka[2] = IO::ReadFloat(*t_StreamFile);
+
+	t_Material->Ni = IO::ReadFloat(*t_StreamFile);
+	t_Material->Kd[0] = IO::ReadFloat(*t_StreamFile);
+	t_Material->Kd[1] = IO::ReadFloat(*t_StreamFile);
+	t_Material->Kd[2] = IO::ReadFloat(*t_StreamFile);
+
+	t_Material->D = IO::ReadFloat(*t_StreamFile);
+	t_Material->Ks[0] = IO::ReadFloat(*t_StreamFile);
+	t_Material->Ks[1] = IO::ReadFloat(*t_StreamFile);
+	t_Material->Ks[2] = IO::ReadFloat(*t_StreamFile);
+
+	t_Material->Tf[0] = IO::ReadFloat(*t_StreamFile);
+	t_Material->Tf[1] = IO::ReadFloat(*t_StreamFile);
+	t_Material->Tf[2] = IO::ReadFloat(*t_StreamFile);
+	t_Material->Ke = IO::ReadFloat(*t_StreamFile);
+
+	t_Material->Illum = IO::ReadUnsigned(*t_StreamFile);
+
+	t_Material->m_Map_Kd = IO::ReadString(*t_StreamFile);
+	t_Material->m_Map_Ka = IO::ReadString(*t_StreamFile);
+	t_Material->m_Map_Ks = IO::ReadString(*t_StreamFile);
+	t_Material->m_Map_Ke = IO::ReadString(*t_StreamFile);
+	t_Material->m_Map_Ns = IO::ReadString(*t_StreamFile);
+	t_Material->m_Map_D = IO::ReadString(*t_StreamFile);
+	t_Material->m_Bump = IO::ReadString(*t_StreamFile);
+	t_Material->m_Disp = IO::ReadString(*t_StreamFile);
+	t_Material->m_Occulsion = IO::ReadString(*t_StreamFile);
+
+
+	//close file
+	t_StreamFile->Close();
+
+	//create model
+	UINT o_ID = CreateMaterial(p_Name, t_Material);
+
+	delete t_Material;
+
+	return o_ID;
 }

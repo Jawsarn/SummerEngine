@@ -53,10 +53,10 @@ public:
 	virtual MaterialHandle CreateMaterial(const std::string& p_Name, Material* p_Mat) = 0;
 
 	//Loads a mesh resource from file into the engine and returns a handle to it
-	virtual MeshHandle LoadModelFromFile(const std::string& p_Name) = 0;
+	virtual MeshHandle LoadModel(const std::string& p_Name) = 0;
 
 	//Loads a material resource from file into the engine and returns a handle to it
-	virtual MaterialHandle LoadMaterialFromFile(const std::string& p_Name) = 0;
+	virtual MaterialHandle LoadMaterial(const std::string& p_Name) = 0;
 
 
 	//========================================\\
