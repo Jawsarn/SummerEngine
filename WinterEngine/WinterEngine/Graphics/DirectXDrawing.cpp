@@ -70,7 +70,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 	UINT t_NewStart;
 	UINT t_NewIndexAmount;
 
-	void SetMesh();
+	void SetMesh();//TODO remove...
 	void SetMat();
 
 	for (UINT i = 0; i < t_Size; i++)

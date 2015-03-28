@@ -95,6 +95,8 @@ MaterialHandle DirectXGraphicEngine::CreateMaterial(const std::string& p_Name, M
 	t_BufferDesc.StructureByteStride = 0;
 	t_BufferDesc.ByteWidth = sizeof(MaterialInfo::MaterialValues);
 
+
+
 	HRESULT hr = m_Device->CreateBuffer(&t_BufferDesc, 0, &t_NewMaterial->m_MatBuffer);
 	if (FAILED(hr))
 	{

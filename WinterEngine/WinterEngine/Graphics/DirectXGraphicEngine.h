@@ -86,6 +86,7 @@ private:
 			float Ke;					//Emissive color
 
 			UINT Illum;					//Define the illumination model: illum = 1 a flat material with no specular highlights, illum = 2 denotes the presence of specular highlights
+			XMUINT3 Fillers;
 		};
 
 		//buffer to material
@@ -111,6 +112,7 @@ private:
 		{
 			m_MatValues.Ns = m_MatValues.Ni = m_MatValues.D = m_MatValues.Ke = 0.0f;
 			m_MatValues.Ka = m_MatValues.Kd = m_MatValues.Ks = m_MatValues.Tf = XMFLOAT3(0, 0, 0);
+			m_MatValues.Fillers = XMUINT3(0, 0, 0);
 			m_MatValues.Illum = m_Map_Kd = m_Map_Ka = m_Map_Ks = m_Map_Ke = m_Map_Ns = m_Map_D = m_Bump = m_Disp = m_Occulsion = 0;
 		}
 		//copyconstructor from the interface material, to easy swap over info
@@ -129,6 +131,7 @@ private:
 			m_MatValues.Ke = p_Material.Ke;
 
 			m_MatValues.Illum = p_Material.Illum;
+			m_MatValues.Fillers = XMUINT3(0, 0, 0);
 
 			m_Map_Kd = m_Map_Ka = m_Map_Ks = m_Map_Ke = m_Map_Ns = m_Map_D = m_Bump = m_Disp = m_Occulsion = 0;
 		}
@@ -315,8 +318,11 @@ private:
 	//creates GBuffers : (normal/Depth),(diffuse/spec),(notused)
 	HRESULT InitializeGBuffers();
 
-	//Create
+	//Create error resources
 	HRESULT CreateErrorTexture();
+	HRESULT CreateErrorMesh();
+	HRESULT CreateErrorMaterial();
+
 
 
 	//===============RESOURCES================\\

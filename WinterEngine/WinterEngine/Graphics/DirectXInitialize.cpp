@@ -7,6 +7,7 @@ bool DirectXGraphicEngine::Initialize(HWND p_Handle, UINT p_Width, UINT p_Height
 	//convert here because we dont want windows outside engine if not windows :P
 	m_Width = p_Width;
 	m_Height = p_Height;
+	m_MaxNumOfInstances = 100;
 
 	HRESULT hr = S_OK;
 
@@ -45,17 +46,24 @@ bool DirectXGraphicEngine::Initialize(HWND p_Handle, UINT p_Width, UINT p_Height
 	if (FAILED(hr))
 		return false;
 
-	/*
+	hr = CreateErrorMesh();
+	if (FAILED(hr))
+		return false;
+
+	hr = CreateErrorMaterial();
+	if (FAILED(hr))
+		return false;
+
 	hr = InitializeConstantBuffers();
 	if (FAILED(hr))
 		return false;
 
 	hr = InitializeGBuffers();
-
 	if (FAILED(hr))
 		return false;
 	
-	*/
+
+	
 
 	return true;
 }
@@ -477,7 +485,7 @@ HRESULT DirectXGraphicEngine::InitializeConstantBuffers()
 	{
 		D3D11_BUFFER_DESC t_ibd;
 		t_ibd.Usage = D3D11_USAGE_DYNAMIC; // D3D11_USAGE_DEFAULT  D3D11_USAGE_DYNAMIC
-		t_ibd.ByteWidth = sizeof(XMMATRIX)* m_MaxNumOfInstances;
+		t_ibd.ByteWidth = sizeof(XMFLOAT4X4)* m_MaxNumOfInstances;
 		t_ibd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		t_ibd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; //D3D11_CPU_ACCESS_WRITE
 		t_ibd.MiscFlags = 0;
@@ -589,6 +597,7 @@ bool DirectXGraphicEngine::LoadPresetFromFile()
 	return true;
 }
 
+//TODO:: make this from a plain data instead of loading it.. because if we can't load the error texture everything is fucked up even :D
 HRESULT DirectXGraphicEngine::CreateErrorTexture()
 {
 	HRESULT hr = S_OK;
@@ -609,6 +618,90 @@ HRESULT DirectXGraphicEngine::CreateErrorTexture()
 		m_TextureIDMap[t_Name] = t_Value;
 		m_ErrorTextureID = t_Value;
 	}
+
+	return hr;
+}
+
+//create a error mesh that is loaded when other meshloads fail
+HRESULT DirectXGraphicEngine::CreateErrorMesh()
+{
+	HRESULT hr = S_OK;
+
+	//the 8 corners
+	std::vector<VertexPosNormalTexTangent> t_Vertices =
+	{
+		//front top left 0
+		VertexPosNormalTexTangent(Vec3(-1, 1, -1), Vec3(0, 0, 0), Vec2(0, 0), Vec3(0, 0, 0)),
+		//front top right 1 
+		VertexPosNormalTexTangent(Vec3(1, 1, -1), Vec3(0, 0, 0), Vec2(1, 0), Vec3(0, 0, 0)),
+		//front bot left  2 
+		VertexPosNormalTexTangent(Vec3(-1, -1, -1), Vec3(0, 0, 0), Vec2(0, 1), Vec3(0, 0, 0)),
+		//front bot right 3
+		VertexPosNormalTexTangent(Vec3(1, -1, -1), Vec3(0, 0, 0), Vec2(1, 1), Vec3(0, 0, 0)),
+
+		//back top left 4
+		VertexPosNormalTexTangent(Vec3(-1, 1, 1), Vec3(0, 0, 0), Vec2(1, 1), Vec3(0, 0, 0)),
+		//back top right 5
+		VertexPosNormalTexTangent(Vec3(1, 1, 1), Vec3(0, 0, 0), Vec2(0, 1), Vec3(0, 0, 0)),
+		//back bot left 6
+		VertexPosNormalTexTangent(Vec3(-1, -1, 1), Vec3(0, 0, 0), Vec2(1, 0), Vec3(0, 0, 0)),
+		//back bot right 7
+		VertexPosNormalTexTangent(Vec3(1, -1, 1), Vec3(0, 0, 0), Vec2(0, 0), Vec3(0, 0, 0)),
+	};
+
+	std::vector<UINT> t_Indicies =
+	{
+		//front
+		0,1,2,
+		1,3,2,
+
+		//back
+		5,4,6,
+		6,7,5,
+
+		//top
+		4,5,1,
+		1,0,4,
+
+		//bot
+		2,3,7,
+		7,6,2,
+
+		//left
+		4,0,2,
+		2,6,4,
+
+		//right
+		1,5,7,
+		7,3,1,
+	};
+
+	m_ErrorMeshID = CreateModel("ErrorMesh", &t_Vertices, &t_Indicies);
+
+
+	return hr;
+}
+
+//create a error material that is loaded when other material loads fail
+HRESULT DirectXGraphicEngine::CreateErrorMaterial()
+{
+	HRESULT hr = S_OK;
+
+	SGEngine::Material t_ErrorMaterial = SGEngine::Material();
+
+	//set all textures to error
+	t_ErrorMaterial.m_Map_Kd = t_ErrorMaterial.m_Map_Ka = t_ErrorMaterial.m_Map_Ks =
+		t_ErrorMaterial.m_Map_Ke = t_ErrorMaterial.m_Map_Ns = t_ErrorMaterial.m_Map_D =
+		t_ErrorMaterial.m_Bump = t_ErrorMaterial.m_Disp = t_ErrorMaterial.m_Occulsion =
+		"errorImg.dds";
+
+	//set ambient and diffuse to 1, to show the errorimage
+	t_ErrorMaterial.Ka[0] = t_ErrorMaterial.Ka[1] = t_ErrorMaterial.Ka[2] = 1.0f;
+	t_ErrorMaterial.Ks[0] = t_ErrorMaterial.Ks[1] = t_ErrorMaterial.Ks[2] = 1.0f;
+	t_ErrorMaterial.Illum = 0;
+
+
+	m_ErrorMaterialID = CreateMaterial("ErrorMaterial", &t_ErrorMaterial);
 
 	return hr;
 }
