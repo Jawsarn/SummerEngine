@@ -129,6 +129,9 @@
     <ClInclude Include="Transform\TransformToolbox.h">
       <Filter>Engine\Transform\Header</Filter>
     </ClInclude>
+    <ClInclude Include="Components\CameraComponent.h">
+      <Filter>Engine\Components\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">
@@ -193,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="Transform\TransformLibraryInterface.cpp">
       <Filter>Engine\Transform\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\CameraComponent.cpp">
+      <Filter>Engine\Components\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

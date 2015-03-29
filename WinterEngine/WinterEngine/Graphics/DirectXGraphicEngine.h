@@ -281,6 +281,9 @@ private:
 	ID3D11Buffer*				m_PerFrameCBuffer;
 	ID3D11Buffer*				m_DeferredComputeCBuffer;
 
+	//cameras
+	std::vector<PerFrameCBuffer>	m_Cameras;
+
 
 
 	//========================================\\

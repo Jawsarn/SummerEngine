@@ -66,6 +66,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Components\CameraComponent.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\RenderingComponent.h" />
     <ClInclude Include="Components\TransformComponent.h" />
@@ -88,6 +89,7 @@
     <ClInclude Include="Utility\Logger.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Components\CameraComponent.cpp" />
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Components\RenderingComponent.cpp" />
     <ClCompile Include="Components\TransformComponent.cpp" />
