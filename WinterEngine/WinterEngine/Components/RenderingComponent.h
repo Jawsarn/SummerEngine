@@ -8,6 +8,7 @@ class RenderingComponent : public Component
 {
 public:
 	RenderingComponent();
+	RenderingComponent(std::string p_Name);
 	~RenderingComponent();
 
 

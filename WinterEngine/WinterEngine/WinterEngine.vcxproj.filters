@@ -58,13 +58,13 @@
     <Filter Include="Engine\Utility">
       <UniqueIdentifier>{1fe7398f-18b3-475a-ae43-1a3db8d01bc9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Transform">
+    <Filter Include="Engine\Matrix">
       <UniqueIdentifier>{04d95ffa-97f5-40eb-8e1f-36e26c01c822}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Transform\Header">
+    <Filter Include="Engine\Matrix\Header">
       <UniqueIdentifier>{09cba0d4-0c6c-4af9-a51d-260c4d8b6178}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Transform\Source Files">
+    <Filter Include="Engine\Matrix\Source Files">
       <UniqueIdentifier>{d3ac171e-9813-4488-b261-c843a4a40225}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -120,17 +120,17 @@
     <ClInclude Include="Utility\Logger.h">
       <Filter>Engine\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Transform\DirectXTransformLibrary.h">
-      <Filter>Engine\Transform\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform\TransformLibraryInterface.h">
-      <Filter>Engine\Transform\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform\TransformToolbox.h">
-      <Filter>Engine\Transform\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\CameraComponent.h">
+    <ClInclude Include="Components\ProjectionComponent.h">
       <Filter>Engine\Components\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\DirectXMatrixLibrary.h">
+      <Filter>Engine\Matrix\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\MatrixLibraryInterface.h">
+      <Filter>Engine\Matrix\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\MatrixToolbox.h">
+      <Filter>Engine\Matrix\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -191,14 +191,14 @@
     <ClCompile Include="Utility\Logger.cpp">
       <Filter>Engine\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="Transform\DirectXTransformLibrary.cpp">
-      <Filter>Engine\Transform\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform\TransformLibraryInterface.cpp">
-      <Filter>Engine\Transform\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\CameraComponent.cpp">
+    <ClCompile Include="Components\ProjectionComponent.cpp">
       <Filter>Engine\Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix\DirectXTransformLibrary.cpp">
+      <Filter>Engine\Matrix\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix\MatrixLibraryInterface.cpp">
+      <Filter>Engine\Matrix\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

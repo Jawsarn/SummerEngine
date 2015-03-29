@@ -9,7 +9,7 @@ public:
 	~Entity();
 
 	std::string GetName() const { return m_Name; }
-
+	void AddComponent(Component* p_Component);
 
 private:
 	//name and ID

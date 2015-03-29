@@ -1,3 +1,0 @@
-
-
-typedef unsigned int MatrixHandle;

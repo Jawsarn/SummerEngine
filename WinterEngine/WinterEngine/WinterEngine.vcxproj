@@ -66,7 +66,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Components\CameraComponent.h" />
+    <ClInclude Include="Components\ProjectionComponent.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\RenderingComponent.h" />
     <ClInclude Include="Components\TransformComponent.h" />
@@ -79,17 +79,17 @@
     <ClInclude Include="IO\Serializable.h" />
     <ClInclude Include="IO\Stream.h" />
     <ClInclude Include="IO\StreamFile.h" />
+    <ClInclude Include="Matrix\DirectXMatrixLibrary.h" />
+    <ClInclude Include="Matrix\MatrixLibraryInterface.h" />
+    <ClInclude Include="Matrix\MatrixToolbox.h" />
     <ClInclude Include="Systems\InputSystem.h" />
     <ClInclude Include="Systems\RenderingSystem.h" />
     <ClInclude Include="Systems\System.h" />
     <ClInclude Include="Systems\TransformSystem.h" />
-    <ClInclude Include="Transform\DirectXTransformLibrary.h" />
-    <ClInclude Include="Transform\TransformLibraryInterface.h" />
-    <ClInclude Include="Transform\TransformToolbox.h" />
     <ClInclude Include="Utility\Logger.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Components\CameraComponent.cpp" />
+    <ClCompile Include="Components\ProjectionComponent.cpp" />
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Components\RenderingComponent.cpp" />
     <ClCompile Include="Components\TransformComponent.cpp" />
@@ -104,12 +104,12 @@
     <ClCompile Include="Graphics\TextureLoaderDDS.cpp" />
     <ClCompile Include="IO\Stream.cpp" />
     <ClCompile Include="IO\StreamFile.cpp" />
+    <ClCompile Include="Matrix\DirectXTransformLibrary.cpp" />
+    <ClCompile Include="Matrix\MatrixLibraryInterface.cpp" />
     <ClCompile Include="Systems\InputSystem.cpp" />
     <ClCompile Include="Systems\RenderingSystem.cpp" />
     <ClCompile Include="Systems\System.cpp" />
     <ClCompile Include="Systems\TransformSystem.cpp" />
-    <ClCompile Include="Transform\DirectXTransformLibrary.cpp" />
-    <ClCompile Include="Transform\TransformLibraryInterface.cpp" />
     <ClCompile Include="Utility\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>

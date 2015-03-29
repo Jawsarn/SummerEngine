@@ -1,6 +1,6 @@
 #include "DirectXGraphicEngine.h"
 #include "../Utility/Logger.h"
-#include "../Transform/DirectXTransformLibrary.h"
+#include "../Matrix/DirectXMatrixLibrary.h"
 
 //Needs to be called befor all other drawcalls, and ended with "EndDraw()"
 void DirectXGraphicEngine::BeginDraw()
@@ -47,7 +47,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 	}
 
 	//get our transform
-	DirectXTransformLibrary* t_TransformLib = (DirectXTransformLibrary*)t_TransformLib->GetInstance();
+	DirectXMatrixLibrary* t_MatrixLib = (DirectXMatrixLibrary*)t_MatrixLib->GetInstance();
 
 	//check if any objects
 	UINT t_Size = p_RenderObects->size();
@@ -92,7 +92,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 					if (t_NumOfMatrices < m_MaxNumOfInstances)
 					{
 						//copy memory from matrix in the library to our list
-						memcpy(&m_MatriceList[t_NumOfMatrices], t_TransformLib->GetMatrix(0), sizeof(XMFLOAT4X4));
+						memcpy(&m_MatriceList[t_NumOfMatrices], t_MatrixLib->GetMatrix(0), sizeof(XMFLOAT4X4));
 
 						//t_Matrices[t_NumOfMatrices] = p_RenderObects[i].
 						t_NumOfMatrices++;
@@ -140,7 +140,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 		t_CurStart = t_NewStart;
 		t_CurIndexAmount = t_NewIndexAmount;
 
-		memcpy(&m_MatriceList[t_NumOfMatrices], t_TransformLib->GetMatrix(0), sizeof(XMFLOAT4X4));
+		memcpy(&m_MatriceList[t_NumOfMatrices], t_MatrixLib->GetMatrix(0), sizeof(XMFLOAT4X4));
 		t_NumOfMatrices = 1;
 	}
 

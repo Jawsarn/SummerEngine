@@ -1,5 +1,5 @@
 #pragma once
-#include "TransformLibraryInterface.h"
+#include "MatrixLibraryInterface.h"
 #include "../Graphics/DirectXGraphicEngine.h"
 #include <DirectXMath.h>
 #include <map>
@@ -9,14 +9,19 @@
 //graphic card diretly for drawing.
 using namespace DirectX;
 
-class DirectXTransformLibrary : public TransformLibraryInterface
+class DirectXMatrixLibrary : public MatrixLibraryInterface
 {
 public:
-	DirectXTransformLibrary();
-	~DirectXTransformLibrary();
+	DirectXMatrixLibrary();
+	~DirectXMatrixLibrary();
 	void Initialize();
 
+	//create functions
 	MatrixHandle CreateMatrix(Matrix* p_Matrix);
+	MatrixHandle CreateMatrix(FoVProjMatrix* p_Matrix);
+	MatrixHandle CreateMatrix(OrthoProjMatrix* p_Matrix);
+
+	//get functions
 	XMFLOAT4X4* GetMatrix(MatrixHandle p_Handle);
 
 private:
@@ -24,4 +29,7 @@ private:
 	typedef std::map<MatrixHandle, DirectX::XMFLOAT4X4*> TransformMap;
 	TransformMap m_TransformMatrixes;
 	UINT m_ErrorMatrixHandle;
+
+	//functions
+	MatrixHandle DirectXMatrixLibrary::StoreMatrix(CXMMATRIX& p_NewMat);
 };

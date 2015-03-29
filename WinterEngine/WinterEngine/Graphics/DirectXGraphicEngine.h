@@ -284,6 +284,8 @@ private:
 	//cameras
 	std::vector<PerFrameCBuffer>	m_Cameras;
 
+	//viewports
+	std::vector<D3D11_VIEWPORT>		m_ViewPorts;
 
 
 	//========================================\\

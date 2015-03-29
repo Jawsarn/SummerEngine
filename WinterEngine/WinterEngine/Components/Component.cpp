@@ -3,8 +3,13 @@
 
 Component::Component()
 {
+	m_Name = "Component";
 }
 
+Component::Component(std::string p_Name)
+{
+	m_Name = p_Name;
+}
 
 Component::~Component()
 {
@@ -46,6 +51,23 @@ void Component::Update()
 
 //called when removing component
 void Component::Destroy()
+{
+
+}
+
+
+bool Component::Read(IO::Stream &p_Stream)
+{
+	return true;
+}
+
+bool Component::Write(IO::Stream &p_Stream)
+{
+	return true;
+}
+
+
+void Component::Fixup()
 {
 
 }
