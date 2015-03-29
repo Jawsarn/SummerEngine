@@ -207,5 +207,8 @@
     <FxCompile Include="Shaders\OpaquePS.hlsl">
       <Filter>Engine\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\DeferredCS.hlsl">
+      <Filter>Engine\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

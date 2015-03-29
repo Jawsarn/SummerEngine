@@ -168,9 +168,33 @@ void DirectXGraphicEngine::ComputeDeferred()
 {
 	if (!m_IsDrawing)
 	{
-		Logger::Log( "Rendering call ComputeDeferred was called before begin was called", "DirectXRenderSystem", LoggerType::MSG_ERROR );
+		Logger::Log("Rendering call ComputeDeferred was called before begin was called", "DirectXRenderSystem", LoggerType::MSG_ERROR);
 		return;
 	}
+
+	//remove render gbuffers from render target to bind it to resource
+	ID3D11RenderTargetView* t_DeleteRenderTargets[3] = {nullptr, nullptr, nullptr};
+	m_DeviceContext->OMSetRenderTargets(3, t_DeleteRenderTargets, m_DepthStencilView);
+
+	//set backbuffer as unordered access
+	m_DeviceContext->CSSetUnorderedAccessViews(0, 1, &m_UnorderedAccessView, nullptr);
+
+	//set gbuffers as shader resource
+	m_DeviceContext->CSSetShaderResources(1, 3, m_GBufferSRV);
+
+	//check how many threadgroups we need
+	UINT x = UINT(ceil((FLOAT)m_Width / (FLOAT)m_DeferredThreadGSize));
+	UINT y = UINT(ceil((FLOAT)m_Height / (FLOAT)m_DeferredThreadGSize));
+
+	//dispatch threads
+	m_DeviceContext->Dispatch(x, y, 1);
+
+	//set the gbuffers back as shader resources
+	ID3D11ShaderResourceView* t_DeleteShaderResource[3] = { nullptr, nullptr, nullptr };
+	m_DeviceContext->CSSetShaderResources(1, 3, t_DeleteShaderResource);
+	m_DeviceContext->OMSetRenderTargets(3, m_GBufferRTV, m_DepthStencilView);
+
+	
 }
 
 //Call after "ComputerDeferred()", draws transparent objects

@@ -24,10 +24,10 @@ bool RenderingSystem::Update()
 	m_GraphicEngine->BeginDraw();
 
 	//start drawing non-transparent stuff
-	//m_GraphicEngine->DrawOpaque(&m_Opaque);
+	m_GraphicEngine->DrawOpaque(&m_Opaque);
 
 	//deferred compute 
-	//m_GraphicEngine->ComputeDeferred();
+	m_GraphicEngine->ComputeDeferred();
 
 	//draw transparent
 	//m_GraphicEngine->DrawTransparent(&m_Transparent);

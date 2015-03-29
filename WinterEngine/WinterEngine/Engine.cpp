@@ -212,9 +212,9 @@ void RunEditor()
 	MSG msg = { 0 };
 	while (WM_QUIT != msg.message)
 	{
-		/*bool t_EditorContinue = RunEditorFrame();
+		bool t_EditorContinue = RunEditorFrame();
 		if (!t_EditorContinue)
-			break;*/
+			break;
 
 		//windows peek and gives us messages from the message queue, if not used sends them forward
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -225,11 +225,6 @@ void RunEditor()
 	}
 
 	ShutdownSystem( );
-	//destroy systems
-// 	for each (System* t_Sys in m_Systems)
-// 	{
-// 		t_Sys->Destroy();
-// 	}
 }
 
 bool RunEditorFrame()

@@ -244,6 +244,7 @@ private:
 	//width height resolution
 	UINT						m_Width;
 	UINT						m_Height;
+	UINT						m_DeferredThreadGSize;
 
 	//max number of instances, update this dynamically when we ovrrides one size, to beomce 1.5 the size?
 	UINT						m_MaxNumOfInstances;

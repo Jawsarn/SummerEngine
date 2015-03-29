@@ -8,6 +8,8 @@ bool DirectXGraphicEngine::Initialize(HWND p_Handle, UINT p_Width, UINT p_Height
 	m_Width = p_Width;
 	m_Height = p_Height;
 	m_MaxNumOfInstances = 100;
+	m_DeferredThreadGSize = 16;
+	m_VsyncCode = 1;
 
 	HRESULT hr = S_OK;
 
@@ -62,7 +64,8 @@ bool DirectXGraphicEngine::Initialize(HWND p_Handle, UINT p_Width, UINT p_Height
 	if (FAILED(hr))
 		return false;
 	
-
+	//initliaze parameteres
+	m_DeviceContext->OMSetRenderTargets(3, m_GBufferRTV, m_DepthStencilView);
 	
 
 	return true;
@@ -461,17 +464,17 @@ HRESULT DirectXGraphicEngine::InitializeShaders()
 		m_OpaqueShaders->PixelShader = t_PixelShader;
 	}
 
-	////DEFERRED COMPUTE SHADER TODO::add compute shader =D
-	//{
-	//	m_DeferredComputeShader = new ShaderProgram();
+	//DEFERRED COMPUTE SHADER TODO::add compute shader =D
+	{
+		m_DeferredComputeShader = new ShaderProgram();
 
-	//	ID3D11ComputeShader* t_ComputeShader;
-	//	hr = t_ShaderLoader.CreateComputeShader(L"DeferredCS.hlsl", "CS", "cs_5_0", m_Device, &t_ComputeShader);
-	//	if (FAILED(hr))
-	//		return hr;
+		ID3D11ComputeShader* t_ComputeShader;
+		hr = t_ShaderLoader.CreateComputeShader(L"Shaders/DeferredCS.hlsl", "CS", "cs_5_0", m_Device, &t_ComputeShader);
+		if (FAILED(hr))
+			return hr;
 
-	//	m_DeferredComputeShader->ComputeShader = t_ComputeShader;
-	//}
+		m_DeferredComputeShader->ComputeShader = t_ComputeShader;
+	}
 
 	return hr;
 }
