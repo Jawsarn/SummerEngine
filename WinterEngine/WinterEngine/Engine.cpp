@@ -108,7 +108,7 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 		m_Systems.push_back(m_RS);
 		//TODO:we need to initialize graphicengine here atm, because I haven't found a good solution to sending the instance stuff as a voidpointer and then later check if it's directX or not
 		GraphicEngineInterface* m_Engine = m_Engine->GetInstance();
-		bool t_InitializeOK = m_Engine->Initialize(m_HandleWindow, 1024, 1024);
+		bool t_InitializeOK = m_Engine->Initialize(m_HandleWindow, 1920, 1080);
 		if (!t_InitializeOK)
 			return 0;
 	}
@@ -132,10 +132,14 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 #ifdef EDITOR
 	//test code
 	Entity* t_FirstEntity = new Entity("Orc");
+	Entity* t_SecondEntity = new Entity("Orc2");
 	Entity* t_CameraEntity = new Entity("Camera");
 
 	RenderingComponent* t_OrcRC = new RenderingComponent();
 	TransformComponent* t_OrcTC = new TransformComponent();
+
+	RenderingComponent* t_Orc2RC = new RenderingComponent();
+	TransformComponent* t_Orc2TC = new TransformComponent();
 
 
 	ProjectionComponent* t_CAMPC = new ProjectionComponent();
@@ -145,6 +149,10 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	Matrix* t_OrcMat = new Matrix(Vec3(0,0,-10),Vec3(0,0,-1),Vec3(0,1,0));
 	UINT OrcMatrix = t_OrcTC->Create(t_OrcMat);
 	delete t_OrcMat;
+
+	Matrix* t_Orc2Mat = new Matrix(Vec3(10.0f, 0, -10.0f), Vec3(0, 0, -1), Vec3(0, 1, 0));
+	UINT Orc2Matrix = t_OrcTC->Create(t_Orc2Mat);
+	delete t_Orc2Mat;
 
 	
 
@@ -159,14 +167,17 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	UINT Mat = t_Engine->LoadMaterial("");
 	t_OrcRC->Create(false, SGEngine::RenderObject(Mesh, Mat, 0, 36, OrcMatrix));
 
+	UINT Mat2 = t_Engine->LoadMaterial("");
+	t_Orc2RC->Create(false, SGEngine::RenderObject(Mesh, Mat2, 0, 36, Orc2Matrix));
+
 
 	//camera
-	Matrix* t_CamMat = new Matrix(Vec3(0, 0, 0), Vec3(0, 0, -1), Vec3(0, 1, 0));
+	Matrix* t_CamMat = new Matrix(Vec3(5.0f, 5.0f, 0), Vec3(0, 0, -1), Vec3(0, 1, 0));
 	UINT CamMatrix = t_CAMTC->Create(t_CamMat);
 	delete t_CamMat;
 
 
-	FoVProjMatrix* t_CamFovMat = new FoVProjMatrix(1.570796327f, 1.0f, 0.01f, 1000.0f);
+	FoVProjMatrix* t_CamFovMat = new FoVProjMatrix(1920.0f/1080.0f, 1.570796327f, 0.01f, 1000.0f);
 	t_CAMPC->CreateCamera(t_CamFovMat, CamMatrix);
 	delete t_CamFovMat;
 	t_CAMPC->UseCamera();
@@ -174,6 +185,9 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	//add compnoents
 	t_FirstEntity->AddComponent(t_OrcRC);
 	t_FirstEntity->AddComponent(t_OrcTC);
+
+	t_SecondEntity->AddComponent(t_Orc2RC);
+	t_SecondEntity->AddComponent(t_Orc2TC);
 
 
 	t_CameraEntity->AddComponent(t_CAMTC);
@@ -247,7 +261,7 @@ HRESULT InitializeWindow(_In_ HINSTANCE p_HInstance, _In_ int p_NCmdShow)
 	// Create window
 	handleInstance = p_HInstance;
 
-	RECT t_rc = { 0, 0, 1024, 1024 };
+	RECT t_rc = { 0, 0, 1920, 1080 };
 	AdjustWindowRect(&t_rc, WS_CAPTION, false);
 
 
