@@ -8,6 +8,7 @@ namespace SGEngine
 	typedef unsigned int MaterialHandle;
 	typedef unsigned int TextureHandle;
 	typedef unsigned int Index;
+	typedef unsigned int ComponentHandle;
 
 	//typedef unsigned int UINT;
 
@@ -17,38 +18,44 @@ namespace SGEngine
 		MaterialHandle materialHandle;
 		Index startIndex, IndexAmount;
 		MatrixHandle matrixHandle;
-		
+		ComponentHandle componentHandle;
+		RenderObject()
+		{
+			meshHandle = 0;
+			materialHandle = 0;
+			startIndex = IndexAmount = 0;
+			matrixHandle = 0;
+			componentHandle = 0;
+		}
+		RenderObject(MeshHandle p_MeshHandle, MaterialHandle p_MaterialHandle, Index p_StartIndex,
+			Index p_IndexAmount, MatrixHandle p_MatrixHandle, ComponentHandle p_ComponentHandle)
+		{
+			meshHandle = p_MeshHandle;
+			materialHandle = p_MaterialHandle;
+			startIndex = p_StartIndex;
+			IndexAmount = p_IndexAmount;
+			matrixHandle = p_MatrixHandle;
+			componentHandle = p_ComponentHandle;
+		}
+		RenderObject(MeshHandle p_MeshHandle, MaterialHandle p_MaterialHandle, Index p_StartIndex,
+			Index p_IndexAmount, MatrixHandle p_MatrixHandle)
+		{
+			meshHandle = p_MeshHandle;
+			materialHandle = p_MaterialHandle;
+			startIndex = p_StartIndex;
+			IndexAmount = p_IndexAmount;
+			matrixHandle = p_MatrixHandle;
+			componentHandle = 0;
+		}
 	};
 
-	struct Vec3
+	struct Camera
 	{
-		float x;
-		float y;
-		float z;
-
-		Vec3()
-		{
-			x = 0; y = 0; z = 0;
-		}
-		Vec3( float _x, float _y, float _z )
-		{
-			x = _x; y = _y; z = _z;
-		}
+		MatrixHandle transformMatrixHandle;
+		MatrixHandle projectionMatrixHandle;
+		ComponentHandle componentHandle;
 	};
-
-	struct Vec2
-	{
-		float x;
-		float y;
-		Vec2()
-		{
-			x = 0; y = 0;
-		}
-		Vec2( float _x, float _y )
-		{
-			x = _x; y = _y;
-		}
-	};
+	
 
 	struct VertexPosNormalTex
 	{

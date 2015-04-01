@@ -59,12 +59,12 @@ PS_OUTPUT PS(PS_INPUT p_Input)
 
 	o_Output.Normal_Depth = float4(t_Normal, t_Depth);
 
-	float3 t_Diffuse = float3(1, 1, 1);
+	float3 t_Diffuse = float3(0, 1, 1);
 	float t_Specular = 1;
 
 	o_Output.Diffuse_Spec = float4(t_Diffuse, t_Specular);
 
-	o_Output.Temp = float4(0, 0, 0, 0);
+	o_Output.Temp = float4(0, 1, 0, 0);
 
 	return o_Output;
 }

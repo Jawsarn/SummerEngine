@@ -9,7 +9,13 @@
 class InputSystem : public System
 {
 public:
-	InputSystem();
+	static InputSystem* GetInstance();
+
+	
 	~InputSystem();
+private:
+	static InputSystem* m_Singleton;
+
+	InputSystem();
 };
 

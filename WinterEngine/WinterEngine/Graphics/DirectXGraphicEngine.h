@@ -34,7 +34,7 @@ public:
 	MaterialHandle CreateMaterial( const std::string& p_Name, Material* p_Mat);
 
 	//Loads a mesh resource from file into the engine and returns a handle to it TODO::set full virtual
-	MeshHandle LoadModel(const std::string& p_Name);
+	bool LoadModel(const std::string& p_Name, MeshHandle* o_MeshHandle);
 
 	//Loads a material resource from file into the engine and returns a handle to it TODO::set full virtual
 	MaterialHandle LoadMaterial(const std::string& p_Name);
@@ -47,16 +47,22 @@ public:
 	void BeginDraw();
 
 	//Call "BeginDraw()" befor, draws nontransparent, call "ComputeDeferred()" after
-	void DrawOpaque(std::vector<RenderObject>* p_RenderObects);
+	void DrawOpaque(std::vector<RenderObject*>* p_RenderObects);
 
 	//Computes deferrred rendering, call befor "DrawTransparent"
 	void ComputeDeferred();
 
 	//Call after "ComputerDeferred()", draws transparent objects
-	void DrawTransparent(std::vector<RenderObject>* p_RenderObects);
+	void DrawTransparent(std::vector<RenderObject*>* p_RenderObects);
 
 	//Call when done drawing, needs to be started with "BeginDraw()"
 	void EndDraw();
+
+	//========================================\\
+	///////=======Utility Functions======\\\\\\\
+	/////////=========================\\\\\\\\\\
+
+	void UseCamera(SGEngine::Camera p_Camera, UINT p_Slot);
 
 
 private:
@@ -138,6 +144,12 @@ private:
 
 	};
 
+	struct View
+	{
+		D3D11_VIEWPORT viewport;
+		SGEngine::Camera camera;
+	};
+
 	//Shaderprogram, used to simply group drawmethods, used by functionality as DrawOpaque/Transparent/
 	struct ShaderProgram
 	{
@@ -174,9 +186,9 @@ private:
 	//shaderbuffers
 	struct PerFrameCBuffer
 	{
-		XMMATRIX View;
-		XMMATRIX Proj;
-		XMMATRIX ViewProj;
+		XMFLOAT4X4 View;
+		XMFLOAT4X4 Proj;
+		XMFLOAT4X4 ViewProj;
 		XMFLOAT4 EyePosition;
 	};
 
@@ -281,11 +293,8 @@ private:
 	ID3D11Buffer*				m_PerFrameCBuffer;
 	ID3D11Buffer*				m_DeferredComputeCBuffer;
 
-	//cameras
-	std::vector<PerFrameCBuffer>	m_Cameras;
-
-	//viewports
-	std::vector<D3D11_VIEWPORT>		m_ViewPorts;
+	//viewports + cameras
+	std::vector<View>				m_View;
 
 
 	//========================================\\
@@ -331,9 +340,24 @@ private:
 
 
 
+
 	//===============RESOURCES================\\
 
 	UINT LoadTexture(std::string p_Name);
+
+
+
+
+
+	//===========DRAW FUNCTIONS==============\\
+
+	void SetMesh(MeshHandle* p_Handle);
+
+	void SetMaterial(MaterialHandle* p_Handle);
+
+	void SetShaderProgram(ShaderProgram* p_ShaderProgram);
+
+
 	/*
 	void SetShaders(ShaderProgram *p_Program);
 	void SetTextures(RenderObject* p_Object);

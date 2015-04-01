@@ -13,7 +13,9 @@ public:
 
 	~TransformComponent();
 
-	void Create(Matrix* p_Matrix);
+
+
+	unsigned int Create(Matrix* p_Matrix);
 
 private:
 	MatrixHandle m_MatrixHandle;

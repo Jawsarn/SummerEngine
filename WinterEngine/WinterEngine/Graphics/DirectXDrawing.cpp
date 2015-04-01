@@ -24,27 +24,93 @@ void DirectXGraphicEngine::BeginDraw()
 	}
 
 	m_IsDrawing = true;
-}
 
-//test shit
-void SetMesh()
-{
+	UINT t_Strides = sizeof(XMFLOAT4X4);
+	UINT t_Offsets = 0;
+
+	m_DeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_DeviceContext->IASetVertexBuffers(1, 1, &m_InstanceBuffer, &t_Strides, &t_Offsets);
+
+
+
+	//update viewmatrix
+	DirectXMatrixLibrary* t_MatrixLib = (DirectXMatrixLibrary*)t_MatrixLib->GetInstance();
+
+	UINT t_Size = m_View.size();
+	for (size_t i = 0; i < t_Size; i++)
+	{
+		PerFrameCBuffer t_PFB;
+		t_PFB.View = *t_MatrixLib->GetMatrix(m_View.at(i).camera.transformMatrixHandle);
+		t_PFB.Proj = *t_MatrixLib->GetMatrix(m_View.at(i).camera.projectionMatrixHandle);
+		XMMATRIX t_View = XMLoadFloat4x4(&t_PFB.View);
+		XMMATRIX t_Proj = XMLoadFloat4x4(&t_PFB.Proj);
+		XMMATRIX t_ViewProj = XMMatrixMultiply(t_View, t_Proj);
+		XMStoreFloat4x4(&t_PFB.ViewProj, t_ViewProj);
+		
+		m_DeviceContext->UpdateSubresource(m_PerFrameCBuffer, 0, nullptr, &t_PFB, 0, 0);
+	}
 	
 }
 
-void SetMat()
+//test shit
+void DirectXGraphicEngine::SetMesh(MeshHandle* p_Handle)
 {
+	UINT t_Strides = sizeof(SGEngine::VertexPosNormalTexTangent);
+	UINT t_Offsets = 0;
+	m_DeviceContext->IASetVertexBuffers(0, 1, &m_MeshKeys[*p_Handle]->vertexBuffer, &t_Strides, &t_Offsets);
+	m_DeviceContext->IASetIndexBuffer(m_MeshKeys[*p_Handle]->indexBuffer, DXGI_FORMAT_R32_UINT, t_Offsets);
+}
+
+void DirectXGraphicEngine::SetMaterial(MaterialHandle* p_Handle)
+{
+	m_DeviceContext->PSSetConstantBuffers(0, 1, &m_MaterialKeys.at(*p_Handle)->m_MatBuffer);
+}
+
+void DirectXGraphicEngine::SetShaderProgram(ShaderProgram* p_ShaderProgram)
+{
+	if (p_ShaderProgram->VertexShader != nullptr)
+	{
+		m_DeviceContext->VSSetShader(p_ShaderProgram->VertexShader,nullptr,0 );
+	}
+	if (p_ShaderProgram->InputLayout != nullptr)
+	{
+		m_DeviceContext->IASetInputLayout(p_ShaderProgram->InputLayout);
+	}
+	if (p_ShaderProgram->HullShader != nullptr)
+	{
+		m_DeviceContext->HSSetShader(p_ShaderProgram->HullShader, nullptr, 0);
+	}
+	if (p_ShaderProgram->DomainShader != nullptr)
+	{
+		m_DeviceContext->DSSetShader(p_ShaderProgram->DomainShader, nullptr, 0);
+	}
+	if (p_ShaderProgram->GeometryShader != nullptr)
+	{
+		m_DeviceContext->GSSetShader(p_ShaderProgram->GeometryShader, nullptr, 0);
+	}
+	if (p_ShaderProgram->PixelShader != nullptr)
+	{
+		m_DeviceContext->PSSetShader(p_ShaderProgram->PixelShader, nullptr, 0);
+	}
+	if (p_ShaderProgram->ComputeShader != nullptr)
+	{
+		m_DeviceContext->CSSetShader(p_ShaderProgram->ComputeShader, nullptr, 0);
+	}
 
 }
 
 //Call "BeginDraw()" befor, draws nontransparent, call "ComputeDeferred()" after TODO:: test to wrap the update of matrix buffer around the creation, so we dont copy memory 2 times
-void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
+void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject*> *p_RenderObects)
 {
-	if (m_IsDrawing)
+	if (!m_IsDrawing)
 	{
 		//TODO::ERROR MESSAGE
 		return;
 	}
+
+	//set shaders
+	SetShaderProgram(m_OpaqueShaders);
+
 
 	//get our transform
 	DirectXMatrixLibrary* t_MatrixLib = (DirectXMatrixLibrary*)t_MatrixLib->GetInstance();
@@ -56,13 +122,12 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 
 	//keep track how many new matrices we have
 	UINT t_NumOfMatrices = 0;
-	UINT t_NumOfIndicies = 0;
 
 	//set first mesh, current renderobject
-	UINT t_CurMeshID = p_RenderObects->at(0).meshHandle;
-	UINT t_CurMatID = p_RenderObects->at(0).materialHandle;
-	UINT t_CurStart = p_RenderObects->at(0).startIndex;
-	UINT t_CurIndexAmount = p_RenderObects->at(0).IndexAmount;
+	UINT t_CurMeshID = p_RenderObects->at(0)->meshHandle;
+	UINT t_CurMatID = p_RenderObects->at(0)->materialHandle;
+	UINT t_CurStart = p_RenderObects->at(0)->startIndex;
+	UINT t_CurIndexAmount = p_RenderObects->at(0)->IndexAmount;
 
 	//the new renderobject
 	UINT t_NewMeshID;
@@ -70,16 +135,16 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 	UINT t_NewStart;
 	UINT t_NewIndexAmount;
 
-	void SetMesh();//TODO remove...
-	void SetMat();
+	SetMesh(&t_CurMeshID);//TODO remove...
+	SetMaterial(&t_CurMatID);
 
 	for (UINT i = 0; i < t_Size; i++)
 	{
 		//check if same mesh
-		t_NewMeshID = p_RenderObects->at(i).meshHandle;
-		t_NewMatID = p_RenderObects->at(i).materialHandle;
-		t_NewStart = p_RenderObects->at(i).startIndex;
-		t_NewIndexAmount = p_RenderObects->at(i).IndexAmount;
+		t_NewMeshID = p_RenderObects->at(i)->meshHandle;
+		t_NewMatID = p_RenderObects->at(i)->materialHandle;
+		t_NewStart = p_RenderObects->at(i)->startIndex;
+		t_NewIndexAmount = p_RenderObects->at(i)->IndexAmount;
 
 		if (t_CurMeshID == t_NewMeshID)
 		{
@@ -92,7 +157,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 					if (t_NumOfMatrices < m_MaxNumOfInstances)
 					{
 						//copy memory from matrix in the library to our list
-						memcpy(&m_MatriceList[t_NumOfMatrices], t_MatrixLib->GetMatrix(0), sizeof(XMFLOAT4X4));
+						memcpy(&m_MatriceList[t_NumOfMatrices], t_MatrixLib->GetMatrix(p_RenderObects->at(i)->matrixHandle), sizeof(XMFLOAT4X4));
 
 						//t_Matrices[t_NumOfMatrices] = p_RenderObects[i].
 						t_NumOfMatrices++;
@@ -128,12 +193,12 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 		if (t_CurMeshID == t_NewMeshID)
 		{
 			//change if new mesh
-			void SetMesh();
+			SetMesh(&t_CurMeshID);
 		}
 		if (t_CurMatID == t_NewMatID)
 		{
 			//change if new material
-			void SetMat();
+			SetMaterial(&t_CurMatID);
 		}
 		t_CurMeshID = t_NewMeshID;
 		t_CurMatID = t_NewMatID;
@@ -159,7 +224,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject> *p_RenderObects)
 	m_DeviceContext->Unmap(m_InstanceBuffer, 0);
 
 	//draw instances
-	m_DeviceContext->DrawIndexedInstanced(t_NumOfIndicies, t_NumOfMatrices, 0, 0, 0);
+	m_DeviceContext->DrawIndexedInstanced(t_NewIndexAmount, t_NumOfMatrices, 0, 0, 0);
 }
 
 
@@ -171,6 +236,8 @@ void DirectXGraphicEngine::ComputeDeferred()
 		Logger::Log("Rendering call ComputeDeferred was called before begin was called", "DirectXRenderSystem", LoggerType::MSG_ERROR);
 		return;
 	}
+
+	SetShaderProgram(m_DeferredComputeShader);
 
 	//remove render gbuffers from render target to bind it to resource
 	ID3D11RenderTargetView* t_DeleteRenderTargets[3] = {nullptr, nullptr, nullptr};
@@ -198,7 +265,7 @@ void DirectXGraphicEngine::ComputeDeferred()
 }
 
 //Call after "ComputerDeferred()", draws transparent objects
-void DirectXGraphicEngine::DrawTransparent(std::vector<RenderObject>* p_RenderObects)
+void DirectXGraphicEngine::DrawTransparent(std::vector<RenderObject*>* p_RenderObects)
 {
 	if (!m_IsDrawing)
 	{

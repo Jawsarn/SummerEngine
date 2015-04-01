@@ -22,7 +22,7 @@ MeshHandle DirectXGraphicEngine::CreateModel( const std::string& p_Name, std::ve
 
 	//add the data when creating
 	D3D11_SUBRESOURCE_DATA t_Data;
-	t_Data.pSysMem = &p_Vertices[0];
+	t_Data.pSysMem = &p_Vertices->at(0);
 	t_Data.SysMemPitch = 0;
 	t_Data.SysMemSlicePitch = 0;
 
@@ -44,7 +44,7 @@ MeshHandle DirectXGraphicEngine::CreateModel( const std::string& p_Name, std::ve
 	t_BufferDesc.ByteWidth = sizeof(UINT)* p_Indicies->size();
 
 	//change data to index
-	t_Data.pSysMem = &p_Indicies[0];
+	t_Data.pSysMem = &p_Indicies->at(0);
 	
 	// create it
 	hr = m_Device->CreateBuffer(&t_BufferDesc, &t_Data, &t_NewMeshInfo->indexBuffer);
@@ -180,19 +180,26 @@ TextureHandle DirectXGraphicEngine::LoadTexture(std::string p_Name)
 }
 
 //Loads a mesh resource from file into the engine and returns a handle to it 
-MeshHandle DirectXGraphicEngine::LoadModel(const std::string& p_Name)
+bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_MeshHandle)
 {
 	MeshIDMap::iterator t_MeshIDMap = m_MeshIDMap.find(p_Name);
 
 	//if we got the mesh saved, return the ID to it
 	if (t_MeshIDMap != m_MeshIDMap.end())
 	{
-		return t_MeshIDMap->second;
+		*o_MeshHandle = t_MeshIDMap->second;
+		return true;
 	}
 
 	//else we load it
 	IO::StreamFile *t_StreamFile = new IO::StreamFile();
-	t_StreamFile->OpenFileRead(p_Name);
+	bool t_Worked = t_StreamFile->OpenFileRead(p_Name);
+	if (!t_Worked)
+	{
+		delete t_StreamFile;
+		*o_MeshHandle = m_ErrorMeshID;
+		return false;
+	}
 
 	//load vertices
 	UINT t_NumOfVertice = IO::ReadUnsigned(*t_StreamFile);
@@ -216,7 +223,8 @@ MeshHandle DirectXGraphicEngine::LoadModel(const std::string& p_Name)
 	t_Vertices.clear();
 	t_Indicies.clear();
 
-	return o_ID;
+	*o_MeshHandle = o_ID;
+	return true;
 }
 
 //Loads a material resource from file into the engine and returns a handle to it
@@ -225,14 +233,19 @@ MaterialHandle DirectXGraphicEngine::LoadMaterial(const std::string& p_Name)
 	MaterialIDMap::iterator t_MatIDMap = m_MaterialIDMap.find(p_Name);
 
 	//if we got the material saved, return the ID to it
-	if (t_MatIDMap != m_MeshIDMap.end())
+	if (t_MatIDMap != m_MaterialIDMap.end())
 	{
 		return t_MatIDMap->second;
 	}
 
 	//else we load it
 	IO::StreamFile *t_StreamFile = new IO::StreamFile();
-	t_StreamFile->OpenFileRead(p_Name);
+	bool t_Worked = t_StreamFile->OpenFileRead(p_Name);
+	if (!t_Worked)
+	{
+		delete t_StreamFile;
+		return m_ErrorMaterialID;
+	}
 
 	//load material
 	UINT t_NumOfVertice = IO::ReadUnsigned(*t_StreamFile);

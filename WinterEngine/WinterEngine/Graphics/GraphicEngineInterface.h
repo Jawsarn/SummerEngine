@@ -31,13 +31,13 @@ public:
 	virtual void BeginDraw() = 0;
 
 	//Call "BeginDraw()" befor, draws nontransparent, call "ComputeDeferred()" after
-	virtual void DrawOpaque(std::vector<RenderObject>* p_RenderObects) = 0;
+	virtual void DrawOpaque(std::vector<RenderObject*>* p_RenderObects) = 0;
 
 	//Computes deferrred rendering, call befor "DrawTransparent"
 	virtual void ComputeDeferred() = 0;
 
 	//Call after "ComputerDeferred()", draws transparent objects
-	virtual void DrawTransparent(std::vector<RenderObject>* p_RenderObects) = 0;
+	virtual void DrawTransparent(std::vector<RenderObject*>* p_RenderObects) = 0;
 
 	//Call when done drawing, needs to be started with "BeginDraw()"
 	virtual void EndDraw() = 0;
@@ -53,7 +53,7 @@ public:
 	virtual MaterialHandle CreateMaterial(const std::string& p_Name, Material* p_Mat) = 0;
 
 	//Loads a mesh resource from file into the engine and returns a handle to it
-	virtual MeshHandle LoadModel(const std::string& p_Name) = 0;
+	virtual bool LoadModel(const std::string& p_Name, MeshHandle* o_MeshHandle) = 0;
 
 	//Loads a material resource from file into the engine and returns a handle to it
 	virtual MaterialHandle LoadMaterial(const std::string& p_Name) = 0;
@@ -69,12 +69,15 @@ public:
 	//after initialization, load a engine preset from file
 	virtual bool LoadPresetFromFile() = 0;
 
+
 	//========================================\\
-	///////======Engine Functionality====\\\\\\\
+	///////=======Utility Functions======\\\\\\\
 	/////////=========================\\\\\\\\\\
 
 	//Changes the resolution of a texture, 0 is the windowtexture
 	void ChangeResolution(float p_Width, float p_Height, unsigned int p_Texture);
+
+	virtual void UseCamera(SGEngine::Camera p_Camera, UINT p_Slot) = 0;
 
 protected:
 	GraphicEngineInterface();

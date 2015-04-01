@@ -78,6 +78,14 @@ void BreakAtMemoryLeak( long value )
 	_CrtSetBreakAlloc( value );
 }
 
+//testcode
+#include "Entity.h"
+#include "Components/RenderingComponent.h"
+#include "Components/ProjectionComponent.h"
+#include "Components/TransformComponent.h"
+#include "Graphics/GraphicEngineInterface.h"
+#include "Matrix/MatrixLibraryInterface.h"
+
 //main function, where the engine starts
 int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstance, _In_ LPWSTR p_LpCmdLine, _In_ int p_NCmdShow)
 {
@@ -96,7 +104,8 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	//add systems we want from define
 #ifdef SYS_RENDER
 	{
-		m_Systems.push_back(new RenderingSystem());
+		RenderingSystem* m_RS = m_RS->GetInstance();
+		m_Systems.push_back(m_RS);
 		//TODO:we need to initialize graphicengine here atm, because I haven't found a good solution to sending the instance stuff as a voidpointer and then later check if it's directX or not
 		GraphicEngineInterface* m_Engine = m_Engine->GetInstance();
 		bool t_InitializeOK = m_Engine->Initialize(m_HandleWindow, 1024, 1024);
@@ -105,10 +114,14 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	}
 #endif
 #ifdef SYS_INPUT
-	m_Systems.push_back(new InputSystem());
+	InputSystem* m_IS = m_IS->GetInstance();
+	m_Systems.push_back(m_IS);
 #endif
 #ifdef SYS_TRANSF
-	m_Systems.push_back(new TransformSystem());
+	MatrixLibraryInterface* m_Lib = m_Lib->GetInstance();
+	m_Lib->Initialize();
+	TransformSystem* m_TS = m_TS->GetInstance();
+	m_Systems.push_back(m_TS);
 #endif
 
 	
@@ -117,6 +130,58 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	
 	//add another function for game
 #ifdef EDITOR
+	//test code
+	Entity* t_FirstEntity = new Entity("Orc");
+	Entity* t_CameraEntity = new Entity("Camera");
+
+	RenderingComponent* t_OrcRC = new RenderingComponent();
+	TransformComponent* t_OrcTC = new TransformComponent();
+
+
+	ProjectionComponent* t_CAMPC = new ProjectionComponent();
+	TransformComponent* t_CAMTC = new TransformComponent();
+
+	//create matrixes n' shit
+	Matrix* t_OrcMat = new Matrix(Vec3(0,0,-10),Vec3(0,0,-1),Vec3(0,1,0));
+	UINT OrcMatrix = t_OrcTC->Create(t_OrcMat);
+	delete t_OrcMat;
+
+	
+
+	GraphicEngineInterface* t_Engine = t_Engine->GetInstance();
+	UINT Mesh;
+	bool t_Worked = t_Engine->LoadModel("", &Mesh);
+	if (!t_Worked)
+	{
+
+	}
+	 
+	UINT Mat = t_Engine->LoadMaterial("");
+	t_OrcRC->Create(false, SGEngine::RenderObject(Mesh, Mat, 0, 36, OrcMatrix));
+
+
+	//camera
+	Matrix* t_CamMat = new Matrix(Vec3(0, 0, 0), Vec3(0, 0, -1), Vec3(0, 1, 0));
+	UINT CamMatrix = t_CAMTC->Create(t_CamMat);
+	delete t_CamMat;
+
+
+	FoVProjMatrix* t_CamFovMat = new FoVProjMatrix(1.570796327f, 1.0f, 0.01f, 1000.0f);
+	t_CAMPC->CreateCamera(t_CamFovMat, CamMatrix);
+	delete t_CamFovMat;
+	t_CAMPC->UseCamera();
+
+	//add compnoents
+	t_FirstEntity->AddComponent(t_OrcRC);
+	t_FirstEntity->AddComponent(t_OrcTC);
+
+
+	t_CameraEntity->AddComponent(t_CAMTC);
+	t_CameraEntity->AddComponent(t_CAMPC);
+
+	//RenderingComponent* t_ExtraTestRC = new RenderingComponent();
+	//t_ExtraTestRC->Create(false, SGEngine::RenderObject(Mesh, Mat, 0, 24, OrcMatrix));
+
 	RunEditor();
 #endif
 

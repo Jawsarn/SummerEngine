@@ -5,6 +5,18 @@
 //the graphic and physics(?) engine can work around to get the directx values directly. This because the directX values can compute on the graphics drive in a nice way, and we can upload matrixes to
 //graphic card diretly for drawing.
 
+TransformSystem* TransformSystem::m_Singleton = nullptr;
+
+TransformSystem* TransformSystem::GetInstance()
+{
+	if (m_Singleton == nullptr)
+	{
+		m_Singleton = new TransformSystem();
+	}
+
+	return m_Singleton;
+}
+
 TransformSystem::TransformSystem()
 {
 }

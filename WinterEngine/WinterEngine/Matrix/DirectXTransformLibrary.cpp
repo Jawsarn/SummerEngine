@@ -16,18 +16,7 @@ DirectXMatrixLibrary::~DirectXMatrixLibrary()
 
 void DirectXMatrixLibrary::Initialize()
 {
-	Matrix t_ErrorMatrix;
-	t_ErrorMatrix.Direction[0] = 0;
-	t_ErrorMatrix.Direction[1] = 0;
-	t_ErrorMatrix.Direction[2] = 1;
-
-	t_ErrorMatrix.Position[0] = 0;
-	t_ErrorMatrix.Position[1] = 0;
-	t_ErrorMatrix.Position[2] = 0;
-
-	t_ErrorMatrix.Up[0] = 0;
-	t_ErrorMatrix.Up[1] = 1;
-	t_ErrorMatrix.Up[2] = 0;
+	Matrix t_ErrorMatrix = Matrix(Vec3(0,0,0),Vec3(0,0,1),Vec3(0,1,0));
 
 	m_ErrorMatrixHandle = CreateMatrix(&t_ErrorMatrix);
 }
@@ -35,9 +24,9 @@ void DirectXMatrixLibrary::Initialize()
 MatrixHandle DirectXMatrixLibrary::CreateMatrix(Matrix* p_Matrix)
 {
 	//make to vectors so we can create matrix using directx
-	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(p_Matrix->Position[0], p_Matrix->Position[1], p_Matrix->Position[2]));
-	XMVECTOR t_Direction = XMLoadFloat3(&XMFLOAT3(p_Matrix->Direction[0], p_Matrix->Direction[1], p_Matrix->Direction[2]));
-	XMVECTOR t_Up = XMLoadFloat3(&XMFLOAT3(p_Matrix->Up[0], p_Matrix->Up[1], p_Matrix->Up[2]));
+	XMVECTOR t_Eye = XMLoadFloat3(&XMFLOAT3(p_Matrix->Position.x, p_Matrix->Position.y, p_Matrix->Position.z));
+	XMVECTOR t_Direction = XMLoadFloat3(&XMFLOAT3(p_Matrix->Direction.x, p_Matrix->Direction.y, p_Matrix->Direction.z));
+	XMVECTOR t_Up = XMLoadFloat3(&XMFLOAT3(p_Matrix->Up.x, p_Matrix->Up.y, p_Matrix->Up.z));
 
 	//create matrix
 	XMMATRIX t_NewMat = XMMatrixLookToLH(t_Eye, t_Direction, t_Up);

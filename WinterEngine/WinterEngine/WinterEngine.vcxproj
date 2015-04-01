@@ -99,6 +99,7 @@
     <ClCompile Include="Graphics\DirectXGraphicEngine.cpp" />
     <ClCompile Include="Graphics\DirectXInitialize.cpp" />
     <ClCompile Include="Graphics\DirectXResourceCreation.cpp" />
+    <ClCompile Include="Graphics\DirectXUtility.cpp" />
     <ClCompile Include="Graphics\GraphicEngineInterface.cpp" />
     <ClCompile Include="Graphics\ShaderLoader.cpp" />
     <ClCompile Include="Graphics\TextureLoaderDDS.cpp" />

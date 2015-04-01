@@ -10,6 +10,10 @@ bool DirectXGraphicEngine::Initialize(HWND p_Handle, UINT p_Width, UINT p_Height
 	m_MaxNumOfInstances = 100;
 	m_DeferredThreadGSize = 16;
 	m_VsyncCode = 1;
+	m_IsDrawing = false;
+	m_ErrorTextureID = 0;
+	m_ErrorMeshID = 0;
+	m_ErrorMaterialID = 0;
 
 	HRESULT hr = S_OK;
 
@@ -204,6 +208,16 @@ void DirectXGraphicEngine::InitializeViewport()
 	vp.TopLeftY = 0;
 
 	m_DeviceContext->RSSetViewports(1, &vp);
+
+	//add it into our view vector
+	View t_NewView = View();
+	t_NewView.viewport = vp;
+	t_NewView.camera.componentHandle = 0;
+	t_NewView.camera.projectionMatrixHandle = 0;
+	t_NewView.camera.transformMatrixHandle = 0;
+	t_NewView.camera.componentHandle = 0;
+
+	m_View.push_back(t_NewView);
 }
 
 //creates normal,wireframe rasterizers

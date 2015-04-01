@@ -34,6 +34,7 @@ public:
 	virtual void DisableComponent(Component* p_Component);
 
 protected:
+
 	std::list<Component*> m_ActiveComponents;
 	std::list<Component*> m_InactiveComponents;
 };

@@ -6,10 +6,12 @@
 
 TransformComponent::TransformComponent() : Component("TransformComponent")
 {
+	m_MatrixHandle = 0;
 }
 
 TransformComponent::TransformComponent(std::string p_Name) : Component(p_Name)
 {
+	m_MatrixHandle = 0;
 }
 
 
@@ -17,9 +19,11 @@ TransformComponent::~TransformComponent()
 {
 }
 
-void TransformComponent::Create(Matrix* p_Matrix)
+unsigned int TransformComponent::Create(Matrix* p_Matrix)
 {
 	MatrixLibraryInterface* t_Lib = t_Lib->GetInstance();
 
 	m_MatrixHandle = t_Lib->CreateMatrix(p_Matrix);
+
+	return m_MatrixHandle;
 }

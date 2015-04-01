@@ -3,7 +3,14 @@
 
 Entity::Entity()
 {
+	m_Name = "DefaultEntity";
 }
+
+Entity::Entity(std::string p_Name)
+{
+	m_Name = p_Name;
+}
+
 
 
 Entity::~Entity()

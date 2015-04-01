@@ -8,7 +8,12 @@
 class TransformSystem : public System
 {
 public:
-	TransformSystem();
+	static TransformSystem* GetInstance();
+
 	~TransformSystem();
+private:
+	static TransformSystem* m_Singleton;
+
+	TransformSystem();
 };
 

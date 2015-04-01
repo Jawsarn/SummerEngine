@@ -20,8 +20,7 @@ Texture2D<float4> m_Specular				:register(t3);
 void CS( uint3 p_ThreadID : SV_DispatchThreadID )
 {
 	//if within screen
-	if (0 <= p_ThreadID.x < 1920 && 0 <= p_ThreadID.y < 1080)
-	{
-		o_Output[p_ThreadID.xy] = float4(m_Normal_Depth[p_ThreadID.xy].xyz, 0);
-	}
+
+	o_Output[p_ThreadID.xy] = float4(m_DiffuseColor_Spec[p_ThreadID.xy].xyz, 0);
+	
 }

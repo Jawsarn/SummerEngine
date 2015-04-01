@@ -200,6 +200,9 @@
     <ClCompile Include="Matrix\MatrixLibraryInterface.cpp">
       <Filter>Engine\Matrix\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\DirectXUtility.cpp">
+      <Filter>Engine\Graphics\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Debug\TestIcon2.bmp">

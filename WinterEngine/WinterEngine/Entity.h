@@ -6,6 +6,7 @@ class Entity
 {
 public:
 	Entity();
+	Entity(std::string p_Name);
 	~Entity();
 
 	std::string GetName() const { return m_Name; }

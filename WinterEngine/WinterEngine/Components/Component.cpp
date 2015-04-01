@@ -4,11 +4,13 @@
 Component::Component()
 {
 	m_Name = "Component";
+	m_IsEnabled = true;
 }
 
 Component::Component(std::string p_Name)
 {
 	m_Name = p_Name;
+	m_IsEnabled = true;
 }
 
 Component::~Component()
