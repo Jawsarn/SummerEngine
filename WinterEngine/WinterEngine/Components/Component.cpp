@@ -1,5 +1,5 @@
 #include "Component.h"
-
+#include "../Entity.h"
 
 Component::Component()
 {
@@ -55,6 +55,11 @@ void Component::Update()
 void Component::Destroy()
 {
 
+}
+
+void Component::SetEntity(Entity* p_Entity)
+{
+	m_Entity = p_Entity;
 }
 
 

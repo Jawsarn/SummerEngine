@@ -3,6 +3,7 @@
 #include "../IO/Serializable.h"
 #include <string>
 
+class Entity;
 
 class Component : IO::Serializable
 {
@@ -35,6 +36,7 @@ public:
 
 	std::string GetName() const { return m_Name; }
 
+	void SetEntity(Entity* p_Entity);
 
 	//IO
 	virtual bool Read(IO::Stream &p_Stream);
@@ -49,6 +51,8 @@ protected:
 
 	//if the component is active
 	bool m_IsEnabled;
+
+	Entity* m_Entity;
 };
 
 
