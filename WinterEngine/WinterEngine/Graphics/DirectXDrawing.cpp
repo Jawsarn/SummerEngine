@@ -104,7 +104,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject*> *p_RenderObects
 {
 	if (!m_IsDrawing)
 	{
-		//TODO::ERROR MESSAGE
+		Logger::Log("Rendering call DrawOpaque was called before begin was called", "DirectXRenderSystem", LoggerType::MSG_ERROR);
 		return;
 	}
 
@@ -118,7 +118,11 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject*> *p_RenderObects
 	//check if any objects
 	UINT t_Size = p_RenderObects->size();
 	if (t_Size == 0)
+	{
+		Logger::Log("No opaque objects exist in list to draw", "DirectXRenderSystem", LoggerType::MSG_INFO);
 		return;
+	}
+		
 
 	//keep track how many new matrices we have
 	UINT t_NumOfMatrices = 0;
@@ -161,13 +165,14 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject*> *p_RenderObects
 
 						//t_Matrices[t_NumOfMatrices] = p_RenderObects[i].
 						t_NumOfMatrices++;
+
+						continue;
 					}
 					else
 					{
 						//TODO:: increase the size of the buffer oh no...
+						Logger::Log("OBS! instance list to small! Not sure what consequences this causes OBS!", "DirectXRenderSystem", LoggerType::MSG_ERROR);
 					}
-					
-					continue;
 				}
 			}
 		}
