@@ -1,6 +1,7 @@
 #include "DirectXGraphicEngine.h"
 #include "TextureLoaderDDS.h"
 #include "../IO/StreamFile.h"
+#include "../Utility/Logger.h"
 
 //Creates a handle to a mesh resource in the eingine TODO::Save mesh into a binary file
 MeshHandle DirectXGraphicEngine::CreateModel( const std::string& p_Name, std::vector<VertexPosNormalTexTangent>* p_Vertices, std::vector<Index>* p_Indicies )
@@ -31,6 +32,8 @@ MeshHandle DirectXGraphicEngine::CreateModel( const std::string& p_Name, std::ve
 	if (FAILED(hr))
 	{
 		//if failed return errormesh
+		Logger::Log("Failed creating vertexbuffer for mesh \"" + p_Name + "\"", "DirectXRenderSystem", LoggerType::MSG_WARNING);
+
 		delete t_NewMeshInfo;
 		return m_ErrorMeshID;
 	}
@@ -51,6 +54,7 @@ MeshHandle DirectXGraphicEngine::CreateModel( const std::string& p_Name, std::ve
 	if (FAILED(hr))
 	{
 		//if failed return errormesh
+		Logger::Log("Failed creating indexbuffer for mesh \"" + p_Name + "\"", "DirectXRenderSystem", LoggerType::MSG_WARNING);
 		delete t_NewMeshInfo;
 		return m_ErrorMeshID;
 	}
@@ -101,6 +105,7 @@ MaterialHandle DirectXGraphicEngine::CreateMaterial(const std::string& p_Name, M
 	if (FAILED(hr))
 	{
 		//Failed, returning error material
+		Logger::Log("Failed creating buffer for material \"" + p_Name + "\"", "DirectXRenderSystem", LoggerType::MSG_WARNING);
 		delete t_NewMaterial;
 		return m_ErrorMaterialID;
 	}
@@ -129,34 +134,41 @@ TextureHandle DirectXGraphicEngine::LoadTexture(std::string p_Name)
 	//else we find extension in filename to know what type it is
 	std::size_t t_Spot = p_Name.find_last_of(".");
 	std::string t_Extension;
+	ID3D11ShaderResourceView* t_NewResourceView;
 
+	HRESULT hr = S_OK;
 
 	if (t_Spot == std::string::npos)
 	{
 		//no . found, that'd be an error filename
+		Logger::Log("Error in filename \"" + p_Name + "\" to load texture.", "DirectXRenderSystem", LoggerType::MSG_WARNING);
 		t_Extension = "";
+		hr = E_FAIL;
 	}
 	else
 	{
 		//create the extension to a string
 		std::size_t t_Length = p_Name.length();
 		t_Extension = p_Name.substr(t_Spot, t_Length);
-	}
 
-	HRESULT hr = S_OK;
 
-	//find what type of file it is, and create it by the type
-	ID3D11ShaderResourceView* t_NewResourceView;
-	if (t_Extension == ".dds")
-	{
-		std::string t_FilePath = "Textures/" + p_Name;
-		std::wstring t_LoadTextString = std::wstring(t_FilePath.begin(), t_FilePath.end());
+		//find what type of file it is, and create it by the type
+		
+		if (t_Extension == ".dds")
+		{
+			std::string t_FilePath = "Textures/" + p_Name;
+			std::wstring t_LoadTextString = std::wstring(t_FilePath.begin(), t_FilePath.end());
 
-		hr = CreateDDSTextureFromFile(m_Device, t_LoadTextString.c_str(), nullptr, &t_NewResourceView);
-	}
-	else
-	{
-		hr = E_FAIL;
+			hr = CreateDDSTextureFromFile(m_Device, t_LoadTextString.c_str(), nullptr, &t_NewResourceView);
+			if (FAILED(hr))
+				Logger::Log("Failed loading texture with DDS-loader from file \"" + p_Name + "\"", "DirectXRenderSystem", LoggerType::MSG_WARNING);
+
+		}
+		else
+		{
+			Logger::Log("Failed finding suitable texture-loader for extension \"" + t_Extension + "\" in filename \"" + p_Name + "\"", "DirectXRenderSystem", LoggerType::MSG_WARNING);
+			hr = E_FAIL;
+		}
 	}
 
 	//if the creaton failed, or no crator for the extention was found, we use errorimage, else we save the new texture to map, and hash a ID to it
@@ -191,40 +203,72 @@ bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_Me
 		return true;
 	}
 
-	//else we load it
-	IO::StreamFile *t_StreamFile = new IO::StreamFile();
-	bool t_Worked = t_StreamFile->OpenFileRead(p_Name);
-	if (!t_Worked)
+	//see if we have right extension to load it
+	std::size_t t_Spot = p_Name.find_last_of(".");
+	std::string t_Extension;
+
+	
+
+
+	if (t_Spot == std::string::npos)
 	{
-		delete t_StreamFile;
+		//no . found, that'd be an error filename
+		Logger::Log("Error in filename \"" + p_Name + "\" to load mesh.", "DirectXRenderSystem", LoggerType::MSG_WARNING);
 		*o_MeshHandle = m_ErrorMeshID;
 		return false;
 	}
+	else
+	{
+		//create the extension to a string
+		std::size_t t_Length = p_Name.length();
+		t_Extension = p_Name.substr(t_Spot, t_Length);
 
-	//load vertices
-	UINT t_NumOfVertice = IO::ReadUnsigned(*t_StreamFile);
-	std::vector<VertexPosNormalTexTangent> t_Vertices;
-	t_Vertices.resize(t_NumOfVertice);
-	t_StreamFile->Read(t_NumOfVertice* sizeof(VertexPosNormalTexTangent), &t_Vertices[0]);
 
-	//load indices
-	UINT t_NumOfIndicies = IO::ReadUnsigned(*t_StreamFile);
-	std::vector<UINT> t_Indicies;
-	t_Indicies.resize(t_NumOfIndicies);
-	t_StreamFile->Read(t_NumOfIndicies*sizeof(UINT), &t_Indicies[0]);
-	
-	//close file
-	t_StreamFile->Close();
+		if (t_Extension == ".smat")
+		{
+			//else we load it
+			IO::StreamFile *t_StreamFile = new IO::StreamFile();
+			bool t_Worked = t_StreamFile->OpenFileRead(p_Name);
+			if (!t_Worked)
+			{
+				Logger::Log("Failed opening stream with filename \"" + p_Name + "\"", "DirectXRenderSystem", LoggerType::MSG_WARNING);
+				delete t_StreamFile;
+				*o_MeshHandle = m_ErrorMeshID;
+				return false;
+			}
 
-	//create model
-	UINT o_ID = CreateModel(p_Name, &t_Vertices, &t_Indicies);
+			//load vertices
+			UINT t_NumOfVertice = IO::ReadUnsigned(*t_StreamFile);
+			std::vector<VertexPosNormalTexTangent> t_Vertices;
+			t_Vertices.resize(t_NumOfVertice);
+			t_StreamFile->Read(t_NumOfVertice* sizeof(VertexPosNormalTexTangent), &t_Vertices[0]);
 
-	//clear list, dont think I need to do this but its good :)
-	t_Vertices.clear();
-	t_Indicies.clear();
+			//load indices
+			UINT t_NumOfIndicies = IO::ReadUnsigned(*t_StreamFile);
+			std::vector<UINT> t_Indicies;
+			t_Indicies.resize(t_NumOfIndicies);
+			t_StreamFile->Read(t_NumOfIndicies*sizeof(UINT), &t_Indicies[0]);
 
-	*o_MeshHandle = o_ID;
-	return true;
+			//close file
+			t_StreamFile->Close();
+
+			//create model
+			UINT o_ID = CreateModel(p_Name, &t_Vertices, &t_Indicies);
+
+			//clear list, dont think I need to do this but its good :)
+			t_Vertices.clear();
+			t_Indicies.clear();
+
+			*o_MeshHandle = o_ID;
+			return true;
+		}
+		else
+		{
+			Logger::Log("Failed finding suitable mesh-loader for extension \"" + t_Extension + "\" in filename \"" + p_Name + "\"", "DirectXRenderSystem", LoggerType::MSG_WARNING);
+			*o_MeshHandle = m_ErrorMeshID;
+			return false;
+		}
+	}
 }
 
 //Loads a material resource from file into the engine and returns a handle to it
@@ -238,11 +282,36 @@ MaterialHandle DirectXGraphicEngine::LoadMaterial(const std::string& p_Name)
 		return t_MatIDMap->second;
 	}
 
+	//see if we have right extension to load it
+	std::size_t t_Spot = p_Name.find_last_of(".");
+	std::string t_Extension;
+
+	if (t_Spot == std::string::npos)
+	{
+		//no . found, that'd be an error filename
+		Logger::Log("Error in filename \"" + p_Name + "\" to load material.", "DirectXRenderSystem", LoggerType::MSG_WARNING);
+		
+		return m_ErrorMaterialID;
+	}
+
+	//create the extension to a string
+	std::size_t t_Length = p_Name.length();
+	t_Extension = p_Name.substr(t_Spot, t_Length);
+
+	if (t_Extension != ".smat")
+	{
+		Logger::Log("Failed finding suitable mat-loader for extension \"" + t_Extension + "\" in filename \"" + p_Name + "\"", "DirectXRenderSystem", LoggerType::MSG_WARNING);
+		
+		return m_ErrorMaterialID;
+	}
+	
+
 	//else we load it
 	IO::StreamFile *t_StreamFile = new IO::StreamFile();
 	bool t_Worked = t_StreamFile->OpenFileRead(p_Name);
 	if (!t_Worked)
 	{
+		Logger::Log("Failed opening stream with filename \"" + p_Name + "\"", "DirectXRenderSystem", LoggerType::MSG_WARNING);
 		delete t_StreamFile;
 		return m_ErrorMaterialID;
 	}
