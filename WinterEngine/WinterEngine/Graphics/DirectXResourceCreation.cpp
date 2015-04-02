@@ -2,6 +2,7 @@
 #include "TextureLoaderDDS.h"
 #include "../IO/StreamFile.h"
 #include "../Utility/Logger.h"
+#include "../Importers/ObjectImporter.h"
 
 //Creates a handle to a mesh resource in the eingine TODO::Save mesh into a binary file
 MeshHandle DirectXGraphicEngine::CreateModel( const std::string& p_Name, std::vector<VertexPosNormalTangentTex>* p_Vertices, std::vector<Index>* p_Indicies )
@@ -201,7 +202,7 @@ TextureHandle DirectXGraphicEngine::LoadTexture(std::string p_Name)
 }
 
 //Loads a mesh resource from file into the engine and returns a handle to it 
-bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_MeshHandle)
+bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_MeshHandle, UINT& indexAmount /* find nicer way?*/)
 {
 	std::string modelFolderPath = "../WinterEngine/Assets/Model/";
 	MeshIDMap::iterator t_MeshIDMap = m_MeshIDMap.find(p_Name);
@@ -277,12 +278,26 @@ bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_Me
 		{
 			bool status = false;
 
+			ObjectImporter importer;
+			Model* t_NewModel = new Model();
+			status = importer.LoadObject( modelFolderPath + p_Name, t_NewModel );
+			
+			UINT o_ID = CreateModel( p_Name, &t_NewModel->Vertices, &t_NewModel->Indices);
+			*o_MeshHandle = o_ID;
+
+			indexAmount = static_cast<UINT>( t_NewModel->NumIndices ); // find better way?
+
+			delete t_NewModel; /////////////// forget?
+
 			// Load file format
 			if( status == false )
 			{
+				Logger::Log( "Failed finding suitable mesh-loader for extension \"" + t_Extension + "\" in filename \"" + p_Name + "\"", "DirectXRenderSystem", LoggerType::MSG_WARNING );
 				*o_MeshHandle = m_ErrorMeshID;
 				return status;
 			}
+			
+			return status;
 		}
 
 		else if( t_Extension == ".obj" )

@@ -156,14 +156,17 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	
 	
 	UINT Mesh;
-	bool t_Worked = g_GraphicEngine->LoadModel( "testCube.mdl", &Mesh );
+	UINT numbIndices = 0;
+	// Varför skickar vi inte bara in en model strukt här? så kan vi hämta matris, antal indecis och allt skit?
+	bool t_Worked = g_GraphicEngine->LoadModel( "Fan_HighPoly.mdl", &Mesh, numbIndices /* find better way */ );
+	
 	if (!t_Worked)
 	{
 
 	}
-	 
+
 	UINT Mat = g_GraphicEngine->LoadMaterial( "" );
-	t_OrcRC->Create(false, SGEngine::RenderObject(Mesh, Mat, 0, 36, OrcMatrix));
+	t_OrcRC->Create( false, SGEngine::RenderObject( Mesh, Mat, 0, numbIndices, OrcMatrix ) );
 
 	UINT Mat2 = g_GraphicEngine->LoadMaterial( "" );
 	t_Orc2RC->Create(false, SGEngine::RenderObject(Mesh, Mat2, 0, 36, Orc2Matrix));

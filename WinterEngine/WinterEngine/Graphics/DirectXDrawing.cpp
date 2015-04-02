@@ -56,6 +56,7 @@ void DirectXGraphicEngine::SetMesh(MeshHandle* p_Handle)
 {
 	UINT t_Strides = sizeof(SGEngine::VertexPosNormalTangentTex);
 	UINT t_Offsets = 0;
+	MeshInfo* t_MeshHandle = m_MeshKeys[*p_Handle];
 	m_DeviceContext->IASetVertexBuffers(0, 1, &m_MeshKeys[*p_Handle]->vertexBuffer, &t_Strides, &t_Offsets);
 	m_DeviceContext->IASetIndexBuffer(m_MeshKeys[*p_Handle]->indexBuffer, DXGI_FORMAT_R32_UINT, t_Offsets);
 }
@@ -230,7 +231,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject*> *p_RenderObects
 		t_CurStart = t_NewStart;
 		t_CurIndexAmount = t_NewIndexAmount;
 
-		memcpy(&m_MatriceList[t_NumOfMatrices], t_MatrixLib->GetMatrix(0), sizeof(XMFLOAT4X4));
+		memcpy(&m_MatriceList[t_NumOfMatrices], t_MatrixLib->GetMatrix(0), sizeof(XMFLOAT4X4)); 
 		t_NumOfMatrices = 1;
 	}
 

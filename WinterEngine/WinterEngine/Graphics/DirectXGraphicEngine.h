@@ -34,7 +34,7 @@ public:
 	MaterialHandle CreateMaterial( const std::string& p_Name, Material* p_Mat);
 
 	//Loads a mesh resource from file into the engine and returns a handle to it TODO::set full virtual
-	bool LoadModel(const std::string& p_Name, MeshHandle* o_MeshHandle);
+	bool LoadModel( const std::string& p_Name, MeshHandle* o_MeshHandle, UINT& indexAmount /* find nicer way?*/ );
 
 	//Loads a material resource from file into the engine and returns a handle to it TODO::set full virtual
 	MaterialHandle LoadMaterial(const std::string& p_Name);
