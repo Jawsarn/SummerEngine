@@ -120,9 +120,6 @@
     <ClInclude Include="Utility\Logger.h">
       <Filter>Engine\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Components\ProjectionComponent.h">
-      <Filter>Engine\Components\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Matrix\DirectXMatrixLibrary.h">
       <Filter>Engine\Matrix\Header</Filter>
     </ClInclude>
@@ -131,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="Matrix\MatrixToolbox.h">
       <Filter>Engine\Matrix\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\CameraComponent.h">
+      <Filter>Engine\Components\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -191,9 +191,6 @@
     <ClCompile Include="Utility\Logger.cpp">
       <Filter>Engine\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="Components\ProjectionComponent.cpp">
-      <Filter>Engine\Components\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Matrix\DirectXTransformLibrary.cpp">
       <Filter>Engine\Matrix\Source Files</Filter>
     </ClCompile>
@@ -202,6 +199,9 @@
     </ClCompile>
     <ClCompile Include="Graphics\DirectXUtility.cpp">
       <Filter>Engine\Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\CameraComponent.cpp">
+      <Filter>Engine\Components\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

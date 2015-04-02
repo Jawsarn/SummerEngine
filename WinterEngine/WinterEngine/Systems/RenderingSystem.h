@@ -2,7 +2,7 @@
 #include "System.h"
 #include "../Graphics/GraphicToolbox.h"
 #include "../Components/RenderingComponent.h"
-#include "../Components/ProjectionComponent.h"
+#include "../Components/CameraComponent.h"
 
 //handles all components that wants to make use of inputs
 //TODO: Should handle the CPU culling of objects, and send the ones to draw to the engin
@@ -37,7 +37,7 @@ public:
 
 	//update a component
 	unsigned int AddObject(bool p_IsTransparent, SGEngine::RenderObject p_Object, RenderingComponent* p_Component);
-	unsigned int AddCamera(MatrixHandle p_Transform, MatrixHandle p_Projection, ProjectionComponent* p_Component);
+	unsigned int AddCamera(MatrixHandle p_Transform, MatrixHandle p_Projection, CameraComponent* p_Component);
 	void UseCamera(ComponentHandle p_CameraHandle);
 
 private:

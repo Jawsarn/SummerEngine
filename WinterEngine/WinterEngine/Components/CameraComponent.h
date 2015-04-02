@@ -2,12 +2,12 @@
 #include "Component.h"
 #include "../Matrix/MatrixToolbox.h"
 
-class ProjectionComponent : public Component
+class CameraComponent : public Component
 {
 public:
-	ProjectionComponent();
-	ProjectionComponent(std::string p_Name);
-	~ProjectionComponent();
+	CameraComponent();
+	CameraComponent(std::string p_Name);
+	~CameraComponent();
 
 
 

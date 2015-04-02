@@ -99,13 +99,13 @@ unsigned int RenderingSystem::AddObject(bool p_IsTransparent, RenderObject p_Ren
 	return o_Key;
 }
 
-unsigned int RenderingSystem::AddCamera(MatrixHandle p_Transform, MatrixHandle p_Projection, ProjectionComponent* p_Component)
+unsigned int RenderingSystem::AddCamera(MatrixHandle p_Transform, MatrixHandle p_Projection, CameraComponent* p_Component)
 {
 	SGEngine::Camera t_NewCamera = SGEngine::Camera();
 	t_NewCamera.transformMatrixHandle = p_Transform;
 	t_NewCamera.projectionMatrixHandle = p_Projection;
 
-	std::hash<ProjectionComponent*> t_Hash;
+	std::hash<CameraComponent*> t_Hash;
 
 	SGEngine::ComponentHandle t_Key = t_Hash(p_Component);
 
