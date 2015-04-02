@@ -153,21 +153,19 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	Matrix* t_Orc2Mat = new Matrix(Vec3(10.0f, 0, -10.0f), Vec3(0, 0, -1), Vec3(0, 1, 0));
 	UINT Orc2Matrix = t_OrcTC->Create(t_Orc2Mat);
 	delete t_Orc2Mat;
-
 	
-
-	GraphicEngineInterface* t_Engine = t_Engine->GetInstance();
+	
 	UINT Mesh;
-	bool t_Worked = t_Engine->LoadModel("", &Mesh);
+	bool t_Worked = g_GraphicEngine->LoadModel( "testCube.mdl", &Mesh );
 	if (!t_Worked)
 	{
 
 	}
 	 
-	UINT Mat = t_Engine->LoadMaterial("");
+	UINT Mat = g_GraphicEngine->LoadMaterial( "" );
 	t_OrcRC->Create(false, SGEngine::RenderObject(Mesh, Mat, 0, 36, OrcMatrix));
 
-	UINT Mat2 = t_Engine->LoadMaterial("");
+	UINT Mat2 = g_GraphicEngine->LoadMaterial( "" );
 	t_Orc2RC->Create(false, SGEngine::RenderObject(Mesh, Mat2, 0, 36, Orc2Matrix));
 
 

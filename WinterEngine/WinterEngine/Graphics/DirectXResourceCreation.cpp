@@ -203,6 +203,7 @@ TextureHandle DirectXGraphicEngine::LoadTexture(std::string p_Name)
 //Loads a mesh resource from file into the engine and returns a handle to it 
 bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_MeshHandle)
 {
+	std::string modelFolderPath = "../WinterEngine/Assets/Model/";
 	MeshIDMap::iterator t_MeshIDMap = m_MeshIDMap.find(p_Name);
 
 	//if we got the mesh saved, return the ID to it
@@ -233,11 +234,11 @@ bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_Me
 		t_Extension = p_Name.substr(t_Spot, t_Length);
 
 
-		if (t_Extension == ".smat")
+		if (t_Extension == ".smesh")
 		{
 			//else we load it
 			IO::StreamFile *t_StreamFile = new IO::StreamFile();
-			bool t_Worked = t_StreamFile->OpenFileRead(p_Name);
+			bool t_Worked = t_StreamFile->OpenFileRead( modelFolderPath + p_Name );
 			if (!t_Worked)
 			{
 				Logger::Log("Failed opening stream with filename \"" + p_Name + "\"", "DirectXRenderSystem", LoggerType::MSG_WARNING);
@@ -271,6 +272,31 @@ bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_Me
 			*o_MeshHandle = o_ID;
 			return true;
 		}
+
+		else if( t_Extension == ".mdl" )
+		{
+			bool status = false;
+
+			// Load file format
+			if( status == false )
+			{
+				*o_MeshHandle = m_ErrorMeshID;
+				return status;
+			}
+		}
+
+		else if( t_Extension == ".obj" )
+		{
+			bool status = false;
+
+			// Load file format
+			if( status == false )
+			{
+				*o_MeshHandle = m_ErrorMeshID;
+				return status;
+			}
+		}
+
 		else
 		{
 			Logger::Log("Failed finding suitable mesh-loader for extension \"" + t_Extension + "\" in filename \"" + p_Name + "\"", "DirectXRenderSystem", LoggerType::MSG_WARNING);

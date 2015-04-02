@@ -27,7 +27,7 @@ public:
 	///////Create/Load Resource Functions\\\\\\\
 	/////////=========================\\\\\\\\\\
 		
-	//Creates a handle to a mesh resource in the eingine
+	//Creates a handle to a mesh resource in the engine
 	MeshHandle CreateModel( const std::string& p_Name, std::vector<VertexPosNormalTangentTex>* p_Vertices, std::vector<Index>* p_Indicies );
 
 	//Creates a handle to a material resource in the engine

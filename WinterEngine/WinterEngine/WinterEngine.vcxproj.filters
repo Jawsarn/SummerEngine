@@ -67,6 +67,9 @@
     <Filter Include="Engine\Matrix\Source Files">
       <UniqueIdentifier>{d3ac171e-9813-4488-b261-c843a4a40225}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Importers">
+      <UniqueIdentifier>{54f2d62b-ec3c-43f5-94ee-7484ed95efac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -131,6 +134,12 @@
     </ClInclude>
     <ClInclude Include="Matrix\MatrixToolbox.h">
       <Filter>Engine\Matrix\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectImporter.h">
+      <Filter>Engine\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Engine\Graphics\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +211,9 @@
     </ClCompile>
     <ClCompile Include="Graphics\DirectXUtility.cpp">
       <Filter>Engine\Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectImporter.cpp">
+      <Filter>Engine\Importers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

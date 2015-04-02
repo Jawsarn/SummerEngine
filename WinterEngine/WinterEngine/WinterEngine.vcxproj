@@ -82,6 +82,8 @@
     <ClInclude Include="Matrix\DirectXMatrixLibrary.h" />
     <ClInclude Include="Matrix\MatrixLibraryInterface.h" />
     <ClInclude Include="Matrix\MatrixToolbox.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ObjectImporter.h" />
     <ClInclude Include="Systems\InputSystem.h" />
     <ClInclude Include="Systems\RenderingSystem.h" />
     <ClInclude Include="Systems\System.h" />
@@ -107,6 +109,7 @@
     <ClCompile Include="IO\StreamFile.cpp" />
     <ClCompile Include="Matrix\DirectXTransformLibrary.cpp" />
     <ClCompile Include="Matrix\MatrixLibraryInterface.cpp" />
+    <ClCompile Include="ObjectImporter.cpp" />
     <ClCompile Include="Systems\InputSystem.cpp" />
     <ClCompile Include="Systems\RenderingSystem.cpp" />
     <ClCompile Include="Systems\System.cpp" />

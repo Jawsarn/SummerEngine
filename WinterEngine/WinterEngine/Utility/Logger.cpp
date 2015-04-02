@@ -86,6 +86,10 @@ void Logger::Log( const std::string& msg, const std::string& msgRegisterName, Lo
 									  SetConsoleTextAttribute( hConsole, red );
 									  std::cout << "ERROR " + msgRegisterName + ": ";
 									  std::cout << msg + "\n";
+									  #ifdef _WIN32
+									    // Press enter in console to continue program
+										system( "pause" );	// TODO... Fix better way of pausing that works for windows and linux
+									  #endif
 									  break;
 		}
 

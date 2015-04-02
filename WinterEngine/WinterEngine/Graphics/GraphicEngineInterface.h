@@ -4,6 +4,7 @@
 #include "GraphicToolbox.h"
 
 
+#define g_GraphicEngine GraphicEngineInterface::GetInstance()
 
 using namespace SGEngine;
 //question: should we have indexbuffers and vertexbuffers from the Game side, or have it as one object, 
