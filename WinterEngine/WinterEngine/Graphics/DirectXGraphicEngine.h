@@ -355,6 +355,8 @@ private:
 
 	void SetMaterial(MaterialHandle* p_Handle);
 
+	void DirectXGraphicEngine::SetTexture(UINT t_TextureID, UINT p_Slot);
+
 	void SetShaderProgram(ShaderProgram* p_ShaderProgram);
 
 

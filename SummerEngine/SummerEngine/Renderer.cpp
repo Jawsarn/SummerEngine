@@ -290,7 +290,7 @@ HRESULT Renderer::InitializeRasterizers()
 	D3D11_RASTERIZER_DESC desc;
 
 	desc.FillMode = D3D11_FILL_SOLID;
-	desc.CullMode = D3D11_CULL_NONE;  //TODO D3D11_CULL_BACK D3D11_CULL_NONE
+	desc.CullMode = D3D11_CULL_BACK;  //TODO D3D11_CULL_BACK D3D11_CULL_NONE
 	desc.FrontCounterClockwise = false;
 	desc.DepthBias = 0;
 	desc.SlopeScaledDepthBias = 0.0f;

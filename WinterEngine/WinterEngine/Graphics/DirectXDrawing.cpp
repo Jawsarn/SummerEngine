@@ -7,7 +7,6 @@ void DirectXGraphicEngine::BeginDraw()
 {
 	if (m_IsDrawing)
 	{
-		//TODO::ERROR MESSAGE
 		Logger::Log( "Rendering call Begin was called before end was called", "DirectXRenderSystem", LoggerType::MSG_ERROR );
 		return;
 	}
@@ -63,7 +62,29 @@ void DirectXGraphicEngine::SetMesh(MeshHandle* p_Handle)
 
 void DirectXGraphicEngine::SetMaterial(MaterialHandle* p_Handle)
 {
-	m_DeviceContext->PSSetConstantBuffers(0, 1, &m_MaterialKeys.at(*p_Handle)->m_MatBuffer);
+	MaterialInfo* t_Mat = m_MaterialKeys.at(*p_Handle);
+	m_DeviceContext->PSSetConstantBuffers(0, 1, &t_Mat->m_MatBuffer);
+
+	//set textures
+	SetTexture(t_Mat->m_Map_Kd, 0);
+	SetTexture(t_Mat->m_Map_Ka, 1);
+	SetTexture(t_Mat->m_Map_Ks, 2);
+	SetTexture(t_Mat->m_Map_Ke, 3);
+	SetTexture(t_Mat->m_Map_Ns, 4);
+	SetTexture(t_Mat->m_Map_D, 5);
+	SetTexture(t_Mat->m_Bump, 6);
+	SetTexture(t_Mat->m_Disp, 7);
+	SetTexture(t_Mat->m_Occulsion, 8);
+	
+}
+
+void DirectXGraphicEngine::SetTexture(UINT t_TextureID, UINT p_Slot)
+{
+	ID3D11ShaderResourceView* t_RemoveResource = { 0 };
+	if (t_TextureID != 0)
+		m_DeviceContext->PSSetShaderResources(p_Slot, 1, &m_TextureMap.at(t_TextureID));
+	else
+		m_DeviceContext->PSSetShaderResources(p_Slot, 1, &t_RemoveResource);
 }
 
 void DirectXGraphicEngine::SetShaderProgram(ShaderProgram* p_ShaderProgram)
@@ -139,7 +160,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject*> *p_RenderObects
 	UINT t_NewStart;
 	UINT t_NewIndexAmount;
 
-	SetMesh(&t_CurMeshID);//TODO remove...
+	SetMesh(&t_CurMeshID);
 	SetMaterial(&t_CurMatID);
 
 	for (UINT i = 0; i < t_Size; i++)
@@ -157,7 +178,6 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject*> *p_RenderObects
 				if (t_CurStart == t_NewStart && t_CurIndexAmount == t_NewIndexAmount)
 				{
 					//everything is same, except the world matrix
-					//TODO::add matrix here
 					if (t_NumOfMatrices < m_MaxNumOfInstances)
 					{
 						//copy memory from matrix in the library to our list

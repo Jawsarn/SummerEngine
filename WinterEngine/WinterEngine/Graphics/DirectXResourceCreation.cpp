@@ -78,15 +78,24 @@ MaterialHandle DirectXGraphicEngine::CreateMaterial(const std::string& p_Name, M
 	MaterialInfo* t_NewMaterial = new MaterialInfo(*p_Mat);
 
 	//load textures
-	t_NewMaterial->m_Map_Kd = LoadTexture(p_Mat->m_Map_Kd);
-	t_NewMaterial->m_Map_Ka = LoadTexture(p_Mat->m_Map_Ka);
-	t_NewMaterial->m_Map_Ks = LoadTexture(p_Mat->m_Map_Ks);
-	t_NewMaterial->m_Map_Ke = LoadTexture(p_Mat->m_Map_Ke);
-	t_NewMaterial->m_Map_Ns = LoadTexture(p_Mat->m_Map_Ns);
-	t_NewMaterial->m_Map_D = LoadTexture(p_Mat->m_Map_D);
-	t_NewMaterial->m_Bump = LoadTexture(p_Mat->m_Bump);
-	t_NewMaterial->m_Disp = LoadTexture(p_Mat->m_Disp);
-	t_NewMaterial->m_Occulsion = LoadTexture(p_Mat->m_Occulsion);
+	if (p_Mat->m_Map_Kd != "")
+		t_NewMaterial->m_Map_Kd = LoadTexture(p_Mat->m_Map_Kd);
+	if (p_Mat->m_Map_Ka != "")
+		t_NewMaterial->m_Map_Ka = LoadTexture(p_Mat->m_Map_Ka);
+	if (p_Mat->m_Map_Ks != "")
+		t_NewMaterial->m_Map_Ks = LoadTexture(p_Mat->m_Map_Ks);
+	if (p_Mat->m_Map_Ke != "")
+		t_NewMaterial->m_Map_Ke = LoadTexture(p_Mat->m_Map_Ke);
+	if (p_Mat->m_Map_Ns != "")
+		t_NewMaterial->m_Map_Ns = LoadTexture(p_Mat->m_Map_Ns);
+	if (p_Mat->m_Map_D != "")
+		t_NewMaterial->m_Map_D = LoadTexture(p_Mat->m_Map_D);
+	if (p_Mat->m_Bump != "")
+		t_NewMaterial->m_Bump = LoadTexture(p_Mat->m_Bump);
+	if (p_Mat->m_Disp != "")
+		t_NewMaterial->m_Disp = LoadTexture(p_Mat->m_Disp);
+	if (p_Mat->m_Occulsion != "")
+		t_NewMaterial->m_Occulsion = LoadTexture(p_Mat->m_Occulsion);
 
 	//create buffer of the values
 	D3D11_BUFFER_DESC t_BufferDesc;
@@ -365,3 +374,4 @@ MaterialHandle DirectXGraphicEngine::LoadMaterial(const std::string& p_Name)
 
 	return o_ID;
 }
+

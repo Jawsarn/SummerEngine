@@ -55,7 +55,7 @@ void RegisterLoggers()
 		{ "Stream",					"" },
 		{ "EntityFactory",			"" },
 
-
+		{ "DirectXTransformLibrary", "" },
 		{ "Debug", "" },
 		{ "DirectXRenderSystem", "" },
 		{ "OpenGLRenderSystem", "" },

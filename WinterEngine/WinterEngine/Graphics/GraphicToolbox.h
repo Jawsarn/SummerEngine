@@ -81,7 +81,7 @@ namespace SGEngine
 		{
 		}
 
-		VertexPosNormalTexTangent( Vec3 pos, Vec3 norm, Vec2 uv, Vec3 tan )
+		VertexPosNormalTexTangent(Vec3 pos, Vec3 norm, Vec3 tan, Vec2 uv )
 		{
 			Position = pos;
 			Normal = norm;
@@ -99,8 +99,8 @@ namespace SGEngine
 
 		Vec3 Position;
 		Vec3 Normal;
-		Vec2 TexCoord;
 		Vec3 Tangent;
+		Vec2 TexCoord;
 	};
 
 	struct VertexPos

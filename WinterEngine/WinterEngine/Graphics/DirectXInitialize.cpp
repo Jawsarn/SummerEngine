@@ -227,7 +227,7 @@ HRESULT DirectXGraphicEngine::InitializeRasterizers()
 	D3D11_RASTERIZER_DESC desc;
 
 	desc.FillMode = D3D11_FILL_SOLID;
-	desc.CullMode = D3D11_CULL_NONE;  //TODO D3D11_CULL_BACK D3D11_CULL_NONE
+	desc.CullMode = D3D11_CULL_BACK;  // D3D11_CULL_BACK D3D11_CULL_NONE
 	desc.FrontCounterClockwise = false;
 	desc.DepthBias = 0;
 	desc.SlopeScaledDepthBias = 0.0f;
@@ -478,7 +478,7 @@ HRESULT DirectXGraphicEngine::InitializeShaders()
 		m_OpaqueShaders->PixelShader = t_PixelShader;
 	}
 
-	//DEFERRED COMPUTE SHADER TODO::add compute shader =D
+	//DEFERRED COMPUTE SHADER
 	{
 		m_DeferredComputeShader = new ShaderProgram();
 
@@ -648,22 +648,22 @@ HRESULT DirectXGraphicEngine::CreateErrorMesh()
 	std::vector<VertexPosNormalTexTangent> t_Vertices =
 	{
 		//front top left 0
-		VertexPosNormalTexTangent(Vec3(-1, 1, -1), Vec3(0, 0, 0), Vec2(0, 0), Vec3(0, 0, 0)),
+		VertexPosNormalTexTangent(Vec3(-1, 1, -1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 0)),
 		//front top right 1 
-		VertexPosNormalTexTangent(Vec3(1, 1, -1), Vec3(0, 0, 0), Vec2(1, 0), Vec3(0, 0, 0)),
+		VertexPosNormalTexTangent(Vec3(1, 1, -1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(1, 0)),
 		//front bot left  2 
-		VertexPosNormalTexTangent(Vec3(-1, -1, -1), Vec3(0, 0, 0), Vec2(0, 1), Vec3(0, 0, 0)),
+		VertexPosNormalTexTangent(Vec3(-1, -1, -1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 1)),
 		//front bot right 3
-		VertexPosNormalTexTangent(Vec3(1, -1, -1), Vec3(0, 0, 0), Vec2(1, 1), Vec3(0, 0, 0)),
+		VertexPosNormalTexTangent(Vec3(1, -1, -1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(1, 1)),
 
 		//back top left 4
-		VertexPosNormalTexTangent(Vec3(-1, 1, 1), Vec3(0, 0, 0), Vec2(1, 1), Vec3(0, 0, 0)),
+		VertexPosNormalTexTangent(Vec3(-1, 1, 1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 1)),
 		//back top right 5
-		VertexPosNormalTexTangent(Vec3(1, 1, 1), Vec3(0, 0, 0), Vec2(0, 1), Vec3(0, 0, 0)),
+		VertexPosNormalTexTangent(Vec3(1, 1, 1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(1, 1)),
 		//back bot left 6
-		VertexPosNormalTexTangent(Vec3(-1, -1, 1), Vec3(0, 0, 0), Vec2(1, 0), Vec3(0, 0, 0)),
+		VertexPosNormalTexTangent(Vec3(-1, -1, 1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 0)),
 		//back bot right 7
-		VertexPosNormalTexTangent(Vec3(1, -1, 1), Vec3(0, 0, 0), Vec2(0, 0), Vec3(0, 0, 0)),
+		VertexPosNormalTexTangent(Vec3(1, -1, 1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 1)),
 	};
 
 	std::vector<UINT> t_Indicies =
@@ -707,10 +707,10 @@ HRESULT DirectXGraphicEngine::CreateErrorMaterial()
 	SGEngine::Material t_ErrorMaterial = SGEngine::Material();
 
 	//set all textures to error
-	t_ErrorMaterial.m_Map_Kd = t_ErrorMaterial.m_Map_Ka = t_ErrorMaterial.m_Map_Ks =
-		t_ErrorMaterial.m_Map_Ke = t_ErrorMaterial.m_Map_Ns = t_ErrorMaterial.m_Map_D =
-		t_ErrorMaterial.m_Bump = t_ErrorMaterial.m_Disp = t_ErrorMaterial.m_Occulsion =
-		"errorImg.dds";
+	t_ErrorMaterial.m_Map_Ka = "errorImg.dds";
+	t_ErrorMaterial.m_Map_Kd = t_ErrorMaterial.m_Map_Ks = t_ErrorMaterial.m_Map_Ke = 
+		t_ErrorMaterial.m_Map_Ns = t_ErrorMaterial.m_Map_D = t_ErrorMaterial.m_Bump = 
+		t_ErrorMaterial.m_Disp = t_ErrorMaterial.m_Occulsion = "";
 
 	//set ambient and diffuse to 1, to show the errorimage
 	t_ErrorMaterial.Ka[0] = t_ErrorMaterial.Ka[1] = t_ErrorMaterial.Ka[2] = 1.0f;

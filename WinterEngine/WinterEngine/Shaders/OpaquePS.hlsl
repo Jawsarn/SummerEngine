@@ -30,7 +30,7 @@ Texture2D m_Bump		: register(t6);		//normal map
 Texture2D m_Disp		: register(t7);		//displacment map
 Texture2D m_Occulsion	: register(t8);		//diffuse blackmap
 
-
+SamplerState Sampler : register(s0);
 
 struct PS_INPUT
 {
@@ -59,8 +59,9 @@ PS_OUTPUT PS(PS_INPUT p_Input)
 
 	o_Output.Normal_Depth = float4(t_Normal, t_Depth);
 
-	float3 t_Diffuse = float3(0, 1, 1);
+	float3 t_Diffuse = m_Map_Ka.Sample(Sampler, p_Input.TexCoord);
 	float t_Specular = 1;
+
 
 	o_Output.Diffuse_Spec = float4(t_Diffuse, t_Specular);
 
