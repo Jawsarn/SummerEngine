@@ -48,13 +48,13 @@
     <ClInclude Include="Matrix\DirectXMatrixLibrary.h" />
     <ClInclude Include="Matrix\MatrixLibraryInterface.h" />
     <ClInclude Include="Matrix\MatrixToolbox.h" />
-    <ClInclude Include="Model.h" />
     <ClInclude Include="Systems\InputSystem.h" />
     <ClInclude Include="Systems\RenderingSystem.h" />
     <ClInclude Include="Systems\System.h" />
     <ClInclude Include="Systems\TransformSystem.h" />
     <ClInclude Include="Utility\Logger.h" />
     <ClInclude Include="Importers\ObjectImporter.h" />
+    <ClInclude Include="Graphics\model.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Debug\TestIcon2.bmp" />

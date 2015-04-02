@@ -74,6 +74,7 @@
     <ClInclude Include="Graphics\DirectXGraphicEngine.h" />
     <ClInclude Include="Graphics\GraphicEngineInterface.h" />
     <ClInclude Include="Graphics\GraphicToolbox.h" />
+    <ClInclude Include="Graphics\model.h" />
     <ClInclude Include="Graphics\ShaderLoader.h" />
     <ClInclude Include="Graphics\TextureLoaderDDS.h" />
     <ClInclude Include="IO\Serializable.h" />
@@ -82,7 +83,6 @@
     <ClInclude Include="Matrix\DirectXMatrixLibrary.h" />
     <ClInclude Include="Matrix\MatrixLibraryInterface.h" />
     <ClInclude Include="Matrix\MatrixToolbox.h" />
-    <ClInclude Include="Model.h" />
     <ClInclude Include="Importers\ObjectImporter.h" />
     <ClInclude Include="Systems\InputSystem.h" />
     <ClInclude Include="Systems\RenderingSystem.h" />
