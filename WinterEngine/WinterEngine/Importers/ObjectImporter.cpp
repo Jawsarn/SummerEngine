@@ -49,7 +49,7 @@ bool ObjectImporter::LoadMdlMesh( const std::string& fileName, SGEngine::Model* 
 
 	if( !file.is_open() )
 	{
-		Logger::Log( pathModel + " could not be opened!", "ObjectImporter", LoggerType::MSG_ERROR );
+		Logger::Log( pathModel + " could not be opened!", "ModelImporter", LoggerType::MSG_ERROR );
 		return false;
 	}
 
