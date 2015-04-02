@@ -126,7 +126,7 @@ bool ObjectImporter::LoadMdlMesh( const std::string& fileName, SGEngine::Model* 
 		{
 			// New mesh material found, new indices are coming
 
-			Mesh mesh;
+			SubModel mesh;
 			std::string materialName = "";
 			file >> materialName;
 

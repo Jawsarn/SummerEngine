@@ -7,9 +7,9 @@
 
 namespace SGEngine
 {
-	struct Mesh
+	struct SubModel
 	{
-		Mesh()
+		SubModel()
 		{
 			NumIndices = 0;
 			StartIndex = 0;
@@ -48,6 +48,6 @@ namespace SGEngine
 		std::vector<unsigned int>	Indices;
 
 		// A model can have multiple meshes. (ex. one for each material)
-		std::vector<Mesh> Meshes;
+		std::vector<SubModel> Meshes;
 	};
 }
