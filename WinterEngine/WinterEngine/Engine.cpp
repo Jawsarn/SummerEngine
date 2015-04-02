@@ -81,7 +81,7 @@ void BreakAtMemoryLeak( long value )
 //testcode
 #include "Entity.h"
 #include "Components/RenderingComponent.h"
-#include "Components/ProjectionComponent.h"
+#include "Components/CameraComponent.h"
 #include "Components/TransformComponent.h"
 #include "Graphics/GraphicEngineInterface.h"
 #include "Matrix/MatrixLibraryInterface.h"
@@ -142,7 +142,7 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	TransformComponent* t_Orc2TC = new TransformComponent();
 
 
-	ProjectionComponent* t_CAMPC = new ProjectionComponent();
+	CameraComponent* t_CAMPC = new CameraComponent();
 	TransformComponent* t_CAMTC = new TransformComponent();
 
 	//create matrixes n' shit

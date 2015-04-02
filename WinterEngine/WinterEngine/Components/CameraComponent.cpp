@@ -1,25 +1,25 @@
-#include "ProjectionComponent.h"
+#include "CameraComponent.h"
 #include "../Matrix/MatrixLibraryInterface.h"
 #include "../Systems/RenderingSystem.h"
 
-ProjectionComponent::ProjectionComponent() : Component("ProjectionComponent")
+CameraComponent::CameraComponent() : Component("CameraComponent")
 {
 	m_IsOrthogonal = true;
 	m_ProjMatrixHandle = 0;
 }
 
-ProjectionComponent::ProjectionComponent(std::string p_Name) : Component(p_Name)
+CameraComponent::CameraComponent(std::string p_Name) : Component(p_Name)
 {
 	m_IsOrthogonal = true;
 	m_ProjMatrixHandle = 0;
 }
 
 
-ProjectionComponent::~ProjectionComponent()
+CameraComponent::~CameraComponent()
 {
 }
 
-unsigned int ProjectionComponent::CreateCamera(FoVProjMatrix* p_FieldOfView, MatrixHandle p_MatrixHandle)
+unsigned int CameraComponent::CreateCamera(FoVProjMatrix* p_FieldOfView, MatrixHandle p_MatrixHandle)
 {
 	MatrixLibraryInterface* t_Lib = t_Lib->GetInstance();
 
@@ -33,7 +33,7 @@ unsigned int ProjectionComponent::CreateCamera(FoVProjMatrix* p_FieldOfView, Mat
 	return m_ProjMatrixHandle;
 }
 
-unsigned int ProjectionComponent::CreateCamera(OrthoProjMatrix* p_FieldOfView, MatrixHandle p_MatrixHandle)
+unsigned int CameraComponent::CreateCamera(OrthoProjMatrix* p_FieldOfView, MatrixHandle p_MatrixHandle)
 {
 	MatrixLibraryInterface* t_Lib = t_Lib->GetInstance();
 
@@ -46,11 +46,11 @@ unsigned int ProjectionComponent::CreateCamera(OrthoProjMatrix* p_FieldOfView, M
 
 	return m_ProjMatrixHandle;
 }
-bool ProjectionComponent::IsCamera()
+bool CameraComponent::IsCamera()
 {
 	return m_IsCamera;
 }
-void ProjectionComponent::UseCamera()
+void CameraComponent::UseCamera()
 {
 	if (m_IsCamera)
 	{
