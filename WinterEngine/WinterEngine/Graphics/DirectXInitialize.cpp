@@ -645,25 +645,25 @@ HRESULT DirectXGraphicEngine::CreateErrorMesh()
 	HRESULT hr = S_OK;
 
 	//the 8 corners
-	std::vector<VertexPosNormalTexTangent> t_Vertices =
+	std::vector<VertexPosNormalTangentTex> t_Vertices =
 	{
 		//front top left 0
-		VertexPosNormalTexTangent(Vec3(-1, 1, -1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 0)),
+		VertexPosNormalTangentTex(Vec3(-1, 1, -1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 0)),
 		//front top right 1 
-		VertexPosNormalTexTangent(Vec3(1, 1, -1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(1, 0)),
+		VertexPosNormalTangentTex(Vec3(1, 1, -1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(1, 0)),
 		//front bot left  2 
-		VertexPosNormalTexTangent(Vec3(-1, -1, -1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 1)),
+		VertexPosNormalTangentTex(Vec3(-1, -1, -1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 1)),
 		//front bot right 3
-		VertexPosNormalTexTangent(Vec3(1, -1, -1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(1, 1)),
+		VertexPosNormalTangentTex(Vec3(1, -1, -1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(1, 1)),
 
 		//back top left 4
-		VertexPosNormalTexTangent(Vec3(-1, 1, 1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 1)),
+		VertexPosNormalTangentTex(Vec3(-1, 1, 1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 1)),
 		//back top right 5
-		VertexPosNormalTexTangent(Vec3(1, 1, 1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(1, 1)),
+		VertexPosNormalTangentTex(Vec3(1, 1, 1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(1, 1)),
 		//back bot left 6
-		VertexPosNormalTexTangent(Vec3(-1, -1, 1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 0)),
+		VertexPosNormalTangentTex(Vec3(-1, -1, 1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 0)),
 		//back bot right 7
-		VertexPosNormalTexTangent(Vec3(1, -1, 1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 1)),
+		VertexPosNormalTangentTex(Vec3(1, -1, 1), Vec3(0, 0, 0), Vec3(0, 0, 0), Vec2(0, 1)),
 	};
 
 	std::vector<UINT> t_Indicies =

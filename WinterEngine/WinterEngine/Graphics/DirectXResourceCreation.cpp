@@ -4,7 +4,7 @@
 #include "../Utility/Logger.h"
 
 //Creates a handle to a mesh resource in the eingine TODO::Save mesh into a binary file
-MeshHandle DirectXGraphicEngine::CreateModel( const std::string& p_Name, std::vector<VertexPosNormalTexTangent>* p_Vertices, std::vector<Index>* p_Indicies )
+MeshHandle DirectXGraphicEngine::CreateModel( const std::string& p_Name, std::vector<VertexPosNormalTangentTex>* p_Vertices, std::vector<Index>* p_Indicies )
 {
 	MeshInfo* t_NewMeshInfo = new MeshInfo();
 
@@ -19,7 +19,7 @@ MeshHandle DirectXGraphicEngine::CreateModel( const std::string& p_Name, std::ve
 	t_BufferDesc.CPUAccessFlags = 0;
 	t_BufferDesc.MiscFlags = 0;
 	t_BufferDesc.StructureByteStride = 0;
-	t_BufferDesc.ByteWidth = sizeof(VertexPosNormalTexTangent)* p_Vertices->size();
+	t_BufferDesc.ByteWidth = sizeof(VertexPosNormalTangentTex)* p_Vertices->size();
 
 	//add the data when creating
 	D3D11_SUBRESOURCE_DATA t_Data;
@@ -248,9 +248,9 @@ bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_Me
 
 			//load vertices
 			UINT t_NumOfVertice = IO::ReadUnsigned(*t_StreamFile);
-			std::vector<VertexPosNormalTexTangent> t_Vertices;
+			std::vector<VertexPosNormalTangentTex> t_Vertices;
 			t_Vertices.resize(t_NumOfVertice);
-			t_StreamFile->Read(t_NumOfVertice* sizeof(VertexPosNormalTexTangent), &t_Vertices[0]);
+			t_StreamFile->Read(t_NumOfVertice* sizeof(VertexPosNormalTangentTex), &t_Vertices[0]);
 
 			//load indices
 			UINT t_NumOfIndicies = IO::ReadUnsigned(*t_StreamFile);

@@ -75,13 +75,13 @@ namespace SGEngine
 		Vec2 TexCoord;
 	};
 
-	struct VertexPosNormalTexTangent
+	struct VertexPosNormalTangentTex
 	{
-		VertexPosNormalTexTangent()
+		VertexPosNormalTangentTex()
 		{
 		}
 
-		VertexPosNormalTexTangent(Vec3 pos, Vec3 norm, Vec3 tan, Vec2 uv )
+		VertexPosNormalTangentTex(Vec3 pos, Vec3 norm, Vec3 tan, Vec2 uv )
 		{
 			Position = pos;
 			Normal = norm;
@@ -89,7 +89,7 @@ namespace SGEngine
 			Tangent = tan;
 		}
 
-		bool operator ==( const VertexPosNormalTexTangent& v )
+		bool operator ==( const VertexPosNormalTangentTex& v )
 		{
 			return v.Position.x == Position.x && v.Position.y == Position.y && v.Position.z == Position.z
 				&& v.TexCoord.x == TexCoord.x && v.TexCoord.y == TexCoord.y &&
@@ -157,7 +157,7 @@ namespace SGEngine
 		Vec3 Normal;
 	};
 
-	static bool CheckIfVertexExist( VertexPosNormalTexTangent* vertices, int numVertices, VertexPosNormalTexTangent v )
+	static bool CheckIfVertexExist( VertexPosNormalTangentTex* vertices, int numVertices, VertexPosNormalTangentTex v )
 	{
 		for( int i = 0; i < numVertices; i++ )
 		{

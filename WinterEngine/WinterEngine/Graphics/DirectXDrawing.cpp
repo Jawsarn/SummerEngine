@@ -54,7 +54,7 @@ void DirectXGraphicEngine::BeginDraw()
 //test shit
 void DirectXGraphicEngine::SetMesh(MeshHandle* p_Handle)
 {
-	UINT t_Strides = sizeof(SGEngine::VertexPosNormalTexTangent);
+	UINT t_Strides = sizeof(SGEngine::VertexPosNormalTangentTex);
 	UINT t_Offsets = 0;
 	m_DeviceContext->IASetVertexBuffers(0, 1, &m_MeshKeys[*p_Handle]->vertexBuffer, &t_Strides, &t_Offsets);
 	m_DeviceContext->IASetIndexBuffer(m_MeshKeys[*p_Handle]->indexBuffer, DXGI_FORMAT_R32_UINT, t_Offsets);
