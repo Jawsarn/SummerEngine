@@ -77,26 +77,32 @@ void RenderingSystem::Destroy()
 }
 
 //TODO:: check if the object for this key already exist
-unsigned int RenderingSystem::AddObject(bool p_IsTransparent, RenderObject p_RenderObject, RenderingComponent* p_Component)
+unsigned int RenderingSystem::AddObjects( RenderingComponent* p_Component, SGEngine::Model* model)
 {
-	RenderObject* t_NewObject = new RenderObject(p_RenderObject);
+	std::vector<RenderObject*> objs = p_Component->GetRenderObjects();
 
-	std::hash<RenderingComponent*> t_Hasher;
-
-	unsigned int o_Key = t_Hasher(p_Component);
-
-	t_NewObject->componentHandle = o_Key;
-
-	if (p_IsTransparent)
+	for( int i = 0; i < objs.size(); i++ )
 	{
-		m_Transparent.push_back(t_NewObject);
+		RenderObject* t_Object = objs[i];
+
+		std::hash<RenderingComponent*> t_Hasher;
+
+		unsigned int o_Key = t_Hasher( p_Component );
+		t_Object->componentHandle = o_Key;
+
+		if( t_Object->materialHandle == 1 /*is transparent */ )
+		{
+			int a = 0;
+			//////m_Transparent.push_back(t_NewObject);
+		}
+
+		else
+		{
+			m_Opaque.push_back( t_Object );
+		}
 	}
-	else
-	{
-		m_Opaque.push_back(t_NewObject);
-	}
-	
-	return o_Key;
+
+	return 1;//o_Key;
 }
 
 unsigned int RenderingSystem::AddCamera(MatrixHandle p_Transform, MatrixHandle p_Projection, CameraComponent* p_Component)

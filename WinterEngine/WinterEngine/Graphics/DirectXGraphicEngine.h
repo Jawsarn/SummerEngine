@@ -34,7 +34,7 @@ public:
 	MaterialHandle CreateMaterial( const std::string& p_Name, Material* p_Mat);
 
 	//Loads a mesh resource from file into the engine and returns a handle to it TODO::set full virtual
-	bool LoadModel( const std::string& p_Name, MeshHandle* o_MeshHandle, UINT& indexAmount /* find nicer way?*/ );
+	bool LoadModel( const std::string& p_Name, MeshHandle* o_MeshHandle );
 
 	//Loads a material resource from file into the engine and returns a handle to it TODO::set full virtual
 	MaterialHandle LoadMaterial(const std::string& p_Name);
@@ -63,7 +63,6 @@ public:
 	/////////=========================\\\\\\\\\\
 
 	void UseCamera(SGEngine::Camera p_Camera, UINT p_Slot);
-
 
 private:
 	
@@ -371,5 +370,6 @@ private:
 	
 	
 	*/
+	// todo move upp later
 };
 

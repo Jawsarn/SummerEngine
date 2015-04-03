@@ -202,7 +202,7 @@ TextureHandle DirectXGraphicEngine::LoadTexture(std::string p_Name)
 }
 
 //Loads a mesh resource from file into the engine and returns a handle to it 
-bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_MeshHandle, UINT& indexAmount /* find nicer way?*/)
+bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_MeshHandle)
 {
 	std::string modelFolderPath = "../WinterEngine/Assets/Model/";
 	MeshIDMap::iterator t_MeshIDMap = m_MeshIDMap.find(p_Name);
@@ -274,20 +274,20 @@ bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_Me
 			return true;
 		}
 
+		/*
 		else if( t_Extension == ".mdl" )
 		{
 			bool status = false;
 
-			ObjectImporter importer;
 			Model* t_NewModel = new Model();
-			status = importer.LoadObject( modelFolderPath + p_Name, t_NewModel );
+			status = g_ObjectImporter.LoadObject( modelFolderPath + p_Name, t_NewModel );
 			
 			UINT o_ID = CreateModel( p_Name, &t_NewModel->Vertices, &t_NewModel->Indices);
 			*o_MeshHandle = o_ID;
 
-			indexAmount = static_cast<UINT>( t_NewModel->NumIndices ); // find better way?
+			///////////indexAmount = static_cast<UINT>( t_NewModel->NumIndices ); // find better way?
 
-			delete t_NewModel; /////////////// forget?
+			///////////////delete t_NewModel; /////////////// forget?
 
 			// Load file format
 			if( status == false )
@@ -299,18 +299,7 @@ bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_Me
 			
 			return status;
 		}
-
-		else if( t_Extension == ".obj" )
-		{
-			bool status = false;
-
-			// Load file format
-			if( status == false )
-			{
-				*o_MeshHandle = m_ErrorMeshID;
-				return status;
-			}
-		}
+		*/
 
 		else
 		{

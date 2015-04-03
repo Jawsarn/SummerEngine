@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "../Graphics/GraphicToolbox.h"
+#include "../Graphics/Model.h"
 
 using namespace SGEngine;
 
@@ -30,13 +31,15 @@ public:
 
 	void Disable();
 
-	void Create(bool p_IsTransparent, RenderObject p_Object);
+	void Create( SGEngine::Model* model, UINT& meshHandle );
 	void SetMesh(MeshHandle p_MeshHandle);
 	void SetMaterial(MaterialHandle p_MaterialHandle);
 
+	std::vector<RenderObject*>& GetRenderObjects();
+
 private:
-	bool			m_IsTransparent;
 	unsigned int	m_RenderObjectHandle;
+	std::vector<RenderObject*> m_RenderObjects;
 };
 
 

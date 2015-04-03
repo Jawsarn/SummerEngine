@@ -36,7 +36,7 @@ public:
 	void Disable();
 
 	//update a component
-	unsigned int AddObject(bool p_IsTransparent, SGEngine::RenderObject p_Object, RenderingComponent* p_Component);
+	unsigned int AddObjects( RenderingComponent* p_Component, SGEngine::Model* model );
 	unsigned int AddCamera(MatrixHandle p_Transform, MatrixHandle p_Projection, CameraComponent* p_Component);
 	void UseCamera(ComponentHandle p_CameraHandle);
 

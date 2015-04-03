@@ -86,6 +86,8 @@ void BreakAtMemoryLeak( long value )
 #include "Graphics/GraphicEngineInterface.h"
 #include "Matrix/MatrixLibraryInterface.h"
 
+#include "Importers/ObjectImporter.h"
+#include "Graphics/Model.h"
 //main function, where the engine starts
 int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstance, _In_ LPWSTR p_LpCmdLine, _In_ int p_NCmdShow)
 {
@@ -158,18 +160,21 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	UINT Mesh;
 	UINT numbIndices = 0;
 	// Varför skickar vi inte bara in en model strukt här? så kan vi hämta matris, antal indecis och allt skit?
-	bool t_Worked = g_GraphicEngine->LoadModel( "Fan_HighPoly.mdl", &Mesh, numbIndices /* find better way */ );
+	bool t_Worked = g_GraphicEngine->LoadModel( "", &Mesh );
 	
 	if (!t_Worked)
 	{
 
 	}
 
-	UINT Mat = g_GraphicEngine->LoadMaterial( "" );
-	t_OrcRC->Create( false, SGEngine::RenderObject( Mesh, Mat, 0, numbIndices, OrcMatrix ) );
-
-	UINT Mat2 = g_GraphicEngine->LoadMaterial( "" );
-	t_Orc2RC->Create(false, SGEngine::RenderObject(Mesh, Mat2, 0, 36, Orc2Matrix));
+	MeshHandle handle;
+	SGEngine::Model* model = new SGEngine::Model();
+	bool status_ = g_ObjectImporter.LoadObject( "Fan_HighPoly.mdl", handle, model );
+	//////   UINT Mat = g_GraphicEngine->LoadMaterial( "" );
+	//////   t_OrcRC->Create( false, SGEngine::RenderObject( Mesh, Mat, 0, numbIndices, OrcMatrix ) );
+	//////   
+	//////   UINT Mat2 = g_GraphicEngine->LoadMaterial( "" );
+	//////   t_Orc2RC->Create(false, SGEngine::RenderObject(Mesh, Mat2, 0, 36, Orc2Matrix));
 
 
 	//camera

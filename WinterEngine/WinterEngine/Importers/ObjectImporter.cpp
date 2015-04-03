@@ -2,6 +2,8 @@
 #include "../Utility/Logger.h"
 #include <fstream>
 #include <sstream>
+#include "../Graphics/DirectXGraphicEngine.h"
+#include "../Systems/RenderingSystem.h"
 
 using namespace SGEngine;
 
@@ -14,21 +16,34 @@ ObjectImporter::~ObjectImporter()
 {
 }
 
+ObjectImporter& ObjectImporter::GetInstance()
+{
+	 static ObjectImporter importer;
+	 return importer;
+}
+
 /*
 *	This function will need a fileName (not the whole path!)
 *	After checking what type of object this is,
 *	-	it will load another function to actually load the object
 */
-bool ObjectImporter::LoadObject( const std::string& fileName, SGEngine::Model* model )
+bool ObjectImporter::LoadObject( const std::string& fileName, MeshHandle& meshHandle, SGEngine::Model* model )
 {
+	std::string modelPath = "Assets/Model/";
 	int extensionStart = static_cast< int > ( fileName.find_last_of( "." ) );
 	std::string extension = fileName.substr( extensionStart + 1, strlen( fileName.c_str() ) );
 
 	bool status = false;
 	if( strcmp( extension.c_str(), "mdl" ) == 0 )
 	{
-		status = LoadMdlMesh( fileName, model );
+		status = LoadMdlMesh( modelPath + fileName, model );
 		model->FileName = fileName;
+
+		UINT o_ID = g_GraphicEngine->CreateModel( fileName, &model->Vertices, &model->Indices );
+		
+		RenderingSystem* m_Sys = m_Sys->GetInstance();
+		RenderingComponent* renderComponent = new RenderingComponent( ); 
+		renderComponent->Create( model, o_ID );
 	}
 
 	return status;

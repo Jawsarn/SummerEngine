@@ -63,19 +63,19 @@ void DirectXGraphicEngine::SetMesh(MeshHandle* p_Handle)
 
 void DirectXGraphicEngine::SetMaterial(MaterialHandle* p_Handle)
 {
-	MaterialInfo* t_Mat = m_MaterialKeys.at(*p_Handle);
-	m_DeviceContext->PSSetConstantBuffers(0, 1, &t_Mat->m_MatBuffer);
-
-	//set textures
-	SetTexture(t_Mat->m_Map_Kd, 0);
-	SetTexture(t_Mat->m_Map_Ka, 1);
-	SetTexture(t_Mat->m_Map_Ks, 2);
-	SetTexture(t_Mat->m_Map_Ke, 3);
-	SetTexture(t_Mat->m_Map_Ns, 4);
-	SetTexture(t_Mat->m_Map_D, 5);
-	SetTexture(t_Mat->m_Bump, 6);
-	SetTexture(t_Mat->m_Disp, 7);
-	SetTexture(t_Mat->m_Occulsion, 8);
+// 	MaterialInfo* t_Mat = m_MaterialKeys.at(*p_Handle);
+// 	m_DeviceContext->PSSetConstantBuffers(0, 1, &t_Mat->m_MatBuffer);
+// 
+// 	//set textures
+// 	SetTexture(t_Mat->m_Map_Kd, 0);
+// 	SetTexture(t_Mat->m_Map_Ka, 1);
+// 	SetTexture(t_Mat->m_Map_Ks, 2);
+// 	SetTexture(t_Mat->m_Map_Ke, 3);
+// 	SetTexture(t_Mat->m_Map_Ns, 4);
+// 	SetTexture(t_Mat->m_Map_D, 5);
+// 	SetTexture(t_Mat->m_Bump, 6);
+// 	SetTexture(t_Mat->m_Disp, 7);
+// 	SetTexture(t_Mat->m_Occulsion, 8);
 	
 }
 

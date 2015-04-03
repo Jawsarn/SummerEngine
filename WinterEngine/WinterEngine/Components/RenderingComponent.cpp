@@ -6,7 +6,6 @@ RenderingComponent::RenderingComponent() : Component("RenderingComponent")
 	RenderingSystem* m_Sys = m_Sys->GetInstance();
 
 	m_Sys->Register(this);
-	m_IsTransparent = false;
 	m_RenderObjectHandle = 0;
 }
 
@@ -15,7 +14,6 @@ RenderingComponent::RenderingComponent(std::string p_Name) : Component(p_Name)
 	RenderingSystem* m_Sys = m_Sys->GetInstance();
 
 	m_Sys->Register(this);
-	m_IsTransparent = false;
 	m_RenderObjectHandle = 0;
 }
 
@@ -70,12 +68,21 @@ void RenderingComponent::Disable()
 	m_Sys->DisableComponent(this);
 }
 
-void RenderingComponent::Create(bool p_IsTransparent, RenderObject p_RenderObject)
+void RenderingComponent::Create( SGEngine::Model* model, UINT& meshHandle )
 {
 	RenderingSystem* m_Sys = m_Sys->GetInstance();
+	for( int i = 0; i < model->NumMeshes; i++ )
+	{
+		RenderObject* t_NewObject = new RenderObject();
+		t_NewObject->IndexAmount = model->Meshes[i].NumIndices; //static_cast<unsigned int>( model->NumIndices );
+		t_NewObject->startIndex = model->Meshes[i].StartIndex;
 
-	m_Sys->AddObject(p_IsTransparent, p_RenderObject, this);
-	m_IsTransparent = p_IsTransparent;
+		t_NewObject->meshHandle = meshHandle;
+
+		// Set material here?
+		m_RenderObjects.push_back( t_NewObject );
+	}
+	m_Sys->AddObjects( this, model );
 }
 
 
@@ -87,4 +94,9 @@ void RenderingComponent::SetMesh(MeshHandle p_MeshHandle)
 void RenderingComponent::SetMaterial(MaterialHandle p_MaterialHandle)
 {
 	//m_MaterialHandle = p_MaterialHandle;
+}
+
+std::vector<RenderObject*>& RenderingComponent::GetRenderObjects()
+{
+	return m_RenderObjects;
 }
