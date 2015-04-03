@@ -38,6 +38,8 @@ public:
 
 	void SetEntity(Entity* p_Entity);
 
+	Entity* GetEntity()const{ return m_Entity; }
+
 	//IO
 	virtual bool Read(IO::Stream &p_Stream);
 	virtual bool Write(IO::Stream &p_Stream);

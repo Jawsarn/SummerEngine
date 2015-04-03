@@ -9,6 +9,8 @@ public:
 	Entity(std::string p_Name);
 	~Entity();
 
+	std::vector<Component*>* GetComponentList() { return &m_Components; }
+
 	std::string GetName() const { return m_Name; }
 	void AddComponent(Component* p_Component);
 
