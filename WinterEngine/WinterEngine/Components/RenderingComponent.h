@@ -41,5 +41,3 @@ private:
 	unsigned int	m_RenderObjectHandle;
 	std::vector<RenderObject*> m_RenderObjects;
 };
-
-

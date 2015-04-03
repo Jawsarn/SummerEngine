@@ -81,7 +81,7 @@ unsigned int RenderingSystem::AddObjects( RenderingComponent* p_Component )
 {
 	std::vector<RenderObject*> objs = p_Component->GetRenderObjects();
 
-	for( int i = 0; i < objs.size(); i++ )
+	for( unsigned int i = 0; i < objs.size(); i++ )
 	{
 		RenderObject* t_Object = objs[i];
 
@@ -102,7 +102,7 @@ unsigned int RenderingSystem::AddObjects( RenderingComponent* p_Component )
 	}
 
 	// do we even need to return something here?
-	return 1;//o_Key;
+	return 0;//o_Key;
 }
 
 unsigned int RenderingSystem::AddCamera(MatrixHandle p_Transform, MatrixHandle p_Projection, CameraComponent* p_Component)

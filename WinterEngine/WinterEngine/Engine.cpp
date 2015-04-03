@@ -138,9 +138,10 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	Entity* t_CameraEntity = new Entity("Camera");
 
 	TransformComponent* t_OrcTC = new TransformComponent();
+	RenderingComponent* t_OrcRC = new RenderingComponent( );
 
 	TransformComponent* t_Orc2TC = new TransformComponent();
-
+	RenderingComponent* t_Orc2RC = new RenderingComponent( );
 
 	CameraComponent* t_CAMPC = new CameraComponent();
 	TransformComponent* t_CAMTC = new TransformComponent();
@@ -157,7 +158,6 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	*/
 	
 	UINT Mesh;
-	UINT numbIndices = 0;
 	// Loads smesh
 	bool t_Worked = g_GraphicEngine->LoadModel( "", &Mesh );
 	
@@ -167,29 +167,24 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	}
 
 	// ENTITY 1
-	// component has no entity yet. either send entity or send components for now compoennts..
-	std::vector<RenderingComponent*> mod1RCs; // temp move to better loc
 	MeshHandle handle;
-	Matrix* fanMatrix = new Matrix( Vec3( 0, 5, 0 ), Vec3( 0, 0, -1 ), Vec3( 0, 1, 0 ) );
-	bool status_ = g_ObjectImporter.LoadObject( "testCube.mdl", handle, mod1RCs, t_OrcTC, fanMatrix /*temp parameter mat*/ );
+	Matrix* matrix1 = new Matrix( Vec3( 0, 5, 0 ), Vec3( 0, 0, -1 ), Vec3( 0, 1, 0 ) );
+	bool status_ = g_ObjectImporter.LoadObject( "testCube.mdl", handle, t_OrcRC, t_OrcTC, matrix1 );
 	
 	// setting renderComponents to entity
 	t_FirstEntity->AddComponent( t_OrcTC );
-	RenderingComponent** comp = &mod1RCs[0];
-	t_FirstEntity->AddComponents( ( Component** ) comp, mod1RCs.size() );
-
+	t_FirstEntity->AddComponent( t_OrcRC );
+	
 
 	// ENTITY 2
-	std::vector<RenderingComponent*> mod2RC; // temp move to better loc
-	MeshHandle handle2;
-	Matrix* matMod = new Matrix( Vec3( -2.5f, 4, 1 ), Vec3( 0, 0, -1 ), Vec3( 0, 1, 0 ) );
-	bool sta = g_ObjectImporter.LoadObject( "testSphere.mdl", handle2, mod2RC, t_Orc2TC, matMod /* todo change parameter mat*/ );
-
+ 	MeshHandle handle2;
+ 	Matrix* matrix2 = new Matrix( Vec3( 1, 5, 0 ), Vec3( 0, 0, -1 ), Vec3( 0, 1, 0 ) );
+	bool sta = g_ObjectImporter.LoadObject( "testSphere.mdl", handle2, t_Orc2RC, t_Orc2TC, matrix2 );
+ 	
 	// setting renderComponents to entity
-	t_SecondEntity->AddComponent( t_Orc2TC );
-	RenderingComponent** comp2 = &mod1RCs[0];
-	t_SecondEntity->AddComponents( ( Component** ) comp2, mod2RC.size( ) );
-
+ 	t_SecondEntity->AddComponent( t_Orc2TC );
+	t_SecondEntity->AddComponent( t_Orc2RC );
+ 	
 
 
 	//camera

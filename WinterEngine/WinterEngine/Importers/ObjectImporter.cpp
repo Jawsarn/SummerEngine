@@ -29,7 +29,7 @@ ObjectImporter& ObjectImporter::GetInstance()
 *	-	it will load another function to actually load the object
 *	model pointer will be deleted after loading it!!!!!!!!!!!!!
 */
-bool ObjectImporter::LoadObject( const std::string& fileName, MeshHandle& meshHandle, std::vector<RenderingComponent*>& renderComponents, TransformComponent* trans, Matrix* testWorld )
+bool ObjectImporter::LoadObject( const std::string& fileName, MeshHandle& meshHandle, RenderingComponent* renderComponent, TransformComponent* trans, Matrix* testWorld )
 {
 	std::string modelPath = "Assets/Model/";
 
@@ -60,11 +60,7 @@ bool ObjectImporter::LoadObject( const std::string& fileName, MeshHandle& meshHa
 		delete testWorld;
 		model->Matrix_Handle = OrcMatrix;
 
-		RenderingSystem* m_Sys = m_Sys->GetInstance();
-		RenderingComponent* renderComponent = new RenderingComponent();
 		renderComponent->Create( model, o_ID );
-
-		renderComponents.push_back( renderComponent );
 	}
 
 	delete model;
@@ -239,7 +235,7 @@ bool ObjectImporter::LoadMdlMesh( const std::string& fileName, SGEngine::Model* 
 
 	model->NumVertices = static_cast< int >( meshVertices.size() );
 	model->NumIndices = meshIndicesCount;
-	model->FileName = fileName;
+	//model->FileName = fileName;
 	model->NumMeshes = model->Meshes.size();
 
 	model->Loaded = true;

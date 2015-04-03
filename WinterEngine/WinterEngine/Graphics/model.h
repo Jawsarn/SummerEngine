@@ -36,7 +36,6 @@ namespace SGEngine
 		};
 
 		std::string FileName;
-		// should we have a name string as well?
 		int			NumVertices;
 		int			NumIndices;
 		int			NumMeshes;

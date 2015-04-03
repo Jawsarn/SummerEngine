@@ -285,7 +285,7 @@ bool DirectXGraphicEngine::LoadModel(const std::string& p_Name, MeshHandle* o_Me
 			UINT o_ID = CreateModel( p_Name, &t_NewModel->Vertices, &t_NewModel->Indices);
 			*o_MeshHandle = o_ID;
 
-			///////////indexAmount = static_cast<UINT>( t_NewModel->NumIndices ); // find better way?
+			///////////indexAmount = static_cast<UINT>( t_NewModel->NumIndices );
 
 			///////////////delete t_NewModel; /////////////// forget?
 
