@@ -13,6 +13,7 @@ public:
 
 	std::string GetName() const { return m_Name; }
 	void AddComponent(Component* p_Component);
+	void AddComponents( Component** p_Components, unsigned int p_NumComponents );
 
 private:
 	//name and ID

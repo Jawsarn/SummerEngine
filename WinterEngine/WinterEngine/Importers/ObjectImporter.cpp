@@ -25,11 +25,11 @@ ObjectImporter& ObjectImporter::GetInstance()
 }
 
 /*
-*	This function will need a fileName (not the whole path!)
 *	After checking what type of object this is,
 *	-	it will load another function to actually load the object
+*	model pointer will be deleted after loading it!!!!!!!!!!!!!
 */
-bool ObjectImporter::LoadObject( const std::string& fileName, MeshHandle& meshHandle, std::vector<RenderingComponent*>& renderComponents, Matrix* testWorld )
+bool ObjectImporter::LoadObject( const std::string& fileName, MeshHandle& meshHandle, std::vector<RenderingComponent*>& renderComponents, TransformComponent* trans, Matrix* testWorld )
 {
 	std::string modelPath = "Assets/Model/";
 
@@ -56,8 +56,7 @@ bool ObjectImporter::LoadObject( const std::string& fileName, MeshHandle& meshHa
 		// TESTING , might not be loaded from here
 		//Matrix* t_OrcMat = new Matrix( Vec3( 0, 0, -10 ), Vec3( 0, 0, -1 ), Vec3( 0, 1, 0 ) );
 		
-		TransformComponent* t_OrcTC = new TransformComponent( );
-		UINT OrcMatrix = t_OrcTC->Create( testWorld );
+		UINT OrcMatrix = trans->Create( testWorld );
 		delete testWorld;
 		model->Matrix_Handle = OrcMatrix;
 
@@ -69,6 +68,7 @@ bool ObjectImporter::LoadObject( const std::string& fileName, MeshHandle& meshHa
 	}
 
 	delete model;
+
 	return status;
 }
 

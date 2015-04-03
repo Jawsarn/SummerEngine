@@ -137,11 +137,9 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	Entity* t_SecondEntity = new Entity("Orc2");
 	Entity* t_CameraEntity = new Entity("Camera");
 
-	//RenderingComponent* t_OrcRC = new RenderingComponent();
-	//TransformComponent* t_OrcTC = new TransformComponent();
+	TransformComponent* t_OrcTC = new TransformComponent();
 
-	//RenderingComponent* t_Orc2RC = new RenderingComponent();
-	//TransformComponent* t_Orc2TC = new TransformComponent();
+	TransformComponent* t_Orc2TC = new TransformComponent();
 
 
 	CameraComponent* t_CAMPC = new CameraComponent();
@@ -167,38 +165,31 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	{
 
 	}
-	// component has no entity yet
-	std::vector<RenderingComponent*> model1RenderComponents; // temp move to better loc
+
+	// ENTITY 1
+	// component has no entity yet. either send entity or send components for now compoennts..
+	std::vector<RenderingComponent*> mod1RCs; // temp move to better loc
 	MeshHandle handle;
 	Matrix* fanMatrix = new Matrix( Vec3( 0, 5, 0 ), Vec3( 0, 0, -1 ), Vec3( 0, 1, 0 ) );
-	bool status_ = g_ObjectImporter.LoadObject( "testCube.mdl", handle, model1RenderComponents, fanMatrix /*temp mat*/ );
+	bool status_ = g_ObjectImporter.LoadObject( "testCube.mdl", handle, mod1RCs, t_OrcTC, fanMatrix /*temp parameter mat*/ );
+	
 	// setting renderComponents to entity
-	for( unsigned int i = 0; i < model1RenderComponents.size( ); i++ )
-	{
-		t_FirstEntity->AddComponent( model1RenderComponents[i] );
-	}
+	t_FirstEntity->AddComponent( t_OrcTC );
+	RenderingComponent** comp = &mod1RCs[0];
+	t_FirstEntity->AddComponents( ( Component** ) comp, mod1RCs.size() );
 
+
+	// ENTITY 2
 	std::vector<RenderingComponent*> mod2RC; // temp move to better loc
 	MeshHandle handle2;
 	Matrix* matMod = new Matrix( Vec3( -2.5f, 4, 1 ), Vec3( 0, 0, -1 ), Vec3( 0, 1, 0 ) );
-	bool sta = g_ObjectImporter.LoadObject( "testSphere.mdl", handle2, mod2RC, matMod /*temp mat*/ );
+	bool sta = g_ObjectImporter.LoadObject( "testSphere.mdl", handle2, mod2RC, t_Orc2TC, matMod /* todo change parameter mat*/ );
 
 	// setting renderComponents to entity
-	for( unsigned int i = 0; i < mod2RC.size( ); i++ )
-	{
-		t_SecondEntity->AddComponent( mod2RC[i] );
-	}
+	t_SecondEntity->AddComponent( t_Orc2TC );
+	RenderingComponent** comp2 = &mod1RCs[0];
+	t_SecondEntity->AddComponents( ( Component** ) comp2, mod2RC.size( ) );
 
-	for( int i = 0; i < 5; i++ )
-	{
-		
-	}
-
-	//   UINT Mat = g_GraphicEngine->LoadMaterial( "" );
-	//   t_OrcRC->Create( false, SGEngine::RenderObject( Mesh, Mat, 0, numbIndices, OrcMatrix ) );
-	//   
-	//   UINT Mat2 = g_GraphicEngine->LoadMaterial( "" );
-	//   t_Orc2RC->Create(false, SGEngine::RenderObject(Mesh, Mat2, 0, 36, Orc2Matrix));
 
 
 	//camera
@@ -206,18 +197,15 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	UINT CamMatrix = t_CAMTC->Create(t_CamMat);
 	delete t_CamMat;
 
-	// todojaws axis does not seem right? 
+	// axis does not seem right? 
 
-	FoVProjMatrix* t_CamFovMat = new FoVProjMatrix(1920.0f/1080.0f, 1.570796327f, 0.01f, 1000.0f);
+	FoVProjMatrix* t_CamFovMat = new FoVProjMatrix( 1920.0f / 1080.0f, 1.570796327f, 0.01f, 1000.0f );
 	t_CAMPC->CreateCamera(t_CamFovMat, CamMatrix);
 	delete t_CamFovMat;
 	t_CAMPC->UseCamera();
 	
 	t_CameraEntity->AddComponent( t_CAMTC );
 	t_CameraEntity->AddComponent( t_CAMPC );
-
-	//t_SecondEntity->AddComponent(t_Orc2RC);
-	//t_SecondEntity->AddComponent(t_Orc2TC);
 
 	//RenderingComponent* t_ExtraTestRC = new RenderingComponent();
 	//t_ExtraTestRC->Create(false, SGEngine::RenderObject(Mesh, Mat, 0, 24, OrcMatrix));

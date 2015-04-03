@@ -73,20 +73,25 @@ void RenderingComponent::Create( SGEngine::Model* model, UINT& meshHandle )
 	RenderingSystem* m_Sys = m_Sys->GetInstance();
 	for( int i = 0; i < model->NumMeshes; i++ )
 	{
-		RenderObject* t_NewObject = new RenderObject();
+		RenderObject* t_NewObject = new RenderObject( ); 
+		
+// 		std::hash<RenderingComponent*> t_Hasher;
+// 		unsigned int o_Key = t_Hasher( this );
+// 		t_NewObject->componentHandle = o_Key;
+
 		t_NewObject->IndexAmount = model->Meshes[i].NumIndices; //static_cast<unsigned int>( model->NumIndices );
 		t_NewObject->startIndex = model->Meshes[i].StartIndex;
 
 		t_NewObject->meshHandle = meshHandle;
 
-		// Set material here, probably not?
+		// Set material and matrix handles here for now 
 		t_NewObject->materialHandle = model->Meshes[i].Material_Handle;
-		// Set matrix here, probably not?
 		t_NewObject->matrixHandle = model->Matrix_Handle;
 
 		m_RenderObjects.push_back( t_NewObject );
 	}
-	m_Sys->AddObjects( this, model );
+
+	m_Sys->AddObjects( this );
 }
 
 
