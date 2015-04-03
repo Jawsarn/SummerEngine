@@ -79,6 +79,7 @@ void RenderingComponent::Create( SGEngine::Model* model, UINT& meshHandle )
 // 		unsigned int o_Key = t_Hasher( this );
 // 		t_NewObject->componentHandle = o_Key;
 
+
 		t_NewObject->IndexAmount = model->Meshes[i].NumIndices; //static_cast<unsigned int>( model->NumIndices );
 		t_NewObject->startIndex = model->Meshes[i].StartIndex;
 

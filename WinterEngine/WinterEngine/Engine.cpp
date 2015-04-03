@@ -169,8 +169,9 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 	// ENTITY 1
 	MeshHandle handle;
 	Matrix* matrix1 = new Matrix( Vec3( 0, 5, 0 ), Vec3( 0, 0, -1 ), Vec3( 0, 1, 0 ) );
-	bool status_ = g_ObjectImporter.LoadObject( "testCube.mdl", handle, t_OrcRC, t_OrcTC, matrix1 );
-	
+	bool status_ = g_ObjectImporter.LoadObject( "Fan_HighPoly.mdl", handle, t_OrcRC, t_OrcTC, matrix1 );
+	delete matrix1;
+
 	// setting renderComponents to entity
 	t_FirstEntity->AddComponent( t_OrcTC );
 	t_FirstEntity->AddComponent( t_OrcRC );
@@ -178,9 +179,10 @@ int WINAPI wWinMain(_In_ HINSTANCE p_HInstance, _In_opt_ HINSTANCE p_HPrevInstan
 
 	// ENTITY 2
  	MeshHandle handle2;
- 	Matrix* matrix2 = new Matrix( Vec3( 1, 5, 0 ), Vec3( 0, 0, -1 ), Vec3( 0, 1, 0 ) );
-	bool sta = g_ObjectImporter.LoadObject( "testSphere.mdl", handle2, t_Orc2RC, t_Orc2TC, matrix2 );
- 	
+ 	Matrix* matrix2 = new Matrix( Vec3( 2, 1, 1 ), Vec3( 0, 0, -1 ), Vec3( 0, 1, 0 ) );
+	bool sta = g_ObjectImporter.LoadObject( "testCube.mdl", handle2, t_Orc2RC, t_Orc2TC, matrix2 );
+	delete matrix2;
+
 	// setting renderComponents to entity
  	t_SecondEntity->AddComponent( t_Orc2TC );
 	t_SecondEntity->AddComponent( t_Orc2RC );

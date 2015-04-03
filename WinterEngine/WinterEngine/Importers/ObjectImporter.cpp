@@ -57,7 +57,6 @@ bool ObjectImporter::LoadObject( const std::string& fileName, MeshHandle& meshHa
 		//Matrix* t_OrcMat = new Matrix( Vec3( 0, 0, -10 ), Vec3( 0, 0, -1 ), Vec3( 0, 1, 0 ) );
 		
 		UINT OrcMatrix = trans->Create( testWorld );
-		delete testWorld;
 		model->Matrix_Handle = OrcMatrix;
 
 		renderComponent->Create( model, o_ID );

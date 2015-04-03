@@ -231,7 +231,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject*> *p_RenderObects
 		t_CurStart = t_NewStart;
 		t_CurIndexAmount = t_NewIndexAmount;
 
-		memcpy(&m_MatriceList[t_NumOfMatrices], t_MatrixLib->GetMatrix(0), sizeof(XMFLOAT4X4)); 
+		memcpy( &m_MatriceList[t_NumOfMatrices], t_MatrixLib->GetMatrix( p_RenderObects->at( i )->matrixHandle ), sizeof( XMFLOAT4X4 ) );
 		t_NumOfMatrices = 1;
 	}
 
@@ -250,7 +250,7 @@ void DirectXGraphicEngine::DrawOpaque(std::vector<RenderObject*> *p_RenderObects
 	m_DeviceContext->Unmap(m_InstanceBuffer, 0);
 
 	//draw instances
-	m_DeviceContext->DrawIndexedInstanced(t_NewIndexAmount, t_NumOfMatrices, 0, 0, 0);
+	m_DeviceContext->DrawIndexedInstanced( t_NewIndexAmount, t_NumOfMatrices, 0, 0, 0 );
 }
 
 
