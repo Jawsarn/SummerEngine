@@ -78,6 +78,8 @@ void RenderingComponent::Create( SGEngine::Model* model, UINT& meshHandle )
 		t_NewObject->startIndex = model->Meshes[i].StartIndex;
 
 		t_NewObject->meshHandle = meshHandle;
+		t_NewObject->materialHandle = 0;
+		t_NewObject->matrixHandle = 0;
 
 		// Set material here?
 		m_RenderObjects.push_back( t_NewObject );

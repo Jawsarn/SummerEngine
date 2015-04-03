@@ -371,5 +371,7 @@ private:
 	
 	*/
 	// todo move upp later
+	public:
+
 };
 
