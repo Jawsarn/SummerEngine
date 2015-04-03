@@ -1,62 +1,256 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="Shaders\DeferredCS.hlsl" />
-    <FxCompile Include="Shaders\OpaqueVS.hlsl" />
-    <FxCompile Include="Shaders\OpaquePS.hlsl" />
+    <FxCompile Include="Shaders\DeferredCS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\OpaquePS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\OpaqueVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Components\CameraComponent.cpp" />
-    <ClCompile Include="Components\Component.cpp" />
-    <ClCompile Include="Components\RenderingComponent.cpp" />
-    <ClCompile Include="Components\TransformComponent.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Graphics\DirectXDrawing.cpp" />
-    <ClCompile Include="Graphics\DirectXGraphicEngine.cpp" />
-    <ClCompile Include="Graphics\DirectXInitialize.cpp" />
-    <ClCompile Include="Graphics\DirectXResourceCreation.cpp" />
-    <ClCompile Include="Graphics\DirectXUtility.cpp" />
-    <ClCompile Include="Graphics\GraphicEngineInterface.cpp" />
-    <ClCompile Include="Graphics\ShaderLoader.cpp" />
-    <ClCompile Include="Graphics\TextureLoaderDDS.cpp" />
-    <ClCompile Include="IO\Stream.cpp" />
-    <ClCompile Include="IO\StreamFile.cpp" />
-    <ClCompile Include="Matrix\DirectXTransformLibrary.cpp" />
-    <ClCompile Include="Matrix\MatrixLibraryInterface.cpp" />
-    <ClCompile Include="Systems\InputSystem.cpp" />
-    <ClCompile Include="Systems\RenderingSystem.cpp" />
-    <ClCompile Include="Systems\System.cpp" />
-    <ClCompile Include="Systems\TransformSystem.cpp" />
-    <ClCompile Include="Utility\Logger.cpp" />
-    <ClCompile Include="Importers\ObjectImporter.cpp" />
+    <ClCompile Include="Utility\Logger.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\TransformComponent.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\CameraComponent.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Component.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\RenderingComponent.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\DirectXGraphicEngine.cpp">
+      <Filter>Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\DirectXDrawing.cpp">
+      <Filter>Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\DirectXInitialize.cpp">
+      <Filter>Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\DirectXResourceCreation.cpp">
+      <Filter>Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix\DirectXTransformLibrary.cpp">
+      <Filter>Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\DirectXUtility.cpp">
+      <Filter>Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\GraphicEngineInterface.cpp">
+      <Filter>Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ShaderLoader.cpp">
+      <Filter>Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\TextureLoaderDDS.cpp">
+      <Filter>Graphics\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Importers\ObjectImporter.cpp">
+      <Filter>Importers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\InputSystem.cpp">
+      <Filter>Systems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\RenderingSystem.cpp">
+      <Filter>Systems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\System.cpp">
+      <Filter>Systems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\TransformSystem.cpp">
+      <Filter>Systems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IO\Stream.cpp">
+      <Filter>IO\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IO\StreamFile.cpp">
+      <Filter>IO\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix\MatrixLibraryInterface.cpp">
+      <Filter>Matrix\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Components\CameraComponent.h" />
-    <ClInclude Include="Components\Component.h" />
-    <ClInclude Include="Components\RenderingComponent.h" />
-    <ClInclude Include="Components\TransformComponent.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="Graphics\DirectXGraphicEngine.h" />
-    <ClInclude Include="Graphics\GraphicEngineInterface.h" />
-    <ClInclude Include="Graphics\GraphicToolbox.h" />
-    <ClInclude Include="Graphics\ShaderLoader.h" />
-    <ClInclude Include="Graphics\TextureLoaderDDS.h" />
-    <ClInclude Include="IO\Serializable.h" />
-    <ClInclude Include="IO\Stream.h" />
-    <ClInclude Include="IO\StreamFile.h" />
-    <ClInclude Include="Matrix\DirectXMatrixLibrary.h" />
-    <ClInclude Include="Matrix\MatrixLibraryInterface.h" />
-    <ClInclude Include="Matrix\MatrixToolbox.h" />
-    <ClInclude Include="Systems\InputSystem.h" />
-    <ClInclude Include="Systems\RenderingSystem.h" />
-    <ClInclude Include="Systems\System.h" />
-    <ClInclude Include="Systems\TransformSystem.h" />
-    <ClInclude Include="Utility\Logger.h" />
-    <ClInclude Include="Importers\ObjectImporter.h" />
-    <ClInclude Include="Graphics\model.h" />
+    <ClInclude Include="Utility\Logger.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\CameraComponent.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Component.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\TransformComponent.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\RenderingComponent.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\DirectXGraphicEngine.h">
+      <Filter>Graphics\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GraphicEngineInterface.h">
+      <Filter>Graphics\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GraphicToolbox.h">
+      <Filter>Graphics\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Model.h">
+      <Filter>Graphics\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ShaderLoader.h">
+      <Filter>Graphics\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\TextureLoaderDDS.h">
+      <Filter>Graphics\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Importers\ObjectImporter.h">
+      <Filter>Importers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\InputSystem.h">
+      <Filter>Systems\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\RenderingSystem.h">
+      <Filter>Systems\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\System.h">
+      <Filter>Systems\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\TransformSystem.h">
+      <Filter>Systems\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IO\Serializable.h">
+      <Filter>IO\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IO\Stream.h">
+      <Filter>IO\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IO\StreamFile.h">
+      <Filter>IO\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\DirectXMatrixLibrary.h">
+      <Filter>Matrix\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\MatrixLibraryInterface.h">
+      <Filter>Matrix\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\MatrixToolbox.h">
+      <Filter>Matrix\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Debug\TestIcon2.bmp" />
+    <Image Include="Assets\Texture\errorImg.dds">
+      <Filter>Assets\Texture</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{2bbe8c0a-d6a4-4d24-9c68-9f0399cc2d14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Audio">
+      <UniqueIdentifier>{46faff8e-54d9-4341-aa26-0401662a9ed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Font">
+      <UniqueIdentifier>{442765ba-c67a-4e4e-97a4-47e0181bf429}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\GUI">
+      <UniqueIdentifier>{a70bb7df-9094-49e3-8465-c1a102577d7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Material">
+      <UniqueIdentifier>{d89df4dd-71b7-4854-9fb5-80792d4bbd47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Model">
+      <UniqueIdentifier>{856d3011-4c70-4aa5-a8e2-3de255a010b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Scene">
+      <UniqueIdentifier>{9cc91499-6163-4a33-b260-b3f2a7bdd1b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Texture">
+      <UniqueIdentifier>{8ae9f824-0d77-47d4-824a-696dd83764b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\GUI\Cursor">
+      <UniqueIdentifier>{00e2420b-8058-421f-80c8-4b0fa54711c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{ae354db1-9f69-42ec-9b1b-56a8fb6bd5db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{09703ea3-f9b1-4502-86e4-ea002cf9428e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Importers">
+      <UniqueIdentifier>{7ca55df9-6aae-4df0-b772-814cc6114c03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{5fba3a28-8fae-4a85-afdd-928f28242369}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IO">
+      <UniqueIdentifier>{f0dbf976-c23a-4b5a-a411-44add119ee08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{a3012a61-4ffc-4436-a113-f6e4b453212f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Matrix">
+      <UniqueIdentifier>{68579ed5-bbde-4fa6-abab-b04347f3e439}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{da9b6520-b7c3-48fa-8ab1-8e74a1ab2174}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Header Files">
+      <UniqueIdentifier>{4d4ae2f3-d26e-4d54-9483-665bdfd9d21f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Source Files">
+      <UniqueIdentifier>{ee7a4a53-b913-4cdd-a190-7e4dbcb389dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Header Files">
+      <UniqueIdentifier>{18f7c56d-b20c-47fb-9049-3eab29ace339}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Source Files">
+      <UniqueIdentifier>{3c11e57f-a2d7-4acc-924d-cd6be6c2e776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Importers\Source Files">
+      <UniqueIdentifier>{95cd6cb0-e082-4f25-9461-114150584a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Importers\Header Files">
+      <UniqueIdentifier>{dd2d31ab-d7b1-4488-bc9d-d65f63769efe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Source Files">
+      <UniqueIdentifier>{674dc442-5477-492b-96de-fe95aa3e5146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Header Files">
+      <UniqueIdentifier>{0a0ec533-6f76-4462-8a2a-9270893dbb0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IO\Header Files">
+      <UniqueIdentifier>{f32371a0-b4eb-46c9-959b-a0cefc53cd17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IO\Source Files">
+      <UniqueIdentifier>{018bf1e5-f0e8-45a3-870b-0b55f90528d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Matrix\Source Files">
+      <UniqueIdentifier>{5c5b102c-b5ed-47f7-933a-77b3d5391eed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Matrix\Header Files">
+      <UniqueIdentifier>{a867c42a-3376-46b5-b7de-3beb9425b2d9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Model\Fan_HighPoly.mdl">
+      <Filter>Assets\Model</Filter>
+    </None>
+    <None Include="Assets\Model\testCube.mdl">
+      <Filter>Assets\Model</Filter>
+    </None>
   </ItemGroup>
 </Project>
