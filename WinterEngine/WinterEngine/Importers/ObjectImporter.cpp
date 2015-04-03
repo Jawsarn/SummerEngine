@@ -3,7 +3,9 @@
 #include <fstream>
 #include <sstream>
 #include "../Graphics/DirectXGraphicEngine.h"
-#include "../Systems/RenderingSystem.h"
+#include "../Matrix/MatrixLibraryInterface.h"
+#include "../Components/TransformComponent.h"
+#include "../Graphics/Model.h"
 
 using namespace SGEngine;
 
@@ -27,9 +29,12 @@ ObjectImporter& ObjectImporter::GetInstance()
 *	After checking what type of object this is,
 *	-	it will load another function to actually load the object
 */
-bool ObjectImporter::LoadObject( const std::string& fileName, MeshHandle& meshHandle, SGEngine::Model* model )
+bool ObjectImporter::LoadObject( const std::string& fileName, MeshHandle& meshHandle, std::vector<RenderingComponent*>& renderComponents, Matrix* testWorld )
 {
 	std::string modelPath = "Assets/Model/";
+
+	SGEngine::Model* model = new SGEngine::Model();
+
 	int extensionStart = static_cast< int > ( fileName.find_last_of( "." ) );
 	std::string extension = fileName.substr( extensionStart + 1, strlen( fileName.c_str() ) );
 
@@ -40,12 +45,30 @@ bool ObjectImporter::LoadObject( const std::string& fileName, MeshHandle& meshHa
 		model->FileName = fileName;
 
 		UINT o_ID = g_GraphicEngine->CreateModel( fileName, &model->Vertices, &model->Indices );
+
+		for( int i = 0; i < model->NumMeshes; i++ )
+		{
+			// Loading error material fow now
+			UINT Mat = g_GraphicEngine->LoadMaterial( "" /*materialFolderPath + model->Meshes[i].MaterialName */ );
+			model->Meshes[i].Material_Handle = Mat;
+		}
+
+		// TESTING , might not be loaded from here
+		//Matrix* t_OrcMat = new Matrix( Vec3( 0, 0, -10 ), Vec3( 0, 0, -1 ), Vec3( 0, 1, 0 ) );
 		
+		TransformComponent* t_OrcTC = new TransformComponent( );
+		UINT OrcMatrix = t_OrcTC->Create( testWorld );
+		delete testWorld;
+		model->Matrix_Handle = OrcMatrix;
+
 		RenderingSystem* m_Sys = m_Sys->GetInstance();
-		RenderingComponent* renderComponent = new RenderingComponent( ); 
+		RenderingComponent* renderComponent = new RenderingComponent();
 		renderComponent->Create( model, o_ID );
+
+		renderComponents.push_back( renderComponent );
 	}
 
+	delete model;
 	return status;
 }
 

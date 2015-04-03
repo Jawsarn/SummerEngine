@@ -86,13 +86,13 @@ unsigned int RenderingSystem::AddObjects( RenderingComponent* p_Component, SGEng
 		RenderObject* t_Object = objs[i];
 
 		std::hash<RenderingComponent*> t_Hasher;
-
+		
 		unsigned int o_Key = t_Hasher( p_Component );
 		t_Object->componentHandle = o_Key;
 
+		// todo create Get material function and check if transparent
 		if( t_Object->materialHandle == 1 /*is transparent */ )
 		{
-			int a = 0;
 			//////m_Transparent.push_back(t_NewObject);
 		}
 
@@ -102,6 +102,7 @@ unsigned int RenderingSystem::AddObjects( RenderingComponent* p_Component, SGEng
 		}
 	}
 
+	// do we even need to return something here?
 	return 1;//o_Key;
 }
 

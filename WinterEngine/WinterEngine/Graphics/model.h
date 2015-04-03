@@ -18,6 +18,8 @@ namespace SGEngine
 		unsigned int				StartIndex;
 		int							NumIndices;
 		std::string					MaterialName;
+
+		UINT						Material_Handle; // need this?
 	};
 
 	struct Model
@@ -43,6 +45,8 @@ namespace SGEngine
 
 		float		BBoxMin[3];
 		float		BBoxMax[3];
+
+		UINT		Matrix_Handle;
 
 		std::vector<VertexPosNormalTangentTex> Vertices;
 		std::vector<unsigned int>	Indices;

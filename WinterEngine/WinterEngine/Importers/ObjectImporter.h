@@ -1,6 +1,6 @@
 #pragma once
-#include "../Graphics/Model.h"
 #include "../Graphics/GraphicToolbox.h"
+#include "../Systems/RenderingSystem.h"
 
 #define g_ObjectImporter ObjectImporter::GetInstance()
 
@@ -11,7 +11,7 @@ public:
 	~ObjectImporter();
 	static ObjectImporter& GetInstance();
 
-	bool LoadObject( const std::string& fileName, SGEngine::MeshHandle& meshHandle, SGEngine::Model* model );
+	bool LoadObject( const std::string& fileName, SGEngine::MeshHandle& meshHandle, std::vector<RenderingComponent*>& renderComponents, Matrix* testWorld );
 
 private:
 	bool				LoadMdlMesh( const std::string& fileName, SGEngine::Model* model );
