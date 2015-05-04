@@ -27,7 +27,6 @@ private:
 	//components
 	std::vector<Component*> m_Components;
 
-public:
-	int GetID();
+
 };
 
